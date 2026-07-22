@@ -21,10 +21,20 @@ Formula & Use \\
 \(f_0=1/(2\pi\sqrt{LC})\) & Resonant frequency in hertz. \\
 \(Q_s=\omega_0L/R\) & Series RLC quality factor. \\
 \(BW\approx f_0/Q\) & Narrowband half-power bandwidth estimate. \\
+\(s^2+2\zeta\omega_0 s+\omega_0^2\) & Standard second-order pole polynomial. \\
+\(\alpha=R/2L,\ \zeta=\alpha/\omega_0\) & Series RLC damping rate and ratio. \\
+\(s=-\alpha\pm\jj\omega_d,\ \omega_d=\sqrt{\omega_0^2-\alpha^2}\) & Underdamped pole pair. \\
+\(Q=1/(2\zeta)\) & Quality factor and damping ratio. \\
 \(S=VI^*\) & Complex power using RMS phasors. \\
+\(A_{\mathrm{cl}}=A/(1+A\beta)\) & Closed-loop gain; \(L=A\beta\) is loop gain. \\
+\(\text{gain}\times\text{BW}=A_0\omega_a\) & Gain--bandwidth product (single-pole amp). \\
+\(|L|=1,\ \angle L=0\) & Barkhausen oscillation condition. \\
+\(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\) & L-network matching \(Q\). \\
+\(Z_0=\sqrt{L'/C'},\ v_p=1/\sqrt{L'C'}\) & Line impedance and phase velocity. \\
 \(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\) & Load reflection coefficient. \\
 \(\mathrm{SWR}=(1+|\Gamma|)/(1-|\Gamma|)\) & Standing wave ratio. \\
 \(RL=-20\log_{10}|\Gamma|\) & Return loss in decibels. \\
+\(Z_{\mathrm{in}}=Z_0\dfrac{Z_L+\jj Z_0\tan\beta\ell}{Z_0+\jj Z_L\tan\beta\ell}\) & Input impedance along a lossless line. \\
 \(Z_t=\sqrt{Z_0Z_L}\) & Quarter-wave transformer for real impedances. \\
 \bottomrule
 \end{longtable}

@@ -96,6 +96,24 @@ BW\approx \frac{f_0}{Q}
 Series resonance: minimum impedance and maximum current. Parallel resonance:
 high input impedance in the ideal case.
 
+\section*{Poles and Feedback}
+\[
+s^2+2\zeta\omega_0 s+\omega_0^2,\quad
+\alpha=\frac{R}{2L},\quad
+\zeta=\frac{\alpha}{\omega_0}=\frac{1}{2Q}
+\]
+\[
+s=-\alpha\pm\jj\omega_d,\quad \omega_d=\sqrt{\omega_0^2-\alpha^2}
+\]
+Poles: left half-plane decays, \(\jj\omega\) axis sustains. Distance from the
+axis \(=\alpha=\) decay rate \(=\) half of bandwidth.
+\[
+A_{\mathrm{cl}}=\frac{A}{1+A\beta},\quad L=A\beta,\quad
+\text{gain}\times\text{BW}=\text{const}
+\]
+Oscillation (Barkhausen): \(L=-1\) (\(|L|=1\), \(\angle L=-180^\circ\)). L-match:
+\(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\).
+
 \section*{Bode and dB}
 \[
 |G|_{\dB}=20\log_{10}|G(\jj\omega)|,\quad

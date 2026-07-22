@@ -111,9 +111,42 @@ first-order zero contributes about \(+20~\dB/\mathrm{decade}\).
 half amplitude.
 \end{mistakebox}
 
+\section{s-Plane, Poles, and Feedback}
+A pole \(s=\sigma+\jj\omega\) is a natural mode \(\ee^{\sigma t}\cos\omega t\):
+left half-plane decays (stable), imaginary axis sustains, right half-plane grows.
+The series RLC characteristic polynomial in standard form is
+\[
+s^2+2\zeta\omega_0 s+\omega_0^2,
+\qquad
+\alpha=\frac{R}{2L},
+\qquad
+\zeta=\frac{\alpha}{\omega_0}=\frac{1}{2Q},
+\]
+with underdamped poles \(s=-\alpha\pm\jj\omega_d\), \(\omega_d=\sqrt{\omega_0^2-\alpha^2}\).
+Distance from the \(\jj\omega\) axis (\(\alpha\)) sets decay rate and bandwidth;
+distance from the origin is \(\omega_0\). For a feedback loop,
+\[
+A_{\mathrm{cl}}=\frac{A}{1+A\beta},
+\qquad
+L=A\beta,
+\qquad
+\text{gain}\times\text{BW}=\text{const},
+\]
+and oscillation is \(L=-1\), i.e.\ \(|L|=1\), \(\angle L=-180^\circ\) (poles on the
+\(\jj\omega\) axis).
+
 \section{Filters, Matching, and Transformers}
 \[
 f_c=\frac{1}{2\pi RC}\quad \text{for a first-order RC cutoff.}
+\]
+An \(n\)-pole filter rolls off near \(-20n\,\si{\decibel}\) per decade. To match
+real \(R_{\text{hi}}>R_{\text{lo}}\) with an L-network,
+\[
+Q=\sqrt{\frac{R_{\text{hi}}}{R_{\text{lo}}}-1},
+\qquad
+X_{\text{series}}=Q\,R_{\text{lo}},
+\qquad
+X_{\text{shunt}}=\frac{R_{\text{hi}}}{Q}.
 \]
 \[
 \frac{V_s}{V_p}=\frac{N_s}{N_p},
@@ -137,6 +170,14 @@ when \(Q\) is high.
 \qquad
 \mathrm{return\ loss}=-20\log_{10}|\Gamma|.
 \]
+Input impedance rotates along a lossless line,
+\[
+Z_{\mathrm{in}}(\ell)=Z_0\frac{Z_L+\jj Z_0\tan\beta\ell}{Z_0+\jj Z_L\tan\beta\ell},
+\qquad
+\beta=\frac{2\pi}{\lambda},
+\]
+giving \(Z_{\mathrm{in}}=Z_0^2/Z_L\) at a quarter wave and \(Z_{\mathrm{in}}=Z_L\)
+at a half wave. Hence
 \[
 Z_t=\sqrt{Z_0Z_L}
 \]

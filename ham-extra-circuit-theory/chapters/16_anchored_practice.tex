@@ -1,0 +1,143 @@
+\chapter{Anchored Practice: Reasoning Through Real Pool Questions}
+\label{ch:practice}
+This chapter connects the theory to the actual Amateur Extra question pool
+(Element~4, valid 2024--2028). Each problem cites its pool identifier, states the
+question, and then \emph{reasons} to the answer using the framework of this
+book---conservation, the right one of the four views, and the s-plane picture---
+rather than memorizing a letter. Attempt each before reading the reasoning.
+Correct-choice letters follow the current pool.
+
+\begin{exambox}
+The pool identifiers below are from the 2024--2028 Element~4 pool. Always confirm
+against the current official NCVEC pool before your exam, since identifiers and
+wording change each cycle even when the physics does not.
+\end{exambox}
+
+\section{Resonance and Q (E5A)}
+
+\subsection*{E5A02 --- Resonant frequency (answer C)}
+\emph{What is the resonant frequency of an RLC circuit if \(R=\SI{22}{\ohm}\),
+\(L=\SI{50}{\micro\henry}\), and \(C=\SI{40}{\pico\farad}\)?}
+Resonance is where the reactances cancel, independent of \(R\):
+\[
+f_0=\frac{1}{2\pi\sqrt{LC}}
+=\frac{1}{2\pi\sqrt{(50\times10^{-6})(40\times10^{-12})}}
+\approx\SI{3.56}{\mega\hertz}.
+\]
+Note that \(R\) is a distractor: it sets \(Q\) and bandwidth, not \(f_0\). The
+poles sit at \(-\alpha\pm\jj\omega_d\) with \(\omega_d\approx\wzero\) because the
+circuit is high-\(Q\).
+
+\subsection*{E5A03 --- Impedance at series resonance (answer D)}
+\emph{What is the magnitude of the impedance of a series RLC circuit at
+resonance?} At \(f_0\) the reactances cancel in \(Z=R+\jj(\omega L-1/\omega C)\),
+leaving \(Z\approx R\)---approximately the circuit resistance. This is why series
+resonance draws maximum current, and why the reactive voltages can exceed the
+source voltage by a factor of \(Q\) (see E5A01).
+
+\subsection*{E5A07 / E5A06 --- Parallel resonance currents (answers A, B)}
+At parallel resonance the branch admittances cancel, so the impedance is high and
+the current \emph{from the source} is at a minimum (E5A07~A). Yet the current
+\emph{circulating inside} the tank is at a maximum (E5A06~B)---energy sloshes
+between \(L\) and \(C\) while the source only makes up the losses. The dual of the
+series case.
+
+\subsection*{E5A11 --- Half-power bandwidth (answer C)}
+\emph{Half-power bandwidth of a resonant circuit with \(f_0=\SI{7.1}{\mega\hertz}\)
+and \(Q=150\)?}
+\[
+BW=\frac{f_0}{Q}=\frac{7.1\times10^6}{150}\approx\SI{47.3}{\kilo\hertz}.
+\]
+In pole terms the full-power-bandwidth equals twice the pole's distance from the
+\(\jj\omega\) axis; high \(Q\) presses the poles against the axis and narrows the
+peak.
+
+\section{Time Constants and Phase (E5B)}
+
+\subsection*{E5B01 --- Meaning of the time constant (answer B)}
+The time for an RC capacitor to charge to \(63.2\%\) (or discharge to \(36.8\%\))
+is \emph{one time constant} \(\tau=RC\). These numbers are \(1-\ee^{-1}\) and
+\(\ee^{-1}\): one time constant is the reciprocal of the single real pole
+\(-1/RC\), so it is the natural clock of the first-order mode.
+
+\subsection*{E5B09 --- Phase in a capacitor (answer D)}
+Because \(i=C\,\dd v/\dd t\), a sinusoidal voltage gives a current proportional to
+its derivative, so \emph{current leads voltage by \(90^\circ\)} in a capacitor.
+(Dually, voltage leads current by \(90^\circ\) in an inductor.) In phasor form,
+\(Z_C=1/(\jj\omega C)=-\jj/(\omega C)\): the \(-\jj\) is the \(-90^\circ\) of the
+impedance, hence current ahead of voltage.
+
+\subsection*{E5B12 / E5B02 / E5B05 --- Admittance and susceptance (answers A, D, D)}
+Admittance is the inverse of impedance, \(Y=1/Z=G+\jj B\) (E5B12~A). Its imaginary
+part is susceptance, denoted \(B\) (E5B02~D). Converting a pure reactance to
+susceptance replaces it with its reciprocal (E5B05~D), since \(B=-1/X\) for a pure
+reactance---inverting a purely imaginary \(Z\) flips magnitude to its reciprocal
+and keeps it on the imaginary axis.
+
+\section{Coordinate Systems and Phasors (E5C)}
+
+\subsection*{E5C01 --- Reactance in rectangular form (answer A)}
+Pure capacitive reactance of \(\SI{100}{\ohm}\) is \(0-\jj100\): zero resistance,
+negative (capacitive) reactance. The sign convention is the whole point---an
+inductor would be \(0+\jj100\).
+
+\subsection*{E5C09 --- Axes of the impedance plane (answer A)}
+On a rectangular impedance graph the horizontal axis is resistance and the
+vertical axis is reactance. This is the same \(\sigma\)--\(\jj\omega\) split you
+use in the s-plane, now applied to impedance instead of pole location.
+
+\subsection*{E5C11 --- Reading an impedance point (answer B)}
+\emph{Series \(\SI{300}{\ohm}\) resistor and \(\SI{18}{\micro\henry}\) inductor at
+\SI{3.505}{\mega\hertz}.} Compute the reactance and place the point:
+\[
+X_L=2\pi f L=2\pi(3.505\times10^6)(18\times10^{-6})\approx\SI{396}{\ohm},
+\]
+so \(Z\approx300+\jj396\,\Omega\)---first quadrant (resistance positive, reactance
+inductive/positive). The matching figure point is the one up and to the right.
+
+\section{RF Effects in Components (E5D)}
+These questions (skin effect, stray/distributed L and C, self-resonance) are
+where the lumped-element idealization of \cref{ch:foundations} breaks down. The
+recurring theme: at RF, a resistor has inductance, an inductor has
+inter-winding capacitance, and a capacitor has lead inductance, so every real
+component has a self-resonant frequency above which it behaves as its
+\emph{opposite} type. This is the same ``modeling-assumption'' checklist as the
+troubleshooting chapter: ideal element, lumped, no parasitics.
+
+\section{Filters and Matching (E7C, E9E)}
+A filter question is a pole/zero question: identify passband, stopband, cutoff,
+order (slope \(\approx-20n\,\si{\decibel}\) per decade), and family
+(Butterworth = flat, Chebyshev = sharp+ripple, elliptic = notch zeros). A
+matching question is a two-part question---cancel reactance, then transform
+resistance---solvable with the L-network \(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\)
+or a quarter-wave \(Z_t=\sqrt{Z_0Z_L}\) from \cref{ch:filters}.
+
+\section{Op-Amps and Oscillators (E7G, E7H)}
+Op-amp gain questions reduce to ``loop gain is large,'' giving
+\(-R_f/R_{in}\) (inverting) or \(1+R_f/R_g\) (non-inverting). Oscillator questions
+reduce to the Barkhausen condition---unity loop gain magnitude and net zero
+phase, i.e.\ a pole pair placed on the \(\jj\omega\) axis
+(\cref{ch:splane}). Frequency-stability questions favor the highest-\(Q\)
+resonator (crystal), because \(Q\) is how tightly the pole is pinned to the axis.
+
+\section{Transmission Lines and the Smith Chart (E9F, E9G)}
+
+\subsection*{E9G01 / E9G02 --- What the Smith chart does (answers A, B)}
+The Smith chart computes impedance along transmission lines (E9G01~A) using a
+coordinate system of resistance circles and reactance arcs (E9G02~B). It is the
+graphical form of \(Z_{\mathrm{in}}(\ell)\) from \cref{ch:lines}: moving down the
+line is a rotation on a constant-SWR circle.
+
+\subsection*{Worked line problem}
+A \(\SI{100}{\ohm}\) load on a \(\SI{50}{\ohm}\) line gives
+\(\Gamma=(100-50)/(100+50)=1/3\), so \(\mathrm{SWR}=2\) and the reflected power
+fraction is \(|\Gamma|^2\approx11\%\). A quarter-wave section of
+\(\sqrt{(50)(100)}=\SI{70.7}{\ohm}\) removes the mismatch by impedance inversion.
+
+\section{Final Study Pattern}
+Start every circuit problem with conservation. Ask what stores energy, what
+dissipates it, and which of the four views---time-domain, state-space, phasor,
+or frequency-response---answers the question most directly. For anything
+involving sharpness, stability, or selectivity, picture where the poles sit
+relative to the \(\jj\omega\) axis. That single habit turns memorization into
+understanding.

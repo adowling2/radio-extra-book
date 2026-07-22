@@ -1,28 +1,61 @@
 \chapter{Transmission Lines, Reflection, and SWR}
+\label{ch:lines}
 \section{Why Lines Matter}
 Transmission lines are distributed systems. When a feed line is a significant
 fraction of a wavelength, voltage and current vary along the line and a lumped
 wire approximation fails.
 
 \begin{controlsbox}
-A transmission line is closer in spirit to a distributed-parameter dynamical
-system than to a lumped ODE. Wavelength matters because position becomes part of
-the state description.
+A transmission line is a distributed-parameter dynamical system rather than a
+lumped ODE. A lumped RLC circuit has a finite state vector; a line has a
+continuum of states \(v(x,t)\) and \(i(x,t)\) indexed by position \(x\). Position
+becomes part of the state description, so the model is a partial differential
+equation with an infinite set of natural modes rather than a handful of
+eigenvalues.
 \end{controlsbox}
+
+\section{The Line as a Distributed System: Telegrapher's Equations}
+Model an infinitesimal slice \(\dd x\) of a lossless line as a series inductance
+\(L'\,\dd x\) and a shunt capacitance \(C'\,\dd x\), where \(L'\) and \(C'\) are
+inductance and capacitance per unit length. Applying KVL and KCL to the slice
+gives the \emph{telegrapher's equations},
+\[
+\frac{\partial v}{\partial x}=-L'\frac{\partial i}{\partial t},
+\qquad
+\frac{\partial i}{\partial x}=-C'\frac{\partial v}{\partial t}.
+\]
+Differentiating one and substituting the other eliminates \(i\) and yields the
+\emph{wave equation}:
+\[
+\frac{\partial^2 v}{\partial x^2}=L'C'\,\frac{\partial^2 v}{\partial t^2}.
+\]
+Its solutions are waves traveling in \(\pm x\) at phase velocity
+\[
+v_p=\frac{1}{\sqrt{L'C'}},
+\]
+and the ratio of voltage to current in a single traveling wave is the
+characteristic impedance
+\[
+Z_0=\sqrt{\frac{L'}{C'}}.
+\]
+So \(Z_0\) and the velocity factor are not empirical constants---they fall out of
+the per-unit-length geometry of the line.
 
 \section{Wavelength and Velocity Factor}
 \[
 \lambda=\frac{v_p}{f}=\frac{VF\,c}{f}.
 \]
-Velocity factor \(VF\) is the ratio of wave speed in the line to the speed of
-light in vacuum. Physical length is shorter than free-space electrical length
-when \(VF<1\).
+Velocity factor \(VF=v_p/c\) is the ratio of wave speed in the line to the speed
+of light. Because \(v_p=1/\sqrt{L'C'}\) and a dielectric raises \(C'\), a line
+with dielectric has \(VF<1\); its physical length is shorter than the free-space
+electrical length.
 
 \section{Characteristic Impedance}
-Characteristic impedance \(Z_0\) is the voltage-to-current ratio of a traveling
-wave on the line. Common coaxial systems use \(\SI{50}{\ohm}\), but other values
-such as \(\SI{75}{\ohm}\), \(\SI{300}{\ohm}\), and \(\SI{450}{\ohm}\) are also
-common in specific applications.
+\(Z_0=\sqrt{L'/C'}\) is the voltage-to-current ratio of a traveling wave. Common
+coaxial systems use \(\SI{50}{\ohm}\); \(\SI{75}{\ohm}\), \(\SI{300}{\ohm}\), and
+\(\SI{450}{\ohm}\) appear in specific applications. A line terminated in \(Z_0\)
+looks infinitely long---no reflection---because the load absorbs the traveling
+wave exactly as more line would.
 
 \section{Reflection Coefficient}
 At the load,
@@ -30,37 +63,63 @@ At the load,
 \Gamma=\frac{Z_L-Z_0}{Z_L+Z_0}.
 \]
 If \(Z_L=Z_0\), then \(\Gamma=0\) and there is no reflection. If the load is open
-or shorted, \(|\Gamma|=1\) in the lossless idealization.
+or shorted, \(|\Gamma|=1\) in the lossless idealization: all the incident wave
+returns.
 
-\section{SWR and Return Loss}
+\section{Standing Waves, SWR, and Return Loss}
+Incident and reflected waves superpose into a stationary interference pattern---a
+standing wave---whose voltage maxima and minima are fixed in position. Their ratio
+is the standing-wave ratio,
 \[
-\mathrm{SWR}=\frac{1+|\Gamma|}{1-|\Gamma|}.
+\mathrm{SWR}=\frac{V_{\max}}{V_{\min}}=\frac{1+|\Gamma|}{1-|\Gamma|}.
 \]
-SWR equals 1 for a perfect match and increases as mismatch worsens. Return loss
-is
+SWR equals 1 for a perfect match and rises with mismatch. Return loss expresses
+the same mismatch in decibels,
 \[
-RL=-20\log_{10}|\Gamma|.
+RL=-20\log_{10}|\Gamma|,
 \]
-Higher return loss means a smaller reflection.
+with higher return loss meaning a smaller reflection.
 
-\section{Quarter-Wave Transformation}
-For a lossless quarter-wave section,
+\section{Input Impedance Along the Line}
+Because the reflected wave changes phase as it travels, the impedance seen
+looking into a lossless line of length \(\ell\) toward a load \(Z_L\) rotates with
+position:
 \[
-Z_{\mathrm{in}}=\frac{Z_t^2}{Z_L}.
+Z_{\mathrm{in}}(\ell)=Z_0\,
+\frac{Z_L+\jj Z_0\tan\beta\ell}{Z_0+\jj Z_L\tan\beta\ell},
+\qquad
+\beta=\frac{2\pi}{\lambda}.
 \]
-To match a real load \(Z_L\) to a real line impedance \(Z_0\),
-\[
-Z_t=\sqrt{Z_0Z_L}.
-\]
-A half-wave line repeats the load impedance at its input, in the lossless ideal
-case.
+The phase constant \(\beta\) counts radians of electrical length per unit
+distance. The familiar special cases are limits of this one formula:
+\begin{description}
+\item[Quarter-wave (\(\beta\ell=\pi/2\), \(\tan\to\infty\))]
+\(Z_{\mathrm{in}}=Z_0^2/Z_L\). The line \emph{inverts} the load impedance, which
+is why \(Z_t=\sqrt{Z_0 Z_L}\) matches two real resistances.
+\item[Half-wave (\(\beta\ell=\pi\), \(\tan=0\))] \(Z_{\mathrm{in}}=Z_L\): the line
+repeats the load impedance.
+\item[Matched (\(Z_L=Z_0\))] \(Z_{\mathrm{in}}=Z_0\) for any length: nothing to
+rotate.
+\end{description}
+A shorted or open stub (\(Z_L=0\) or \(\infty\)) makes \(Z_{\mathrm{in}}\) a pure
+reactance set by length---the basis of stub matching and line-section reactances.
+
+\section{Quarter-Wave and Half-Wave Transformers}
+From the limits above, a quarter-wave section of impedance
+\(Z_t=\sqrt{Z_0Z_L}\) matches a real load \(Z_L\) to a real line \(Z_0\), and a
+half-wave section repeats the load. Both assume a lossless line and hold only near
+the design frequency, since \(\beta\ell\) is frequency dependent.
 
 \section{Smith Chart Interpretation}
 A Smith chart is a graphical map of normalized complex impedance and reflection
-coefficient. It helps visualize resistance circles, reactance arcs, constant
-SWR circles, and how impedance changes as one moves along a transmission line.
-For this book, the key point is conceptual: the chart is not a new law of
-circuits; it is a coordinate transform for impedance and reflection.
+coefficient. It plots the bilinear (M\"obius) transform between normalized
+impedance \(z=Z/Z_0\) and \(\Gamma=(z-1)/(z+1)\), which turns resistance and
+reactance grid lines into circles and arcs inside the unit \(|\Gamma|\le1\) disk.
+Crucially, the \(Z_{\mathrm{in}}(\ell)\) rotation above becomes a simple rotation
+about the chart's center: moving along the line spins the point on a
+constant-\(|\Gamma|\) (constant-SWR) circle. For this book the point is
+conceptual---the chart is not a new law of circuits but a coordinate transform
+that makes the input-impedance formula something you can read off by eye.
 
 \begin{figure}[htbp]
 \centering
@@ -74,18 +133,20 @@ circuits; it is a coordinate transform for impedance and reflection.
 \fill (0,0) circle (0.015) node[below left]{match};
 \node[below] at (0,-1.12){normalized impedance plane mapped to \(\Gamma\)};
 \end{tikzpicture}
-\caption{Simplified Smith-chart geometry: constant-resistance circles and reactance arcs.}
+\caption{Simplified Smith-chart geometry: constant-resistance circles and
+reactance arcs. Moving along the line rotates a point about the center on a
+constant-SWR circle.}
 \end{figure}
 
 \section{Worked Example}
 A \(\SI{100}{\ohm}\) load terminates a \(\SI{50}{\ohm}\) line:
 \[
-\Gamma=\frac{100-50}{100+50}=\frac{1}{3}.
-\]
-\[
-\mathrm{SWR}=\frac{1+1/3}{1-1/3}=2.
-\]
-The return loss is
-\[
+\Gamma=\frac{100-50}{100+50}=\frac{1}{3},
+\qquad
+\mathrm{SWR}=\frac{1+1/3}{1-1/3}=2,
+\qquad
 RL=-20\log_{10}(1/3)\approx \SI{9.54}{\decibel}.
 \]
+A quarter-wave section would need
+\(Z_t=\sqrt{(50)(100)}=\SI{70.7}{\ohm}\) to remove the mismatch, giving
+\(Z_{\mathrm{in}}=Z_t^2/Z_L=70.7^2/100=\SI{50}{\ohm}\).

@@ -1,8 +1,11 @@
 \chapter{Filters, Matching Networks, and Transformers}
+\label{ch:filters}
 \section{Why Filters Matter in Amateur Radio}
 Filters select desired signals and reject unwanted ones. They appear in receiver
 front ends, IF stages, audio stages, transmitter outputs, anti-aliasing paths,
-power supplies, and interference cures.
+power supplies, and interference cures. With the s-plane chapter in hand, a filter
+is simply a deliberate placement of poles (to shape the passband) and zeros (to
+notch the stopband).
 
 \section{Basic Filter Types}
 \begin{description}
@@ -22,28 +25,75 @@ power supplies, and interference cures.
 \caption{First-order RC low-pass filter.}
 \end{figure}
 
-\section{Cutoff and Slope}
-For a first-order RC filter,
-\[
-f_c=\frac{1}{2\pi RC}.
-\]
-Past its corner, a first-order pole changes the asymptotic magnitude by about
-\(-\SI{20}{\decibel}\) per decade. A second-order filter changes by about
-\(-\SI{40}{\decibel}\) per decade after the relevant corner or resonant region.
+\section{Cutoff, Slope, and Order}
+For a first-order RC filter, \(f_c=1/(2\pi RC)\). Past its corner, each pole
+changes the asymptotic magnitude by about \(-\SI{20}{\decibel}\) per decade, and
+each zero by \(+\SI{20}{\decibel}\) per decade. The \emph{order} of a filter is
+its number of poles, so an \(n\)-pole low-pass rolls off at about
+\(-20n\,\si{\decibel}\) per decade far above cutoff. Steeper skirts require more
+poles.
 
-\section{Filter Families}
-\begin{tabularx}{\textwidth}{@{}L{0.2\textwidth}Y@{}}
+\section{The Second-Order Section}
+Higher-order filters are built from first-order and second-order sections. The
+generic second-order low-pass transfer function is
+\[
+H(s)=\frac{\wzero^2}{s^2+\dfrac{\wzero}{Q}\,s+\wzero^2},
+\]
+identical in form to the series-RLC response of \cref{ch:splane}. Here the filter
+\(Q\) is a design choice, not just a loss parameter: it sets how close the pole
+pair sits to the \(\jj\omega\) axis and therefore how much the response peaks near
+\(\wzero\). \(Q=1/\sqrt{2}\approx0.707\) gives the maximally flat (Butterworth)
+second-order response with no peaking; higher \(Q\) peaks; lower \(Q\) rounds off
+early. Band-pass and high-pass sections share the same denominator with different
+numerators (a zero at the origin, or a double zero at the origin, respectively).
+
+\section{Filter Families as Pole Patterns}
+The named families differ only in \emph{where} the poles (and zeros) are placed
+for a given order.
+
+\begin{tabularx}{\textwidth}{@{}L{0.19\textwidth}Y@{}}
 \toprule
-Family & Practical meaning \\
+Family & Pole/zero placement and consequence \\
 \midrule
-Butterworth & Maximally flat passband; moderate transition. \\
-Chebyshev & Ripple in the passband for a sharper cutoff. \\
-Elliptic & Ripple in passband and stopband, with transmission zeros and a very sharp transition. \\
-Crystal or cavity & High-Q resonators used when narrow bandwidth or strong selectivity is needed. \\
-DSP FIR & Can be designed for linear phase; uses delayed samples and taps. \\
-DSP IIR & Efficient recursive filter; phase is usually less linear than FIR. \\
+Butterworth & Poles equally spaced on a semicircle of radius \(\wzero\) in the left half-plane. Maximally flat passband, no ripple, moderate transition. \\
+Chebyshev & Poles on an ellipse pushed closer to the \(\jj\omega\) axis. Sharper cutoff at the price of passband ripple and worse phase/transient behavior. \\
+Elliptic (Cauer; ``elliptical'' in the pool) & Chebyshev-like poles plus transmission \emph{zeros} on the \(\jj\omega\) axis in the stopband. Sharpest transition; ripple in both bands. \\
+Bessel & Poles positioned for maximally flat \emph{group delay} (linear phase); gentle amplitude cutoff. Good for pulse fidelity. \\
+Crystal / cavity & Very high-\(Q\) resonators (poles hugging the axis) for narrow, highly selective band-pass shapes. \\
+DSP FIR & No feedback, so no poles away from the origin (all zeros); can be exactly linear phase. \\
+DSP IIR & Recursive: has poles, so it mimics analog families efficiently but with nonlinear phase. \\
 \bottomrule
 \end{tabularx}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,scale=1.15]
+\draw[->,black!70] (-2.7,0) -- (0.8,0) node[right]{\(\sigma\)};
+\draw[->,black!70] (0,-2.0) -- (0,2.0) node[above]{\(\jj\omega\)};
+\draw[GuideLine,dashed] (0,0) circle (1.6);
+% 4th-order Butterworth poles: angles 112.5,157.5,202.5,247.5 deg
+\foreach \a in {112.5,157.5,202.5,247.5}{
+  \filldraw[GuideBlue] ({1.6*cos(\a)},{1.6*sin(\a)}) circle (2.2pt);
+}
+\node[GuideLine] at (1.15,1.35) {\small \(|s|=\wzero\)};
+\node[GuideBlue] at (-2.15,1.2) {\small Butterworth};
+\end{tikzpicture}
+\caption{Fourth-order Butterworth poles: four left-half-plane poles equally
+spaced on the circle of radius \(\wzero\). Higher order adds more poles on the
+same circle; Chebyshev pulls them toward the \(\jj\omega\) axis for a sharper but
+rippled response.}
+\label{fig:butterworth-poles}
+\end{figure}
+
+\begin{controlsbox}
+\textbf{Refresher: reading a filter as poles.} Filter design is pole placement in
+reverse---you choose a target magnitude response and solve for pole locations.
+Butterworth = poles on a circle (flattest); Chebyshev = poles on an ellipse
+nearer the axis (higher per-stage \(Q\), sharper, rippled); elliptic adds
+\(\jj\omega\)-axis zeros for stopband notches. The trade among flatness,
+sharpness, and phase linearity is entirely a trade about how close the poles sit
+to the imaginary axis.
+\end{controlsbox}
 
 \section{Impedance Matching}
 An impedance-matching network does two jobs:
@@ -51,37 +101,68 @@ An impedance-matching network does two jobs:
 \item cancel the reactive part of a complex load, and
 \item transform the remaining resistance to the desired system impedance.
 \end{enumerate}
-In a \(\SI{50}{\ohm}\) RF system, matching helps power transfer and keeps
-transmission-line reflections controlled. Matching networks are usually narrow
-band unless deliberately designed otherwise.
+In a \(\SI{50}{\ohm}\) RF system, matching maximizes power transfer and keeps
+transmission-line reflections controlled.
+
+\subsection{The L-Network}
+The simplest matching network uses two reactances. To match two real resistances
+\(R_{\text{hi}}>R_{\text{lo}}\), place a series reactance on the low-resistance
+side and a shunt reactance on the high-resistance side. The network operating
+\(Q\) is set by the resistance ratio:
+\[
+Q=\sqrt{\frac{R_{\text{hi}}}{R_{\text{lo}}}-1},
+\qquad
+X_{\text{series}}=Q\,R_{\text{lo}},
+\qquad
+X_{\text{shunt}}=\frac{R_{\text{hi}}}{Q}.
+\]
+The two reactances are of opposite type (one inductor, one capacitor); choosing
+which is the inductor sets whether the network is low-pass or high-pass. An
+L-network has no free parameter left over, so its bandwidth is fixed once the
+resistances are chosen.
+
+\subsection{Pi and T Networks}
+Adding a third element gives a \(\pi\) or T network. The extra element lets the
+designer choose the loaded \(Q\)---and therefore the bandwidth and harmonic
+rejection---independently of the resistance ratio. This is why transmitter output
+and antenna-tuner networks are usually \(\pi\) or T: they match \emph{and} set
+selectivity. Higher loaded \(Q\) narrows bandwidth and improves harmonic
+suppression at the cost of higher circulating currents and losses.
+
+\begin{mistakebox}
+Matching is not the same thing as filtering. A network can do both, but the
+concepts are distinct: matching controls the impedance seen by a source or line,
+while filtering controls frequency-dependent transmission. A \(\pi\)-network tuner
+happens to be a low-pass filter too, which is a feature, not the definition.
+\end{mistakebox}
 
 \section{Transformers}
 For an ideal transformer,
 \[
 \frac{V_s}{V_p}=\frac{N_s}{N_p},
 \qquad
-\frac{I_s}{I_p}=\frac{N_p}{N_s}.
+\frac{I_s}{I_p}=\frac{N_p}{N_s},
+\qquad
+Z_p=\left(\frac{N_p}{N_s}\right)^2 Z_s.
 \]
-The impedance reflected from secondary to primary is
-\[
-Z_p=\left(\frac{N_p}{N_s}\right)^2Z_s.
-\]
-Core saturation should be avoided because the magnetic core can no longer
-support proportional flux change, causing distortion, heating, and loss of the
-intended impedance transformation.
+Impedance transforms as the turns ratio \emph{squared}. Core saturation should be
+avoided: a saturated core can no longer support proportional flux change, causing
+distortion, heating, and loss of the intended impedance transformation.
 
-\section{Common Mistakes}
-\begin{mistakebox}
-Matching is not the same thing as filtering. A network can do both, but the
-concepts are distinct: matching controls impedance seen by a source or line,
-while filtering controls frequency-dependent transmission.
-\end{mistakebox}
-
-\section{Worked Example}
+\section{Worked Example: Quarter-Wave and L-Network}
 To match a real \(\SI{200}{\ohm}\) load to a \(\SI{50}{\ohm}\) system with a
 lossless quarter-wave transformer,
 \[
 Z_t=\sqrt{Z_0Z_L}=\sqrt{(50)(200)}=\SI{100}{\ohm}.
 \]
-This formula assumes a real load and a transformer section that is one quarter
-electrical wavelength long at the design frequency.
+The same match with an L-network gives
+\[
+Q=\sqrt{\frac{200}{50}-1}=\sqrt{3}\approx1.73,
+\qquad
+X_{\text{series}}=1.73\times50\approx\SI{87}{\ohm},
+\qquad
+X_{\text{shunt}}=\frac{200}{1.73}\approx\SI{116}{\ohm}.
+\]
+Both realize the match; the quarter-wave version needs a line one quarter
+wavelength long at the design frequency, while the L-network is lumped and
+narrower band.
