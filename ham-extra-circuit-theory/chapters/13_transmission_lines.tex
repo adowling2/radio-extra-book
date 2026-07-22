@@ -1,0 +1,91 @@
+\chapter{Transmission Lines, Reflection, and SWR}
+\section{Why Lines Matter}
+Transmission lines are distributed systems. When a feed line is a significant
+fraction of a wavelength, voltage and current vary along the line and a lumped
+wire approximation fails.
+
+\begin{controlsbox}
+A transmission line is closer in spirit to a distributed-parameter dynamical
+system than to a lumped ODE. Wavelength matters because position becomes part of
+the state description.
+\end{controlsbox}
+
+\section{Wavelength and Velocity Factor}
+\[
+\lambda=\frac{v_p}{f}=\frac{VF\,c}{f}.
+\]
+Velocity factor \(VF\) is the ratio of wave speed in the line to the speed of
+light in vacuum. Physical length is shorter than free-space electrical length
+when \(VF<1\).
+
+\section{Characteristic Impedance}
+Characteristic impedance \(Z_0\) is the voltage-to-current ratio of a traveling
+wave on the line. Common coaxial systems use \(\SI{50}{\ohm}\), but other values
+such as \(\SI{75}{\ohm}\), \(\SI{300}{\ohm}\), and \(\SI{450}{\ohm}\) are also
+common in specific applications.
+
+\section{Reflection Coefficient}
+At the load,
+\[
+\Gamma=\frac{Z_L-Z_0}{Z_L+Z_0}.
+\]
+If \(Z_L=Z_0\), then \(\Gamma=0\) and there is no reflection. If the load is open
+or shorted, \(|\Gamma|=1\) in the lossless idealization.
+
+\section{SWR and Return Loss}
+\[
+\mathrm{SWR}=\frac{1+|\Gamma|}{1-|\Gamma|}.
+\]
+SWR equals 1 for a perfect match and increases as mismatch worsens. Return loss
+is
+\[
+RL=-20\log_{10}|\Gamma|.
+\]
+Higher return loss means a smaller reflection.
+
+\section{Quarter-Wave Transformation}
+For a lossless quarter-wave section,
+\[
+Z_{\mathrm{in}}=\frac{Z_t^2}{Z_L}.
+\]
+To match a real load \(Z_L\) to a real line impedance \(Z_0\),
+\[
+Z_t=\sqrt{Z_0Z_L}.
+\]
+A half-wave line repeats the load impedance at its input, in the lossless ideal
+case.
+
+\section{Smith Chart Interpretation}
+A Smith chart is a graphical map of normalized complex impedance and reflection
+coefficient. It helps visualize resistance circles, reactance arcs, constant
+SWR circles, and how impedance changes as one moves along a transmission line.
+For this book, the key point is conceptual: the chart is not a new law of
+circuits; it is a coordinate transform for impedance and reflection.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=2.0]
+\draw[thick] (0,0) circle (1);
+\draw[GuideBlue,thick] (-1,0)--(1,0);
+\draw[GuideLine] (0.333,0) circle (0.667);
+\draw[GuideLine] (0.6,0) circle (0.4);
+\draw[GuideGreen] (1,0) arc (0:180:0.5);
+\draw[GuideGreen] (1,0) arc (0:-180:0.5);
+\fill (0,0) circle (0.015) node[below left]{match};
+\node[below] at (0,-1.12){normalized impedance plane mapped to \(\Gamma\)};
+\end{tikzpicture}
+\caption{Simplified Smith-chart geometry: constant-resistance circles and reactance arcs.}
+\end{figure}
+
+\section{Worked Example}
+A \(\SI{100}{\ohm}\) load terminates a \(\SI{50}{\ohm}\) line:
+\[
+\Gamma=\frac{100-50}{100+50}=\frac{1}{3}.
+\]
+\[
+\mathrm{SWR}=\frac{1+1/3}{1-1/3}=2.
+\]
+The return loss is
+\[
+RL=-20\log_{10}(1/3)\approx \SI{9.54}{\decibel}.
+\]

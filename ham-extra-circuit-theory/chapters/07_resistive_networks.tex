@@ -1,0 +1,91 @@
+\chapter{Resistive Networks}
+\section{Why They Matter}
+Resistive networks set bias points, divide voltages, sample currents, terminate
+transmission lines, and model losses. They are the simplest place to practice
+KCL, KVL, and equivalent circuits.
+
+\section{Series and Parallel}
+Series resistors carry the same current:
+\[
+R_{\mathrm{eq}}=R_1+R_2+\cdots.
+\]
+Parallel resistors share the same voltage:
+\[
+\frac{1}{R_{\mathrm{eq}}}=\frac{1}{R_1}+\frac{1}{R_2}+\cdots.
+\]
+For two resistors,
+\[
+R_{\mathrm{eq}}=\frac{R_1R_2}{R_1+R_2}.
+\]
+
+\section{Voltage and Current Dividers}
+For an unloaded voltage divider,
+\[
+V_o=V_i\frac{R_2}{R_1+R_2}.
+\]
+For two parallel resistors fed by total current \(I\),
+\[
+I_1=I\frac{R_2}{R_1+R_2},
+\qquad
+I_2=I\frac{R_1}{R_1+R_2}.
+\]
+Current divides inversely with resistance.
+
+\section{Thevenin and Norton Equivalents}
+Any linear one-port made of sources and resistors can be represented by a
+Thevenin source \(V_{Th}\) in series with \(R_{Th}\), or a Norton source \(I_N\)
+in parallel with \(R_N\):
+\[
+R_N=R_{Th},
+\qquad
+I_N=\frac{V_{Th}}{R_{Th}}.
+\]
+Thevenin and Norton models are especially useful when a load changes.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}
+\draw (0,0) to[V,l=\(V_{Th}\)] (0,2)
+      to[R,l=\(R_{Th}\)] (3,2)
+      to[short,-o] (4,2);
+\draw (0,0) -- (3,0) to[short,-o] (4,0);
+\node at (4.8,1) {\(\Longleftrightarrow\)};
+\draw (6,0) -- (6,2);
+\draw (6,0) to[I,l_=\(I_N\)] (6,2);
+\draw (6,2) to[R,l=\(R_N\)] (9,2) -- (9,0) -- (6,0);
+\draw (9,2) to[short,-o] (10,2);
+\draw (9,0) to[short,-o] (10,0);
+\end{circuitikz}
+\caption{Equivalent Thevenin and Norton one-port descriptions.}
+\end{figure}
+
+\section{Power Transfer and Matching}
+For a purely resistive Thevenin source, maximum power transfer occurs when
+\[
+R_L=R_{Th}.
+\]
+For AC with complex impedances, maximum real power transfer uses the complex
+conjugate match:
+\[
+Z_L=Z_S^*.
+\]
+
+\begin{exambox}
+In RF systems, \(\SI{50}{\ohm}\) is a common reference impedance. Matching does
+not mean all impedances in nature are \(\SI{50}{\ohm}\); it means the system has
+been designed so sources, lines, loads, and measuring instruments interact in a
+predictable way.
+\end{exambox}
+
+\section{Worked Example}
+A \(\SI{12}{\volt}\) source feeds \(R_1=\SI{2.2}{\kilo\ohm}\) on top and
+\(R_2=\SI{1.0}{\kilo\ohm}\) to ground. The unloaded output is
+\[
+V_o=12\frac{1.0}{2.2+1.0}=\SI{3.75}{\volt}.
+\]
+The Thevenin resistance seen by the load is
+\[
+R_{Th}=R_1\parallel R_2
+=\frac{(2.2)(1.0)}{2.2+1.0}\,\si{\kilo\ohm}
+=\SI{0.688}{\kilo\ohm}.
+\]

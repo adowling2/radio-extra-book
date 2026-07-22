@@ -1,0 +1,123 @@
+\chapter{One Circuit, Four Views}
+\section{The Recurring Framework}
+The supplied draft's core idea is the organizing device for the rest of this
+book. A circuit can be viewed as:
+\begin{enumerate}
+\item a physical network governed by conservation laws;
+\item a differential equation;
+\item a state-space model;
+\item a phasor or frequency-response model;
+\item an energy-storage and dissipation process.
+\end{enumerate}
+These views should agree. If they do not, at least one sign convention,
+reference direction, or assumption needs attention.
+
+\section{Series RC Circuit}
+Take a source \(u(t)\) driving a resistor \(R\) in series with a capacitor \(C\).
+Let \(v_C(t)\) be the capacitor voltage and \(i(t)\) the series current.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}
+\draw (0,0) to[sV,l=\(u(t)\)] (0,2)
+      to[R,l=\(R\),i=\(i(t)\)] (3,2)
+      to[C,l=\(C\),v=\(v_C(t)\)] (3,0)
+      -- (0,0);
+\end{circuitikz}
+\caption{Series RC circuit with output across the capacitor.}
+\end{figure}
+
+\subsection{Physical and Energy View}
+The capacitor stores electric-field energy
+\[
+E_C=\frac{1}{2}Cv_C^2.
+\]
+The resistor dissipates energy, so with no input the system relaxes toward
+equilibrium.
+
+\subsection{Differential Equation}
+KVL gives
+\[
+u(t)=v_R(t)+v_C(t)=Ri(t)+v_C(t),
+\qquad
+i(t)=C\frac{\dd v_C}{\dd t}.
+\]
+Therefore
+\[
+RC\frac{\dd v_C}{\dd t}+v_C=u(t).
+\]
+
+\subsection{State-Space Form}
+With \(x=v_C\),
+\[
+\dot{x}=-\frac{1}{RC}x+\frac{1}{RC}u.
+\]
+There is only one state because there is only one independent storage element.
+The stable eigenvalue is \(-1/(RC)\).
+
+\subsection{Frequency-Response Form}
+With zero initial conditions and sinusoidal steady state,
+\[
+G(s)=\frac{V_C(s)}{U(s)}=\frac{1}{1+sRC},
+\qquad
+G(\jj\omega)=\frac{1}{1+\jj\omega RC}.
+\]
+High frequency makes the capacitor impedance small, so the output across the
+capacitor is attenuated.
+
+\section{Series RL Circuit}
+Now replace the capacitor with an inductor \(L\). KVL gives
+\[
+u(t)=Ri(t)+L\frac{\dd i}{\dd t},
+\]
+or
+\[
+L\frac{\dd i}{\dd t}+Ri=u(t).
+\]
+With \(x=i\),
+\[
+\dot{x}=-\frac{R}{L}x+\frac{1}{L}u,
+\qquad
+\tau=\frac{L}{R}.
+\]
+The inductor stores magnetic-field energy \(E_L=\frac{1}{2}Li^2\).
+
+\section{Series RLC Circuit}
+For a source driving \(R\), \(L\), and \(C\) in series,
+\[
+LC\frac{\dd^2 v_C}{\dd t^2}
++RC\frac{\dd v_C}{\dd t}+v_C=u(t).
+\]
+Using \(x_1=v_C\) and \(x_2=i\),
+\[
+\dot{x}_1=\frac{1}{C}x_2,
+\qquad
+\dot{x}_2=-\frac{1}{L}x_1-\frac{R}{L}x_2+\frac{1}{L}u.
+\]
+The phasor impedance is
+\[
+Z=R+\jj\left(\omega L-\frac{1}{\omega C}\right).
+\]
+Resonance occurs when \(\omega L=1/(\omega C)\).
+
+\begin{energybox}
+For the series RLC circuit,
+\[
+\mathcal{H}=\frac{1}{2}Cv_C^2+\frac{1}{2}Li^2.
+\]
+With \(u=v_R+v_L+v_C\), \(i=C\dot v_C\), and \(v_L=L\dot i\),
+\[
+\frac{\dd\mathcal{H}}{\dd t}
+=Cv_C\dot v_C+Li\dot i
+=v_Ci+iv_L
+=i(u-v_R)
+=ui-Ri^2.
+\]
+Stored energy changes at input power minus resistive dissipation.
+\end{energybox}
+
+\begin{controlsbox}
+The RLC circuit is the electrical analog of a mass-spring-damper system.
+Eigenvalues are natural modes. Higher resistance gives stronger damping; lower
+loss gives more persistent oscillation.
+\end{controlsbox}

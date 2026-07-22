@@ -1,0 +1,100 @@
+\chapter{Complex Numbers, Phasors, and Impedance}
+\section{Why Complex Numbers Appear}
+A sinusoid can be represented as the real part of a complex exponential:
+\[
+x(t)=\sqrt{2}\,\Re\{X\ee^{\jj\omega t}\}.
+\]
+The factor \(\sqrt{2}\) appears because this book uses RMS phasor magnitudes by
+default. Differentiation becomes multiplication by \(\jj\omega\):
+\[
+\frac{\dd}{\dd t}\left(X\ee^{\jj\omega t}\right)
+=\jj\omega X\ee^{\jj\omega t}.
+\]
+That one fact turns differential equations into algebra for sinusoidal
+steady-state analysis.
+
+\section{Rectangular and Polar Form}
+\[
+Z=R+\jj X=|Z|\angle\theta,
+\qquad
+|Z|=\sqrt{R^2+X^2},
+\qquad
+\theta=\operatorname{atan2}(X,R).
+\]
+Rectangular form is natural for adding series impedances. Polar form is natural
+for multiplication, division, and phase interpretation.
+
+\begin{mistakebox}
+\(\tan^{-1}(X/R)\) alone can put the angle in the wrong quadrant. Use
+\(\operatorname{atan2}(X,R)\) or reason from the signs of both coordinates.
+\end{mistakebox}
+
+\section{Impedance of R, L, and C}
+\[
+Z_R=R,\qquad
+Z_L=\jj\omega L,\qquad
+Z_C=\frac{1}{\jj\omega C}=-\jj\frac{1}{\omega C}.
+\]
+An inductor has positive reactance. A capacitor has negative reactance. At low
+frequency, a capacitor looks large and an inductor looks small. At high
+frequency, the roles reverse.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}
+\draw (0,0) to[sV,l=\(v_s\)] (0,2)
+      to[R,l=\(R\)] (2.6,2)
+      to[L,l=\(L\)] (5.2,2)
+      to[C,l=\(C\)] (5.2,0)
+      -- (0,0);
+\end{circuitikz}
+\caption{A series RLC circuit whose impedance is \(R+\jj(\omega L-1/\omega C)\).}
+\end{figure}
+
+\section{Phasor Lead and Lag}
+For a capacitor, current leads voltage by \(\SI{90}{\degree}\). For an
+inductor, voltage leads current by \(\SI{90}{\degree}\). A positive impedance
+angle means inductive behavior; a negative impedance angle means capacitive
+behavior.
+
+\begin{exambox}
+If an exam question says ``lead'' or ``lag,'' sketch a tiny phasor diagram before
+answering. Most mistakes come from remembering the right \(\SI{90}{\degree}\)
+relationship with the direction reversed.
+\end{exambox}
+
+\section{Admittance}
+Admittance is the reciprocal of impedance:
+\[
+Y=\frac{1}{Z}=G+\jj B.
+\]
+It is especially convenient for parallel networks, because admittances add:
+\[
+Y_{\mathrm{eq}}=\sum_k Y_k.
+\]
+
+\section{Complex Power}
+With RMS phasors and passive sign convention, complex power is
+\[
+S=VI^*=P+\jj Q.
+\]
+The complex conjugate matters. Real power \(P\) is average power; reactive power
+\(Q\) represents energy sloshing between fields and sources.
+
+\section{Worked Example}
+Find the impedance of a \(\SI{50}{\ohm}\) resistor in series with
+\(\SI{10}{\micro\henry}\) at \(\SI{7.1}{\mega\hertz}\).
+\[
+\omega=2\pi(7.1\times10^6)=\SI{4.46e7}{\radian\per\second},
+\qquad
+X_L=\omega L=446~\Omega.
+\]
+Thus
+\[
+Z=50+\jj 446~\Omega,
+\qquad
+|Z|=\SI{449}{\ohm},
+\qquad
+\theta\approx \SI{83.6}{\degree}.
+\]
+The circuit is strongly inductive.

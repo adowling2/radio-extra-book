@@ -1,0 +1,66 @@
+\chapter{Worked Examples and Exam Map}
+\section{How the Topics Map to Exam-Style Thinking}
+\begin{tabularx}{\textwidth}{@{}L{0.24\textwidth}Y@{}}
+\toprule
+Topic & What to recognize \\
+\midrule
+Units & Convert prefixes, distinguish \(f\) from \(\omega\), and check dimensions. \\
+Complex impedance & Use rectangular form for series addition and polar form for magnitude/phase. \\
+Resonance & Ask series or parallel, then ask whether the question concerns current, impedance, voltage, or bandwidth. \\
+Filters & Identify passband, stopband, cutoff, slope, ripple, and bandwidth. \\
+Decibels & Use \(10\log\) for power and \(20\log\) for voltage or current ratios under equal impedance. \\
+Transmission lines & Use \(\Gamma\), SWR, return loss, velocity factor, and wavelength. \\
+Active circuits & Separate gain, feedback, bandwidth, distortion, and stability. \\
+\bottomrule
+\end{tabularx}
+
+\section{Example: Capacitive Reactance}
+Find \(X_C\) for \(C=\SI{100}{\pico\farad}\) at \(f=\SI{14.2}{\mega\hertz}\).
+\[
+\omega=2\pi f=2\pi(14.2\times10^6).
+\]
+\[
+X_C=\frac{1}{\omega C}
+=\frac{1}{2\pi(14.2\times10^6)(100\times10^{-12})}
+\approx \SI{112}{\ohm}.
+\]
+The impedance is \(Z_C=-\jj\SI{112}{\ohm}\).
+
+\section{Example: Series RLC Resonance}
+Given \(L=\SI{2.2}{\micro\henry}\) and \(C=\SI{150}{\pico\farad}\),
+\[
+f_0=\frac{1}{2\pi\sqrt{LC}}
+\approx \SI{8.76}{\mega\hertz}.
+\]
+If \(R=\SI{3}{\ohm}\),
+\[
+Q_s=\frac{2\pi f_0 L}{R}
+\approx 40.4,
+\qquad
+BW\approx \frac{8.76\times10^6}{40.4}
+\approx \SI{217}{\kilo\hertz}.
+\]
+
+\section{Example: Decibel Ratio}
+A filter attenuates a voltage by a factor of 0.25 with the same source and load
+impedance. The voltage ratio in decibels is
+\[
+20\log_{10}(0.25)= -\SI{12.0}{\decibel}.
+\]
+The corresponding power ratio is \(0.25^2=0.0625\), which is also
+\[
+10\log_{10}(0.0625)= -\SI{12.0}{\decibel}.
+\]
+
+\section{Example: SWR}
+If \(|\Gamma|=0.2\), then
+\[
+\mathrm{SWR}=\frac{1+0.2}{1-0.2}=1.5.
+\]
+The reflected power fraction is \(|\Gamma|^2=0.04\), or \(4\%\).
+
+\section{Final Study Pattern}
+Start every circuit problem with conservation. Ask what stores energy, what
+dissipates energy, and whether the problem is best read as time-domain,
+state-space, phasor, frequency-response, or transmission-line behavior. That
+habit turns the manuscript's central idea into a practical exam strategy.

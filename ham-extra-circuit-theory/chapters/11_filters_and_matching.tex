@@ -1,0 +1,87 @@
+\chapter{Filters, Matching Networks, and Transformers}
+\section{Why Filters Matter in Amateur Radio}
+Filters select desired signals and reject unwanted ones. They appear in receiver
+front ends, IF stages, audio stages, transmitter outputs, anti-aliasing paths,
+power supplies, and interference cures.
+
+\section{Basic Filter Types}
+\begin{description}
+\item[Low-pass] Passes low frequencies and attenuates high frequencies.
+\item[High-pass] Passes high frequencies and attenuates low frequencies.
+\item[Band-pass] Passes a frequency band.
+\item[Band-stop or notch] Rejects a frequency band.
+\end{description}
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}
+\draw (0,0) node[left]{in} to[R,l=\(R\)] (3,0)
+      to[C,l=\(C\)] (3,-2) node[ground]{};
+\draw (3,0) to[short,-o] (4,0) node[right]{out};
+\end{circuitikz}
+\caption{First-order RC low-pass filter.}
+\end{figure}
+
+\section{Cutoff and Slope}
+For a first-order RC filter,
+\[
+f_c=\frac{1}{2\pi RC}.
+\]
+Past its corner, a first-order pole changes the asymptotic magnitude by about
+\(-\SI{20}{\decibel}\) per decade. A second-order filter changes by about
+\(-\SI{40}{\decibel}\) per decade after the relevant corner or resonant region.
+
+\section{Filter Families}
+\begin{tabularx}{\textwidth}{@{}L{0.2\textwidth}Y@{}}
+\toprule
+Family & Practical meaning \\
+\midrule
+Butterworth & Maximally flat passband; moderate transition. \\
+Chebyshev & Ripple in the passband for a sharper cutoff. \\
+Elliptic & Ripple in passband and stopband, with transmission zeros and a very sharp transition. \\
+Crystal or cavity & High-Q resonators used when narrow bandwidth or strong selectivity is needed. \\
+DSP FIR & Can be designed for linear phase; uses delayed samples and taps. \\
+DSP IIR & Efficient recursive filter; phase is usually less linear than FIR. \\
+\bottomrule
+\end{tabularx}
+
+\section{Impedance Matching}
+An impedance-matching network does two jobs:
+\begin{enumerate}
+\item cancel the reactive part of a complex load, and
+\item transform the remaining resistance to the desired system impedance.
+\end{enumerate}
+In a \(\SI{50}{\ohm}\) RF system, matching helps power transfer and keeps
+transmission-line reflections controlled. Matching networks are usually narrow
+band unless deliberately designed otherwise.
+
+\section{Transformers}
+For an ideal transformer,
+\[
+\frac{V_s}{V_p}=\frac{N_s}{N_p},
+\qquad
+\frac{I_s}{I_p}=\frac{N_p}{N_s}.
+\]
+The impedance reflected from secondary to primary is
+\[
+Z_p=\left(\frac{N_p}{N_s}\right)^2Z_s.
+\]
+Core saturation should be avoided because the magnetic core can no longer
+support proportional flux change, causing distortion, heating, and loss of the
+intended impedance transformation.
+
+\section{Common Mistakes}
+\begin{mistakebox}
+Matching is not the same thing as filtering. A network can do both, but the
+concepts are distinct: matching controls impedance seen by a source or line,
+while filtering controls frequency-dependent transmission.
+\end{mistakebox}
+
+\section{Worked Example}
+To match a real \(\SI{200}{\ohm}\) load to a \(\SI{50}{\ohm}\) system with a
+lossless quarter-wave transformer,
+\[
+Z_t=\sqrt{Z_0Z_L}=\sqrt{(50)(200)}=\SI{100}{\ohm}.
+\]
+This formula assumes a real load and a transformer section that is one quarter
+electrical wavelength long at the design frequency.

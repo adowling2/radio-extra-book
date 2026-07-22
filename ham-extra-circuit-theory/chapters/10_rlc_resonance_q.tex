@@ -1,0 +1,99 @@
+\chapter{RLC Resonance, Damping, and Q}
+\section{Why Resonance Matters}
+Resonance is central to tuned receivers, oscillators, matching networks, traps,
+crystal filters, antenna loading, and selective RF circuits. It is where energy
+exchange between electric and magnetic fields becomes especially efficient.
+
+\section{Series RLC Governing Equations}
+For a series RLC circuit,
+\[
+LC\frac{\dd^2 v_C}{\dd t^2}
++RC\frac{\dd v_C}{\dd t}
++v_C=u(t).
+\]
+The undamped natural angular frequency is
+\[
+\omega_0=\frac{1}{\sqrt{LC}}.
+\]
+For a series circuit, a useful damping parameter is
+\[
+\alpha=\frac{R}{2L}.
+\]
+The damped natural frequency, when underdamped, is
+\[
+\omega_d=\sqrt{\omega_0^2-\alpha^2}.
+\]
+It is not always equal to \(\omega_0\).
+
+\section{Series Resonance}
+The impedance is
+\[
+Z=R+\jj\left(\omega L-\frac{1}{\omega C}\right).
+\]
+At resonance,
+\[
+\omega L=\frac{1}{\omega C},
+\qquad
+\omega=\omega_0.
+\]
+The net reactance is zero, the impedance is purely resistive, and current is
+maximum for a fixed applied voltage.
+
+\section{Parallel Resonance}
+An ideal parallel LC network has admittance
+\[
+Y=\jj\omega C+\frac{1}{\jj\omega L}
+=\jj\left(\omega C-\frac{1}{\omega L}\right).
+\]
+At resonance, the ideal branch admittances cancel and the input impedance is
+large. Real losses keep the impedance finite.
+
+\section{Q and Bandwidth}
+Quality factor \(Q\) measures sharpness of resonance. For a series RLC circuit,
+\[
+Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0RC}.
+\]
+For many narrowband resonant circuits,
+\[
+BW\approx \frac{f_0}{Q}.
+\]
+
+\begin{mistakebox}
+Do not present one topology's Q formula as universal. Loaded Q, unloaded Q, and
+component Q answer different questions. Loaded Q includes the effect of source
+and load coupling; unloaded Q describes the resonator's internal losses;
+component Q describes the loss of a particular inductor, capacitor, or other
+part.
+\end{mistakebox}
+
+\section{Energy Balance}
+Using
+\[
+\mathcal{H}=\frac{1}{2}Cv_C^2+\frac{1}{2}Li^2,
+\]
+the series RLC energy balance is
+\[
+\frac{\dd\mathcal{H}}{\dd t}=u(t)i(t)-Ri^2(t).
+\]
+The inductor and capacitor exchange energy; the resistor dissipates it.
+
+\begin{controlsbox}
+High \(Q\) means weak damping and narrow bandwidth. In second-order controls
+language, it corresponds to lightly damped modes and a sharper frequency-domain
+peak.
+\end{controlsbox}
+
+\section{Worked Example}
+\enlargethispage{3\baselineskip}
+Let \(L=\SI{10}{\micro\henry}\) and \(C=\SI{220}{\pico\farad}\).
+\[
+f_0=\frac{1}{2\pi\sqrt{LC}}
+=\frac{1}{2\pi\sqrt{(10\times10^{-6})(220\times10^{-12})}}
+\approx \SI{3.39}{\mega\hertz}.
+\]
+If the series resistance is \(\SI{5}{\ohm}\),
+\[
+Q_s=\frac{\omega_0L}{R}
+=\frac{2\pi(3.39\times10^6)(10\times10^{-6})}{5}
+\approx 42.6.
+\]

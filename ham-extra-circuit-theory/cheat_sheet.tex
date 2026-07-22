@@ -1,0 +1,145 @@
+\documentclass[10pt,letterpaper]{article}
+\input{preamble}
+\input{macros}
+\geometry{margin=0.55in}
+\pagestyle{empty}
+\setlength{\columnsep}{0.28in}
+\begin{document}
+\begin{center}
+{\Large\bfseries Circuit Theory for the Amateur Extra Exam}\\[0.2em]
+{\normalsize Printable Cheat Sheet}
+\end{center}
+
+\begin{multicols}{2}
+\section*{Units}
+\begin{tabularx}{\columnwidth}{@{}L{0.28\columnwidth}L{0.22\columnwidth}Y@{}}
+\toprule
+Qty. & Unit & Meaning\\
+\midrule
+Charge & \si{\coulomb} & \(\SI{1}{\coulomb}=\SI{1}{\ampere\second}\)\\
+Voltage & \si{\volt} & \(\SI{1}{\volt}=\SI{1}{\joule\per\coulomb}\)\\
+Resistance & \si{\ohm} & \(\SI{1}{\ohm}=\SI{1}{\volt\per\ampere}\)\\
+Capacitance & \si{\farad} & \(\SI{1}{\farad}=\SI{1}{\coulomb\per\volt}\)\\
+Inductance & \si{\henry} & \(\SI{1}{\henry}=\SI{1}{\volt\second\per\ampere}\)\\
+\bottomrule
+\end{tabularx}
+
+\section*{Core Laws}
+\[
+i=\frac{\dd q}{\dd t},\quad V=IR,\quad
+P=VI=I^2R=\frac{V^2}{R}
+\]
+\[
+i_C=C\frac{\dd v_C}{\dd t},\quad
+v_L=L\frac{\dd i_L}{\dd t}
+\]
+\[
+E_C=\frac{1}{2}CV^2,\quad
+E_L=\frac{1}{2}LI^2
+\]
+
+\section*{Combinations}
+\[
+R_s=\sum R_k,\quad
+\frac{1}{R_p}=\sum\frac{1}{R_k}
+\]
+\[
+V_o=V_i\frac{R_2}{R_1+R_2},\quad
+I_1=I\frac{R_2}{R_1+R_2}
+\]
+\[
+I_N=\frac{V_{Th}}{R_{Th}},\quad R_N=R_{Th}
+\]
+
+\section*{AC and Phasors}
+\[
+\omega=2\pi f,\quad
+v(t)=\sqrt{2}\Re\{V\ee^{\jj\omega t}\}
+\]
+\[
+Z_R=R,\quad Z_L=\jj\omega L,\quad
+Z_C=\frac{1}{\jj\omega C}
+\]
+\[
+X_L=\omega L,\quad X_C=\frac{1}{\omega C},\quad Z=R+\jj X
+\]
+\[
+|Z|=\sqrt{R^2+X^2},\quad \theta=\operatorname{atan2}(X,R)
+\]
+Use RMS phasors by default. Capacitor current leads voltage; inductor voltage
+leads current.
+
+\section*{Time Response}
+\[
+\tau_{RC}=RC,\quad v_C(t)=E(1-\ee^{-t/RC})
+\]
+\[
+v_C(t)=V_0\ee^{-t/RC},\quad
+\tau_{RL}=L/R
+\]
+\[
+i(t)=\frac{E}{R}(1-\ee^{-Rt/L})
+\]
+
+\section*{Resonance and Q}
+\[
+\omega_0=\frac{1}{\sqrt{LC}},\quad
+f_0=\frac{1}{2\pi\sqrt{LC}}
+\]
+\[
+Z_{\mathrm{series}}=R+\jj\left(\omega L-\frac{1}{\omega C}\right)
+\]
+\[
+Q_s=\frac{\omega_0L}{R}=\frac{1}{\omega_0RC},\quad
+BW\approx \frac{f_0}{Q}
+\]
+Series resonance: minimum impedance and maximum current. Parallel resonance:
+high input impedance in the ideal case.
+
+\section*{Bode and dB}
+\[
+|G|_{\dB}=20\log_{10}|G(\jj\omega)|,\quad
+\angle G=\arg G(\jj\omega)
+\]
+\[
+10\log_{10}(P_2/P_1),\quad
+20\log_{10}(V_2/V_1)
+\]
+Use \(20\log\) for voltage/current ratios only when impedance is unchanged.
+\(-\SI{3}{\decibel}\) is half power and \(0.707\) amplitude. One pole:
+\(-20~\dB/\text{decade}\). One zero: \(+20~\dB/\text{decade}\).
+
+\section*{Filters and Transformers}
+\[
+f_c=\frac{1}{2\pi RC}
+\]
+\[
+\frac{V_s}{V_p}=\frac{N_s}{N_p},\quad
+\frac{I_s}{I_p}=\frac{N_p}{N_s},\quad
+Z_p=\left(\frac{N_p}{N_s}\right)^2Z_s
+\]
+Matching cancels reactance and transforms resistance.
+
+\section*{Transmission Lines}
+\[
+\lambda=\frac{VF\,c}{f},\quad
+\Gamma=\frac{Z_L-Z_0}{Z_L+Z_0}
+\]
+\[
+\mathrm{SWR}=\frac{1+|\Gamma|}{1-|\Gamma|},\quad
+RL=-20\log_{10}|\Gamma|
+\]
+\[
+Z_t=\sqrt{Z_0Z_L}\quad\text{for a lossless quarter-wave match}
+\]
+
+\section*{Exam Traps}
+\begin{itemize}
+\item Convert hertz to radians per second before reactance calculations.
+\item Keep \(X_C>0\) as a magnitude but \(Z_C=-\jj X_C\).
+\item Use the complex conjugate in \(S=VI^*\).
+\item Loaded Q, unloaded Q, and component Q are different.
+\item A line matters when it is a significant fraction of wavelength.
+\end{itemize}
+\end{multicols}
+\end{document}

@@ -1,0 +1,158 @@
+\chapter{Cheat Sheet Summary}
+This chapter is the print-and-review version of the book. Later chapters explain
+where the formulas come from and connect them to state-space and
+frequency-domain thinking.
+
+\section{Quantities, Units, and Symbols}
+\begin{tabularx}{\textwidth}{@{}L{0.19\textwidth}L{0.13\textwidth}L{0.16\textwidth}Y@{}}
+\toprule
+Quantity & Symbol & SI unit & Meaning \\
+\midrule
+Charge & \(q,Q\) & \si{\coulomb} & Stored electric quantity. \\
+Current & \(i,I\) & \si{\ampere} & Rate of charge flow, \(i=\dd q/\dd t\). \\
+Voltage & \(v,V\) & \si{\volt} & Energy per unit charge. \\
+Power & \(p,P\) & \si{\watt} & Rate of energy flow. \\
+Energy & \(E,\mathcal{H}\) & \si{\joule} & Stored or dissipated energy. \\
+Resistance & \(R\) & \si{\ohm} & Opposition to current. \\
+Conductance & \(G\) & \si{\siemens} & Reciprocal resistance, \(G=1/R\). \\
+Capacitance & \(C\) & \si{\farad} & Charge stored per volt. \\
+Inductance & \(L\) & \si{\henry} & Voltage-time per ampere. \\
+Frequency & \(f\) & \si{\hertz} & Cycles per second. \\
+Angular frequency & \(\omega\) & \si{\radian\per\second} & Radians per second, \(\omega=2\pi f\). \\
+\bottomrule
+\end{tabularx}
+
+\section{Core Circuit Formulas}
+\begin{longtable}{@{}L{0.25\textwidth}L{0.32\textwidth}L{0.34\textwidth}@{}}
+\toprule
+Topic & Formula & Assumption or memory cue \\
+\midrule
+\endhead
+Ohm's law & \(V=IR\) & Linear resistor under passive sign convention. \\
+Power & \(P=VI=I^2R=V^2/R\) & Use RMS values for sinusoidal average power in a resistor. \\
+Charge/current & \(i=\dd q/\dd t\) & Current is rate of charge flow. \\
+Capacitor law & \(i=C\,\dd v/\dd t\) & Capacitor voltage cannot jump under finite current. \\
+Inductor law & \(v=L\,\dd i/\dd t\) & Inductor current cannot jump under finite voltage. \\
+Capacitor energy & \(E_C=\frac{1}{2}CV^2\) & Electric-field storage. \\
+Inductor energy & \(E_L=\frac{1}{2}LI^2\) & Magnetic-field storage. \\
+Series resistors & \(R_{\mathrm{eq}}=\sum_k R_k\) & Same current through each resistor. \\
+Parallel resistors & \(1/R_{\mathrm{eq}}=\sum_k 1/R_k\) & Same voltage across each branch. \\
+Voltage divider & \(V_o=V_i R_2/(R_1+R_2)\) & Unloaded two-resistor divider. \\
+Current divider & \(I_1=I\,R_2/(R_1+R_2)\) & Two parallel branches; current favors smaller resistance. \\
+Thevenin/Norton & \(I_N=V_{Th}/R_{Th}\) & Linear one-port equivalents. \\
+RMS sine & \(V_{\RMS}=V_p/\sqrt{2}\) & \(V_{pp}=2V_p\). \\
+\bottomrule
+\end{longtable}
+
+\section{Impedance and Phasors}
+Phasors represent sinusoidal steady-state signals. Unless stated otherwise,
+phasor magnitudes are RMS.
+\[
+v(t)=\sqrt{2}\,\Re\{V\ee^{\jj\omega t}\},
+\qquad
+\frac{\dd}{\dd t}\longrightarrow \jj\omega .
+\]
+\[
+Z_R=R,\qquad Z_L=\jj\omega L,\qquad
+Z_C=\frac{1}{\jj\omega C}=-\frac{\jj}{\omega C}.
+\]
+\[
+X_L=\omega L,\qquad X_C=\frac{1}{\omega C},\qquad
+Z=R+\jj X,\qquad |Z|=\sqrt{R^2+X^2}.
+\]
+Use a quadrant-aware angle calculation:
+\[
+\theta=\operatorname{atan2}(X,R).
+\]
+
+\begin{mistakebox}
+Do not mix reactance magnitude with signed impedance. For a capacitor,
+\(X_C=1/(\omega C)>0\) is a magnitude, while \(Z_C=-\jj X_C\).
+\end{mistakebox}
+
+\section{Time Constants, Resonance, and Q}
+\[
+\tau_{RC}=RC,\qquad \tau_{RL}=\frac{L}{R}.
+\]
+\[
+\omega_0=\frac{1}{\sqrt{LC}},
+\qquad
+f_0=\frac{1}{2\pi\sqrt{LC}}.
+\]
+For a \emph{series} RLC circuit,
+\[
+Z=R+\jj\left(\omega L-\frac{1}{\omega C}\right),
+\qquad
+Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0 R C}.
+\]
+For many narrowband resonant circuits,
+\[
+BW\approx \frac{f_0}{Q}.
+\]
+Treat this as a useful approximation tied to half-power bandwidth, not as a
+universal definition for every topology.
+
+\section{Bode, Decibels, and Power}
+\[
+|G|_{\dB}=20\log_{10}|G(\jj\omega)|,
+\qquad
+\angle G=\arg G(\jj\omega).
+\]
+\[
+10\log_{10}\frac{P_2}{P_1},\qquad
+20\log_{10}\frac{V_2}{V_1}\quad \text{if impedance is unchanged.}
+\]
+One first-order pole contributes about \(-20~\dB/\mathrm{decade}\); one
+first-order zero contributes about \(+20~\dB/\mathrm{decade}\).
+\(\SI{20}{\decibel/decade}\) is about \(\SI{6}{\decibel/octave}\).
+
+\begin{mistakebox}
+\(-\SI{3}{\decibel}\) is half power and about \(0.707\) amplitude. It is not
+half amplitude.
+\end{mistakebox}
+
+\section{Filters, Matching, and Transformers}
+\[
+f_c=\frac{1}{2\pi RC}\quad \text{for a first-order RC cutoff.}
+\]
+\[
+\frac{V_s}{V_p}=\frac{N_s}{N_p},
+\qquad
+\frac{I_s}{I_p}=\frac{N_p}{N_s},
+\qquad
+Z_p=\left(\frac{N_p}{N_s}\right)^2 Z_s.
+\]
+Matching networks cancel reactive impedance and transform the remaining
+resistive part to the desired value. They can also restrict bandwidth, especially
+when \(Q\) is high.
+
+\section{Transmission Lines}
+\[
+\lambda=\frac{v_p}{f}=\frac{VF\,c}{f},
+\qquad
+\Gamma=\frac{Z_L-Z_0}{Z_L+Z_0}.
+\]
+\[
+\mathrm{SWR}=\frac{1+|\Gamma|}{1-|\Gamma|},
+\qquad
+\mathrm{return\ loss}=-20\log_{10}|\Gamma|.
+\]
+\[
+Z_t=\sqrt{Z_0Z_L}
+\]
+for a lossless quarter-wave transformer matching a real load \(Z_L\) to a line
+with characteristic impedance \(Z_0\).
+
+\section{What to Memorize and What to Derive}
+Memorize the definitions of units, Ohm's law, \(Z_R\), \(Z_L\), \(Z_C\),
+\(\omega=2\pi f\), \(f_0=1/(2\pi\sqrt{LC})\), decibel ratio rules, and the
+transmission-line mismatch formulas. Derive dividers, time constants, and
+series/parallel combinations from KCL, KVL, and equivalent impedance whenever
+possible. That keeps the formula load small and reduces exam traps.
+
+\begin{exambox}
+For exam-style circuit questions, first ask: DC steady state or AC sinusoidal
+steady state? Lumped circuit or transmission line? Series resonance or parallel
+resonance? Power ratio or voltage ratio? The correct formula usually follows
+from those choices.
+\end{exambox}

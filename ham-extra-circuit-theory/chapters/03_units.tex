@@ -1,0 +1,82 @@
+\chapter{Electrical Units and Dimensional Checks}
+\section{Base Relationships}
+Units are not decoration. They are a fast way to catch wrong formulas.
+\[
+\SI{1}{\coulomb}=\SI{1}{\ampere\second},
+\qquad
+\SI{1}{\volt}=\SI{1}{\joule\per\coulomb},
+\qquad
+\SI{1}{\ohm}=\SI{1}{\volt\per\ampere}.
+\]
+\[
+\SI{1}{\farad}=\SI{1}{\coulomb\per\volt},
+\qquad
+\SI{1}{\henry}=\SI{1}{\volt\second\per\ampere},
+\qquad
+\SI{1}{\watt}=\SI{1}{\joule\per\second}=\SI{1}{\volt\ampere}.
+\]
+Hertz counts cycles per second; radians per second is the angular rate used in
+calculus:
+\[
+\omega=2\pi f.
+\]
+
+\section{Radio Prefixes}
+\begin{tabularx}{\textwidth}{@{}L{0.2\textwidth}L{0.2\textwidth}Y@{}}
+\toprule
+Prefix & Factor & Example \\
+\midrule
+pico & \(10^{-12}\) & \(\SI{220}{\pico\farad}\) coupling capacitor. \\
+nano & \(10^{-9}\) & \(\SI{10}{\nano\farad}\) bypass capacitor. \\
+micro & \(10^{-6}\) & \(\SI{10}{\micro\henry}\) RF inductor. \\
+milli & \(10^{-3}\) & \(\SI{25}{\milli\ampere}\) current. \\
+kilo & \(10^{3}\) & \(\SI{4.7}{\kilo\ohm}\) resistor. \\
+mega & \(10^{6}\) & \(\SI{7.1}{\mega\hertz}\) frequency. \\
+giga & \(10^{9}\) & \(\SI{1.2}{\giga\hertz}\) microwave frequency. \\
+\bottomrule
+\end{tabularx}
+
+\section{Useful Dimensional Tests}
+\begin{unitsbox}
+\[
+RC=(\si{\ohm})(\si{\farad})
+=\left(\frac{\si{\volt}}{\si{\ampere}}\right)
+\left(\frac{\si{\ampere\second}}{\si{\volt}}\right)
+=\si{\second}.
+\]
+\[
+\frac{L}{R}
+=\frac{\si{\volt\second\per\ampere}}{\si{\volt\per\ampere}}
+=\si{\second}.
+\]
+\[
+LC=(\si{\henry})(\si{\farad})=\si{\second\squared},
+\qquad
+\frac{1}{\sqrt{LC}}=\si{\per\second}.
+\]
+\[
+\omega L=(\si{\per\second})(\si{\volt\second\per\ampere})
+=\si{\ohm},
+\qquad
+\frac{1}{\omega C}=\si{\ohm}.
+\]
+\end{unitsbox}
+
+\section{Worked Unit Check}
+Suppose \(R=\SI{10}{\kilo\ohm}\) and \(C=\SI{220}{\pico\farad}\). Then
+\[
+\tau=RC=(10\times10^3)(220\times10^{-12})=\SI{2.2e-6}{\second}.
+\]
+The reciprocal angular frequency is
+\[
+\omega_c=\frac{1}{RC}=\SI{4.55e5}{\radian\per\second},
+\qquad
+f_c=\frac{\omega_c}{2\pi}\approx \SI{72.3}{\kilo\hertz}.
+\]
+
+\section{Common Mistakes}
+\begin{mistakebox}
+Do not use \(f\) where an equation requires \(\omega\). Reactance formulas use
+\(\omega\): \(X_L=\omega L\) and \(X_C=1/(\omega C)\). If frequency is given in
+hertz, convert with \(\omega=2\pi f\).
+\end{mistakebox}

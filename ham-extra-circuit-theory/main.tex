@@ -1,0 +1,53 @@
+\documentclass[11pt,letterpaper,oneside,openany]{book}
+
+\input{preamble}
+\input{macros}
+
+\title{Circuit Theory for the Amateur Extra Exam}
+\author{Alex Dowling}
+\date{\today}
+
+\begin{document}
+\frontmatter
+\pagenumbering{Alph}
+\input{frontmatter/title}
+\cleardoublepage
+\pagenumbering{roman}
+\input{frontmatter/preface}
+\input{frontmatter/how_to_use}
+\input{frontmatter/exam_scope_note}
+\input{frontmatter/notation}
+\tableofcontents
+
+\mainmatter
+\part{Exam-Ready Reference}
+\input{chapters/01_cheat_sheet}
+
+\part{Explanations and Derivations}
+\input{chapters/02_foundations}
+\input{chapters/03_units}
+\input{chapters/04_complex_numbers_and_phasors}
+\input{chapters/05_frequency_response_and_bode_plots}
+\input{chapters/06_one_circuit_four_views}
+\input{chapters/07_resistive_networks}
+\input{chapters/08_rc_circuits}
+\input{chapters/09_rl_circuits}
+\input{chapters/10_rlc_resonance_q}
+\input{chapters/11_filters_and_matching}
+\input{chapters/12_active_circuits}
+\input{chapters/13_transmission_lines}
+\input{chapters/14_measurement_and_troubleshooting}
+\input{chapters/15_worked_examples_and_exam_map}
+
+\appendix
+\input{appendices/formula_index}
+\input{appendices/units_and_prefixes}
+\input{appendices/complex_math_refresher}
+\input{appendices/glossary}
+\input{appendices/solutions}
+
+\backmatter
+\nocite{worddraft,arrl_extra_12,extra_pool_2020,romanchik_extra_2016,shellhamer_extra_2017}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

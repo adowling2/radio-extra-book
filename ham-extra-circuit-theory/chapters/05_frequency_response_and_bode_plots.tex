@@ -1,0 +1,106 @@
+\chapter{Frequency Response and Bode Plots}
+\section{What a Bode Plot Shows}
+A Bode plot is a pair of graphs against logarithmic frequency:
+\[
+20\log_{10}|G(\jj\omega)|,
+\qquad
+\angle G(\jj\omega).
+\]
+The magnitude plot shows gain or attenuation. The phase plot shows phase lead or
+lag. In radio language, this is how filters, amplifiers, couplers, and matching
+networks reveal what they do across frequency.
+
+\begin{controlsbox}
+Frequency response is the response of a linear system to sinusoidal inputs. In
+state-space form, the same idea can be written as
+\[
+G(\jj\omega)=C(\jj\omega I-A)^{-1}B+D.
+\]
+This is a conceptual bridge, not an exam calculation requirement.
+\end{controlsbox}
+
+\section{First-Order Low-Pass}
+For the RC low-pass output across the capacitor,
+\[
+G(s)=\frac{1}{1+sRC},
+\qquad
+G(\jj\omega)=\frac{1}{1+\jj\omega RC}.
+\]
+\[
+|G|=\frac{1}{\sqrt{1+(\omega RC)^2}},
+\qquad
+\angle G=-\tan^{-1}(\omega RC).
+\]
+The corner frequency is
+\[
+\omega_c=\frac{1}{RC},
+\qquad
+f_c=\frac{1}{2\pi RC}.
+\]
+At \(\omega_c\), the magnitude is \(1/\sqrt{2}\), or approximately
+\(-\SI{3}{\decibel}\).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.86\textwidth,height=0.34\textwidth,
+  xmode=log, xmin=0.01, xmax=100,
+  ymin=-45, ymax=3,
+  xlabel={Normalized frequency \(\omega/\omega_c\)},
+  ylabel={Magnitude (\(\dB\))},
+  grid=both]
+\addplot[GuideBlue,very thick,domain=0.01:100,samples=240]
+  {20*log10(1/sqrt(1+x^2))};
+\addplot[black!55,dashed] coordinates {(1,-45) (1,3)};
+\addplot[black!55,dashed] coordinates {(0.01,-3.0103) (100,-3.0103)};
+\end{axis}
+\end{tikzpicture}
+\caption{Magnitude of a normalized first-order low-pass response.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.86\textwidth,height=0.34\textwidth,
+  xmode=log, xmin=0.01, xmax=100,
+  ymin=-95, ymax=5,
+  xlabel={Normalized frequency \(\omega/\omega_c\)},
+  ylabel={Phase (degrees)},
+  grid=both]
+\addplot[GuideGreen,very thick,domain=0.01:100,samples=240]
+  {-atan(x)};
+\addplot[black!55,dashed] coordinates {(1,-95) (1,5)};
+\end{axis}
+\end{tikzpicture}
+\caption{Phase lag of a normalized first-order low-pass response.}
+\end{figure}
+
+\section{Approximate Rules}
+\begin{itemize}
+\item One first-order pole contributes approximately \(-\SI{20}{\decibel}\) per
+decade after its corner.
+\item One first-order zero contributes approximately \(+\SI{20}{\decibel}\) per
+decade after its corner.
+\item \(\SI{20}{\decibel}\) per decade is approximately \(\SI{6}{\decibel}\) per
+octave.
+\item A second-order pair changes slope at about \(\SI{40}{\decibel}\) per
+decade.
+\end{itemize}
+
+\section{Bandwidth, Resonance, and Half-Power Points}
+Bandwidth is the useful frequency span of a circuit or system. For a resonant
+response, the half-power points are the frequencies where power is half the
+reference level. In magnitude terms that is
+\[
+20\log_{10}\left(\frac{1}{\sqrt{2}}\right)=-\SI{3.0103}{\decibel}.
+\]
+High \(Q\) means weak damping, sharper resonance, and narrower bandwidth.
+
+\section{Exam Relevance}
+\begin{exambox}
+Bode plots themselves may not be drawn on the exam, but the ideas behind them
+are everywhere: cutoff frequency, gain, attenuation, phase shift, bandwidth,
+filter slope, and resonant peaking.
+\end{exambox}

@@ -1,0 +1,78 @@
+\chapter{RC Circuits}
+\section{Why RC Circuits Matter}
+RC circuits appear as coupling networks, bypass networks, timing circuits, audio
+filters, and detector components. They are first-order systems, so their time
+behavior is governed by one time constant.
+
+\section{Transient Response}
+For a capacitor charging through \(R\) from a DC step \(E\),
+\[
+v_C(t)=E\left(1-\ee^{-t/(RC)}\right).
+\]
+For discharge from initial voltage \(V_0\),
+\[
+v_C(t)=V_0\ee^{-t/(RC)}.
+\]
+The time constant is
+\[
+\tau=RC.
+\]
+After one time constant, a charging capacitor has reached about \(63.2\%\) of
+the final value. After about five time constants, it is effectively settled for
+many practical purposes.
+
+\section{State-Space Interpretation}
+\[
+\dot{x}=-\frac{1}{RC}x+\frac{1}{RC}u,
+\qquad
+x=v_C.
+\]
+The pole is \(-1/(RC)\). The time constant is the inverse magnitude of that
+stable first-order eigenvalue.
+
+\section{Frequency Interpretation}
+For output across the capacitor,
+\[
+G_C(\jj\omega)=\frac{1}{1+\jj\omega RC}.
+\]
+This is a low-pass response. For output across the resistor,
+\[
+G_R(\jj\omega)=\frac{\jj\omega RC}{1+\jj\omega RC}.
+\]
+This is a high-pass response.
+
+\section{Energy Interpretation}
+\[
+E_C=\frac{1}{2}Cv_C^2.
+\]
+During charging, energy supplied by the source is partly stored in the electric
+field and partly dissipated as heat in the resistor. During discharge, stored
+electric-field energy is dissipated in the resistor.
+
+\section{Units Check}
+\begin{unitsbox}
+\[
+RC=\si{\second},
+\qquad
+\omega_c=\frac{1}{RC}=\si{\per\second},
+\qquad
+f_c=\frac{1}{2\pi RC}=\si{\hertz}.
+\]
+\end{unitsbox}
+
+\section{Common Mistakes}
+\begin{mistakebox}
+A capacitor is an open circuit only for DC steady state. During a transient or
+at AC, capacitor current is generally nonzero.
+\end{mistakebox}
+
+\section{Worked Example}
+Let \(R=\SI{4.7}{\kilo\ohm}\) and \(C=\SI{100}{\nano\farad}\).
+\[
+\tau=RC=(4.7\times10^3)(100\times10^{-9})
+=\SI{4.70e-4}{\second}.
+\]
+The cutoff frequency is
+\[
+f_c=\frac{1}{2\pi\tau}\approx \SI{339}{\hertz}.
+\]

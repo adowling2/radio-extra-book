@@ -1,0 +1,68 @@
+\chapter{Active Circuit Building Blocks}
+\section{Why Active Circuits Appear}
+The Extra exam includes amplifiers, op-amps, feedback, oscillators, mixers, and
+regulated power supplies. A full electronics text is not needed here; the goal
+is to connect the circuit formulas to system behavior.
+
+\section{Amplifier Gain}
+Voltage gain is
+\[
+A_v=\frac{V_o}{V_i}.
+\]
+In decibels,
+\[
+A_{v,\dB}=20\log_{10}|A_v|
+\]
+when the input and output voltage ratio is the relevant quantity. Power gain is
+\[
+G_{\dB}=10\log_{10}\frac{P_o}{P_i}.
+\]
+
+\section{Op-Amp Ideals}
+An ideal op-amp has very high input impedance, very low output impedance, and
+very large open-loop gain. Negative feedback makes practical closed-loop gains
+predictable.
+
+For an inverting amplifier,
+\[
+\frac{V_o}{V_i}=-\frac{R_f}{R_{in}}.
+\]
+For a non-inverting amplifier,
+\[
+\frac{V_o}{V_i}=1+\frac{R_f}{R_g}.
+\]
+
+\section{Feedback}
+Negative feedback trades gain for bandwidth, linearity, reduced sensitivity to
+device variation, and often lower distortion. It can also create stability
+questions if phase lag becomes large near unity loop gain.
+
+\begin{controlsbox}
+Negative feedback is a tradeoff involving gain, bandwidth, sensitivity,
+distortion, and stability. That statement is exactly the same in RF amplifiers
+and process-control loops.
+\end{controlsbox}
+
+\section{Oscillators}
+Oscillation requires sustained positive-feedback behavior at a frequency where
+the loop phase and loop gain conditions support a non-decaying sinusoid. In
+practice, nonlinear amplitude control keeps the oscillation from growing without
+bound.
+
+\section{Active Filters and Limits}
+Op-amps can implement active RC filters, but the amplifier has finite bandwidth,
+slew rate, output current, noise, and stability limits. A filter that works at
+audio may be inappropriate at RF.
+
+\section{Power Supplies}
+Rectifiers, filter capacitors, bleeder resistors, regulators, and switching
+converters all use the same elements from the earlier chapters. Equal-value
+resistors across series filter capacitors help equalize voltage and discharge
+stored energy after power is removed.
+
+\section{Exam Relevance}
+\begin{exambox}
+For active-circuit questions, keep three layers separate: small-signal gain,
+power handling, and stability. The right answer often depends on which layer the
+question is asking about.
+\end{exambox}

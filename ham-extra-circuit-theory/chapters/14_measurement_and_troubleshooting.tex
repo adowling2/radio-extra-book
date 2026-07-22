@@ -1,0 +1,47 @@
+\chapter{Measurement and Troubleshooting}
+\section{Why Measurement Is a Circuit Problem}
+Meters, probes, oscilloscopes, antenna analyzers, and SWR bridges are themselves
+circuits. Connecting a measurement instrument changes the circuit unless the
+instrument impedance is high, low, or matched in the right way for the
+measurement.
+
+\section{Voltmeter and Ammeter Loading}
+A voltmeter should usually have high input impedance so it draws little current.
+An ammeter should have low series resistance so it introduces little voltage
+drop. At RF, even a short lead can add inductance or capacitance.
+
+\section{Oscilloscope and Probe Ideas}
+A scope probe has resistance and capacitance. A compensated probe is adjusted so
+the divider ratio is approximately independent of frequency over the intended
+range. Ground-lead inductance can distort fast or RF measurements.
+
+\section{SWR Bridge and Antenna Analyzer}
+An SWR bridge estimates forward and reflected wave components on a transmission
+line. An antenna analyzer can measure impedance and SWR versus frequency, making
+it useful for finding resonance and matching conditions.
+
+\section{Decibels in Measurement}
+\[
+P_{\dB}=10\log_{10}\frac{P}{P_{\mathrm{ref}}},
+\qquad
+V_{\dB}=20\log_{10}\frac{V}{V_{\mathrm{ref}}}.
+\]
+Always check the reference. dBW references \(\SI{1}{\watt}\); dBm references
+\(\SI{1}{\milli\watt}\).
+
+\section{Troubleshooting Pattern}
+\begin{enumerate}
+\item Identify the expected DC operating point.
+\item Check whether the signal path is AC-coupled, DC-coupled, filtered, or
+matched.
+\item Estimate impedance loading before attaching an instrument.
+\item Compare measured gain, attenuation, phase, or SWR against the simple
+model.
+\item If results differ, ask which assumption failed: ideal element, lumped
+model, steady state, no loading, no parasitics, or no nonlinear behavior.
+\end{enumerate}
+
+\begin{exambox}
+Measurement questions often reward recognizing what the instrument actually
+loads or reports: voltage, current, power, impedance, SWR, frequency, or phase.
+\end{exambox}

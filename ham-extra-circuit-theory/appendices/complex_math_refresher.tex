@@ -1,0 +1,34 @@
+\chapter{Complex Math Refresher}
+\section{Rectangular Form}
+\[
+z=a+\jj b.
+\]
+The real part is \(a\), and the imaginary part is \(b\). Addition and
+subtraction are component-wise:
+\[
+(a+\jj b)+(c+\jj d)=(a+c)+\jj(b+d).
+\]
+
+\section{Polar Form}
+\[
+z=r\angle\theta,
+\qquad
+r=\sqrt{a^2+b^2},
+\qquad
+\theta=\operatorname{atan2}(b,a).
+\]
+Multiplication and division are easiest in polar form:
+\[
+(r_1\angle\theta_1)(r_2\angle\theta_2)
+=r_1r_2\angle(\theta_1+\theta_2),
+\]
+\[
+\frac{r_1\angle\theta_1}{r_2\angle\theta_2}
+=\frac{r_1}{r_2}\angle(\theta_1-\theta_2).
+\]
+
+\section{Euler Form}
+\[
+\ee^{\jj\theta}=\cos\theta+\jj\sin\theta.
+\]
+This is the bridge between sinusoids and complex algebra.

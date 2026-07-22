@@ -1,0 +1,61 @@
+\chapter{RL Circuits}
+\section{Why RL Circuits Matter}
+Inductors appear in RF chokes, tuned circuits, filters, relays, transformers,
+and antenna loading coils. An RL circuit is the current-domain sibling of the RC
+circuit.
+
+\section{Transient Response}
+For a DC step \(E\) applied to a series RL circuit,
+\[
+i(t)=\frac{E}{R}\left(1-\ee^{-Rt/L}\right).
+\]
+For decay from initial current \(I_0\),
+\[
+i(t)=I_0\ee^{-Rt/L}.
+\]
+The time constant is
+\[
+\tau=\frac{L}{R}.
+\]
+Inductor current cannot jump instantaneously under finite voltage.
+
+\section{State-Space Interpretation}
+With \(x=i\),
+\[
+\dot{x}=-\frac{R}{L}x+\frac{1}{L}u.
+\]
+The eigenvalue is \(-R/L\), and the time constant is \(L/R\).
+
+\section{Frequency Interpretation}
+\[
+Z_L=\jj\omega L.
+\]
+At high frequency the inductor's impedance is large, so inductors tend to oppose
+rapid changes in current. At DC steady state an ideal inductor behaves like a
+short circuit.
+
+\section{Energy Interpretation}
+\[
+E_L=\frac{1}{2}Li^2.
+\]
+The magnetic field stores energy when current flows. When current decays, that
+energy must go somewhere, which is why interrupting inductive current can create
+large voltages.
+
+\begin{exambox}
+Remember the natural state: capacitor voltage and inductor current. That one
+sentence explains which quantity is continuous and which differential equation
+you should write.
+\end{exambox}
+
+\section{Worked Example}
+A \(\SI{10}{\micro\henry}\) inductor is in series with a \(\SI{50}{\ohm}\)
+resistor. Then
+\[
+\tau=\frac{L}{R}=\frac{10\times10^{-6}}{50}
+=\SI{2.0e-7}{\second}.
+\]
+At \(\SI{14}{\mega\hertz}\),
+\[
+X_L=2\pi(14\times10^6)(10\times10^{-6})\approx \SI{880}{\ohm}.
+\]

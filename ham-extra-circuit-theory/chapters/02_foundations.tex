@@ -1,0 +1,76 @@
+\chapter{Foundations: Conservation, Elements, and Models}
+\section{Why Circuit Theory Matters in Amateur Radio}
+Amateur-radio equipment is full of circuits that select, transform, amplify,
+measure, and deliver RF energy. A filter rejects an adjacent signal. A matching
+network helps a transmitter see a reasonable load. A transmission line carries a
+wave whose voltage and current may not be in phase with the source. Even when
+the exam asks for a short formula, the underlying idea is usually conservation:
+charge cannot disappear, energy must be accounted for, and stored energy creates
+dynamics.
+
+\section{KCL as an Accumulation Balance}
+Kirchhoff's current law is a charge balance. At a node,
+\[
+\text{accumulation}=\text{inflow}-\text{outflow}.
+\]
+For an ordinary wire node with negligible stored charge, accumulation is zero,
+so the algebraic sum of currents is zero:
+\[
+\sum_k i_k=0.
+\]
+
+\begin{controlsbox}
+This is the same structure as a material balance in process systems. Capacitors
+make the accumulation term visible because \(i_C=C\,\dd v_C/\dd t\).
+\end{controlsbox}
+
+\section{KVL as Energy Consistency}
+Kirchhoff's voltage law says that the signed voltage rises and drops around a
+closed loop sum to zero:
+\[
+\sum_k v_k=0.
+\]
+Voltage is energy per unit charge. KVL is therefore an energy-consistency rule:
+after a charge goes around a closed loop and returns to the same point, its net
+change in potential energy is zero.
+
+\section{Constitutive Equations}
+KCL and KVL tell us how elements connect. The element laws tell us what each
+element does:
+\[
+v_R=Ri_R,\qquad i_C=C\frac{\dd v_C}{\dd t},\qquad
+v_L=L\frac{\dd i_L}{\dd t}.
+\]
+Resistors dissipate energy. Capacitors store electric-field energy. Inductors
+store magnetic-field energy:
+\[
+E_C=\frac{1}{2}Cv_C^2,\qquad
+E_L=\frac{1}{2}Li_L^2.
+\]
+
+\section{State Variables}
+The natural state variables are the quantities attached to stored energy:
+capacitor voltages and inductor currents. A circuit with one independent energy
+storage element is usually first order. A circuit with two independent storage
+elements is usually second order.
+
+\begin{physicalbox}
+The physical circuit, the differential equation, the state model, and the phasor
+model are not four different circuits. They are four coordinate systems for the
+same object.
+\end{physicalbox}
+
+\section{Key Equations}
+\[
+\sum i_k=0,\qquad \sum v_k=0,\qquad
+p(t)=v(t)i(t).
+\]
+
+\section{Key Definitions}
+\begin{description}
+\item[KCL] Conservation of charge at a node.
+\item[KVL] Energy consistency around a loop.
+\item[State] A variable needed, with the input, to predict future behavior.
+\item[Passive sign convention] Positive absorbed power when current enters the
+positive-voltage terminal.
+\end{description}

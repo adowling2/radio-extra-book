@@ -1,0 +1,82 @@
+\usepackage[margin=0.85in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage[american currents,american voltages]{circuitikz}
+\usepackage{pgfplots}
+\usepackage[most]{tcolorbox}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\sisetup{per-mode=symbol,detect-all,retain-explicit-plus}
+
+\definecolor{GuideBlue}{HTML}{244B5A}
+\definecolor{GuideGray}{HTML}{F1F3F4}
+\definecolor{GuideLine}{HTML}{7B858B}
+\definecolor{GuideGreen}{HTML}{2F5D50}
+\definecolor{GuideAmber}{HTML}{7A5C1E}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.58em}
+\setlist{nosep,leftmargin=*}
+\setlist[description]{style=nextline,leftmargin=1.25in,labelwidth=1.15in}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\raggedbottom
+\emergencystretch=3em
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Circuit Theory for the Amateur Extra Exam}
+\rhead{\small \thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+
+\captionsetup{font=small,labelfont=bf}
+
+\tcbset{
+  enhanced,
+  sharp corners,
+  boxrule=0.45pt,
+  colback=GuideGray,
+  colframe=GuideLine,
+  left=7pt,
+  right=7pt,
+  top=6pt,
+  bottom=6pt,
+  before skip=0.75em,
+  after skip=0.75em,
+  breakable
+}
+
+\newtcolorbox{controlsbox}{title=\textbf{Controls Connection}, colback=white, colframe=GuideBlue}
+\newtcolorbox{energybox}{title=\textbf{Energy Insight}, colback=white, colframe=GuideGreen}
+\newtcolorbox{unitsbox}{title=\textbf{Units Check}, colback=white, colframe=GuideAmber}
+\newtcolorbox{exambox}{title=\textbf{Exam Relevance}, colback=white, colframe=black!65}
+\newtcolorbox{mistakebox}{title=\textbf{Common Mistake}, colback=white, colframe=black!55}
+\newtcolorbox{physicalbox}{title=\textbf{Physical Insight}, colback=white, colframe=GuideBlue!80!black}
+\newtcolorbox{advancedbox}{title=\textbf{Advanced Note}, colback=white, colframe=black!75}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\renewcommand{\arraystretch}{1.18}
