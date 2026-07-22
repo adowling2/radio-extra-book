@@ -3,7 +3,7 @@
 This directory contains a polished LaTeX mini-textbook converted from the
 authoritative Word draft:
 
-`../references/Ham_Extra_Circuits_Study_Guide_First_Draft.docx`
+`references/Ham_Extra_Circuits_Study_Guide_First_Draft.docx`
 
 ## Prerequisites
 
@@ -60,7 +60,7 @@ reminders" and the minimal formula sheet became Chapter 15 and Appendix A.
 
 ## Source-Material Currency Limitations
 
-The Word manuscript is the primary source. The PDFs in `../references/` were
+The Word manuscript is the primary source. The PDFs in `references/` were
 used only for topic and terminology checks. Some supporting study guides
 correspond to older question pools, so this book does not claim that any
 specific question identifier is current. Final exam preparation should be
