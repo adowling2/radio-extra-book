@@ -3,9 +3,10 @@
 \section{Why Filters Matter in Amateur Radio}
 Filters select desired signals and reject unwanted ones. They appear in receiver
 front ends, IF stages, audio stages, transmitter outputs, anti-aliasing paths,
-power supplies, and interference cures. With the s-plane chapter in hand, a filter
-is simply a deliberate placement of poles (to shape the passband) and zeros (to
-notch the stopband).
+power supplies, and interference cures. A filter is nothing more than a circuit
+whose transfer function has been shaped on purpose---poles placed to form the
+passband, zeros placed to notch the stopband---so everything from Part~II applies
+directly.
 
 \section{Basic Filter Types}
 \begin{description}
@@ -15,6 +16,27 @@ notch the stopband).
 \item[Band-stop or notch] Rejects a frequency band.
 \end{description}
 
+\section{A Filter from First Principles}
+Rather than take filter formulas on faith, let us build one the way a
+first-principles modeler would---from the physics of the circuit, up through the
+four views of \cref{ch:linsys}: physical network \(\to\) differential equation
+\(\to\) state-space \(\to\) transfer function \(\to\) frequency response.
+
+\subsection{First Order: the RC Low-Pass}
+The RC low-pass (\cref{fig:rc-lp}) is the first-order system of \cref{ch:rc} doing
+a filtering job. KVL and the capacitor law give the model in one line each:
+\[
+v_{\mathrm{in}}=R\,i+v_o,\quad i=C\frac{\dd v_o}{\dd t}
+\;\Rightarrow\;
+\underbrace{RC\frac{\dd v_o}{\dd t}+v_o=v_{\mathrm{in}}}_{\text{ODE}}
+\;\Rightarrow\;
+\underbrace{\dot{x}=-\tfrac{1}{RC}x+\tfrac{1}{RC}v_{\mathrm{in}}}_{\text{state-space, }x=v_o}
+\;\Rightarrow\;
+\underbrace{G(s)=\frac{1}{1+RCs}}_{\text{transfer function}} .
+\]
+One energy store gives one pole, at \(s=-1/RC\); the frequency response is flat to
+the corner \(\omega_c=1/RC\) and then falls at \(-\SI{20}{\decibel}\) per decade.
+
 \begin{figure}[htbp]
 \centering
 \begin{circuitikz}
@@ -23,34 +45,44 @@ notch the stopband).
 \draw (3,0) to[short,-o] (4,0) node[right]{out};
 \end{circuitikz}
 \caption{First-order RC low-pass filter.}
+\label{fig:rc-lp}
 \end{figure}
 
-\section{Cutoff, Slope, and Order}
-For a first-order RC filter, \(f_c=1/(2\pi RC)\). Past its corner, each pole
-changes the asymptotic magnitude by about \(-\SI{20}{\decibel}\) per decade, and
-each zero by \(+\SI{20}{\decibel}\) per decade. The \emph{order} of a filter is
-its number of poles, so an \(n\)-pole low-pass rolls off at about
-\(-20n\,\si{\decibel}\) per decade far above cutoff. Steeper skirts require more
-poles.
-
-\section{The Second-Order Section}
-Higher-order filters are built from first-order and second-order sections. The
-generic second-order low-pass transfer function is
+\subsection{Second Order: the LC Low-Pass}
+Add an inductor and you add an energy store---hence a second pole and the
+possibility of resonance. The series \(R\)--\(L\)--\(C\) low-pass
+(\cref{fig:lc-section}), which is the RLC circuit of \cref{ch:rlc} used as a
+filter, develops the same way. KVL around the loop and the capacitor law for the
+output node give
 \[
-H(s)=\frac{\wzero^2}{s^2+\dfrac{\wzero}{Q}\,s+\wzero^2},
+v_{\mathrm{in}}=R\,i+L\frac{\dd i}{\dd t}+v_o,
+\qquad
+i=C\frac{\dd v_o}{\dd t},
 \]
-identical in form to the series-RLC response of \cref{ch:splane}. Here the filter
-\(Q\) is a design choice, not just a loss parameter: it sets how close the pole
-pair sits to the \(\jj\omega\) axis and therefore how much the response peaks near
-\(\wzero\). \(Q=1/\sqrt{2}\approx0.707\) gives the maximally flat (Butterworth)
-second-order response with no peaking; higher \(Q\) peaks; lower \(Q\) rounds off
-early. Band-pass and high-pass sections share the same denominator with different
-numerators (a zero at the origin, or a double zero at the origin, respectively).
-
-A passive second-order section needs both kinds of energy store---an inductor and
-a capacitor (\cref{fig:lc-section}). The series \(L\) and shunt \(C\) give exactly
-the \(H(s)\) above, with \(\wzero=1/\sqrt{LC}\) and a \(Q\) set by the source and
-load resistances.
+and eliminating \(i\) yields the second-order ODE
+\[
+LC\frac{\dd^2 v_o}{\dd t^2}+RC\frac{\dd v_o}{\dd t}+v_o=v_{\mathrm{in}}.
+\]
+With states \(x_1=v_o\;(=v_C)\) and \(x_2=i\;(=i_L)\)---one per energy store---the
+state-space model is
+\[
+\dot{x}_1=\frac{1}{C}x_2,
+\qquad
+\dot{x}_2=-\frac{1}{L}x_1-\frac{R}{L}x_2+\frac{1}{L}v_{\mathrm{in}},
+\]
+and the Laplace transform gives the transfer function
+\[
+G(s)=\frac{1}{LC\,s^2+RC\,s+1}
+=\frac{\wzero^2}{s^2+\dfrac{\wzero}{Q}\,s+\wzero^2},
+\qquad
+\wzero=\frac{1}{\sqrt{LC}},
+\qquad
+Q=\frac{1}{R}\sqrt{\frac{L}{C}} .
+\]
+This is exactly the standard second-order form of \cref{ch:linsys}, so its
+frequency response is a low-pass that falls at \(-\SI{40}{\decibel}\) per decade
+(two poles) with a resonant peak of height \(\sim Q\) near \(\wzero\) when
+\(Q>1/\sqrt2\), as in \cref{ch:splane}.
 
 \begin{figure}[htbp]
 \centering
@@ -60,13 +92,47 @@ load resistances.
 \draw (3,0) to[short,-o] (4,0) node[right]{out};
 \end{circuitikz}
 \caption{A passive second-order (LC) low-pass section: series inductor, shunt
-capacitor, output across \(C\). Its transfer function is the \(H(s)\) above.}
+capacitor, output across \(C\). Series loss and the source/load resistance supply
+the damping \(R\) in the model above.}
 \label{fig:lc-section}
 \end{figure}
 
-\section{Filter Families as Pole Patterns}
-The named families differ only in \emph{where} the poles (and zeros) are placed
-for a given order.
+\begin{controlsbox}
+\textbf{The two design knobs fall right out.} From the first-principles model,
+\(\wzero=1/\sqrt{LC}\) sets the cutoff frequency and \(Q=(1/R)\sqrt{L/C}\) sets
+the peaking (how close the pole pair sits to the \(\jj\omega\) axis). Scaling
+\(L\) and \(C\) together slides the whole response in frequency; changing the
+resistance (loss, or the source/load termination) changes only the damping. Every
+filter design is some version of choosing these two, times the number of poles.
+\end{controlsbox}
+
+\section{Order, Energy Stores, and Roll-Off}
+The pattern generalizes. Each independent energy-storage element (an \(L\) or a
+\(C\)) contributes one pole, so an \(n\)th-order filter has \(n\) reactive
+elements and rolls off at about \(-20n\,\si{\decibel}\) per decade far above
+cutoff (each pole adding \(-\SI{20}{\decibel}\)/decade, each zero
+\(+\SI{20}{\decibel}\)/decade). Steeper skirts require more poles, hence more
+inductors and capacitors. The \emph{order} is thus both a circuit fact (how many
+reactive parts) and a response fact (how fast it rolls off).
+
+\section{Designing and Tuning a Filter}
+Turn the derivation around and you have the design procedure. A filter is
+specified by a target frequency response; designing it means \emph{placing the
+poles and zeros} to meet that target and then realizing them with a circuit.
+There are three independent choices:
+\begin{description}
+\item[Cutoff frequency] scale all \(L\) and \(C\) together: \(\wzero=1/\sqrt{LC}\)
+shifts the whole response along the frequency axis without changing its shape.
+\item[Order] the number of poles (reactive elements) sets skirt steepness,
+\(-20n\,\si{\decibel}\) per decade.
+\item[Shape (the ``family'')] for a given order, \emph{where} the poles sit trades
+passband flatness against transition sharpness against phase linearity.
+\end{description}
+
+That last choice is what the named families are: different rules for placing the
+poles (and zeros) of a given order. \Cref{fig:filter-families} shows them at the
+same order, and \cref{fig:butterworth-poles} shows the archetype---Butterworth
+poles equally spaced on a circle.
 
 \begin{tabularx}{\textwidth}{@{}L{0.19\textwidth}Y@{}}
 \toprule
@@ -105,8 +171,8 @@ rippled response.}
 The \emph{transition band} is the frequency span between the passband edge and the
 stopband; a ``moderate'' transition (Butterworth) is wider than the ``sharp''
 transition of a Chebyshev or elliptic filter of the same order.
-\Cref{fig:filter-families} shows all four analog families at the same order, which
-makes the flatness-versus-sharpness-versus-ripple trade concrete.
+\Cref{fig:filter-families} makes the flatness-versus-sharpness-versus-ripple trade
+concrete.
 
 \begin{figure}[htbp]
 \centering
@@ -119,15 +185,14 @@ fidelity rather than sharpness.}
 \label{fig:filter-families}
 \end{figure}
 
-\begin{controlsbox}
-\textbf{Refresher: reading a filter as poles.} Filter design is pole placement in
-reverse---you choose a target magnitude response and solve for pole locations.
-Butterworth = poles on a circle (flattest); Chebyshev = poles on an ellipse
-nearer the axis (higher per-stage \(Q\), sharper, rippled); elliptic adds
-\(\jj\omega\)-axis zeros for stopband notches. The trade among flatness,
-sharpness, and phase linearity is entirely a trade about how close the poles sit
-to the imaginary axis.
-\end{controlsbox}
+Finally, the same target poles can be \emph{realized} several ways: a passive LC
+ladder, an active Sallen--Key stage (\cref{ch:active}) that makes complex poles
+without inductors, a crystal or cavity when very high \(Q\) is needed, or a DSP
+filter (FIR/IIR) that places the poles and zeros in software. Same poles,
+different hardware---so ``customizing'' a filter means choosing the order (skirt
+steepness), the family (the flatness/sharpness/phase trade), the cutoff (by
+scaling \(L\) and \(C\)), and the realization that suits the frequency range and
+available parts.
 
 \section{Impedance Matching}
 An impedance-matching network does two jobs:

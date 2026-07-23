@@ -1,13 +1,14 @@
 \chapter{One Circuit, Four Views}
 \label{ch:fourviews}
-Part~II built the generic machinery: first- and second-order linear systems seen
-as differential equations, state-space models, transfer functions, and frequency
-responses. This short chapter is the bridge into the circuits. Its claim is
-simple: \emph{every circuit in this book is one of those systems}, and the way to
+Part~II built the generic machinery (systems seen as differential equations,
+state-space models, transfer functions, and frequency responses), and the
+previous two chapters supplied the physical laws and units. This short chapter
+states the organizing pattern the rest of Part~III follows. Its claim is simple:
+\emph{every circuit in this book is one of those systems}, and the way to
 understand a circuit is to look at it through the same set of views until they
 agree.
 
-\section{The Views}
+\section{The Four Views}
 A circuit can be read as:
 \begin{enumerate}
 \item a \textbf{physical network} governed by conservation laws (KCL, KVL) and
@@ -15,11 +16,11 @@ element laws;
 \item a \textbf{differential equation} in the natural energy-storage variables;
 \item a \textbf{state-space model} whose eigenvalues are the circuit's poles;
 \item a \textbf{phasor / frequency-response model}, the transfer function on the
-\(\jj\omega\) axis;
-\item an \textbf{energy} storage-and-dissipation process.
+\(\jj\omega\) axis.
 \end{enumerate}
-These views must agree. If they do not, a sign convention, a reference direction,
-or an assumption needs attention.
+A fifth lens---\textbf{energy} storage and dissipation---runs alongside as a
+consistency check. All of these must agree; if they do not, a sign convention, a
+reference direction, or an assumption needs attention.
 
 \section{The Recipe for Part III}
 The next chapters each apply the same recipe to a specific circuit, and it is
