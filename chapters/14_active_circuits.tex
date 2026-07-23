@@ -212,10 +212,35 @@ oscillators are quieter.
 \section{Active Filters and Their Limits}
 Op-amps can implement active RC filters that synthesize the second-order pole
 pairs of \cref{ch:filters} without inductors, by using feedback to create complex
-poles from resistors and capacitors (Sallen--Key, multiple-feedback). The catch
-is that the same finite gain--bandwidth product limits them: near the amplifier's
-own gain-crossover the ideal-op-amp assumption fails, so an active filter that
-behaves at audio may be useless at RF, where LC or crystal filters take over.
+poles from resistors and capacitors. The Sallen--Key low-pass
+(\cref{fig:sallenkey}) is the classic example: two RC stages around a unity-gain
+buffer place a complex pole pair whose \(\wzero=1/\sqrt{R_1R_2C_1C_2}\) and whose
+\(Q\) is set by the component ratios---no inductor required.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\node[op amp] (oa) at (7,0) {};
+\draw (0,0) node[left]{\(V_{\mathrm{in}}\)} to[R,l=\(R_1\)] (2,0) coordinate(a)
+      to[R,l=\(R_2\)] (4,0) coordinate(b);
+\draw (b) -| (oa.+);
+\draw (b) to[C,l_=\(C_1\)] ($(b)+(0,-1.8)$) node[ground]{};
+\draw (oa.out) to[short,-o] (9,0) coordinate(vo) node[right]{\(V_o\)};
+% unity-gain feedback from inverting input up and over to output
+\draw (oa.-) -- ++(0,1.2) -| (vo);
+% C2 from node a up and over to the output
+\draw (a) -- ++(0,2.5) coordinate(ct) to[C,l=\(C_2\)] (ct-|vo) -- (vo);
+\end{circuitikz}
+\caption{Sallen--Key second-order low-pass. Two RC stages around a unity-gain
+op-amp buffer create a complex pole pair without an inductor;
+\(\wzero=1/\sqrt{R_1R_2C_1C_2}\).}
+\label{fig:sallenkey}
+\end{figure}
+
+The catch is that the same finite gain--bandwidth product limits them: near the
+amplifier's own gain-crossover the ideal-op-amp assumption fails, so an active
+filter that behaves at audio may be useless at RF, where LC or crystal filters
+take over.
 
 \section{Power Supplies}
 Rectifiers, filter capacitors, bleeder resistors, regulators, and switching

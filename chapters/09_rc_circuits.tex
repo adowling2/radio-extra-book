@@ -71,9 +71,19 @@ v_C(t)=E\left(1-\ee^{-t/RC}\right),
 \qquad
 v_C(t)=V_0\,\ee^{-t/RC}.
 \]
-This is exactly the first-order step response of \cref{fig:step1}: after one time
-constant \(\tau=RC\) the capacitor has charged to \(63.2\%\) of \(E\), and after
-about \(5\tau\) it is settled.
+This is the first-order response of \cref{ch:linsys} read as a capacitor voltage
+(\cref{fig:rc-transient}): after one time constant \(\tau=RC\) the capacitor has
+charged to \(63.2\%\) of \(E\) (or discharged to \(36.8\%\)), and after about
+\(5\tau\) it is settled.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{rc_transient}
+\caption{RC capacitor-voltage transient. Charging and discharging are mirror
+exponentials with the same time constant \(\tau=RC\); one \(\tau\) covers
+\(63.2\%\) of the change.}
+\label{fig:rc-transient}
+\end{figure}
 
 \section{Frequency Response: Low-Pass and High-Pass}
 The same circuit is a low-pass or a high-pass filter depending on where the

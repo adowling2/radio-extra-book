@@ -60,10 +60,19 @@ i(t)=\frac{E}{R}\left(1-\ee^{-Rt/L}\right),
 \qquad
 i(t)=I_0\,\ee^{-Rt/L}.
 \]
-This is again the first-order step response of \cref{fig:step1}, read as current:
-after one time constant \(\tau=L/R\) the current has reached \(63.2\%\) of its
-final value. Inductor current cannot jump under finite voltage---the dual of the
-capacitor's continuous voltage.
+This is again the first-order response of \cref{ch:linsys}, read as an inductor
+current (\cref{fig:rl-transient}): after one time constant \(\tau=L/R\) the
+current has reached \(63.2\%\) of its final value. Inductor current cannot jump
+under finite voltage---the dual of the capacitor's continuous voltage.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{rl_transient}
+\caption{RL inductor-current transient. Rise and decay share the time constant
+\(\tau=L/R\); one \(\tau\) covers \(63.2\%\) of the change. The same shape as the
+RC voltage transient---the RC/RL duality.}
+\label{fig:rl-transient}
+\end{figure}
 
 \section{Frequency Response and the Root Locus}
 The inductor impedance is \(Z_L=\jj\omega L\), which grows with frequency, so an
