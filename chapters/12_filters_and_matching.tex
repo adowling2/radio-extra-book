@@ -18,9 +18,9 @@ directly.
 
 \section{A Filter from First Principles}
 Rather than take filter formulas on faith, let us build one the way a
-first-principles modeler would---from the physics of the circuit, up through the
-four views of \cref{ch:linsys}: physical network \(\to\) differential equation
-\(\to\) state-space \(\to\) transfer function \(\to\) frequency response.
+first-principles modeler would---from the physical circuit (\cref{ch:fourviews})
+up through the four views of \cref{ch:linsys}: differential equation \(\to\)
+state-space \(\to\) transfer function \(\to\) frequency response.
 
 \subsection{First Order: the RC Low-Pass}
 The RC low-pass (\cref{fig:rc-lp}) is the first-order system of \cref{ch:rc} doing
@@ -79,10 +79,10 @@ G(s)=\frac{1}{LC\,s^2+RC\,s+1}
 \qquad
 Q=\frac{1}{R}\sqrt{\frac{L}{C}} .
 \]
-This is exactly the standard second-order form of \cref{ch:linsys}, so its
-frequency response is a low-pass that falls at \(-\SI{40}{\decibel}\) per decade
-(two poles) with a resonant peak of height \(\sim Q\) near \(\wzero\) when
-\(Q>1/\sqrt2\), as in \cref{ch:splane}.
+This is exactly the standard second-order form of \cref{ch:linsys} (recall
+\(\wzero/Q=2\zeta\wzero\)), so its frequency response is a low-pass that falls at
+\(-\SI{40}{\decibel}\) per decade (two poles) with a resonant peak of height
+\(\sim Q\) near \(\wzero\) when \(Q>1/\sqrt2\), as in \cref{ch:splane}.
 
 \begin{figure}[htbp]
 \centering
