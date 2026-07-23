@@ -33,6 +33,87 @@ you read on an s-plane, and the peaks you see on a Bode plot are all the same
 numbers viewed differently.
 \end{controlsbox}
 
+\section{Laplace Transforms and Block Diagrams}
+The explicit bridge from a differential equation to a transfer function is the
+Laplace transform, and three facts carry the whole load. With zero initial
+conditions, differentiation becomes multiplication by \(s\) and integration
+becomes division:
+\[
+\mathcal{L}\{\dot f\}=sF(s),\qquad
+\mathcal{L}\{\ddot f\}=s^2F(s),\qquad
+\mathcal{L}\Bigl\{\textstyle\int_0^t f\,\dd t'\Bigr\}=\frac{F(s)}{s}.
+\]
+
+\begin{controlsbox}
+\textbf{Refresher: Laplace generalizes phasors.} The phasor substitution
+\(\dd/\dd t\to\jj\omega\) is the Laplace rule \(\dd/\dd t\to s\) evaluated on the
+imaginary axis \(s=\jj\omega\). The Laplace variable \(s=\sigma+\jj\omega\) simply
+adds the growth/decay coordinate \(\sigma\), which is what lets it describe
+transients and stability, not just steady sinusoids.
+\end{controlsbox}
+
+Applying the derivative rule to a linear ODE turns calculus into algebra. The two
+systems of this chapter transform directly from equation to transfer function:
+\[
+\tau\dot y+y=Ku
+\;\xrightarrow{\;\mathcal L\;}\;
+(\tau s+1)Y=KU
+\;\Rightarrow\;
+G(s)=\frac{K}{\tau s+1},
+\]
+\[
+\ddot y+2\zeta\omega_0\dot y+\omega_0^2 y=\omega_0^2u
+\;\xrightarrow{\;\mathcal L\;}\;
+(s^2+2\zeta\omega_0 s+\omega_0^2)Y=\omega_0^2U
+\;\Rightarrow\;
+G(s)=\frac{\omega_0^2}{s^2+2\zeta\omega_0 s+\omega_0^2}.
+\]
+This ODE-to-transfer-function route is exactly what the modeling chapters of
+Part~III use once they have written a circuit's differential equation from KVL
+and KCL.
+
+A transfer function is drawn as a block with an input and an output arrow, and
+larger systems are built by wiring blocks together. Three rules cover almost
+everything (\cref{fig:blocks}): cascaded blocks \emph{multiply}
+(\(G=G_1G_2\)); parallel blocks \emph{add} (\(G=G_1+G_2\)); and a negative
+feedback loop collapses to
+\[
+G_{\mathrm{cl}}=\frac{G}{1+GH}.
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,
+  block/.style={draw,minimum width=1.05cm,minimum height=0.8cm},
+  node distance=0.9cm]
+% (a) cascade
+\node (alab) at (-0.4,0) {(a)};
+\node[right=0.25cm of alab] (ain) {\(U\)};
+\node[block,right=0.5cm of ain] (g1) {\(G_1\)};
+\node[block,right=0.7cm of g1] (g2) {\(G_2\)};
+\node[right=0.6cm of g2] (aout) {\(Y\)};
+\draw[->] (ain)--(g1); \draw[->] (g1)--(g2); \draw[->] (g2)--(aout);
+% (b) feedback
+\node (blab) at (-0.4,-1.9) {(b)};
+\node[right=0.25cm of blab] (bin) {\(U\)};
+\node[draw,circle,inner sep=1.2pt,right=0.5cm of bin] (sum) {\(\Sigma\)};
+\node[block,right=0.8cm of sum] (g) {\(G\)};
+\node[right=1.5cm of g] (bout) {\(Y\)};
+\node[block,below=0.75cm of g] (h) {\(H\)};
+\draw[->] (bin)--(sum);
+\draw[->] (sum)--(g);
+\draw[->] (g)--(bout);
+\coordinate (tap) at ($(g.east)!0.55!(bout)$);
+\draw[->] (tap)|-(h.east);
+\draw[->] (h.west)-|(sum.south);
+\node at ($(sum)+(-0.02,0.3)$) {\small\(-\)};
+\end{tikzpicture}
+\caption{Block-diagram algebra. (a) A cascade multiplies transfer functions,
+\(G=G_1G_2\). (b) A negative-feedback loop with forward path \(G\) and feedback
+\(H\) collapses to \(G_{\mathrm{cl}}=G/(1+GH)\).}
+\label{fig:blocks}
+\end{figure}
+
 \section{First-Order Systems}
 The canonical first-order system has one state and one time constant \(\tau\):
 \[
@@ -246,6 +327,43 @@ on the \(\jj\omega\) axis (undamped), ride the \(\omega_0\) circle to \(-\omega_
 at critical damping, then separate along the real axis (overdamped).}
 \label{fig:rootlocus2}
 \end{figure}
+
+\section{Feedback: From Open Loop to Closed Loop}
+Every system so far has been \emph{open loop}: input in, output out. Wrapping the
+output back and subtracting it from the input closes the loop
+(\cref{fig:blocks}b). Writing the forward-path gain as \(A(s)\) and the feedback
+fraction as \(\beta\), the \textbf{closed-loop} transfer function and the
+\textbf{loop gain} are
+\[
+A_{\mathrm{cl}}(s)=\frac{A(s)}{1+A(s)\beta},
+\qquad
+L(s)=A(s)\beta .
+\]
+
+The single most important consequence is the \textbf{large-loop-gain limit}: when
+\(|L|\gg1\),
+\[
+A_{\mathrm{cl}}\to\frac{1}{\beta}.
+\]
+The closed-loop behavior is then set by the feedback network \(\beta\) alone,
+almost independent of the forward gain \(A\). Feedback also \emph{moves the poles}.
+Closing a loop around a single first-order pole \(A_0/(1+s/\omega_a)\) relocates
+the pole to \(-\omega_a(1+A_0\beta)\): faster response and wider bandwidth, with
+the gain reduced by the same factor---the \emph{gain--bandwidth} trade. A single
+pole can never be pushed unstable by feedback, but with two or more poles the loop
+can drive the poles toward, and across, the \(\jj\omega\) axis, which is how
+feedback systems peak, ring, or oscillate.
+
+\begin{controlsbox}
+\textbf{Foreshadowing op-amps.} An ideal operational amplifier is a forward path
+with enormous gain, \(A\to\infty\). By the large-loop-gain limit its closed-loop
+gain becomes exactly \(1/\beta\), set by a handful of resistors---which is why the
+inverting gain \(-R_f/R_{in}\) and non-inverting gain \(1+R_f/R_g\) of
+\cref{ch:active} depend only on resistor ratios, not on the amplifier itself. The
+same loop run to its stability boundary (\(L=-1\)) is an oscillator. Feedback is
+the thread that ties together op-amps, active filters, oscillators, and voltage
+regulators in Part~III.
+\end{controlsbox}
 
 \begin{exambox}
 The exam never asks for \(\zeta\) or a pole plot. It asks about ringing,
