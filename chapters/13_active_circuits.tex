@@ -6,7 +6,10 @@ regulated power supplies. A full electronics text is not needed here; the goal i
 to connect the circuit formulas to system behavior---and, in this chapter, to the
 classical feedback ideas that a controls background already contains. The device
 details (bias points, transistor models, tube parameters) live in the ARRL
-manual; what follows is the systems view that ties them together.
+manual; what follows is the systems view that ties them together. The feedback
+groundwork from \cref{ch:linsys}---closed-loop gain \(A/(1+A\beta)\), the
+large-loop-gain limit \(A_{\text{cl}}\to1/\beta\), and pole motion under
+feedback---is the backbone of this chapter; here it is put to work.
 
 \section{Amplifier Gain and Classes}
 Voltage gain is \(A_v=V_o/V_i\); in decibels \(A_{v,\dB}=20\log_{10}|A_v|\). Power
@@ -40,7 +43,26 @@ gains predictable:
 \]
 These come from the two ideal rules---no current into the inputs, and the inputs
 driven to equal voltage by feedback---but both rules are consequences of a deeper
-statement: the loop gain is large.
+statement: the loop gain is large. The inverting configuration
+(\cref{fig:opamp-inv}) makes this concrete: with the non-inverting input grounded
+and the inverting input held at a virtual ground by feedback, the input current
+\(V_i/R_{in}\) must flow on through \(R_f\), giving \(V_o=-R_f\,(V_i/R_{in})\).
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\node[op amp,yscale=-1] (oa) at (0,0) {};
+\draw (oa.-) to[short] ++(-0.7,0) coordinate(n);
+\draw (n) to[R,l_=\(R_{in}\)] ++(-2.2,0) node[left]{\(V_i\)};
+\draw (oa.+) to[short] ++(-0.7,0) node[ground]{};
+\draw (oa.out) to[short,-o] ++(0.9,0) coordinate(vo) node[right]{\(V_o\)};
+\draw (n) -- ++(0,1.6) coordinate(tl) to[R,l=\(R_f\)] (tl-|vo) -- (vo);
+\end{circuitikz}
+\caption{Inverting op-amp amplifier. Feedback holds the inverting input at a
+virtual ground, so \(V_o/V_i=-R_f/R_{in}\)---set by the resistor ratio, not the
+op-amp.}
+\label{fig:opamp-inv}
+\end{figure}
 
 \section{Feedback as a Loop}
 Model the amplifier as a forward path \(A(s)\) with a fraction \(\beta\) of the
@@ -59,9 +81,12 @@ output fed back and subtracted at the input.
 \draw[->] (A) -- (out);
 \draw[->] (5.3,0) |- (B);
 \draw[->] (B) -| (sum);
-\node at (1.15,0.32) {\small \(-\)};
+\node at (0.95,0.3) {\small \(+\)};
+\node at (1.62,-0.28) {\small \(-\)};
 \end{tikzpicture}
-\caption{Standard negative-feedback loop. The loop gain is \(L(s)=A(s)\beta\).}
+\caption{Standard negative-feedback loop: the reference \(V_i\) enters the summing
+junction with \(+\) and the feedback \(\beta V_o\) is subtracted (\(-\)). The loop
+gain is \(L(s)=A(s)\beta\).}
 \label{fig:feedback-loop}
 \end{figure}
 
