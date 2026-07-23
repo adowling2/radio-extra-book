@@ -1,106 +1,87 @@
 \chapter{Frequency Response and Bode Plots}
+\label{ch:bode}
+The linear-systems chapter showed \emph{what} first- and second-order frequency
+responses look like. This chapter is about \emph{reading and using} them: how to
+sketch a Bode plot from a transfer function's poles and zeros, and how to pull a
+circuit's behavior back off the plot.
+
 \section{What a Bode Plot Shows}
-A Bode plot is a pair of graphs against logarithmic frequency:
+A Bode plot is a pair of graphs against logarithmic frequency,
 \[
-20\log_{10}|G(\jj\omega)|,
+20\log_{10}|G(\jj\omega)|
+\quad\text{(magnitude, in dB)},
 \qquad
-\angle G(\jj\omega).
+\angle G(\jj\omega)
+\quad\text{(phase)}.
 \]
-The magnitude plot shows gain or attenuation. The phase plot shows phase lead or
-lag. In radio language, this is how filters, amplifiers, couplers, and matching
-networks reveal what they do across frequency.
+The magnitude curve shows gain or attenuation; the phase curve shows lead or lag.
+Frequency is logarithmic, so equal ratios take equal space: a \emph{decade} is a
+\(\times 10\) ratio and an \emph{octave} is a \(\times 2\) ratio. Slopes are quoted
+per decade or per octave, and \(\SI{20}{\decibel}\)/decade
+\(\approx\SI{6}{\decibel}\)/octave.
 
 \begin{controlsbox}
-Frequency response is the response of a linear system to sinusoidal inputs. In
-state-space form, the same idea can be written as
+\textbf{Refresher: the state-space bridge.} Frequency response is the steady
+sinusoidal response of a linear system. In state-space form it is
 \[
-G(\jj\omega)=C(\jj\omega I-A)^{-1}B+D.
+G(\jj\omega)=C(\jj\omega I-A)^{-1}B+D,
 \]
-This is a conceptual bridge, not an exam calculation requirement.
+i.e.\ the transfer function of \cref{ch:linsys} evaluated on the imaginary axis.
+A conceptual bridge, not an exam calculation.
 \end{controlsbox}
 
-\section{First-Order Low-Pass}
-For the RC low-pass output across the capacitor,
-\[
-G(s)=\frac{1}{1+sRC},
-\qquad
-G(\jj\omega)=\frac{1}{1+\jj\omega RC}.
-\]
-\[
-|G|=\frac{1}{\sqrt{1+(\omega RC)^2}},
-\qquad
-\angle G=-\tan^{-1}(\omega RC).
-\]
-The corner frequency is
-\[
-\omega_c=\frac{1}{RC},
-\qquad
-f_c=\frac{1}{2\pi RC}.
-\]
-At \(\omega_c\), the magnitude is \(1/\sqrt{2}\), or approximately
-\(-\SI{3}{\decibel}\).
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=0.86\textwidth,height=0.34\textwidth,
-  xmode=log, xmin=0.01, xmax=100,
-  ymin=-45, ymax=3,
-  xlabel={Normalized frequency \(\omega/\omega_c\)},
-  ylabel={Magnitude (\(\dB\))},
-  grid=both]
-\addplot[GuideBlue,very thick,domain=0.01:100,samples=240]
-  {20*log10(1/sqrt(1+x^2))};
-\addplot[black!55,dashed] coordinates {(1,-45) (1,3)};
-\addplot[black!55,dashed] coordinates {(0.01,-3.0103) (100,-3.0103)};
-\end{axis}
-\end{tikzpicture}
-\caption{Magnitude of a normalized first-order low-pass response.}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=0.86\textwidth,height=0.34\textwidth,
-  xmode=log, xmin=0.01, xmax=100,
-  ymin=-95, ymax=5,
-  xlabel={Normalized frequency \(\omega/\omega_c\)},
-  ylabel={Phase (degrees)},
-  grid=both]
-\addplot[GuideGreen,very thick,domain=0.01:100,samples=240]
-  {-atan(x)};
-\addplot[black!55,dashed] coordinates {(1,-95) (1,5)};
-\end{axis}
-\end{tikzpicture}
-\caption{Phase lag of a normalized first-order low-pass response.}
-\end{figure}
-
-\section{Approximate Rules}
+\section{Building the Sketch from Poles and Zeros}
+A Bode magnitude plot can be sketched by hand from the pole and zero locations,
+because each contributes a straight-line asymptote that adds to the others:
 \begin{itemize}
-\item One first-order pole contributes approximately \(-\SI{20}{\decibel}\) per
-decade after its corner.
-\item One first-order zero contributes approximately \(+\SI{20}{\decibel}\) per
-decade after its corner.
-\item \(\SI{20}{\decibel}\) per decade is approximately \(\SI{6}{\decibel}\) per
-octave.
-\item A second-order pair changes slope at about \(\SI{40}{\decibel}\) per
-decade.
+\item Start at the low-frequency gain (the DC value \(|G(0)|\)).
+\item At each \textbf{pole} corner, bend the slope \emph{down} by
+\(\SI{20}{\decibel}\) per decade and subtract up to \(90^\circ\) of phase.
+\item At each \textbf{zero} corner, bend the slope \emph{up} by
+\(\SI{20}{\decibel}\) per decade and add up to \(90^\circ\) of phase.
+\item A corner sits at the frequency equal to that pole's or zero's distance from
+the origin; a second-order pole pair changes slope by \(\SI{40}{\decibel}\) per
+decade near \(\omega_0\).
 \end{itemize}
+The exact curve rounds the corners---down \(\SI{3}{\decibel}\) at a first-order
+pole (\cref{fig:bode1}), and peaking up by \(\sim Q\) at a lightly damped
+second-order pair (\cref{fig:bode2})---but the asymptotes get the shape right.
 
-\section{Bandwidth, Resonance, and Half-Power Points}
-Bandwidth is the useful frequency span of a circuit or system. For a resonant
-response, the half-power points are the frequencies where power is half the
-reference level. In magnitude terms that is
+\section{Reading a Circuit off the Plot}
+Given a measured or computed Bode plot, four features tell you what the circuit
+does:
+\begin{description}
+\item[Passband and cutoff] the flat region is the passband; the
+\(-\SI{3}{\decibel}\) frequency (magnitude \(1/\sqrt2\)) is the cutoff or corner.
+\item[Roll-off slope] the far-out slope gives the order: \(-20n\,\si{\decibel}\)
+per decade means \(n\) poles. Steeper skirts reject out-of-band signals harder.
+\item[Resonant peak] a bump near \(\omega_0\) signals a high-\(Q\) pole pair; its
+height grows with \(Q\) and its \(-\SI{3}{\decibel}\) width is the bandwidth
+\(BW\approx f_0/Q\).
+\item[Phase] the phase slope near a corner flags how much lead or lag the stage
+adds---the quantity that governs stability once the stage sits inside a feedback
+loop (\cref{ch:linsys}).
+\end{description}
+
+\begin{physicalbox}
+\textbf{Using it in practice.} To discuss a receiver's IF filter, for example,
+read straight off its Bode magnitude: the flat top is the passband, its width at
+\(-\SI{3}{\decibel}\) is the bandwidth, the slope past the edges is how fast
+adjacent channels are rejected, and any ripple or peak warns of high-\(Q\) stages
+that will ring. Every one of these is a pole-zero statement in disguise.
+\end{physicalbox}
+
+\section{Bandwidth and Half-Power Points}
+For a resonant response the half-power points are where the power is half its
+peak, i.e.\ the magnitude is down \(1/\sqrt2\):
 \[
-20\log_{10}\left(\frac{1}{\sqrt{2}}\right)=-\SI{3.0103}{\decibel}.
+20\log_{10}\!\left(\frac{1}{\sqrt2}\right)=-\SI{3.0103}{\decibel}.
 \]
-High \(Q\) means weak damping, sharper resonance, and narrower bandwidth.
+The span between them is the bandwidth; high \(Q\) means weak damping, a sharper
+peak, and a narrower bandwidth---poles pressed against the \(\jj\omega\) axis.
 
-\section{Exam Relevance}
 \begin{exambox}
-Bode plots themselves may not be drawn on the exam, but the ideas behind them
-are everywhere: cutoff frequency, gain, attenuation, phase shift, bandwidth,
-filter slope, and resonant peaking.
+Bode plots may not be drawn on the exam, but their vocabulary is everywhere:
+cutoff frequency, gain, attenuation, phase shift, bandwidth, filter slope and
+order, and resonant peaking. Read each as a statement about poles and zeros.
 \end{exambox}

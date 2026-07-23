@@ -1,269 +1,152 @@
 \chapter{The s-Plane: Poles, Zeros, and Natural Modes}
 \label{ch:splane}
 \section{One Picture Behind Every View}
-So far the same circuit has appeared as an ODE, a state-space model with
-eigenvalues, a phasor calculation, and a Bode plot. The \emph{s-plane} is the
-single diagram that ties those together. Every pole is a natural mode of the
-circuit, every eigenvalue of the state matrix is one of those poles, and the
-position of a pole in the complex plane tells you at a glance how fast the mode
-decays, how fast it rings, and how sharp the resonance looks on a Bode plot.
-
-This chapter is the hinge between the transient and resonance chapters that
-precede it and the filter, matching, and feedback chapters that follow. Nothing
-here is a calculation the exam asks you to perform; it is the mental model that
-makes the exam's vocabulary---selectivity, bandwidth, ringing, stability---one
-idea instead of many.
+The linear-systems chapter introduced poles as the eigenvalues and natural modes
+of a system. This chapter makes the \emph{s-plane}---the complex plane in which
+those poles live---the single diagram that ties the views together, and it adds
+the other half of the picture: \emph{zeros}. Where poles say how a system
+resonates and rings, zeros say which frequencies it blocks. Nothing here is a
+calculation the exam asks you to perform; it is the mental model that turns the
+exam's vocabulary---selectivity, bandwidth, ringing, stability, traps---into one
+idea.
 
 \begin{controlsbox}
 \textbf{Refresher: poles and zeros.} Write a transfer function as a ratio of
-polynomials in the complex variable \(s=\sigma+\jj\omega\),
+polynomials in \(s=\sigma+\jj\omega\),
 \[
 G(s)=\frac{N(s)}{D(s)}.
 \]
-The \emph{poles} are the roots of \(D(s)\); the \emph{zeros} are the roots of
-\(N(s)\). Poles are where \(G\) blows up; zeros are where \(G\) vanishes. For a
-state-space model \(\dot{\state}=A\state+Bu\), \(y=C\state+Du\), the poles are
-exactly the eigenvalues of \(A\)---the same eigenvalues you compute for stability
-and natural modes. The frequency response is the transfer function evaluated on
-the imaginary axis, \(G(\jj\omega)\): you slide \(s\) up the \(\jj\omega\) axis
-and read off gain and phase.
+The \emph{poles} are the roots of the denominator \(D(s)\); the \emph{zeros} are
+the roots of the numerator \(N(s)\). Poles are where \(G\) blows up (the system's
+natural modes, equal to the eigenvalues of \(A\)); zeros are where \(G\) vanishes
+(frequencies the system transmits as zero). Evaluating on the imaginary axis,
+\(G(\jj\omega)\), gives the frequency response: you slide \(s\) up the
+\(\jj\omega\) axis and read off gain and phase, passing near poles (peaks) and
+near zeros (nulls).
 \end{controlsbox}
 
-\section{A Pole Is a Natural Mode}
-The unforced circuit relaxes as a sum of terms \(\ee^{s_i t}\), one per pole
-\(s_i\). Writing a pole as \(s_i=\sigma_i+\jj\omega_i\),
-\[
-\ee^{s_i t}=\ee^{\sigma_i t}\bigl(\cos\omega_i t+\jj\sin\omega_i t\bigr).
-\]
-The real part \(\sigma_i\) is a growth or decay rate; the imaginary part
-\(\omega_i\) is a ringing frequency. This gives the entire stability picture:
-\begin{description}
-\item[Left half-plane (\(\sigma_i<0\))] the mode decays; the circuit is stable.
-\item[Imaginary axis (\(\sigma_i=0\))] the mode neither grows nor decays; a pure
-oscillation. This is the knife-edge an oscillator is built to sit on.
-\item[Right half-plane (\(\sigma_i>0\))] the mode grows; the circuit is unstable.
-\end{description}
+\section{The Pole-Zero Plane}
+A pole-zero plot marks poles with \(\times\) and zeros with \(\circ\), and it
+captures a transfer function's behavior at a glance (\cref{fig:pz-notch}). Two
+reading rules, both developed generically in \cref{ch:linsys}, carry over:
+\begin{itemize}
+\item \textbf{Poles set resonance and damping.} A complex pole pair sits at
+\(-\alpha\pm\jj\omega_d\), a distance \(\omega_0\) from the origin at an angle
+\(\theta\) from the negative real axis with \(\cos\theta=\zeta\). Distance from
+the \(\jj\omega\) axis (\(\alpha=\zeta\omega_0\)) is the decay rate \emph{and} the
+half-power bandwidth, and \(Q=1/(2\zeta)\). A pole hugging the axis is a high-\(Q\),
+lightly damped, sharply peaked resonance.
+\item \textbf{Zeros set rejection.} A zero on or near the \(\jj\omega\) axis
+pulls the magnitude \emph{down} toward a null at that frequency---the mechanism of
+a notch, trap, or band-stop.
+\end{itemize}
 
-For the first-order RC and RL circuits there is a single real pole. The RC
-low-pass has
-\[
-G(s)=\frac{1}{1+sRC},
-\qquad
-s_{\text{pole}}=-\frac{1}{RC}=-\frac{1}{\tau}.
-\]
-The pole sits on the negative real axis at minus the reciprocal of the time
-constant. A pole far to the left (large \(|\sigma|\), small \(\tau\)) means fast
-settling and a high corner frequency; a pole near the origin means a slow,
-low-frequency circuit. There is no imaginary part, so a first-order circuit
-never rings.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.52\textwidth]{poles_zeros_notch}
+\caption{Pole-zero plot of a notch response. The complex pole pair
+(\(\times\)) just inside the left half-plane sets the resonance; the transmission
+zeros (\(\circ\)) on the \(\jj\omega\) axis force the output to zero at the
+rejection frequency \(\omega_0\).}
+\label{fig:pz-notch}
+\end{figure}
 
-\section{The Second-Order Pole Pair}
-The series RLC circuit is where the s-plane earns its keep. From the resonance
-chapter, the characteristic polynomial is
-\[
-LC\,s^2+RC\,s+1=0
-\qquad\Longleftrightarrow\qquad
-s^2+\frac{R}{L}\,s+\frac{1}{LC}=0.
-\]
-Introduce the undamped natural frequency and the damping parameters
-\[
-\wzero=\frac{1}{\sqrt{LC}},
-\qquad
-\alpha=\frac{R}{2L},
-\qquad
-\zeta=\frac{\alpha}{\wzero}=\frac{R}{2}\sqrt{\frac{C}{L}},
-\]
-so that the polynomial takes the standard second-order form
-\[
-s^2+2\zeta\wzero\,s+\wzero^2=0.
-\]
-Here \(\zeta\) is the \emph{damping ratio} (dimensionless) and \(\alpha\) is the
-damping \emph{rate} (in \si{\per\second}). The poles are
-\[
-s=-\alpha\pm\sqrt{\alpha^2-\wzero^2}
-=-\zeta\wzero\pm\jj\,\wzero\sqrt{1-\zeta^2}
-=-\alpha\pm\jj\,\omega_d,
-\]
-recovering the damped natural frequency \(\omega_d=\sqrt{\wzero^2-\alpha^2}\)
-from the resonance chapter as the imaginary part of the pole.
+\section{Stability at a Glance}
+Because an unforced mode evolves as \(\ee^{s_i t}\) with
+\(s_i=\sigma_i+\jj\omega_i\), the sign of the real part is the entire stability
+story: left half-plane (\(\sigma_i<0\)) decays and is stable; the \(\jj\omega\)
+axis (\(\sigma_i=0\)) sustains a pure oscillation---the knife-edge an oscillator
+sits on; the right half-plane grows and is unstable. Zeros do not affect
+stability (they are not modes), but they shape how the stable modes appear in the
+response.
 
-\begin{controlsbox}
-\textbf{Refresher: \(\zeta\) and \(Q\) are the same statement.} Control texts
-grade a second-order system by its damping ratio \(\zeta\); radio grades a
-resonator by its quality factor \(Q\). They are reciprocals up to a factor of
-two,
-\[
-Q=\frac{\wzero}{2\alpha}=\frac{1}{2\zeta}
-=\frac{\wzero L}{R},
-\]
-which is exactly the series-\(Q\) formula from the resonance chapter. Low
-damping \(\Leftrightarrow\) high \(Q\) \(\Leftrightarrow\) poles near the
-\(\jj\omega\) axis. The three regimes you have been calling overdamped,
-critically damped, and underdamped are just \(\zeta>1\), \(\zeta=1\), and
-\(\zeta<1\).
-\end{controlsbox}
-
-\section{Reading the Geometry}
-Two facts make the pole pair readable by eye. First, while the circuit is
-underdamped the poles lie on a circle of radius \(\wzero\):
-\[
-|s|^2=(\zeta\wzero)^2+\bigl(\wzero\sqrt{1-\zeta^2}\bigr)^2=\wzero^2.
-\]
-The distance of the pole from the origin is the natural frequency. Second, the
-angle \(\theta\) measured from the negative real axis satisfies
-\[
-\cos\theta=\zeta.
-\]
-So the angle encodes the damping, and therefore \(Q\). A pole hugging the
-\(\jj\omega\) axis (\(\theta\to 90^\circ\), \(\zeta\to0\)) is a high-\(Q\),
-lightly damped resonance; a pole near the negative real axis is heavily damped.
-
-The real part \(\alpha=\zeta\wzero\) does double duty. It is the envelope decay
-rate of the ringing---the transient dies as \(\ee^{-\alpha t}\)---and it also
-sets the half-power bandwidth of the resonance,
-\[
-\text{BW}=2\alpha=\frac{\wzero}{Q}\quad[\si{\radian\per\second}].
-\]
-\emph{Distance from the imaginary axis is bandwidth.} A pole close to the axis
-rings for a long time and shows a narrow, tall peak; a pole far from the axis
-settles quickly and shows a broad, low peak. Selectivity in the frequency domain
-and ringing in the time domain are the same pole seen two ways.
-
-\section{Root Locus: Watching the Poles Move with \texorpdfstring{$R$}{R}}
-Fix \(L\) and \(C\) and sweep the resistance \(R\) from zero upward. Because the
-poles solve \(s^2+2\alpha s+\wzero^2=0\) with \(\alpha=R/2L\), they trace a path
-in the s-plane as \(R\) grows. This path is a \emph{root locus}.
+\section{Root Locus: the RLC Case}
+When a parameter varies, the poles move, tracing a root locus. \Cref{ch:linsys}
+showed the canonical second-order locus generically; \cref{fig:rlc-rootlocus}
+draws the concrete RLC case as the series resistance \(R\) sweeps from zero.
 
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[>=Latex,scale=1.15]
-% axes
 \draw[->,black!70] (-3.6,0) -- (0.9,0) node[right]{\(\sigma\) (real)};
 \draw[->,black!70] (0,-2.6) -- (0,2.6) node[above]{\(\jj\omega\) (imag)};
-% circle of radius omega0 = 2
 \draw[GuideLine,dashed] (0,0) circle (2);
 \node[GuideLine] at (1.55,1.75) {\(|s|=\wzero\)};
-% R=0 poles on imaginary axis
 \filldraw[GuideBlue] (0,2) circle (2.4pt);
 \filldraw[GuideBlue] (0,-2) circle (2.4pt);
 \node[GuideBlue,right] at (0.08,2.15) {\small \(R=0\)};
-% underdamped poles on the circle (angle 150 deg from +real axis)
 \filldraw[GuideGreen] (-1.732,1.0) circle (2.4pt);
 \filldraw[GuideGreen] (-1.732,-1.0) circle (2.4pt);
-% critical damping (double pole) at -omega0
 \filldraw[GuideAmber] (-2,0) circle (2.4pt);
 \node[GuideAmber,below left] at (-2.0,-0.08) {\small critical};
-% overdamped real poles (product = omega0^2 = 4: -1.25 * -3.2 = 4.0)
 \filldraw[black!70] (-1.25,0) circle (2.4pt);
 \filldraw[black!70] (-3.2,0) circle (2.4pt);
-% arrows showing motion as R increases
 \draw[->,GuideGreen,thick] (0,1.98) to[bend right=18] (-1.7,1.05);
 \draw[->,GuideGreen,thick] (0,-1.98) to[bend left=18] (-1.7,-1.05);
 \draw[->,black!70,thick] (-1.9,0.05) to[bend right=25] (-1.3,0.02);
 \draw[->,black!70,thick] (-2.1,0.05) to[bend left=25] (-3.15,0.02);
-% damping-angle marker
 \draw[black!55] (0,0) -- (-1.732,1.0);
 \node at (-0.55,0.55) {\small \(\theta\)};
 \node[GuideGreen] at (-2.55,1.35) {\small increasing \(R\)};
 \end{tikzpicture}
 \caption{Root locus of the series RLC poles as \(R\) increases with \(L,C\)
-fixed. At \(R=0\) the poles sit on the \(\jj\omega\) axis at \(\pm\jj\wzero\)
-(undamped). As \(R\) grows they slide along the circle of radius \(\wzero\)
-into the left half-plane, meet at \(-\wzero\) at critical damping
-(\(R=2\sqrt{L/C}\)), then split and move apart along the negative real axis
-(overdamped). The angle \(\theta\) from the negative real axis satisfies
-\(\cos\theta=\zeta\).}
+fixed: from \(\pm\jj\wzero\) on the axis (undamped), along the circle of radius
+\(\wzero\), meeting at \(-\wzero\) at critical damping (\(R=2\sqrt{L/C}\)), then
+splitting along the real axis (overdamped). Here \(\cos\theta=\zeta\).}
 \label{fig:rlc-rootlocus}
 \end{figure}
-
-The story in \Cref{fig:rlc-rootlocus} is worth narrating because it unifies
-three chapters:
-\begin{itemize}
-\item \textbf{\(R=0\):} poles on the imaginary axis at \(\pm\jj\wzero\). No loss,
-infinite \(Q\), a pure oscillation---the idealization an LC tank approaches.
-\item \textbf{Small \(R\) (underdamped):} poles just inside the left half-plane,
-high on the circle. High \(Q\), narrow bandwidth, long ringing, tall Bode peak.
-\item \textbf{\(R=2\sqrt{L/C}\) (critical):} the pair meets at \(-\wzero\) on the
-real axis, \(\zeta=1\). Fastest settling without overshoot.
-\item \textbf{Large \(R\) (overdamped):} two real poles; the circuit behaves like
-two cascaded first-order lags and no longer rings.
-\end{itemize}
 
 \begin{advancedbox}
 The product of the two real poles is fixed at \(\wzero^2\) (the constant term of
 the monic polynomial), so as \(R\to\infty\) one overdamped pole races toward
 \(-\infty\) while the other creeps back toward the origin at
 \(s\approx-\wzero^2/(2\alpha)=-1/(RC)\). The slow pole becoming the dominant RC
-lag is the same limit you would expect physically: a huge series resistor makes
-the capacitor charge through \(R\) alone.
+lag is the limit you would expect physically: a huge series resistor makes the
+capacitor charge through \(R\) alone.
 \end{advancedbox}
 
-\section{How Pole Position Shapes the Bode Plot}
-Because the frequency response is \(G(\jj\omega)\)---the transfer function
-sampled along the imaginary axis---the poles you just placed control the Bode
-plot directly.
-
-\begin{controlsbox}
-\textbf{Refresher: poles, zeros, and Bode slopes.} Each pole bends the magnitude
-slope down by \(\SI{20}{\decibel}\) per decade near its corner frequency and adds
-up to \(-90^\circ\) of phase; each zero bends it up by
-\(+\SI{20}{\decibel}\) per decade and adds up to \(+90^\circ\). The corner sits
-at the frequency equal to the pole's or zero's distance from the origin. This is
-why the first-order rules in the frequency-response chapter worked: a ``pole'' is
-just a corner in the asymptotic plot.
-\end{controlsbox}
-
-When an underdamped pole pair sits close to the \(\jj\omega\) axis, sliding
-\(\omega\) past the pole's height \(\omega_d\approx\wzero\) brings the evaluation
-point \(\jj\omega\) very near the pole, where \(|G|\) grows large. That near-miss
-is the resonant peak. Its height is governed by how close the pole is to the
-axis, i.e.\ by \(Q\): peak magnitude scales with \(Q\), and the \(-\SI{3}{dB}\)
-width of the peak equals the bandwidth \(2\alpha\). High \(Q\), pole near the
-axis, tall narrow peak; low \(Q\), pole pulled left, gentle bump. A
-\emph{zero} on or near the axis does the opposite---it pulls \(|G|\) down toward
-a notch, which is exactly how a trap or notch filter rejects one frequency.
+\section{How Poles and Zeros Shape the Bode Plot}
+Because the frequency response samples \(G(s)\) along the imaginary axis, the
+pole-zero locations control the Bode plot directly: each pole bends the magnitude
+down \(\SI{20}{\decibel}\) per decade and subtracts up to \(90^\circ\) of phase
+near its corner; each zero bends it up \(\SI{20}{\decibel}\) per decade and adds
+up to \(90^\circ\). A pole pair near the axis makes the resonant peak (height
+\(\sim Q\), width \(2\alpha\)); a zero near the axis makes a notch. The next
+chapter reads these plots in detail.
 
 \section{Zeros in Radio Circuits}
-Zeros are less discussed than poles but they are how circuits \emph{reject}
-energy. A series LC branch to ground has zero impedance at its resonance, shorting
-that frequency to ground and placing a transmission zero on the \(\jj\omega\)
-axis at \(\wzero=1/\sqrt{LC}\); this is a trap. A parallel LC branch in series
-with the signal path does the dual: it becomes an open circuit at resonance,
-again blocking one frequency. Wherever the exam describes a trap, a notch, or a
-wave trap rejecting a specific frequency, a zero has been parked at that
-frequency.
+Zeros are how circuits \emph{reject} energy. A series LC branch to ground has zero
+impedance at its resonance, shorting that frequency to ground and placing a
+transmission zero on the \(\jj\omega\) axis at \(\wzero=1/\sqrt{LC}\)---a trap. A
+parallel LC branch in series with the signal path is the dual: it becomes an open
+circuit at resonance, again blocking one frequency. Wherever the exam describes a
+trap, a wave trap, or a notch rejecting a specific frequency, a zero has been
+parked at that frequency.
 
-\section{Worked Example: Locating the Poles of a Tuned Circuit}
-Reuse the resonance-chapter values \(L=\SI{10}{\micro\henry}\),
-\(C=\SI{220}{\pico\farad}\), \(R=\SI{5}{\ohm}\). Then
+\section{Worked Example: Poles of a Tuned Circuit}
+Take a tuned LC circuit with \(L=\SI{10}{\micro\henry}\),
+\(C=\SI{220}{\pico\farad}\), and series loss \(R=\SI{5}{\ohm}\). Then
 \[
 \wzero=\frac{1}{\sqrt{LC}}\approx\SI{2.13e7}{\radian\per\second}
-\quad(f_0\approx\SI{3.39}{\mega\hertz}),
+\ (f_0\approx\SI{3.39}{\mega\hertz}),
 \qquad
-\alpha=\frac{R}{2L}=\frac{5}{2(10\times10^{-6})}=\SI{2.5e5}{\radian\per\second}.
+\alpha=\frac{R}{2L}=\SI{2.5e5}{\radian\per\second},
 \]
-The damping ratio and quality factor are
-\[
-\zeta=\frac{\alpha}{\wzero}\approx 0.0117,
-\qquad
-Q=\frac{1}{2\zeta}\approx 42.7,
-\]
-matching the \(Q\approx42.6\) found earlier. The poles sit at
+so \(\zeta=\alpha/\wzero\approx0.0117\) and \(Q=1/(2\zeta)\approx42.7\). The poles
+sit at
 \[
 s=-\alpha\pm\jj\,\omega_d\approx-2.5\times10^{5}\pm\jj\,2.13\times10^{7}
 \ \si{\radian\per\second}.
 \]
 The real part is about \(1/85\) of the imaginary part, so the poles are pressed
-right against the \(\jj\omega\) axis: a very high-\(Q\), lightly damped,
-sharply peaked circuit whose ringing decays only after roughly \(Q\) cycles.
-Everything the resonance chapter said in the language of \(Q\) and bandwidth is
-visible here as a pole location.
+against the \(\jj\omega\) axis: a very high-\(Q\), sharply peaked circuit that
+rings for roughly \(Q\approx43\) cycles. \Cref{ch:rlc} works this same circuit as
+a resonator; here it is the same fact read as a pole location.
 
 \begin{exambox}
-The exam does not ask you to plot poles or compute \(\zeta\). It asks about
-resonant frequency, \(Q\), bandwidth, selectivity, ringing, oscillator
-stability, and filter sharpness---all of which are the answer to a single
-question: \emph{where are the poles?} Near the \(\jj\omega\) axis means sharp,
-selective, and long-ringing; deep in the left half-plane means broad and
-well-damped; on the axis means a sustained oscillation.
+The exam does not ask you to plot poles and zeros. It asks about resonant
+frequency, \(Q\), bandwidth, selectivity, ringing, oscillator stability, filter
+sharpness, and traps---all of which answer one question: \emph{where are the poles
+and zeros?} Poles near the \(\jj\omega\) axis mean sharp and selective; poles on
+the axis mean sustained oscillation; zeros on the axis mean a rejected frequency.
 \end{exambox}
