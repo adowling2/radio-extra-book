@@ -47,6 +47,23 @@ second-order response with no peaking; higher \(Q\) peaks; lower \(Q\) rounds of
 early. Band-pass and high-pass sections share the same denominator with different
 numerators (a zero at the origin, or a double zero at the origin, respectively).
 
+A passive second-order section needs both kinds of energy store---an inductor and
+a capacitor (\cref{fig:lc-section}). The series \(L\) and shunt \(C\) give exactly
+the \(H(s)\) above, with \(\wzero=1/\sqrt{LC}\) and a \(Q\) set by the source and
+load resistances.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}
+\draw (0,0) node[left]{in} to[L,l=\(L\)] (3,0)
+      to[C,l=\(C\)] (3,-2) node[ground]{};
+\draw (3,0) to[short,-o] (4,0) node[right]{out};
+\end{circuitikz}
+\caption{A passive second-order (LC) low-pass section: series inductor, shunt
+capacitor, output across \(C\). Its transfer function is the \(H(s)\) above.}
+\label{fig:lc-section}
+\end{figure}
+
 \section{Filter Families as Pole Patterns}
 The named families differ only in \emph{where} the poles (and zeros) are placed
 for a given order.
@@ -85,6 +102,23 @@ rippled response.}
 \label{fig:butterworth-poles}
 \end{figure}
 
+The \emph{transition band} is the frequency span between the passband edge and the
+stopband; a ``moderate'' transition (Butterworth) is wider than the ``sharp''
+transition of a Chebyshev or elliptic filter of the same order.
+\Cref{fig:filter-families} shows all four analog families at the same order, which
+makes the flatness-versus-sharpness-versus-ripple trade concrete.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{filter_families}
+\caption{Order-5 low-pass responses. Butterworth is maximally flat with a moderate
+transition; Chebyshev trades passband ripple for a sharper skirt; elliptic is
+sharpest of all, with ripple in both bands and stopband nulls (its
+\(\jj\omega\)-axis zeros); Bessel is gentlest, chosen for clean phase and pulse
+fidelity rather than sharpness.}
+\label{fig:filter-families}
+\end{figure}
+
 \begin{controlsbox}
 \textbf{Refresher: reading a filter as poles.} Filter design is pole placement in
 reverse---you choose a target magnitude response and solve for pole locations.
@@ -117,17 +151,36 @@ X_{\text{series}}=Q\,R_{\text{lo}},
 X_{\text{shunt}}=\frac{R_{\text{hi}}}{Q}.
 \]
 The two reactances are of opposite type (one inductor, one capacitor); choosing
-which is the inductor sets whether the network is low-pass or high-pass. An
-L-network has no free parameter left over, so its bandwidth is fixed once the
-resistances are chosen.
+which is the inductor sets whether the network is low-pass or high-pass
+(\cref{fig:lnetwork}). An L-network has no free parameter left over, so its
+bandwidth is fixed once the resistances are chosen.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}
+\draw (0,0) node[left]{\(R_{\text{lo}}\)} to[L,l=\(X_{\text{series}}\)] (3.2,0);
+\draw (3.2,0) to[C,l=\(X_{\text{shunt}}\)] (3.2,-2) node[ground]{};
+\draw (3.2,0) to[short,-o] (4.4,0) node[right]{\(R_{\text{hi}}\)};
+\end{circuitikz}
+\caption{An L-network matching a low resistance to a high one: series reactance on
+the low side, shunt reactance on the high side. Swapping which element is the
+inductor makes it high-pass instead of low-pass.}
+\label{fig:lnetwork}
+\end{figure}
 
 \subsection{Pi and T Networks}
-Adding a third element gives a \(\pi\) or T network. The extra element lets the
-designer choose the loaded \(Q\)---and therefore the bandwidth and harmonic
-rejection---independently of the resistance ratio. This is why transmitter output
-and antenna-tuner networks are usually \(\pi\) or T: they match \emph{and} set
-selectivity. Higher loaded \(Q\) narrows bandwidth and improves harmonic
-suppression at the cost of higher circulating currents and losses.
+Adding a third element gives a \(\pi\) or T network, which can be viewed as two
+L-networks back to back that meet at an internal \emph{virtual resistance}
+\(R_v\). Choosing \(R_v\) below both terminations sets a loaded \(Q\) of roughly
+\[
+Q_{\text{loaded}}\approx\sqrt{\frac{R_{\max}}{R_v}-1},
+\]
+so \(R_v\) is the extra degree of freedom that lets the designer pick the loaded
+\(Q\)---and therefore the bandwidth and harmonic rejection---independently of the
+resistance ratio. This is why transmitter output and antenna-tuner networks are
+usually \(\pi\) or T: they match \emph{and} set selectivity. Higher loaded \(Q\)
+narrows bandwidth and improves harmonic suppression at the cost of higher
+circulating currents and losses.
 
 \begin{mistakebox}
 Matching is not the same thing as filtering. A network can do both, but the
@@ -145,9 +198,13 @@ For an ideal transformer,
 \qquad
 Z_p=\left(\frac{N_p}{N_s}\right)^2 Z_s.
 \]
-Impedance transforms as the turns ratio \emph{squared}. Core saturation should be
-avoided: a saturated core can no longer support proportional flux change, causing
-distortion, heating, and loss of the intended impedance transformation.
+Impedance transforms as the turns ratio \emph{squared}. \textbf{Core saturation}
+should be avoided: every magnetic core has a maximum flux density it can carry,
+and once the drive pushes it near that limit the core's permeability collapses, so
+the inductance drops and the winding current shoots up. The result is distortion,
+heating, and loss of the intended impedance transformation---the reason
+transformers and inductors are rated for a maximum voltage-time product (or power)
+at a given frequency.
 
 \section{Worked Example: Quarter-Wave and L-Network}
 To match a real \(\SI{200}{\ohm}\) load to a \(\SI{50}{\ohm}\) system with a
