@@ -1,7 +1,13 @@
-.PHONY: book cheat-sheet all clean
+.PHONY: book cheat-sheet all figures clean
 
 LATEXMK=latexmk
 LATEXFLAGS=-pdf -interaction=nonstopmode -halt-on-error
+
+# Regenerate the Python-generated data plots (Bode, root locus, pole-zero,
+# transient, filter families). Committed PDFs mean the LaTeX build does not
+# require Python; run this only after editing a figure script.
+figures:
+	$(MAKE) -C figures
 
 book:
 	$(LATEXMK) $(LATEXFLAGS) main.tex

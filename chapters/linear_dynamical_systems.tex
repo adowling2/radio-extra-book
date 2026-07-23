@@ -1,0 +1,256 @@
+\chapter{First- and Second-Order Linear Dynamical Systems}
+\label{ch:linsys}
+Before any specific circuit, this chapter reviews the linear-systems machinery
+that the rest of the book uses. Everything here is generic---it is the same
+mathematics whether the system is an RC filter, a mechanical suspension, or a
+chemical reactor. Part~III then shows that each amateur-radio circuit is one of
+these systems wearing electrical clothing. The payoff of doing it generically
+first is that the circuits become instances of a pattern you already know, rather
+than a pile of separate formulas.
+
+\section{Four Equivalent Views of a Linear System}
+A linear time-invariant system can be written four equivalent ways, and moving
+between them is the central skill of this book:
+\begin{enumerate}
+\item a \textbf{differential equation} relating output \(y(t)\) to input \(u(t)\);
+\item a \textbf{state-space model} \(\dot{\state}=A\state+Bu,\; y=C\state+Du\);
+\item a \textbf{transfer function} \(G(s)=Y(s)/U(s)\) in the Laplace variable
+\(s\);
+\item a \textbf{frequency response} \(G(\jj\omega)\), the transfer function on the
+imaginary axis.
+\end{enumerate}
+
+\begin{controlsbox}
+\textbf{Refresher: how the four views connect.} Taking the Laplace transform of
+the state-space model (zero initial conditions) and eliminating \(\state\) gives
+\[
+G(s)=C\,(sI-A)^{-1}B+D .
+\]
+The \emph{poles} of \(G\) are the eigenvalues of \(A\); they are the system's
+natural modes. Setting \(s=\jj\omega\) samples the response to a steady sinusoid
+of frequency \(\omega\). So the eigenvalues you compute for stability, the poles
+you read on an s-plane, and the peaks you see on a Bode plot are all the same
+numbers viewed differently.
+\end{controlsbox}
+
+\section{First-Order Systems}
+The canonical first-order system has one state and one time constant \(\tau\):
+\[
+\tau\,\dot{y}+y=K\,u
+\qquad\Longleftrightarrow\qquad
+\dot{x}=-\frac{1}{\tau}x+\frac{K}{\tau}u,\quad y=x .
+\]
+Its single pole is real and negative,
+\[
+G(s)=\frac{K}{\tau s+1},
+\qquad
+s_{\text{pole}}=-\frac{1}{\tau}.
+\]
+
+\subsection{Time-Domain View: the Step Response}
+For a unit step input the output rises exponentially to its final value,
+\[
+y(t)=K\bigl(1-\ee^{-t/\tau}\bigr).
+\]
+The time constant \(\tau\) is the natural clock of the system:
+after one \(\tau\) the response has covered \(1-\ee^{-1}\approx 63.2\%\) of the
+way, and after about \(5\tau\) it is settled for practical purposes
+(\cref{fig:step1}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{step_first_order}
+\caption{First-order step response. One time constant reaches \(63.2\%\); five
+time constants are effectively settled.}
+\label{fig:step1}
+\end{figure}
+
+\subsection{Frequency-Domain View}
+On the imaginary axis,
+\[
+G(\jj\omega)=\frac{K}{1+\jj\omega\tau},
+\qquad
+|G|=\frac{K}{\sqrt{1+(\omega\tau)^2}},
+\qquad
+\angle G=-\tan^{-1}(\omega\tau).
+\]
+The magnitude is flat until the \emph{corner frequency}
+\(\omega_c=1/\tau\), then rolls off at \(-\SI{20}{\decibel}\) per decade; the
+phase slides from \(0^\circ\) to \(-90^\circ\), passing \(-45^\circ\) at the
+corner (\cref{fig:bode1}). The corner frequency is the reciprocal of the time
+constant---the same number that governs the transient.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{bode_first_order_lowpass}
+\caption{First-order low-pass Bode plot. The corner is at \(\omega_c=1/\tau\),
+where the gain is \(-\SI{3}{\decibel}\) and the phase is \(-45^\circ\).}
+\label{fig:bode1}
+\end{figure}
+
+\begin{physicalbox}
+One pole tells the whole first-order story three ways: its distance from the
+origin \(1/\tau\) is the decay rate in the time domain, the corner frequency in
+the frequency domain, and the pole location on the negative real axis in the
+s-plane. A first-order system has no imaginary part, so it can never overshoot or
+ring.
+\end{physicalbox}
+
+\subsection{Worked Example}
+A first-order system has \(K=5\) and \(\tau=\SI{2}{\milli\second}\). Its pole is
+at \(-1/\tau=-\SI{500}{\per\second}\); the step response reaches \(63.2\%\) of
+\(5\) (that is, \(3.16\)) after \SI{2}{\milli\second} and is settled after about
+\SI{10}{\milli\second}. The corner frequency is
+\(f_c=1/(2\pi\tau)\approx\SI{79.6}{\hertz}\).
+
+\section{Second-Order Systems}
+Two independent energy stores give a second-order system, written in
+\emph{standard form} as
+\[
+\ddot{y}+2\zeta\omega_0\,\dot{y}+\omega_0^2\,y=\omega_0^2\,u .
+\]
+The two parameters are the \textbf{undamped natural frequency} \(\omega_0\) and
+the dimensionless \textbf{damping ratio} \(\zeta\). A companion-form state-space
+model uses \(x_1=y\), \(x_2=\dot{y}\):
+\[
+\dot{\state}=
+\mat{0 & 1\\ -\omega_0^2 & -2\zeta\omega_0}\state
++\mat{0\\ \omega_0^2}u,
+\qquad
+y=\mat{1 & 0}\state .
+\]
+The characteristic polynomial and poles are
+\[
+s^2+2\zeta\omega_0 s+\omega_0^2=0,
+\qquad
+s=-\zeta\omega_0\pm\jj\,\omega_0\sqrt{1-\zeta^2}
+=-\zeta\omega_0\pm\jj\,\omega_d,
+\]
+where \(\omega_d=\omega_0\sqrt{1-\zeta^2}\) is the \textbf{damped natural
+frequency}.
+
+\begin{controlsbox}
+\textbf{Refresher: \(\zeta\), \(Q\), and the damping regimes.} The damping ratio
+\(\zeta\) sorts second-order systems into three behaviors:
+\begin{description}
+\item[\(\zeta>1\) overdamped] two real poles; no oscillation, sluggish approach.
+\item[\(\zeta=1\) critically damped] repeated real pole; fastest approach without
+overshoot.
+\item[\(\zeta<1\) underdamped] complex pole pair; overshoot and ringing.
+\end{description}
+Radio work usually states the same information as the \emph{quality factor}
+\[
+Q=\frac{1}{2\zeta},
+\]
+so a lightly damped, high-\(Q\) resonator and an underdamped control system are
+the same object.
+\end{controlsbox}
+
+\subsection{Time-Domain View: Damping You Can See}
+\Cref{fig:step2} shows step responses across the regimes. A heavily damped
+system (\(\zeta\ge1\)) crawls to its final value; a lightly damped one
+overshoots and rings for roughly \(Q\) cycles before settling. The peak
+overshoot of an underdamped step is
+\[
+M_p=\exp\!\left(\frac{-\pi\zeta}{\sqrt{1-\zeta^2}}\right).
+\]
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{step_second_order}
+\caption{Second-order step responses. Low \(\zeta\) (high \(Q\)) overshoots and
+rings; \(\zeta=1\) is the fastest response without overshoot; high \(\zeta\) is
+sluggish.}
+\label{fig:step2}
+\end{figure}
+
+\begin{physicalbox}
+\textbf{Mass--spring--damper analogy.} The standard second-order system is
+exactly a mass \(m\) on a spring \(k\) with a damper \(c\):
+\(m\ddot{x}+c\dot{x}+kx=F\), giving \(\omega_0=\sqrt{k/m}\) and
+\(\zeta=c/(2\sqrt{km})\). Underdamped is a plucked guitar string that rings;
+overdamped is a screen door with a strong closer that eases shut without
+slamming; critically damped is the closer tuned to shut as fast as possible
+without bouncing. The RLC circuit of Part~III is this same system with
+\(L\leftrightarrow m\), \(1/C\leftrightarrow k\), and \(R\leftrightarrow c\).
+\end{physicalbox}
+
+\subsection{The Pole Geometry}
+The underdamped poles lie on a circle of radius \(\omega_0\), because
+\[
+|s|^2=(\zeta\omega_0)^2+\bigl(\omega_0\sqrt{1-\zeta^2}\bigr)^2=\omega_0^2,
+\]
+and the angle \(\theta\) from the negative real axis satisfies
+\(\cos\theta=\zeta\) (\cref{fig:poles2}). The real part \(\zeta\omega_0\) is the
+envelope decay rate; the imaginary part \(\omega_d\) is the ringing frequency.
+Distance from the origin is \(\omega_0\); angle encodes damping.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.56\textwidth]{poles_second_order}
+\caption{Second-order poles for several damping ratios. They ride a circle of
+radius \(\omega_0\); the angle from the negative real axis has
+\(\cos\theta=\zeta\). \(\zeta=0\) sits on the \(\jj\omega\) axis (undamped).}
+\label{fig:poles2}
+\end{figure}
+
+\subsection{Frequency-Domain View: the Resonant Peak}
+Sampling \(G(\jj\omega)\) near \(\omega_0\) brings the evaluation point close to
+the pole, producing a resonant peak whose height grows with \(Q\)
+(\cref{fig:bode2}). The flattest response with no peak occurs at
+\(Q=1/\sqrt{2}\approx0.707\) (the Butterworth value); above it the magnitude
+peaks near \(\omega_0\), and the peak sharpens as the poles approach the
+\(\jj\omega\) axis.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{bode_second_order}
+\caption{Second-order magnitude response. Higher \(Q\) (lower \(\zeta\)) means a
+taller, sharper resonant peak, because the poles sit closer to the \(\jj\omega\)
+axis.}
+\label{fig:bode2}
+\end{figure}
+
+\subsection{Worked Example}
+A second-order system has \(\omega_0=2\pi(\SI{1}{\kilo\hertz})\) and
+\(\zeta=0.1\), so \(Q=1/(2\zeta)=5\). The poles are at
+\[
+s=-\zeta\omega_0\pm\jj\omega_0\sqrt{1-\zeta^2}
+\approx-628\pm\jj\,6250\ \si{\per\second}.
+\]
+The step overshoot is \(M_p=\exp(-\pi\cdot0.1/\sqrt{1-0.01})\approx0.73\), a
+\(73\%\) overshoot, and the resonant peak is about
+\(1/(2\zeta\sqrt{1-\zeta^2})\approx5.0\), or \(\SI{14}{\decibel}\)---consistent
+with the \(Q=5\) curve in \cref{fig:bode2}.
+
+\section{Stability and a First Look at the Root Locus}
+A mode \(\ee^{st}\) decays only if the pole's real part is negative, so a linear
+system is stable exactly when \emph{all poles lie in the left half-plane}. Poles
+on the \(\jj\omega\) axis give sustained oscillation (the boundary an oscillator
+is built to sit on); poles in the right half-plane grow without bound.
+
+When a parameter varies---a resistance, a gain, a feedback fraction---the poles
+move, tracing a \emph{root locus}. \Cref{fig:rootlocus2} shows the canonical
+second-order locus as the damping increases from zero: the poles start on the
+\(\jj\omega\) axis, arc along the circle of radius \(\omega_0\) into the left
+half-plane, meet at \(-\omega_0\) at critical damping, then split and travel
+apart along the negative real axis. \Cref{ch:splane} develops poles, zeros, and
+the root locus in full; the point here is that a single moving pair of poles
+captures the entire range from pure oscillation to sluggish overdamping.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.58\textwidth]{rootlocus_second_order}
+\caption{Root locus of a second-order system as damping increases. Poles begin
+on the \(\jj\omega\) axis (undamped), ride the \(\omega_0\) circle to \(-\omega_0\)
+at critical damping, then separate along the real axis (overdamped).}
+\label{fig:rootlocus2}
+\end{figure}
+
+\begin{exambox}
+The exam never asks for \(\zeta\) or a pole plot. It asks about ringing,
+bandwidth, selectivity, resonance sharpness, and oscillator stability---every one
+of which is a statement about \emph{where the poles are}. Learn the generic
+picture here once, and the RC, RL, and RLC circuits of Part~III become three
+readings of the same diagram.
+\end{exambox}

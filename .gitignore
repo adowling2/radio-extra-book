@@ -1,6 +1,10 @@
 # macOS / editor clutter
 .DS_Store
 
+# Python figure-generation caches
+__pycache__/
+*.pyc
+
 # Large source/reference materials used during conversion.
 # Keep these locally, but do not commit them to the lightweight repo.
 references/
