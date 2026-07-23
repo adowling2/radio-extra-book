@@ -3,6 +3,15 @@ This chapter is the print-and-review version of the book. Later chapters explain
 where the formulas come from and connect them to state-space and
 frequency-domain thinking.
 
+\textbf{Reading these symbols.} Lowercase letters (\(v,i,q\)) are instantaneous
+time-domain values; uppercase (\(V,I\)) are RMS phasors or steady DC values. The
+impedance, time-constant, resonance, decibel, filter, and transmission-line
+quantities below are the exam-essential ones. A handful of symbols---\(\zeta\)
+(damping ratio), \(A\) and \(\beta\) (amplifier forward gain and feedback
+fraction), \(L\) (loop gain), and \(\mathcal{H}\) (total stored energy)---appear
+only to connect the formulas to control theory and are not quantities the exam
+asks you to compute.
+
 \section{Quantities, Units, and Symbols}
 \begin{tabularx}{\textwidth}{@{}L{0.19\textwidth}L{0.13\textwidth}L{0.16\textwidth}Y@{}}
 \toprule
@@ -12,7 +21,7 @@ Charge & \(q,Q\) & \si{\coulomb} & Stored electric quantity. \\
 Current & \(i,I\) & \si{\ampere} & Rate of charge flow, \(i=\dd q/\dd t\). \\
 Voltage & \(v,V\) & \si{\volt} & Energy per unit charge. \\
 Power & \(p,P\) & \si{\watt} & Rate of energy flow. \\
-Energy & \(E,\mathcal{H}\) & \si{\joule} & Stored or dissipated energy. \\
+Energy & \(E,\mathcal{H}\) & \si{\joule} & Stored or dissipated energy; \(\mathcal{H}\) is total stored energy. \\
 Resistance & \(R\) & \si{\ohm} & Opposition to current. \\
 Conductance & \(G\) & \si{\siemens} & Reciprocal resistance, \(G=1/R\). \\
 Capacitance & \(C\) & \si{\farad} & Charge stored per volt. \\
@@ -85,7 +94,8 @@ Z=R+\jj\left(\omega L-\frac{1}{\omega C}\right),
 \qquad
 Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0 R C}.
 \]
-For many narrowband resonant circuits,
+Here \(Q_s\) is the series quality factor (sharpness of resonance). For many
+narrowband resonant circuits the half-power bandwidth \(BW\) is
 \[
 BW\approx \frac{f_0}{Q}.
 \]
@@ -104,7 +114,8 @@ universal definition for every topology.
 \]
 One first-order pole contributes about \(-20~\dB/\mathrm{decade}\); one
 first-order zero contributes about \(+20~\dB/\mathrm{decade}\).
-\(\SI{20}{\decibel/decade}\) is about \(\SI{6}{\decibel/octave}\).
+\(\SI{20}{\decibel/decade}\) is about \(\SI{6}{\decibel/octave}\) (a decade is a
+\(\times10\) frequency ratio; an octave a \(\times2\) ratio).
 
 \begin{mistakebox}
 \(-\SI{3}{\decibel}\) is half power and about \(0.707\) amplitude. It is not
@@ -124,7 +135,8 @@ s^2+2\zeta\omega_0 s+\omega_0^2,
 \]
 with underdamped poles \(s=-\alpha\pm\jj\omega_d\), \(\omega_d=\sqrt{\omega_0^2-\alpha^2}\).
 Distance from the \(\jj\omega\) axis (\(\alpha\)) sets decay rate and bandwidth;
-distance from the origin is \(\omega_0\). For a feedback loop,
+distance from the origin is \(\omega_0\). For a feedback loop (forward gain \(A\),
+feedback fraction \(\beta\)),
 \[
 A_{\mathrm{cl}}=\frac{A}{1+A\beta},
 \qquad
@@ -140,7 +152,8 @@ and oscillation is \(L=-1\), i.e.\ \(|L|=1\), \(\angle L=-180^\circ\) (poles on 
 f_c=\frac{1}{2\pi RC}\quad \text{for a first-order RC cutoff.}
 \]
 An \(n\)-pole filter rolls off near \(-20n\,\si{\decibel}\) per decade. To match
-real \(R_{\text{hi}}>R_{\text{lo}}\) with an L-network,
+real terminations \(R_{\text{hi}}>R_{\text{lo}}\) (the higher and lower resistances)
+with an L-network,
 \[
 Q=\sqrt{\frac{R_{\text{hi}}}{R_{\text{lo}}}-1},
 \qquad
