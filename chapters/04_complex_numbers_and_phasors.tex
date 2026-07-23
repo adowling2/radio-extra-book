@@ -1,43 +1,111 @@
 \chapter{Complex Numbers, Phasors, and Impedance}
-\section{Why Complex Numbers Appear}
-A sinusoid can be represented as the real part of a complex exponential:
-\[
-x(t)=\sqrt{2}\,\Re\{X\ee^{\jj\omega t}\}.
-\]
-The factor \(\sqrt{2}\) appears because this book uses RMS phasor magnitudes by
-default. Differentiation becomes multiplication by \(\jj\omega\):
-\[
-\frac{\dd}{\dd t}\left(X\ee^{\jj\omega t}\right)
-=\jj\omega X\ee^{\jj\omega t}.
-\]
-That one fact turns differential equations into algebra for sinusoidal
-steady-state analysis.
+\label{ch:complex}
+Sinusoidal steady state is where most amateur-radio circuit analysis lives, and
+complex numbers are the tool that makes it easy. This chapter is a self-contained
+refresher: the complex arithmetic, the phasor idea, and the three quantities the
+rest of the book leans on---impedance, admittance, and complex power.
 
-\section{Rectangular and Polar Form}
+\section{Complex Number Refresher}
+A complex number in \textbf{rectangular form} is \(z=a+\jj b\), with real part
+\(a\) and imaginary part \(b\). Addition and subtraction are component-wise:
 \[
-Z=R+\jj X=|Z|\angle\theta,
-\qquad
-|Z|=\sqrt{R^2+X^2},
-\qquad
-\theta=\operatorname{atan2}(X,R).
+(a+\jj b)+(c+\jj d)=(a+c)+\jj(b+d).
 \]
-Rectangular form is natural for adding series impedances. Polar form is natural
-for multiplication, division, and phase interpretation.
+In \textbf{polar form} \(z=r\angle\theta\) with
+\[
+r=\sqrt{a^2+b^2},\qquad \theta=\operatorname{atan2}(b,a),
+\]
+and multiplication and division are easiest there:
+\[
+(r_1\angle\theta_1)(r_2\angle\theta_2)=r_1r_2\angle(\theta_1+\theta_2),
+\qquad
+\frac{r_1\angle\theta_1}{r_2\angle\theta_2}=\frac{r_1}{r_2}\angle(\theta_1-\theta_2).
+\]
+The two forms are joined by \textbf{Euler's formula},
+\(\ee^{\jj\theta}=\cos\theta+\jj\sin\theta\), the bridge between sinusoids and
+complex algebra.
 
 \begin{mistakebox}
-\(\tan^{-1}(X/R)\) alone can put the angle in the wrong quadrant. Use
-\(\operatorname{atan2}(X,R)\) or reason from the signs of both coordinates.
+\(\tan^{-1}(b/a)\) alone can land the angle in the wrong quadrant. Use
+\(\operatorname{atan2}(b,a)\), or reason from the signs of both coordinates.
 \end{mistakebox}
 
-\section{Impedance of R, L, and C}
+\subsection{Worked Conversion}
+Convert \(z=3+\jj4\) to polar: \(r=\sqrt{9+16}=5\),
+\(\theta=\operatorname{atan2}(4,3)\approx53.1^\circ\), so \(z=5\angle53.1^\circ\).
+Going back, \(10\angle{-30^\circ}=10\cos(-30^\circ)+\jj\,10\sin(-30^\circ)
+\approx 8.66-\jj5\). Use rectangular form to add, polar form to multiply.
+
+\section{Why Complex Numbers Appear: Phasors}
+A sinusoid is represented as the real part of a rotating complex exponential:
+\[
+x(t)=\sqrt{2}\,\Re\{X\,\ee^{\jj\omega t}\}.
+\]
+The \(\sqrt{2}\) appears because this book uses RMS phasor magnitudes by default,
+so \(X\) is the RMS phasor. The payoff is that differentiation becomes
+multiplication by \(\jj\omega\):
+\[
+\frac{\dd}{\dd t}\bigl(X\ee^{\jj\omega t}\bigr)=\jj\omega X\ee^{\jj\omega t}.
+\]
+This is the Laplace rule \(\dd/\dd t\to s\) from \cref{ch:linsys} evaluated on the
+imaginary axis \(s=\jj\omega\); it turns the differential equations of a circuit
+into algebra for sinusoidal steady state.
+
+\section{Impedance}
+\textbf{Impedance} is the complex ratio of the voltage phasor to the current
+phasor,
+\[
+Z=\frac{V}{I}=R+\jj X,
+\]
+a frequency-dependent generalization of resistance. Its real part \(R\) is
+resistance (dissipation); its imaginary part \(X\) is \textbf{reactance}
+(energy storage, no dissipation). For the three elements,
 \[
 Z_R=R,\qquad
 Z_L=\jj\omega L,\qquad
 Z_C=\frac{1}{\jj\omega C}=-\jj\frac{1}{\omega C}.
 \]
-An inductor has positive reactance. A capacitor has negative reactance. At low
-frequency, a capacitor's impedance looks large and an inductor's looks small. At
-high frequency, the roles reverse.
+An inductor has positive reactance \(X_L=\omega L\); a capacitor has negative
+reactance \(X_C=1/(\omega C)\). At low frequency a capacitor's impedance is large
+(it blocks DC) and an inductor's is small (it passes DC); at high frequency the
+roles reverse.
+
+\begin{physicalbox}
+\textbf{A chemical-engineering analogy.} Circuits obey the same
+across/through (effort/flow) structure as the hydraulic and thermal systems of
+process dynamics:
+\begin{center}
+\begin{tabularx}{0.92\textwidth}{@{}L{0.26\textwidth}Y@{}}
+\toprule
+Electrical & Process / hydraulic analog \\
+\midrule
+Voltage \(V\) (across) & Pressure or head (driving force) \\
+Current \(I\) (through) & Volumetric flow rate \\
+Resistance \(R\) & Flow resistance (pressure drop per unit flow) \\
+Capacitance \(C\) & Tank capacitance (volume stored per unit head) \\
+Inductance \(L\) & Fluid inertance (inertia opposing flow change) \\
+Impedance \(Z\) & Frequency-domain ``flow resistance'' \\
+\bottomrule
+\end{tabularx}
+\end{center}
+So \emph{impedance} is the generalized flow resistance of a network in the
+frequency domain, and \emph{reactance} is the piece contributed by storage---a
+surge tank or fluid inertia opposes a \emph{change} in flow without dissipating
+energy, storing it and handing it back a quarter cycle later. That energy return,
+not loss, is exactly why reactance shifts phase by \(90^\circ\) instead of
+consuming power.
+\end{physicalbox}
+
+\section{Series and Parallel: Where the RLC Impedance Comes From}
+Impedances in series add, exactly like resistors, because the same current flows
+through each and the voltages sum (KVL). For \(R\), \(L\), \(C\) in series that
+gives the impedance directly:
+\[
+Z=Z_R+Z_L+Z_C=R+\jj\omega L+\frac{1}{\jj\omega C}
+=R+\jj\left(\omega L-\frac{1}{\omega C}\right).
+\]
+The reactance is the \emph{difference} \(\omega L-1/(\omega C)\); it vanishes at
+resonance, a fact \cref{ch:rlc} builds on.
 
 \begin{figure}[htbp]
 \centering
@@ -48,53 +116,87 @@ high frequency, the roles reverse.
       to[C,l=\(C\)] (5.2,0)
       -- (0,0);
 \end{circuitikz}
-\caption{A series RLC circuit whose impedance is \(R+\jj(\omega L-1/\omega C)\).}
+\caption{A series RLC circuit whose impedance
+\(Z=R+\jj(\omega L-1/\omega C)\) is just the sum of the three element
+impedances.}
 \end{figure}
 
-\section{Phasor Lead and Lag}
-For a capacitor, current leads voltage by \(\SI{90}{\degree}\). For an
-inductor, voltage leads current by \(\SI{90}{\degree}\). A positive impedance
-angle means inductive behavior; a negative impedance angle means capacitive
-behavior.
-
-\begin{exambox}
-If an exam question says ``lead'' or ``lag,'' sketch a tiny phasor diagram before
-answering. Most mistakes come from remembering the right \(\SI{90}{\degree}\)
-relationship with the direction reversed.
-\end{exambox}
-
-\section{Admittance}
-Admittance is the reciprocal of impedance:
+\section{Admittance and Susceptance}
+For parallel networks it is easier to work with the reciprocal of impedance, the
+\textbf{admittance}
 \[
-Y=\frac{1}{Z}=G+\jj B.
+Y=\frac{1}{Z}=G+\jj B,
 \]
-It is especially convenient for parallel networks, because admittances add:
+whose real part \(G\) is conductance and imaginary part \(B\) is
+\textbf{susceptance}. Just as series impedances add, \emph{parallel admittances
+add}, because the same voltage appears across each branch and the currents sum
+(KCL):
 \[
 Y_{\mathrm{eq}}=\sum_k Y_k.
 \]
+In the process analogy, admittance is ``flow per unit driving force''---a
+conductance to flow---and parallel pipes add their flow conductances the same way.
+
+\subsection{Worked Example: a Parallel Branch}
+A \(\SI{100}{\ohm}\) resistor is in parallel with a capacitor whose reactance is
+\(\SI{100}{\ohm}\) at the frequency of interest. Their admittances are
+\[
+Y_R=\frac{1}{100}=\SI{0.010}{\siemens},
+\qquad
+Y_C=\frac{1}{-\jj100}=\jj\,\SI{0.010}{\siemens},
+\]
+so \(Y_{\mathrm{eq}}=0.010+\jj0.010=\SI{0.0141}{\siemens}\angle45^\circ\), and the
+parallel impedance is
+\[
+Z_{\mathrm{eq}}=\frac{1}{Y_{\mathrm{eq}}}\approx\SI{70.7}{\ohm}\angle{-45^\circ}
+=50-\jj50\ \Omega.
+\]
+Adding admittances turned a parallel combination into one addition.
+
+\section{Phasor Lead and Lag}
+In a capacitor, current leads voltage by \(90^\circ\) (because
+\(i=C\,\dd v/\dd t\) is proportional to the derivative); in an inductor, voltage
+leads current by \(90^\circ\). A positive impedance angle means net inductive
+behavior; a negative angle means net capacitive behavior.
+
+\begin{exambox}
+If a question says ``lead'' or ``lag,'' sketch a tiny phasor diagram before
+answering. Most mistakes come from recalling the right \(90^\circ\) relationship
+with the direction reversed. Mnemonic: ELI the ICE man---in an inductor (L)
+voltage E leads current I; in a capacitor (C) current I leads voltage E.
+\end{exambox}
 
 \section{Complex Power}
-With RMS phasors and passive sign convention, complex power is
+With RMS phasors and the passive sign convention, complex power uses the
+conjugate of the current:
 \[
-S=VI^*=P+\jj Q.
+S=V I^{*}=P+\jj Q .
 \]
-The complex conjugate matters. Real power \(P\) is average power; reactive power
-\(Q\) represents energy sloshing between fields and sources.
+The real part \(P\) is average power actually dissipated (watts); the imaginary
+part \(Q\) is reactive power (VAR), the energy sloshing back and forth between the
+source and the reactive elements each cycle. The conjugate is what makes \(P\)
+come out as the in-phase product.
 
-\section{Worked Example}
+\subsection{Worked Example: Real and Reactive Power}
+A load draws \(I=2\angle{-30^\circ}\ \si{\ampere}\) (RMS) from
+\(V=120\angle0^\circ\ \si{\volt}\) (RMS)---current lagging, so the load is
+inductive. Then
+\[
+S=VI^{*}=120\angle0^\circ\cdot 2\angle{+30^\circ}=240\angle30^\circ
+=207.8+\jj120\ \mathrm{VA}.
+\]
+So \(P=\SI{207.8}{\watt}\) is dissipated and \(Q=120\,\mathrm{VAR}\) is exchanged with
+the load's reactance. A purely reactive load (\(\pm90^\circ\)) would show
+\(P=0\): it consumes no average power.
+
+\section{Worked Example: Series Reactance}
 Find the impedance of a \(\SI{50}{\ohm}\) resistor in series with
-\(\SI{10}{\micro\henry}\) at \(\SI{7.1}{\mega\hertz}\).
+\(\SI{10}{\micro\henry}\) at \(\SI{7.1}{\mega\hertz}\):
 \[
 \omega=2\pi(7.1\times10^6)=\SI{4.46e7}{\radian\per\second},
 \qquad
-X_L=\omega L=446~\Omega.
+X_L=\omega L\approx\SI{446}{\ohm}.
 \]
-Thus
-\[
-Z=50+\jj 446~\Omega,
-\qquad
-|Z|=\SI{449}{\ohm},
-\qquad
-\theta\approx \SI{83.6}{\degree}.
-\]
-The circuit is strongly inductive.
+Thus \(Z=50+\jj446\ \Omega\), with \(|Z|=\SI{449}{\ohm}\) and
+\(\theta\approx83.6^\circ\)---strongly inductive, since the reactance dwarfs the
+resistance.
