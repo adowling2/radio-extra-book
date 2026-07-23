@@ -1,78 +1,154 @@
 \chapter{RC Circuits}
-\section{Why RC Circuits Matter}
-RC circuits appear as coupling networks, bypass networks, timing circuits, audio
-filters, and detector components. They are first-order systems, so their time
-behavior is governed by one time constant.
+\label{ch:rc}
+RC circuits appear as coupling and bypass networks, timing circuits, audio
+filters, and detector components. An RC circuit is the electrical embodiment of
+the \emph{first-order system} of \cref{ch:linsys}: one energy store, one time
+constant, one real pole. This chapter walks the Part~III recipe end to end.
+
+\section{The Circuit}
+Take a source \(u(t)\) driving a resistor \(R\) in series with a capacitor \(C\),
+with the output taken across the capacitor (\cref{fig:rc-schematic}). The natural
+state variable is the capacitor voltage \(v_C\), because it holds the stored
+energy.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) to[sV,l=\(u(t)\)] (0,2)
+      to[R,l=\(R\),i>=\(i(t)\)] (3,2)
+      to[C,l=\(C\),v=\(v_C(t)\)] (3,0) -- (0,0);
+\draw (3,2) to[short,-o] (4,2) node[right]{$+$};
+\draw (3,0) to[short,-o] (4,0) node[right]{$-$};
+\node at (4.4,1) {\(v_o\)};
+\end{circuitikz}
+\caption{Series RC circuit with the output taken across the capacitor (a
+low-pass filter). Taking the output across the resistor instead gives a
+high-pass filter.}
+\label{fig:rc-schematic}
+\end{figure}
+
+\section{From Schematic to Differential Equation}
+KVL around the loop says the source equals the resistor drop plus the capacitor
+voltage, and the capacitor law relates its current to its rate of voltage change:
+\[
+u(t)=R\,i(t)+v_C(t),
+\qquad
+i(t)=C\frac{\dd v_C}{\dd t}.
+\]
+Substituting the second into the first,
+\[
+\boxed{\,RC\frac{\dd v_C}{\dd t}+v_C=u(t).\,}
+\]
+
+\section{State-Space Form}
+With the single state \(x=v_C\),
+\[
+\dot{x}=-\frac{1}{RC}\,x+\frac{1}{RC}\,u,
+\qquad
+y=x=v_C .
+\]
+There is one state because there is one independent energy store, so there is one
+pole, at \(s=-1/(RC)\).
+
+\section{Matching the Generic First-Order System}
+Compare with the canonical first-order system \(\tau\dot y+y=Ku\) from
+\cref{ch:linsys}. They are identical with
+\[
+\tau=RC,
+\qquad
+K=1,
+\qquad
+s_{\text{pole}}=-\frac{1}{\tau}=-\frac{1}{RC}.
+\]
+Every first-order result from \cref{ch:linsys} now applies with no extra work:
+the step response, the \(63.2\%\) rule, the corner frequency, and the Bode shape.
 
 \section{Transient Response}
-For a capacitor charging through \(R\) from a DC step \(E\),
+For a capacitor charging from a DC step of height \(E\), and for discharge from
+initial voltage \(V_0\),
 \[
-v_C(t)=E\left(1-\ee^{-t/(RC)}\right).
-\]
-For discharge from initial voltage \(V_0\),
-\[
-v_C(t)=V_0\ee^{-t/(RC)}.
-\]
-The time constant is
-\[
-\tau=RC.
-\]
-After one time constant, a charging capacitor has reached about \(63.2\%\) of
-the final value. After about five time constants, it is effectively settled for
-many practical purposes.
-
-\section{State-Space Interpretation}
-\[
-\dot{x}=-\frac{1}{RC}x+\frac{1}{RC}u,
+v_C(t)=E\left(1-\ee^{-t/RC}\right),
 \qquad
-x=v_C.
+v_C(t)=V_0\,\ee^{-t/RC}.
 \]
-The pole is \(-1/(RC)\). The time constant is the inverse magnitude of that
-stable first-order eigenvalue.
+This is exactly the first-order step response of \cref{fig:step1}: after one time
+constant \(\tau=RC\) the capacitor has charged to \(63.2\%\) of \(E\), and after
+about \(5\tau\) it is settled.
 
-\section{Frequency Interpretation}
-For output across the capacitor,
+\section{Frequency Response: Low-Pass and High-Pass}
+The same circuit is a low-pass or a high-pass filter depending on where the
+output is taken:
 \[
-G_C(\jj\omega)=\frac{1}{1+\jj\omega RC}.
+G_C(\jj\omega)=\frac{1}{1+\jj\omega RC}\ \text{(across }C\text{, low-pass)},
+\qquad
+G_R(\jj\omega)=\frac{\jj\omega RC}{1+\jj\omega RC}\ \text{(across }R\text{, high-pass)}.
 \]
-This is a low-pass response. For output across the resistor,
-\[
-G_R(\jj\omega)=\frac{\jj\omega RC}{1+\jj\omega RC}.
-\]
-This is a high-pass response.
+Both share the corner frequency \(\omega_c=1/(RC)\), where the gain is
+\(-\SI{3}{\decibel}\). The low-pass passes slow signals and rolls off high ones
+(\cref{fig:bode1}); the high-pass does the reverse (\cref{fig:rc-highpass}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{bode_first_order_highpass}
+\caption{RC high-pass response (output across \(R\)): \(-\SI{20}{\decibel}\) per
+decade rise below the corner, flat above, phase from \(+90^\circ\) to
+\(0^\circ\).}
+\label{fig:rc-highpass}
+\end{figure}
+
+\section{The Pole and the Root Locus}
+The single pole sits on the negative real axis at \(-1/(RC)\). Changing \(R\) or
+\(C\) slides it along that axis: a larger \(RC\) (slower circuit, lower cutoff)
+moves the pole toward the origin; a smaller \(RC\) moves it left toward faster
+response (\cref{fig:rc-rootlocus}). Because the pole never leaves the real axis,
+an RC circuit cannot overshoot or ring---the first-order signature.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{rootlocus_first_order}
+\caption{Root locus of the RC pole. The single real pole \(-1/(RC)\) slides along
+the negative real axis as the time constant changes; it never becomes complex, so
+there is no ringing.}
+\label{fig:rc-rootlocus}
+\end{figure}
+
+\begin{controlsbox}
+\textbf{Connection.} The RC circuit is the textbook first-order lag. Its cutoff
+frequency, its \(-\SI{20}{\decibel}\)/decade roll-off, and its \(63.2\%\)-per-time-constant
+step are three faces of the single pole at \(-1/\tau\). Cascading RC stages adds
+poles and steepens the roll-off, at the cost of accumulated phase lag---the same
+bookkeeping as adding first-order lags in a control loop.
+\end{controlsbox}
 
 \section{Energy Interpretation}
-\[
-E_C=\frac{1}{2}Cv_C^2.
-\]
-During charging, energy supplied by the source is partly stored in the electric
-field and partly dissipated as heat in the resistor. During discharge, stored
-electric-field energy is dissipated in the resistor.
+The capacitor stores \(E_C=\tfrac12 Cv_C^2\). During charging, source energy
+splits between the electric field and resistive heat; during discharge, the
+stored field energy is dissipated in \(R\). The time constant \(\tau=RC\) is how
+long that energy exchange takes.
 
-\section{Units Check}
 \begin{unitsbox}
 \[
-RC=\si{\second},
-\qquad
-\omega_c=\frac{1}{RC}=\si{\per\second},
-\qquad
+RC=\si{\second},\qquad
+\omega_c=\frac{1}{RC}=\si{\per\second},\qquad
 f_c=\frac{1}{2\pi RC}=\si{\hertz}.
 \]
 \end{unitsbox}
 
-\section{Common Mistakes}
 \begin{mistakebox}
-A capacitor is an open circuit only for DC steady state. During a transient or
-at AC, capacitor current is generally nonzero.
+A capacitor is an open circuit only at DC steady state. During a transient or at
+AC, its current \(i=C\,\dd v_C/\dd t\) is generally nonzero.
 \end{mistakebox}
 
 \section{Worked Example}
-Let \(R=\SI{4.7}{\kilo\ohm}\) and \(C=\SI{100}{\nano\farad}\).
+Let \(R=\SI{4.7}{\kilo\ohm}\) and \(C=\SI{100}{\nano\farad}\). Then
 \[
-\tau=RC=(4.7\times10^3)(100\times10^{-9})
-=\SI{4.70e-4}{\second}.
+\tau=RC=(4.7\times10^3)(100\times10^{-9})=\SI{4.70e-4}{\second},
+\qquad
+f_c=\frac{1}{2\pi\tau}\approx\SI{339}{\hertz}.
 \]
-The cutoff frequency is
-\[
-f_c=\frac{1}{2\pi\tau}\approx \SI{339}{\hertz}.
-\]
+The pole is at \(-1/\tau\approx-\SI{2130}{\per\second}\). Reading the low-pass
+Bode plot (\cref{fig:bode1}) at this corner: signals well below \SI{339}{\hertz}
+pass nearly unattenuated, signals a decade above (\(\sim\!\SI{3.4}{\kilo\hertz}\))
+are down about \SI{20}{\decibel}, and the phase lag is \(45^\circ\) right at the
+corner. In the time domain the same circuit settles a step in roughly
+\(5\tau\approx\SI{2.4}{\milli\second}\).
