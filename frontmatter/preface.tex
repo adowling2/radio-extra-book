@@ -1,19 +1,37 @@
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
-This mini-textbook is a polished LaTeX edition of the supplied Word manuscript
-\emph{Ham Radio Circuit Theory for the Amateur Extra Exam}. The Word document
-remains the authoritative source for the book's content, order, tone, and central
-idea: the same circuit can be understood as a physical object, a set of
-conservation laws, a differential equation, a state-space system, a phasor
-calculation, a frequency response, and an energy balance.
+This book teaches the circuit theory behind the Amateur Extra exam from the
+perspective of a control engineer. The intended reader already knows differential
+equations, eigenvalues, and state-space systems, and has at least a rusty
+acquaintance with classical frequency-domain ideas---poles and zeros, Bode plots,
+and the root locus. A chemical, mechanical, electrical, or systems engineer
+returning to circuits after years away is exactly the audience. Such a reader does
+not want to memorize exam answers; they want to \emph{see} each radio circuit as a
+dynamical system: to write its differential equation, cast it in state-space form,
+locate its poles, and read its Bode and root-locus plots. The organizing idea of
+the book is that one circuit can be understood as a physical object, a set of
+conservation laws, a differential equation, a state-space system, a
+phasor/frequency response, and an energy balance---and that these views must
+agree.
 
-The intended reader is an engineer who already knows conservation laws,
-differential equations, eigenvalues, state-space systems, and classical
-frequency-response ideas, but wants those tools reconnected to amateur-radio
-circuit questions. Laplace transforms and state-space models are used as bridges
-to familiar engineering language. They are not presented as calculations the
-Amateur Extra exam directly asks the reader to perform.
+The book is in three parts. Part~I is a compact, exam-ready reference. Part~II
+reviews, generically, the mathematics and control theory the rest of the book
+leans on: complex numbers and phasors, first- and second-order linear dynamical
+systems, poles, zeros, and the s-plane, and frequency response. Part~III then
+builds each amateur-radio circuit up as an instance of that generic machinery,
+one circuit at a time. Laplace transforms and state-space models appear
+throughout as bridges to familiar engineering language; they are not calculations
+the Amateur Extra exam directly asks the reader to perform.
 
-Reference PDFs in the project were used only as supporting checks for topic
-coverage, terminology, formulas, and historical question-pool alignment. Their
-prose, questions, answer choices, and figures were not copied.
+This is an independent educational study guide. It is not affiliated with,
+endorsed by, or sponsored by the ARRL, NCVEC, or the FCC. Its worked practice is
+anchored to the current (2024--2028) Amateur Extra question pool, but question
+identifiers and wording change each cycle, so final preparation should be checked
+against the official current pool and the current FCC rules.
+
+Several references informed the book's coverage and terminology: the \emph{ARRL
+Extra Class License Manual}, the NCVEC Element~4 question pool as published at
+HamExam.org, and earlier study guides including Dan Romanchik's (KB6NU) and
+others. These were used only as checks for topic coverage, terminology, and
+formulas; their prose, questions, answer choices, and figures were not copied.
+Full citations appear in the Bibliography.
