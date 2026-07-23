@@ -7,6 +7,35 @@ a status box.
 
 ---
 
+## Progress log
+
+**Done (committed on `main`... actually on working branch; see git log):**
+- Figure pipeline: Python/matplotlib scripts in `figures/src/`, committed PDFs,
+  `make figures`. Answers the "how were plots generated / show code" comments
+  (C25) permanently.
+- Three-part structure live in `main.tex` (Part I reference · Part II math &
+  control · Part III circuits · Part IV practice).
+- NEW Part II chapter: *First- and Second-Order Linear Dynamical Systems*
+  (generic four views, step/Bode/pole/root-locus figures). [T-items backbone]
+- Ch 6 → short *four-views framework* intro opening Part III (S-absorb).
+- RC, RL, RLC rewritten to the full template (schematic → ODE → state-space →
+  generic-system match → transient/Bode/root-locus → control/energy → worked
+  example). [C20,C22,C28–C33,C38–C45,C47–C49; T1–T3,T6–T9 for these]
+- Front matter: S1 (title), S2–S5 (preface rewrite + scope-note merge).
+- Structural moves: complex-numbers (S8) and s-plane (S9) now in Part II.
+
+**Still pending (next sessions):**
+- Part II: enrich Complex Numbers chapter (absorb App C = S7; ChE analogies
+  C11/C13/C15; worked examples C10/C16/C17). Generic rewrites + de-dup of the
+  s-plane and Bode chapters (C26,C27; fix stale "resonance chapter" forward-refs).
+- Part III remaining chapters to the template: Resistive (C34–C37), Filters
+  (C50–C57, incl. all-families illustration), Active/Feedback (C58–C60),
+  Transmission Lines (C61).
+- Cheat sheet self-containment: symbol legend + definitions (C1–C8).
+- S6 notation typography (j upright vs italic) — needs your call.
+
+---
+
 ## 0. Overarching direction (from your voice note)
 
 **Reorganize into three parts:**
