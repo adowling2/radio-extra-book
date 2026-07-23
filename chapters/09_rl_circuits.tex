@@ -1,61 +1,107 @@
 \chapter{RL Circuits}
-\section{Why RL Circuits Matter}
-Inductors appear in RF chokes, tuned circuits, filters, relays, transformers,
-and antenna loading coils. An RL circuit is the current-domain sibling of the RC
-circuit.
+\label{ch:rl}
+Inductors appear in RF chokes, tuned circuits, filters, relays, transformers, and
+antenna loading coils. An RL circuit is the current-domain sibling of the RC
+circuit: it is the same \emph{first-order system} of \cref{ch:linsys}, but now the
+natural state is the inductor current \(i_L\), which holds the stored magnetic
+energy.
+
+\section{The Circuit}
+A source \(u(t)\) drives a resistor \(R\) in series with an inductor \(L\)
+(\cref{fig:rl-schematic}). Taking the output across the resistor gives a low-pass
+response; across the inductor, a high-pass response.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) to[sV,l=\(u(t)\)] (0,2)
+      to[L,l=\(L\),i>=\(i(t)\)] (3,2)
+      to[R,l=\(R\),v=\(v_R\)] (3,0) -- (0,0);
+\draw (3,2) to[short,-o] (4,2) node[right]{$+$};
+\draw (3,0) to[short,-o] (4,0) node[right]{$-$};
+\node at (4.35,1) {\(v_o\)};
+\end{circuitikz}
+\caption{Series RL circuit with the output across the resistor (low-pass in the
+current sense). The state variable is the inductor current \(i(t)\).}
+\label{fig:rl-schematic}
+\end{figure}
+
+\section{From Schematic to Differential Equation}
+KVL gives the source as the sum of the inductor and resistor voltages, and the
+inductor law relates its voltage to its rate of current change:
+\[
+u(t)=L\frac{\dd i}{\dd t}+R\,i(t)
+\qquad\Longleftrightarrow\qquad
+\boxed{\,\frac{L}{R}\frac{\dd i}{\dd t}+i=\frac{1}{R}\,u(t).\,}
+\]
+
+\section{State-Space Form and the Generic Match}
+With the single state \(x=i\),
+\[
+\dot{x}=-\frac{R}{L}\,x+\frac{1}{L}\,u .
+\]
+Comparing with \(\tau\dot y+y=Ku\) from \cref{ch:linsys},
+\[
+\tau=\frac{L}{R},
+\qquad
+K=\frac{1}{R},
+\qquad
+s_{\text{pole}}=-\frac{R}{L}=-\frac{1}{\tau}.
+\]
+It is the same first-order system as the RC circuit, with the time constant
+\(L/R\) in place of \(RC\). Note the duality: RC stores energy in a voltage and
+its time constant grows with \(R\); RL stores energy in a current and its time
+constant \emph{shrinks} with \(R\).
 
 \section{Transient Response}
-For a DC step \(E\) applied to a series RL circuit,
+For a DC step of height \(E\), and for decay from an initial current \(I_0\),
 \[
-i(t)=\frac{E}{R}\left(1-\ee^{-Rt/L}\right).
+i(t)=\frac{E}{R}\left(1-\ee^{-Rt/L}\right),
+\qquad
+i(t)=I_0\,\ee^{-Rt/L}.
 \]
-For decay from initial current \(I_0\),
-\[
-i(t)=I_0\ee^{-Rt/L}.
-\]
-The time constant is
-\[
-\tau=\frac{L}{R}.
-\]
-Inductor current cannot jump instantaneously under finite voltage.
+This is again the first-order step response of \cref{fig:step1}, read as current:
+after one time constant \(\tau=L/R\) the current has reached \(63.2\%\) of its
+final value. Inductor current cannot jump under finite voltage---the dual of the
+capacitor's continuous voltage.
 
-\section{State-Space Interpretation}
-With \(x=i\),
-\[
-\dot{x}=-\frac{R}{L}x+\frac{1}{L}u.
-\]
-The eigenvalue is \(-R/L\), and the time constant is \(L/R\).
+\section{Frequency Response and the Root Locus}
+The inductor impedance is \(Z_L=\jj\omega L\), which grows with frequency, so an
+inductor opposes rapid current changes and looks like a short at DC. Output across
+\(R\) is low-pass (\cref{fig:bode1}); across \(L\) it is high-pass
+(\cref{fig:rc-highpass}), with corner \(\omega_c=R/L\). The single pole
+\(-R/L\) rides the negative real axis (\cref{fig:rc-rootlocus}); as \(R\)
+increases the pole moves \emph{left} (faster), the mirror of the RC case.
 
-\section{Frequency Interpretation}
-\[
-Z_L=\jj\omega L.
-\]
-At high frequency the inductor's impedance is large, so inductors tend to oppose
-rapid changes in current. At DC steady state an ideal inductor behaves like a
-short circuit.
+\begin{controlsbox}
+\textbf{Connection.} RC and RL are the two first-order lags of circuit theory.
+Same pole structure, same Bode shape, same step response---only the state
+variable (voltage vs current) and the direction of the \(R\)-dependence differ.
+Learn one and you have both.
+\end{controlsbox}
 
 \section{Energy Interpretation}
-\[
-E_L=\frac{1}{2}Li^2.
-\]
-The magnetic field stores energy when current flows. When current decays, that
-energy must go somewhere, which is why interrupting inductive current can create
-large voltages.
+The inductor stores \(E_L=\tfrac12 Li^2\) in its magnetic field. When current is
+interrupted, that energy must go somewhere, which is why breaking an inductive
+current can produce large voltage spikes (the reason for flyback diodes and
+snubbers).
 
 \begin{exambox}
 Remember the natural state: capacitor voltage and inductor current. That one
-sentence explains which quantity is continuous and which differential equation
-you should write.
+sentence tells you which quantity is continuous and which differential equation
+to write.
 \end{exambox}
 
 \section{Worked Example}
 A \(\SI{10}{\micro\henry}\) inductor is in series with a \(\SI{50}{\ohm}\)
-resistor. Then
+resistor. The time constant and pole are
 \[
-\tau=\frac{L}{R}=\frac{10\times10^{-6}}{50}
-=\SI{2.0e-7}{\second}.
+\tau=\frac{L}{R}=\frac{10\times10^{-6}}{50}=\SI{2.0e-7}{\second},
+\qquad
+s_{\text{pole}}=-\frac{R}{L}=-\SI{5e6}{\per\second},
 \]
-At \(\SI{14}{\mega\hertz}\),
-\[
-X_L=2\pi(14\times10^6)(10\times10^{-6})\approx \SI{880}{\ohm}.
-\]
+so the corner frequency is \(f_c=1/(2\pi\tau)\approx\SI{796}{\kilo\hertz}\). At
+\SI{14}{\mega\hertz}---well above the corner---the reactance
+\(X_L=2\pi(14\times10^6)(10\times10^{-6})\approx\SI{880}{\ohm}\) dominates the
+\SI{50}{\ohm} resistor, so the inductor's impedance sets the behavior, exactly as
+the high-pass Bode plot predicts a decade past the corner.

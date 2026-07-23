@@ -1,105 +1,142 @@
-\chapter{RLC Resonance, Damping, and Q}
-\section{Why Resonance Matters}
-Resonance is central to tuned receivers, oscillators, matching networks, traps,
-crystal filters, antenna loading, and selective RF circuits. It is where energy
-exchange between electric and magnetic fields becomes especially efficient.
+\chapter{RLC Circuits: Resonance, Damping, and Q}
+\label{ch:rlc}
+The RLC circuit is central to tuned receivers, oscillators, matching networks,
+traps, crystal filters, and every selective RF stage. With two energy stores---a
+capacitor and an inductor---it is the electrical embodiment of the
+\emph{second-order system} of \cref{ch:linsys}, and everything that chapter said
+about \(\omega_0\), \(\zeta\), damping regimes, pole geometry, and resonant peaks
+applies here directly.
 
-\section{Series RLC Governing Equations}
-For a series RLC circuit,
+\section{The Circuit}
+A source drives \(R\), \(L\), and \(C\) in series (\cref{fig:rlc-schematic}). Two
+independent states carry the stored energy: the capacitor voltage \(v_C\) and the
+inductor current \(i\).
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) to[sV,l=\(u(t)\)] (0,2)
+      to[R,l=\(R\)] (2,2)
+      to[L,l=\(L\),i>=\(i(t)\)] (4,2)
+      to[C,l=\(C\),v=\(v_C\)] (4,0) -- (0,0);
+\end{circuitikz}
+\caption{Series RLC circuit. The two states are the capacitor voltage \(v_C\) and
+the inductor current \(i\), so the system is second order.}
+\label{fig:rlc-schematic}
+\end{figure}
+
+\section{From Schematic to Differential Equation}
+KVL gives \(u=Ri+L\,\dd i/\dd t+v_C\) with \(i=C\,\dd v_C/\dd t\). Eliminating
+\(i\) yields a second-order equation in the capacitor voltage:
 \[
-LC\frac{\dd^2 v_C}{\dd t^2}
-+RC\frac{\dd v_C}{\dd t}
-+v_C=u(t).
+\boxed{\,LC\frac{\dd^2 v_C}{\dd t^2}+RC\frac{\dd v_C}{\dd t}+v_C=u(t).\,}
 \]
-The undamped natural angular frequency is
+
+\section{State-Space Form}
+Using \(x_1=v_C\) and \(x_2=i\),
 \[
-\omega_0=\frac{1}{\sqrt{LC}}.
+\dot{\state}=
+\mat{0 & 1/C\\ -1/L & -R/L}\state
++\mat{0\\ 1/L}u,
+\qquad
+y=v_C=\mat{1 & 0}\state .
 \]
-For a series circuit, a useful damping parameter is
+Two states, two poles---the eigenvalues of the state matrix.
+
+\section{Matching the Generic Second-Order System}
+Divide the ODE by \(LC\) to reach the standard form
+\(\ddot v_C+2\zeta\omega_0\dot v_C+\omega_0^2 v_C=\omega_0^2 u\), giving the
+identifications
 \[
-\alpha=\frac{R}{2L}.
+\omega_0=\frac{1}{\sqrt{LC}},
+\qquad
+\alpha=\frac{R}{2L},
+\qquad
+\zeta=\frac{\alpha}{\omega_0}=\frac{R}{2}\sqrt{\frac{C}{L}},
+\qquad
+Q=\frac{1}{2\zeta}=\frac{\omega_0 L}{R}.
 \]
-The damped natural frequency, when underdamped, is
-\[
-\omega_d=\sqrt{\omega_0^2-\alpha^2}.
-\]
-It is not always equal to \(\omega_0\).
+The poles are \(s=-\alpha\pm\jj\omega_d\) with \(\omega_d=\sqrt{\omega_0^2-\alpha^2}\).
+Now the second-order results of \cref{ch:linsys} transfer wholesale: the step
+responses of \cref{fig:step2} (over/critical/under-damped), the pole geometry of
+\cref{fig:poles2} (on the \(\omega_0\) circle, \(\cos\theta=\zeta\)), and the
+resonant peak of \cref{fig:bode2}. A tuned RF circuit is simply a very
+lightly damped (high-\(Q\)) instance.
 
 \section{Series Resonance}
-The impedance is
+The series impedance is
 \[
 Z=R+\jj\left(\omega L-\frac{1}{\omega C}\right).
 \]
-At resonance,
-\[
-\omega L=\frac{1}{\omega C},
-\qquad
-\omega=\omega_0.
-\]
-The net reactance is zero, the impedance is purely resistive, and current is
-maximum for a fixed applied voltage.
+At \(\omega=\omega_0\) the reactances cancel, \(Z=R\) is purely resistive, and the
+current is maximum for a fixed applied voltage. The reactive voltages across \(L\)
+and \(C\) individually can then exceed the source voltage by a factor of \(Q\).
 
 \section{Parallel Resonance}
-An ideal parallel LC network has admittance
+The dual network---\(L\) and \(C\) in parallel---has admittance
 \[
-Y=\jj\omega C+\frac{1}{\jj\omega L}
-=\jj\left(\omega C-\frac{1}{\omega L}\right).
+Y=\jj\omega C+\frac{1}{\jj\omega L}=\jj\left(\omega C-\frac{1}{\omega L}\right).
 \]
-At resonance, the ideal branch admittances cancel and the input impedance is
-large. Real losses keep the impedance finite.
+At resonance the branch admittances cancel, so the input impedance is high
+(infinite in the lossless ideal); real losses keep it finite. Series resonance is
+a low-impedance notch in \(Z\); parallel resonance is a high-impedance peak.
 
 \section{Q and Bandwidth}
-Quality factor \(Q\) measures sharpness of resonance. For a series RLC circuit,
+The quality factor measures sharpness. For the series circuit
+\(Q_s=\omega_0 L/R=1/(\omega_0 RC)\); for the parallel circuit the loss resistance
+appears in parallel, so \(Q\) inverts to \(Q_p=R/(\omega_0 L)=\omega_0 RC\). In
+both cases the half-power bandwidth is
 \[
-Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0RC}.
+BW\approx\frac{f_0}{Q},
 \]
-For a parallel RLC circuit the roles of \(R\) invert---the loss resistance now
-appears in parallel---so \(Q\) is resistance \emph{divided by} reactance,
-\[
-Q_p=\frac{R}{\omega_0 L}=\omega_0 RC,
-\]
-the reciprocal form of the series expression. For many narrowband resonant
-circuits,
-\[
-BW\approx \frac{f_0}{Q}.
-\]
+and on the Bode magnitude (\cref{fig:bode2}) higher \(Q\) means a taller, narrower
+peak---poles pressed against the \(\jj\omega\) axis.
 
 \begin{mistakebox}
-Do not present one topology's Q formula as universal. Loaded Q, unloaded Q, and
-component Q answer different questions. Loaded Q includes the effect of source
-and load coupling; unloaded Q describes the resonator's internal losses;
-component Q describes the loss of a particular inductor, capacitor, or other
-part.
+Do not treat one topology's \(Q\) formula as universal, and keep the three
+\(Q\)'s straight. \emph{Loaded} \(Q\) includes source and load coupling;
+\emph{unloaded} \(Q\) describes the resonator's own internal losses;
+\emph{component} \(Q\) describes the loss of one inductor or capacitor. They
+answer different questions.
 \end{mistakebox}
 
+\section{Root Locus: Damping Set by R}
+Fix \(L\) and \(C\) and sweep \(R\). Since \(\zeta=\tfrac{R}{2}\sqrt{C/L}\), the
+poles trace the canonical second-order locus of \cref{fig:rootlocus2}: at
+\(R=0\) they sit on the \(\jj\omega\) axis at \(\pm\jj\omega_0\) (undamped,
+infinite \(Q\)); as \(R\) grows they arc along the \(\omega_0\) circle into the
+left half-plane, meet at \(-\omega_0\) when \(R=2\sqrt{L/C}\) (critical), then
+split along the real axis (overdamped). Selectivity, ringing, and damping are the
+one moving pole pair seen three ways.
+
 \section{Energy Balance}
-Using
+With \(\mathcal{H}=\tfrac12 Cv_C^2+\tfrac12 Li^2\), the series energy balance is
 \[
-\mathcal{H}=\frac{1}{2}Cv_C^2+\frac{1}{2}Li^2,
+\frac{\dd\mathcal{H}}{\dd t}=u(t)\,i(t)-R\,i^2(t).
 \]
-the series RLC energy balance is
-\[
-\frac{\dd\mathcal{H}}{\dd t}=u(t)i(t)-Ri^2(t).
-\]
-The inductor and capacitor exchange energy; the resistor dissipates it.
+The inductor and capacitor trade energy back and forth at \(\omega_0\); the
+resistor is the only drain. High \(Q\) means little is lost per cycle, so the
+exchange rings for many cycles---the time-domain face of a sharp resonance.
 
 \begin{controlsbox}
-High \(Q\) means weak damping and narrow bandwidth. In second-order controls
-language, it corresponds to lightly damped modes and a sharper frequency-domain
-peak.
+High \(Q\) \(\Leftrightarrow\) low \(\zeta\) \(\Leftrightarrow\) poles near the
+\(\jj\omega\) axis \(\Leftrightarrow\) narrow bandwidth and long ringing. The tuned
+circuit the exam calls ``selective'' is what a controls course calls ``lightly
+damped.''
 \end{controlsbox}
 
 \section{Worked Example}
-\enlargethispage{3\baselineskip}
-Let \(L=\SI{10}{\micro\henry}\) and \(C=\SI{220}{\pico\farad}\).
+Let \(L=\SI{10}{\micro\henry}\), \(C=\SI{220}{\pico\farad}\), \(R=\SI{5}{\ohm}\).
+Then
 \[
-f_0=\frac{1}{2\pi\sqrt{LC}}
-=\frac{1}{2\pi\sqrt{(10\times10^{-6})(220\times10^{-12})}}
-\approx \SI{3.39}{\mega\hertz}.
+f_0=\frac{1}{2\pi\sqrt{LC}}\approx\SI{3.39}{\mega\hertz},
+\qquad
+Q_s=\frac{\omega_0 L}{R}\approx 42.6,
+\qquad
+\zeta=\frac{1}{2Q}\approx0.0117.
 \]
-If the series resistance is \(\SI{5}{\ohm}\),
-\[
-Q_s=\frac{\omega_0L}{R}
-=\frac{2\pi(3.39\times10^6)(10\times10^{-6})}{5}
-\approx 42.6.
-\]
+The poles sit at \(s=-\alpha\pm\jj\omega_d\approx-2.5\times10^5\pm\jj\,2.13\times10^7\ \si{\per\second}\):
+the real part is about \(1/85\) of the imaginary part, so the poles are pressed
+against the \(\jj\omega\) axis---a very high-\(Q\), sharply peaked circuit that
+rings for roughly \(Q\approx43\) cycles. The half-power bandwidth is
+\(BW\approx f_0/Q\approx\SI{80}{\kilo\hertz}\).
