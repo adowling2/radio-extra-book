@@ -1,46 +1,70 @@
 \chapter{Resistive Networks}
-\section{Why They Matter}
+\label{ch:resistive}
 Resistive networks set bias points, divide voltages, sample currents, terminate
-transmission lines, and model losses. They are the simplest place to practice
-KCL, KVL, and equivalent circuits.
+transmission lines, and model losses. They are the simplest place to practice the
+conservation laws of \cref{ch:foundations}---KCL and KVL---and the equivalent-circuit
+idea, so every rule below is derived from those laws rather than memorized.
 
-\section{Series and Parallel}
-Series resistors carry the same current:
+\section{Series and Parallel from KCL and KVL}
+\textbf{Series} resistors carry the \emph{same current} \(I\). KVL sums their
+voltages, so
 \[
-R_{\mathrm{eq}}=R_1+R_2+\cdots.
+V=IR_1+IR_2+\cdots=I\sum_k R_k
+\quad\Longrightarrow\quad
+R_{\mathrm{eq}}=\sum_k R_k .
 \]
-Parallel resistors share the same voltage:
+\textbf{Parallel} resistors share the \emph{same voltage} \(V\). KCL sums their
+currents, so
 \[
-\frac{1}{R_{\mathrm{eq}}}=\frac{1}{R_1}+\frac{1}{R_2}+\cdots.
+I=\frac{V}{R_1}+\frac{V}{R_2}+\cdots=V\sum_k\frac{1}{R_k}
+\quad\Longrightarrow\quad
+\frac{1}{R_{\mathrm{eq}}}=\sum_k\frac{1}{R_k},
+\qquad
+R_{\mathrm{eq}}=\frac{R_1R_2}{R_1+R_2}\ \text{(two resistors)}.
 \]
-For two resistors,
-\[
-R_{\mathrm{eq}}=\frac{R_1R_2}{R_1+R_2}.
-\]
+Series adds resistances; parallel adds conductances. That single distinction---same
+current vs.\ same voltage---is the whole idea.
 
 \section{Voltage and Current Dividers}
-For an unloaded voltage divider,
+A voltage divider is just two series resistors read across one of them
+(\cref{fig:divider}). The same current \(I=V_i/(R_1+R_2)\) flows through both, so
+the output taken across \(R_2\) is
 \[
-V_o=V_i\frac{R_2}{R_1+R_2}.
+V_o=IR_2=V_i\frac{R_2}{R_1+R_2}.
 \]
-For two parallel resistors fed by total current \(I\),
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) to[V,l=\(V_i\)] (0,3)
+      to[R,l=\(R_1\)] (2.5,3)
+      to[R,l=\(R_2\),v=\(V_o\)] (2.5,0) -- (0,0);
+\draw (2.5,3) to[short,-o] (3.5,3) node[right]{$+$};
+\draw (2.5,0) to[short,-o] (3.5,0) node[right]{$-$};
+\end{circuitikz}
+\caption{Voltage divider: the output across \(R_2\) is
+\(V_o=V_i R_2/(R_1+R_2)\).}
+\label{fig:divider}
+\end{figure}
+
+Dually, current entering two parallel resistors splits \emph{inversely} with
+resistance,
 \[
-I_1=I\frac{R_2}{R_1+R_2},
-\qquad
-I_2=I\frac{R_1}{R_1+R_2}.
+I_1=I\frac{R_2}{R_1+R_2},\qquad I_2=I\frac{R_1}{R_1+R_2},
 \]
-Current divides inversely with resistance.
+so more current takes the lower-resistance branch.
 
 \section{Thevenin and Norton Equivalents}
-Any linear one-port made of sources and resistors can be represented by a
-Thevenin source \(V_{Th}\) in series with \(R_{Th}\), or a Norton source \(I_N\)
-in parallel with \(R_N\):
+Any linear one-port of sources and resistors looks, from its terminals, like a
+single Thevenin source \(V_{Th}\) in series with \(R_{Th}\), or equivalently a
+Norton source \(I_N\) in parallel with \(R_N\) (\cref{fig:thevenin}):
 \[
-R_N=R_{Th},
-\qquad
-I_N=\frac{V_{Th}}{R_{Th}}.
+R_N=R_{Th},\qquad I_N=\frac{V_{Th}}{R_{Th}}.
 \]
-Thevenin and Norton models are especially useful when a load changes.
+This matters in radio because a receiver input, an antenna, an amplifier stage, or
+a test instrument is usually characterized by exactly this terminal
+model---one source and one impedance---so you can predict how it behaves when a
+different load or stage is connected without re-analyzing the whole circuit.
 
 \begin{figure}[htbp]
 \centering
@@ -57,35 +81,38 @@ Thevenin and Norton models are especially useful when a load changes.
 \draw (9,0) to[short,-o] (10,0);
 \end{circuitikz}
 \caption{Equivalent Thevenin and Norton one-port descriptions.}
+\label{fig:thevenin}
 \end{figure}
 
 \section{Power Transfer and Matching}
-For a purely resistive Thevenin source, maximum power transfer occurs when
+For a purely resistive Thevenin source, maximum power reaches the load when
 \[
-R_L=R_{Th}.
+R_L=R_{Th},
 \]
-For AC with complex impedances, maximum real power transfer uses the complex
-conjugate match:
-\[
-Z_L=Z_S^*.
-\]
+and for complex impedances the maximum-real-power condition is the conjugate match
+\(Z_L=Z_S^{*}\). This is why RF systems are built around a common reference
+impedance: matching the source, line, load, and instruments to (typically)
+\(\SI{50}{\ohm}\) delivers the most power to the antenna and, as \cref{ch:lines}
+shows, minimizes reflections on the feed line.
 
 \begin{exambox}
-In RF systems, \(\SI{50}{\ohm}\) is a common reference impedance. Matching does
-not mean all impedances in nature are \(\SI{50}{\ohm}\); it means the system has
-been designed so sources, lines, loads, and measuring instruments interact in a
-predictable way.
+\(\SI{50}{\ohm}\) is a design convention, not a law of nature. Matching means the
+system has been arranged so sources, lines, loads, and measuring instruments
+interact predictably---maximum power transfer and minimum reflection---not that
+every impedance is \(\SI{50}{\ohm}\).
 \end{exambox}
 
 \section{Worked Example}
 A \(\SI{12}{\volt}\) source feeds \(R_1=\SI{2.2}{\kilo\ohm}\) on top and
-\(R_2=\SI{1.0}{\kilo\ohm}\) to ground. The unloaded output is
+\(R_2=\SI{1.0}{\kilo\ohm}\) to ground (the topology of \cref{fig:divider}). The
+unloaded output and the Thevenin resistance seen by a load are
 \[
-V_o=12\frac{1.0}{2.2+1.0}=\SI{3.75}{\volt}.
+V_o=12\frac{1.0}{2.2+1.0}=\SI{3.75}{\volt},
+\qquad
+R_{Th}=R_1\parallel R_2=\frac{(2.2)(1.0)}{2.2+1.0}\,\si{\kilo\ohm}
+\approx\SI{0.688}{\kilo\ohm}.
 \]
-The Thevenin resistance seen by the load is
-\[
-R_{Th}=R_1\parallel R_2
-=\frac{(2.2)(1.0)}{2.2+1.0}\,\si{\kilo\ohm}
-=\SI{0.688}{\kilo\ohm}.
-\]
+So to any load, this divider looks like a \(\SI{3.75}{\volt}\) source behind
+\(\SI{688}{\ohm}\)---and a load comparable to \(\SI{688}{\ohm}\) will noticeably
+pull the output down, which is why divider outputs are buffered before driving a
+real load.
