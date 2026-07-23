@@ -1,17 +1,33 @@
 \chapter*{How to Use This Book}
 \addcontentsline{toc}{chapter}{How to Use This Book}
-Start with the cheat sheet if you are close to the exam and need a compact
-formula review. Then read the explanatory chapters in order if you want the
-engineering story behind the formulas. The recurring pattern is:
+The book is organized in four parts, and how you read them depends on your goal:
+\begin{description}
+\item[Part I --- Exam-Ready Reference] a compact cheat sheet. If the exam is
+close and you only need a formula refresher, this part (with the practice in
+Part~IV) is enough.
+\item[Part II --- Mathematical and Control-Theory Foundations] the generic
+toolkit: complex numbers and phasors; first- and second-order linear dynamical
+systems (Laplace, block diagrams, feedback); poles, zeros, and the s-plane; and
+Bode plots. Read this if you want to \emph{understand} rather than memorize.
+\item[Part III --- The Circuits] each amateur-radio circuit built up as an
+instance of the Part~II toolkit. This is where the understanding pays off.
+\item[Part IV --- Practice and Study] worked examples and reasoning through real
+question-pool items.
+\end{description}
+
+The engineering path is to read Part~II, then Part~III. Each circuit chapter in
+Part~III follows the same recipe:
 \begin{enumerate}
-\item identify what is conserved;
-\item choose the natural energy-storage variables;
-\item write the differential equation or state model;
-\item convert to phasors for sinusoidal steady state;
-\item interpret the same result as energy storage, dissipation, gain, phase, or
-impedance.
+\item draw the schematic and name the energy-storage state variables;
+\item apply KCL/KVL and the element laws to get the differential equation;
+\item write the state-space model and read off the poles;
+\item match it to the generic first- or second-order system of Part~II;
+\item interpret the frequency response (Bode) and pole motion (root locus);
+\item close with the energy balance and a worked example.
 \end{enumerate}
 
-The sidebars separate exam-level facts from controls and energy interpretations.
-For quick review, read the \emph{Exam Relevance}, \emph{Common Mistake}, and
-\emph{Key Equations} sections first.
+Throughout, colored sidebars separate the layers: \emph{Exam Relevance} and
+\emph{Common Mistake} for exam-level facts, and \emph{Controls Connection},
+\emph{Physical Insight}, and \emph{Energy Insight} for the deeper interpretation.
+For a fast review, read the \emph{Exam Relevance} and \emph{Common Mistake} boxes
+first.

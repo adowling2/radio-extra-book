@@ -1,45 +1,145 @@
-\chapter{The s-Plane: Poles, Zeros, and Natural Modes}
+\chapter{Frequency Response, Bode, and the s-Plane}
 \label{ch:splane}
-\section{One Picture Behind Every View}
-The linear-systems chapter introduced poles as the eigenvalues and natural modes
-of a system. This chapter makes the \emph{s-plane}---the complex plane in which
-those poles live---the single diagram that ties the views together, and it adds
-the other half of the picture: \emph{zeros}. Where poles say how a system
-resonates and rings, zeros say which frequencies it blocks. Nothing here is a
-calculation the exam asks you to perform; it is the mental model that turns the
-exam's vocabulary---selectivity, bandwidth, ringing, stability, traps---into one
-idea.
+\label{ch:bode}
+\Cref{ch:linsys} built first- and second-order systems in the time and
+state-space view. This chapter is their frequency and complex-plane companion:
+how the same systems respond to steady sinusoids (the Bode plot), and where their
+behavior lives in the complex plane (poles, zeros, and the root locus). These are
+the two classical design tools---Bode and root locus---and both are just the
+transfer function \(G(s)\) read in a particular way.
+
+\section{What a Bode Plot Shows}
+A Bode plot is a pair of graphs against logarithmic frequency,
+\[
+20\log_{10}|G(\jj\omega)|
+\quad\text{(magnitude, in dB)},
+\qquad
+\angle G(\jj\omega)
+\quad\text{(phase)}.
+\]
+The magnitude curve shows gain or attenuation; the phase curve shows lead or lag.
+Frequency is logarithmic, so equal ratios take equal space: a \emph{decade} is a
+\(\times 10\) ratio and an \emph{octave} is a \(\times 2\) ratio, and
+\(\SI{20}{\decibel}\)/decade \(\approx\SI{6}{\decibel}\)/octave. The frequency
+response is the transfer function of \cref{ch:linsys} evaluated on the imaginary
+axis, \(s=\jj\omega\).
+
+\section{First-Order Response}
+The first-order low-pass \(G(s)=1/(1+\tau s)\) has
+\[
+|G|=\frac{1}{\sqrt{1+(\omega\tau)^2}},
+\qquad
+\angle G=-\tan^{-1}(\omega\tau).
+\]
+The magnitude is flat until the \emph{corner frequency} \(\omega_c=1/\tau\), then
+rolls off at \(-\SI{20}{\decibel}\) per decade; the phase slides from \(0^\circ\)
+to \(-90^\circ\), passing \(-45^\circ\) at the corner (\cref{fig:bode1}). The
+corner is the same \(1/\tau\) that set the time constant in \cref{ch:linsys}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{bode_first_order_lowpass}
+\caption{First-order low-pass Bode plot. The corner is at \(\omega_c=1/\tau\),
+where the gain is \(-\SI{3}{\decibel}\) and the phase is \(-45^\circ\).}
+\label{fig:bode1}
+\end{figure}
+
+\section{Building the Sketch from Poles and Zeros}
+A Bode magnitude plot can be sketched by hand from the pole and zero locations,
+because each contributes a straight-line asymptote that adds to the others:
+\begin{itemize}
+\item Start at the low-frequency gain (the DC value \(|G(0)|\)).
+\item At each \textbf{pole} corner, bend the slope \emph{down} by
+\(\SI{20}{\decibel}\) per decade and subtract up to \(90^\circ\) of phase.
+\item At each \textbf{zero} corner, bend the slope \emph{up} by
+\(\SI{20}{\decibel}\) per decade and add up to \(90^\circ\) of phase.
+\item A corner sits at the frequency equal to that pole's or zero's distance from
+the origin; an \(n\)-pole low-pass therefore rolls off at about
+\(-20n\,\si{\decibel}\) per decade far above cutoff.
+\end{itemize}
+The exact curve rounds the corners---down \(\SI{3}{\decibel}\) at a first-order
+pole, and peaking up at a lightly damped second-order pair (next section)---but
+the asymptotes get the shape right.
+
+\section{Second-Order Response: the Resonant Peak}
+Sampling \(G(\jj\omega)\) near \(\omega_0\) brings the evaluation point close to
+the pole pair, producing a resonant peak whose height grows with \(Q\)
+(\cref{fig:bode2}). The flattest response with no peak occurs at
+\(Q=1/\sqrt{2}\approx0.707\) (the Butterworth value); above it the magnitude
+peaks near \(\omega_0\) by a factor of about \(Q\), and the peak sharpens as the
+poles approach the \(\jj\omega\) axis.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{bode_second_order}
+\caption{Second-order magnitude response. Higher \(Q\) (lower \(\zeta\)) means a
+taller, sharper resonant peak, because the poles sit closer to the \(\jj\omega\)
+axis.}
+\label{fig:bode2}
+\end{figure}
+
+\section{Reading a Circuit off the Plot}
+Given a measured or computed Bode plot, four features tell you what the circuit
+does:
+\begin{description}
+\item[Passband and cutoff] the flat region is the passband; the
+\(-\SI{3}{\decibel}\) frequency (magnitude \(1/\sqrt2\)) is the cutoff or corner.
+\item[Roll-off slope] the far-out slope gives the order: \(-20n\,\si{\decibel}\)
+per decade means \(n\) poles. Steeper skirts reject out-of-band signals harder.
+\item[Resonant peak] a bump near \(\omega_0\) signals a high-\(Q\) pole pair; its
+height grows with \(Q\) and its \(-\SI{3}{\decibel}\) width is the bandwidth
+\(BW\approx f_0/Q\).
+\item[Phase] the phase slope near a corner flags how much lead or lag the stage
+adds---the quantity that governs stability once the stage sits inside a feedback
+loop (\cref{ch:linsys}).
+\end{description}
+
+\section{The s-Plane: Poles, Zeros, and Stability}
+The Bode plot samples \(G(s)\) on the imaginary axis; the s-plane shows the whole
+picture---where \(G\) blows up (poles) and vanishes (zeros) across the complex
+plane \(s=\sigma+\jj\omega\).
 
 \begin{controlsbox}
-\textbf{Refresher: poles and zeros.} Write a transfer function as a ratio of
-polynomials in \(s=\sigma+\jj\omega\),
-\[
-G(s)=\frac{N(s)}{D(s)}.
-\]
-The \emph{poles} are the roots of the denominator \(D(s)\); the \emph{zeros} are
-the roots of the numerator \(N(s)\). Poles are where \(G\) blows up (the system's
-natural modes, equal to the eigenvalues of \(A\)); zeros are where \(G\) vanishes
-(frequencies the system transmits as zero). Evaluating on the imaginary axis,
-\(G(\jj\omega)\), gives the frequency response: you slide \(s\) up the
-\(\jj\omega\) axis and read off gain and phase, passing near poles (peaks) and
-near zeros (nulls).
+\textbf{Refresher: poles and zeros.} Write \(G(s)=N(s)/D(s)\). The \emph{poles}
+are the roots of \(D\) (the natural modes, equal to the eigenvalues of \(A\)); the
+\emph{zeros} are the roots of \(N\) (frequencies transmitted as zero). An unforced
+mode evolves as \(\ee^{s_i t}\) with \(s_i=\sigma_i+\jj\omega_i\), so the sign of
+the real part is the entire stability story: left half-plane (\(\sigma_i<0\))
+decays and is stable; the \(\jj\omega\) axis sustains a pure oscillation (the
+knife-edge an oscillator sits on); the right half-plane grows and is unstable.
+Zeros do not affect stability, but they shape how the stable modes appear.
 \end{controlsbox}
 
-\section{The Pole-Zero Plane}
-A pole-zero plot marks poles with \(\times\) and zeros with \(\circ\), and it
-captures a transfer function's behavior at a glance (\cref{fig:pz-notch}). Two
-reading rules, both developed generically in \cref{ch:linsys}, carry over:
-\begin{itemize}
-\item \textbf{Poles set resonance and damping.} A complex pole pair sits at
-\(-\alpha\pm\jj\omega_d\), a distance \(\omega_0\) from the origin at an angle
-\(\theta\) from the negative real axis with \(\cos\theta=\zeta\). Distance from
-the \(\jj\omega\) axis (\(\alpha=\zeta\omega_0\)) is the decay rate \emph{and} the
-half-power bandwidth, and \(Q=1/(2\zeta)\). A pole hugging the axis is a high-\(Q\),
-lightly damped, sharply peaked resonance.
-\item \textbf{Zeros set rejection.} A zero on or near the \(\jj\omega\) axis
-pulls the magnitude \emph{down} toward a null at that frequency---the mechanism of
-a notch, trap, or band-stop.
-\end{itemize}
+\subsection{Reading the Pole Geometry}
+For the second-order pole pair \(s=-\zeta\omega_0\pm\jj\omega_d\), two facts make
+the plot readable by eye (\cref{fig:poles2}). First, while underdamped the poles
+lie on a circle of radius \(\omega_0\), because
+\(|s|^2=(\zeta\omega_0)^2+(\omega_0\sqrt{1-\zeta^2})^2=\omega_0^2\); the distance
+from the origin is the natural frequency. Second, the angle \(\theta\) from the
+negative real axis satisfies \(\cos\theta=\zeta\), so the angle encodes the
+damping and therefore \(Q\). The real part \(\alpha=\zeta\omega_0\) is the
+envelope decay rate \emph{and} half the half-power bandwidth: the full bandwidth is
+\[
+BW=2\alpha=\frac{\omega_0}{Q}\quad[\si{\radian\per\second}].
+\]
+\emph{Distance from the imaginary axis is half the bandwidth.} A pole hugging the
+axis rings for a long time and shows a narrow, tall peak; a pole far from the axis
+settles quickly and shows a broad, low peak.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.56\textwidth]{poles_second_order}
+\caption{Second-order poles for several damping ratios. They ride a circle of
+radius \(\omega_0\); the angle from the negative real axis has
+\(\cos\theta=\zeta\). \(\zeta=0\) sits on the \(\jj\omega\) axis (undamped).}
+\label{fig:poles2}
+\end{figure}
+
+\subsection{Zeros and the Pole-Zero Plot}
+A pole-zero plot marks poles with \(\times\) and zeros with \(\circ\)
+(\cref{fig:pz-notch}). Poles set the resonance and damping; a zero on or near the
+\(\jj\omega\) axis pulls the magnitude \emph{down} toward a null at that
+frequency---the mechanism of a notch, trap, or band-stop.
 
 \begin{figure}[htbp]
 \centering
@@ -51,19 +151,28 @@ rejection frequency \(\omega_0\).}
 \label{fig:pz-notch}
 \end{figure}
 
-\section{Stability at a Glance}
-Because an unforced mode evolves as \(\ee^{s_i t}\) with
-\(s_i=\sigma_i+\jj\omega_i\), the sign of the real part is the entire stability
-story: left half-plane (\(\sigma_i<0\)) decays and is stable; the \(\jj\omega\)
-axis (\(\sigma_i=0\)) sustains a pure oscillation---the knife-edge an oscillator
-sits on; the right half-plane grows and is unstable. Zeros do not affect
-stability (they are not modes), but they shape how the stable modes appear in the
-response.
+\section{Root Locus}
+When a parameter varies---a resistance, a gain, a feedback fraction---the poles
+move, tracing a \emph{root locus}. For the canonical second-order system
+\(s^2+2\zeta\omega_0 s+\omega_0^2\), sweeping the damping \(\zeta\) from zero
+upward traces the path in \cref{fig:rootlocus2}: the poles begin on the
+\(\jj\omega\) axis at \(\pm\jj\omega_0\) (undamped), arc along the circle of
+radius \(\omega_0\) into the left half-plane, meet at \(-\omega_0\) at critical
+damping (\(\zeta=1\)), then split and travel apart along the negative real axis
+(overdamped).
 
-\section{Root Locus: the RLC Case}
-When a parameter varies, the poles move, tracing a root locus. \Cref{ch:linsys}
-showed the canonical second-order locus generically; \cref{fig:rlc-rootlocus}
-draws the concrete RLC case as the series resistance \(R\) sweeps from zero.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.58\textwidth]{rootlocus_second_order}
+\caption{Root locus of a second-order system as damping increases. Poles begin
+on the \(\jj\omega\) axis (undamped), ride the \(\omega_0\) circle to \(-\omega_0\)
+at critical damping, then separate along the real axis (overdamped).}
+\label{fig:rootlocus2}
+\end{figure}
+
+The series RLC circuit of \cref{ch:rlc} is exactly this locus with
+\(\zeta=\tfrac{R}{2}\sqrt{C/L}\), so sweeping \(R\) walks the poles from a pure
+LC oscillation (\(R=0\)) to a heavily damped pair (\cref{fig:rlc-rootlocus}).
 
 \begin{figure}[htbp]
 \centering
@@ -96,24 +205,6 @@ splitting along the real axis (overdamped). Here \(\cos\theta=\zeta\).}
 \label{fig:rlc-rootlocus}
 \end{figure}
 
-\begin{advancedbox}
-The product of the two real poles is fixed at \(\wzero^2\) (the constant term of
-the monic polynomial), so as \(R\to\infty\) one overdamped pole races toward
-\(-\infty\) while the other creeps back toward the origin at
-\(s\approx-\wzero^2/(2\alpha)=-1/(RC)\). The slow pole becoming the dominant RC
-lag is the limit you would expect physically: a huge series resistor makes the
-capacitor charge through \(R\) alone.
-\end{advancedbox}
-
-\section{How Poles and Zeros Shape the Bode Plot}
-Because the frequency response samples \(G(s)\) along the imaginary axis, the
-pole-zero locations control the Bode plot directly: each pole bends the magnitude
-down \(\SI{20}{\decibel}\) per decade and subtracts up to \(90^\circ\) of phase
-near its corner; each zero bends it up \(\SI{20}{\decibel}\) per decade and adds
-up to \(90^\circ\). A pole pair near the axis makes the resonant peak (height
-\(\sim Q\), width \(2\alpha\)); a zero near the axis makes a notch. The next
-chapter reads these plots in detail.
-
 \section{Zeros in Radio Circuits}
 Zeros are how circuits \emph{reject} energy. A series LC branch to ground has zero
 impedance at its resonance, shorting that frequency to ground and placing a
@@ -132,21 +223,18 @@ Take a tuned LC circuit with \(L=\SI{10}{\micro\henry}\),
 \qquad
 \alpha=\frac{R}{2L}=\SI{2.5e5}{\radian\per\second},
 \]
-so \(\zeta=\alpha/\wzero\approx0.0117\) and \(Q=1/(2\zeta)\approx42.7\). The poles
-sit at
-\[
-s=-\alpha\pm\jj\,\omega_d\approx-2.5\times10^{5}\pm\jj\,2.13\times10^{7}
-\ \si{\radian\per\second}.
-\]
-The real part is about \(1/85\) of the imaginary part, so the poles are pressed
-against the \(\jj\omega\) axis: a very high-\(Q\), sharply peaked circuit that
-rings for roughly \(Q\approx43\) cycles. \Cref{ch:rlc} works this same circuit as
-a resonator; here it is the same fact read as a pole location.
+so \(\zeta=\alpha/\wzero\approx0.0117\) and \(Q=1/(2\zeta)\approx42.6\). The poles
+sit at \(s=-\alpha\pm\jj\,\omega_d\approx-2.5\times10^{5}\pm\jj\,2.13\times10^{7}\
+\si{\radian\per\second}\): the real part is about \(1/85\) of the imaginary part,
+so the poles are pressed against the \(\jj\omega\) axis---a very high-\(Q\),
+sharply peaked circuit that rings for roughly \(Q\approx43\) cycles.
+\Cref{ch:rlc} works this same circuit as a resonator.
 
 \begin{exambox}
-The exam does not ask you to plot poles and zeros. It asks about resonant
-frequency, \(Q\), bandwidth, selectivity, ringing, oscillator stability, filter
-sharpness, and traps---all of which answer one question: \emph{where are the poles
-and zeros?} Poles near the \(\jj\omega\) axis mean sharp and selective; poles on
-the axis mean sustained oscillation; zeros on the axis mean a rejected frequency.
+The exam does not ask you to plot poles or draw Bode diagrams. It asks about
+cutoff, roll-off slope, resonant frequency, \(Q\), bandwidth, selectivity,
+ringing, oscillator stability, filter sharpness, and traps---all of which answer
+one question: \emph{where are the poles and zeros?} Near the \(\jj\omega\) axis
+means sharp and selective; on the axis means sustained oscillation; a zero on the
+axis means a rejected frequency.
 \end{exambox}
