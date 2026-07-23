@@ -24,15 +24,27 @@ a status box.
 - Front matter: S1 (title), S2–S5 (preface rewrite + scope-note merge).
 - Structural moves: complex-numbers (S8) and s-plane (S9) now in Part II.
 
-**Still pending (next sessions):**
-- Part II: enrich Complex Numbers chapter (absorb App C = S7; ChE analogies
-  C11/C13/C15; worked examples C10/C16/C17). Generic rewrites + de-dup of the
-  s-plane and Bode chapters (C26,C27; fix stale "resonance chapter" forward-refs).
-- Part III remaining chapters to the template: Resistive (C34–C37), Filters
-  (C50–C57, incl. all-families illustration), Active/Feedback (C58–C60),
-  Transmission Lines (C61).
-- Cheat sheet self-containment: symbol legend + definitions (C1–C8).
-- S6 notation typography (j upright vs italic) — needs your call.
+**Now also done:**
+- Primer additions: Laplace + block diagrams (explicit ODE->transfer function)
+  and feedback/closed-loop with op-amp foreshadowing.
+- Part II Complex Numbers chapter enriched; complex-math appendix absorbed (S7);
+  ChE analogy table (C11/C13/C15); worked examples (C10/C16/C17).
+- s-plane and Bode chapters de-duplicated vs the primer and refocused; stale
+  forward-refs fixed; s-plane emphasizes poles+zeros with a pole-zero figure;
+  Bode is now "how to read/use" (C26/C27).
+- Part III to the template: Resistive (C34-C37), Filters (C50-C57, incl. the
+  all-families scipy figure), Active/Feedback (C58-C60, op-amp schematic + sign
+  convention), Transmission Lines VF (C61).
+- Cheat sheet self-containment (C1-C8): symbol-reading note + glosses.
+- S6: imaginary unit kept upright (ISO 80000-2).
+
+**Remaining / optional polish:**
+- Renumber chapter FILES to the new order (cosmetic; filenames still carry old
+  numbers, e.g. 08_rc is Chapter 9). Chapter numbers in the built PDF are already
+  correct.
+- Optional: transient-plot figures dedicated to RC v_C(t) and RL i(t) (currently
+  reuse the generic first-order step); Sallen-Key active-filter schematic.
+- A fresh end-to-end read for flow now that all pieces are in.
 
 ---
 
