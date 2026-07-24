@@ -23,9 +23,10 @@ conducts, which trades linearity against efficiency:
 resistively coupled).
 \item[Class B / AB] Class B conducts half the cycle (\(180^\circ\)); Class AB
 somewhat more than half. Higher efficiency than Class A, with some crossover
-distortion; common in linear SSB power amplifiers.
+distortion; common in linear single-sideband (SSB) power amplifiers.
 \item[Class C] conducts less than half the cycle; efficient but nonlinear, used
-where a tuned output tank restores the sinusoid (FM, CW).
+where a tuned output tank restores the sinusoid (as in frequency-modulation, FM,
+and continuous-wave Morse, CW, transmitters).
 \end{description}
 Class C is nonlinear on purpose: the output tank is a high-\(Q\) resonator (a
 pole pair near the \(\jj\omega\) axis) that rings at the fundamental and rejects
@@ -229,7 +230,7 @@ the Nyquist \(-1\) point. This is the \emph{Barkhausen criterion}. Its familiar
 poles are placed on the \(\jj\omega\) axis at \(\pm\jj\omega_{\text{osc}}\)---the
 marginally stable case from the s-plane chapter. At start-up the design makes \(|L|>1\) so the pole pair sits slightly in
 the right half-plane and the amplitude grows; a nonlinearity (device saturation,
-a limiter, a lamp or AGC) then reduces the effective gain until \(|L|=1\) and the
+a limiter, a lamp, or automatic gain control, AGC) then reduces the effective gain until \(|L|=1\) and the
 poles settle onto the axis at a stable amplitude.
 
 \Cref{fig:oscillator-loopgain} shows the condition on a loop-gain Bode plot: the

@@ -32,8 +32,9 @@ Z_R=R,\qquad
 Z_L=\jj\omega L,\qquad
 Z_C=\frac{1}{\jj\omega C}=-\jj\frac{1}{\omega C}.
 \]
-An inductor has positive reactance \(X_L=\omega L\); a capacitor has negative
-reactance \(X_C=1/(\omega C)\). At low frequency a capacitor's impedance is large
+An inductor contributes positive reactance \(X_L=\omega L\); a capacitor
+contributes negative reactance, of magnitude \(X_C=1/(\omega C)\), so that
+\(Z_C=-\jj X_C\). At low frequency a capacitor's impedance is large
 (it blocks DC) and an inductor's is small (it passes DC); at high frequency the
 roles reverse.
 
@@ -140,9 +141,10 @@ conjugate of the current:
 S=V I^{*}=P+\jj Q .
 \]
 The real part \(P\) is average power actually dissipated (watts); the imaginary
-part \(Q\) is reactive power (VAR), the energy sloshing back and forth between the
-source and the reactive elements each cycle. The conjugate is what makes \(P\)
-come out as the in-phase product.
+part \(Q\) is reactive power (VAR, volt-amperes reactive), the energy sloshing
+back and forth between the source and the reactive elements each cycle. The
+conjugate is what makes \(P\) come out as the in-phase product, and the magnitude
+\(|S|\) is the apparent power, measured in volt-amperes (VA).
 
 \subsection{Worked Example: Real and Reactive Power}
 A load draws \(I=2\angle{-30^\circ}\ \si{\ampere}\) (RMS) from

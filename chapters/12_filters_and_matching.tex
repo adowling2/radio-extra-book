@@ -2,7 +2,8 @@
 \label{ch:filters}
 \section{Why Filters Matter in Amateur Radio}
 Filters select desired signals and reject unwanted ones. They appear in receiver
-front ends, IF stages, audio stages, transmitter outputs, anti-aliasing paths,
+front ends, intermediate-frequency (IF) stages, audio stages, transmitter
+outputs, anti-aliasing paths,
 power supplies, and interference cures. A filter is nothing more than a circuit
 whose transfer function has been shaped on purpose---poles placed to form the
 passband, zeros placed to notch the stopband---so everything from Part~II applies
@@ -165,8 +166,8 @@ Chebyshev & Poles on an ellipse pushed closer to the \(\jj\omega\) axis. Sharper
 Elliptic (Cauer; ``elliptical'' in the pool) & Chebyshev-like poles plus transmission \emph{zeros} on the \(\jj\omega\) axis in the stopband. Sharpest transition; ripple in both bands. \\
 Bessel & Poles positioned for maximally flat \emph{group delay} (linear phase); gentle amplitude cutoff. Good for pulse fidelity. \\
 Crystal / cavity & Very high-\(Q\) resonators (poles hugging the axis) for narrow, highly selective band-pass shapes. \\
-DSP FIR & No feedback, so no poles away from the origin (all zeros); can be exactly linear phase. \\
-DSP IIR & Recursive: has poles, so it mimics analog families efficiently but with nonlinear phase. \\
+DSP FIR & Digital (DSP, digital signal processing) filter with no feedback (FIR, finite impulse response): no poles away from the origin, so it can be exactly linear phase. \\
+DSP IIR & Recursive digital filter (IIR, infinite impulse response): has poles, so it mimics analog families efficiently but with nonlinear phase. \\
 \bottomrule
 \end{tabularx}
 
