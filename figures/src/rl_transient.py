@@ -16,9 +16,11 @@ ax.plot(t, decay, color=GUIDE_GREEN, label=r"decay: $i=I_0\,e^{-Rt/L}$")
 ax.axvline(1, color=GUIDE_AMBER, ls="--", lw=0.9)
 ax.plot(1, 1-np.exp(-1), "o", color=GUIDE_BLUE, ms=5, zorder=5)
 ax.plot(1, np.exp(-1), "o", color=GUIDE_GREEN, ms=5, zorder=5)
-ax.annotate(r"$63.2\%$ at $t=L/R$", xy=(1, 1-np.exp(-1)), xytext=(1.5, 0.80),
+ax.annotate(r"$63.2\%$ at $t=L/R$", xy=(1, 1-np.exp(-1)), xytext=(1.7, 0.56),
+            ha="left", va="center",
             arrowprops=dict(arrowstyle="->", color="0.35", lw=0.8))
-ax.annotate(r"$36.8\%$ at $t=L/R$", xy=(1, np.exp(-1)), xytext=(1.5, 0.20),
+ax.annotate(r"$36.8\%$ at $t=L/R$", xy=(1, np.exp(-1)), xytext=(1.7, 0.40),
+            ha="left", va="center",
             arrowprops=dict(arrowstyle="->", color="0.35", lw=0.8))
 ax.set_xlabel(r"Time $t/(L/R)$")
 ax.set_ylabel(r"Inductor current (normalized)")

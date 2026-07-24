@@ -145,7 +145,18 @@ by the same factor. Their product is invariant:
 \]
 This is the \emph{gain--bandwidth product}. In pole language, negative feedback
 slides the single pole to the left---faster response, wider bandwidth---at the
-cost of gain. Doubling closed-loop gain halves closed-loop bandwidth.
+cost of gain. Doubling closed-loop gain halves closed-loop bandwidth
+(\cref{fig:opamp-gbw}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{opamp_gbw_bode}
+\caption{Gain--bandwidth product of a single-pole op-amp. Each closed-loop gain
+(set by \(1/\beta\)) is flat until it meets the open-loop skirt, then rolls off
+along it, so every closed-loop corner lands on the same unity-gain frequency
+\(f_T=A_0 f_a\). Trading gain for bandwidth slides along one fixed diagonal.}
+\label{fig:opamp-gbw}
+\end{figure}
 
 \begin{controlsbox}
 \textbf{Refresher: pole motion under feedback.} Wrapping feedback around
@@ -180,6 +191,22 @@ oscillation. This is the Nyquist/Bode stability story from a classical controls
 course, applied to an RF or audio amplifier instead of a chemical process.
 \end{controlsbox}
 
+The same story reads on the s-plane as a root locus (\cref{fig:opamp-rootlocus}):
+as loop gain rises, the closed-loop poles of a multi-pole amplifier migrate, and
+with three poles two of them curve toward and cross the \(\jj\omega\) axis---the
+moment small margins become ringing and then sustained oscillation.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{opamp_rootlocus}
+\caption{Root locus of a three-pole amplifier as loop gain \(K\) increases. Two
+closed-loop poles leave the real axis and cross into the right half-plane at
+\(K=60\): beyond that the amplifier oscillates. A single-pole amplifier (one
+branch on the real axis) can never do this---instability needs the extra phase
+lag of additional poles.}
+\label{fig:opamp-rootlocus}
+\end{figure}
+
 Compensation (deliberately lowering the first pole, as in an internally
 compensated op-amp) restores phase margin by making the loop gain fall through
 \SI{0}{\decibel} before the second pole adds its lag. It buys stability with
@@ -204,6 +231,21 @@ marginally stable case from the s-plane chapter. At start-up the design makes \(
 the right half-plane and the amplitude grows; a nonlinearity (device saturation,
 a limiter, a lamp or AGC) then reduces the effective gain until \(|L|=1\) and the
 poles settle onto the axis at a stable amplitude.
+
+\Cref{fig:oscillator-loopgain} shows the condition on a loop-gain Bode plot: the
+design places the frequency where the phase reaches \(-180^\circ\) exactly at the
+\(\SI{0}{\decibel}\) (\(|L|=1\)) crossing, so \(L=-1\) is met at one frequency.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.82\textwidth]{oscillator_loopgain}
+\caption{Barkhausen condition for a three-pole loop
+\(L(s)=K/(1+s/\omega_0)^3\) with \(K=8\). The magnitude passes through
+\SI{0}{\decibel} at the same frequency \(\omega_{\mathrm{osc}}=\sqrt3\,\omega_0\)
+where the phase reaches \(-180^\circ\): loop gain unity with \(180^\circ\) of lag
+is \(L=-1\), so the closed-loop poles sit on the \(\jj\omega\) axis.}
+\label{fig:oscillator-loopgain}
+\end{figure}
 
 The frequency-setting network sets where those poles land:
 \begin{description}
