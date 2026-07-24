@@ -21,17 +21,17 @@ the surrounding formula makes clear which is meant.
 \toprule
 Quantity & Symbol & SI unit & Meaning \\
 \midrule
-Charge & \(q,Q\) & \si{\coulomb} & Stored electric quantity. \\
-Current & \(i,I\) & \si{\ampere} & Rate of charge flow, \(i=\dd q/\dd t\). \\
-Voltage & \(v,V\) & \si{\volt} & Energy per unit charge. \\
-Power & \(p,P\) & \si{\watt} & Rate of energy flow. \\
-Energy & \(E,\mathcal{H}\) & \si{\joule} & Stored or dissipated energy; \(\mathcal{H}\) is total stored energy. \\
-Resistance & \(R\) & \si{\ohm} & Opposition to current. \\
-Conductance & \(G\) & \si{\siemens} & Reciprocal resistance, \(G=1/R\). \\
-Capacitance & \(C\) & \si{\farad} & Charge stored per volt. \\
-Inductance & \(L\) & \si{\henry} & Voltage-time per ampere. \\
+Charge & \(q,Q\) & \si{\coulomb} & Amount of stored electricity. \\
+Current & \(i,I\) & \si{\ampere} & Rate at which charge flows past a point. \\
+Voltage & \(v,V\) & \si{\volt} & Electrical energy carried per unit charge. \\
+Power & \(p,P\) & \si{\watt} & Rate at which energy is delivered or consumed. \\
+Energy & \(E,\mathcal{H}\) & \si{\joule} & Energy stored or dissipated; \(\mathcal{H}\) is the total stored. \\
+Resistance & \(R\) & \si{\ohm} & Opposition to current, dissipating energy as heat. \\
+Conductance & \(G\) & \si{\siemens} & How easily current flows; the counterpart of resistance. \\
+Capacitance & \(C\) & \si{\farad} & Capacity to store energy in an electric field. \\
+Inductance & \(L\) & \si{\henry} & Capacity to store energy in a magnetic field. \\
 Frequency & \(f\) & \si{\hertz} & Cycles per second. \\
-Angular frequency & \(\omega\) & \si{\radian\per\second} & Radians per second, \(\omega=2\pi f\). \\
+Angular frequency & \(\omega\) & \si{\radian\per\second} & Oscillation rate measured in radians per second. \\
 \bottomrule
 \end{tabularx}
 
@@ -45,31 +45,31 @@ symbols are control-theory bridges.
 Quantity & Symbol & SI unit & Meaning \\
 \midrule
 \endhead
-Reactance & \(X\) & \si{\ohm} & Imaginary part of impedance; \(X_L=\omega L\), \(X_C=1/(\omega C)\). \\
-Impedance & \(Z\) & \si{\ohm} & \(Z=R+\jj X\), voltage-to-current phasor ratio. \\
-Admittance & \(Y\) & \si{\siemens} & \(Y=1/Z=G+\jj B\). \\
-Susceptance & \(B\) & \si{\siemens} & Imaginary part of admittance. \\
-Real / reactive power & \(P,\ Q\) & \si{\watt},\ \(\mathrm{VAR}\) & \(S=P+\jj Q\); \(Q\) here is reactive power. \\
-Time constant & \(\tau\) & \si{\second} & First-order clock, \(RC\) or \(L/R\). \\
-Resonant frequency & \(\omega_0,\ f_0\) & \si{\radian\per\second},\ \si{\hertz} & \(\omega_0=1/\sqrt{LC}\). \\
-Damped frequency & \(\omega_d\) & \si{\radian\per\second} & \(\omega_d=\omega_0\sqrt{1-\zeta^2}\). \\
-Decay rate & \(\alpha\) & \si{\per\second} & Envelope decay; \(\alpha=R/2L\) (series RLC). \\
-Damping ratio & \(\zeta\) & --- & \(\zeta=\alpha/\omega_0=1/(2Q)\). \\
-Quality factor & \(Q\) & --- & Sharpness of resonance; \(Q=\omega_0/BW\). \\
-Bandwidth & \(BW\) & \si{\hertz} & Half-power width, \(\approx f_0/Q\). \\
-Complex frequency & \(s\) & \si{\per\second} & Laplace variable \(s=\sigma+\jj\omega\). \\
-Forward gain & \(A\) & --- & Amplifier open-loop gain. \\
-Feedback fraction & \(\beta\) & --- & Fraction of output fed back. \\
-Loop gain & \(L\) & --- & \(L=A\beta\); \(L=-1\) gives oscillation. \\
-Characteristic impedance & \(Z_0\) & \si{\ohm} & Line's surge impedance (often \SI{50}{\ohm}). \\
-Reflection coefficient & \(\Gamma\) & --- & \(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\). \\
-Standing-wave ratio & \(\mathrm{SWR}\) & --- & \((1+|\Gamma|)/(1-|\Gamma|)\). \\
-Velocity factor & \(VF\) & --- & \(v_p/c\) on the line. \\
-Wavelength & \(\lambda\) & \si{\meter} & \(\lambda=v_p/f\). \\
-Phase constant & \(\beta\) & \si{\radian\per\meter} & \(\beta=2\pi/\lambda\) (line phase shift per length). \\
+Reactance & \(X\) & \si{\ohm} & Opposition to AC that comes from energy storage; stores and returns energy without dissipating it. \\
+Impedance & \(Z\) & \si{\ohm} & Total opposition to AC: resistance and reactance combined. \\
+Admittance & \(Y\) & \si{\siemens} & Ease with which AC flows; the counterpart of impedance. \\
+Susceptance & \(B\) & \si{\siemens} & The energy-storage part of admittance. \\
+Real / reactive power & \(P,\ Q\) & \si{\watt},\ \(\mathrm{VAR}\) & \(P\) is power actually consumed; \(Q\) is power that sloshes in and out of storage each cycle. \\
+Time constant & \(\tau\) & \si{\second} & How quickly a first-order circuit charges or fades; its natural clock. \\
+Resonant frequency & \(\omega_0,\ f_0\) & \si{\radian\per\second},\ \si{\hertz} & Frequency at which energy swaps freely between inductor and capacitor. \\
+Damped frequency & \(\omega_d\) & \si{\radian\per\second} & The actual ringing frequency once losses are present. \\
+Decay rate & \(\alpha\) & \si{\per\second} & How fast a ringing oscillation's amplitude dies away. \\
+Damping ratio & \(\zeta\) & --- & How heavily damped a second-order system is (ringing versus sluggish). \\
+Quality factor & \(Q\) & --- & Sharpness of a resonance; how many cycles it rings. \\
+Bandwidth & \(BW\) & \si{\hertz} & Width of the passband between the half-power edges. \\
+Complex frequency & \(s\) & \si{\per\second} & The Laplace variable; captures growth or decay together with oscillation. \\
+Forward gain & \(A\) & --- & How much the amplifier multiplies its input before feedback. \\
+Feedback fraction & \(\beta\) & --- & The portion of the output returned to the input. \\
+Loop gain & \(L\) & --- & Total gain once around the feedback loop; governs stability and oscillation. \\
+Characteristic impedance & \(Z_0\) & \si{\ohm} & The impedance a transmission line presents to a traveling wave (often \SI{50}{\ohm}). \\
+Reflection coefficient & \(\Gamma\) & --- & How much of a wave bounces back from a mismatched load. \\
+Standing-wave ratio & \(\mathrm{SWR}\) & --- & Severity of the standing-wave mismatch on a line (1 is a perfect match). \\
+Velocity factor & \(VF\) & --- & How much slower a wave travels in the line than in free space. \\
+Wavelength & \(\lambda\) & \si{\meter} & Physical length of one full cycle of the wave. \\
+Phase constant & \(\beta\) & \si{\radian\per\meter} & How much phase the wave advances per unit length of line. \\
 Line length & \(\ell\) & \si{\meter} & Physical length of a line section. \\
-Turns ratio & \(N_p/N_s\) & --- & Transformer primary-to-secondary turns. \\
-Stored energy & \(\mathcal{H}\) & \si{\joule} & Total energy in \(L\) and \(C\). \\
+Turns ratio & \(N_p/N_s\) & --- & Ratio of primary to secondary winding turns in a transformer. \\
+Stored energy & \(\mathcal{H}\) & \si{\joule} & Total energy held in the circuit's inductors and capacitors. \\
 \bottomrule
 \end{longtable}
 

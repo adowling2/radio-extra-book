@@ -175,21 +175,20 @@ The series RLC circuit of \cref{ch:rlc} is exactly this locus with
 LC oscillation (\(R=0\)) to a heavily damped pair; \cref{ch:rlc} draws that
 specific locus.
 
-\section{Worked Example: Poles of a Tuned Circuit}
-Take a tuned LC circuit with \(L=\SI{10}{\micro\henry}\),
-\(C=\SI{220}{\pico\farad}\), and series loss \(R=\SI{5}{\ohm}\). Then
+\section{Worked Example: Reading a High-Q Pole Pair}
+Take a lightly damped second-order system with natural frequency
+\(\wzero=\SI{2.13e7}{\radian\per\second}\) and damping ratio \(\zeta=0.0117\)
+(equivalently \(Q=1/(2\zeta)\approx42.6\)). Its poles are
 \[
-\wzero=\frac{1}{\sqrt{LC}}\approx\SI{2.13e7}{\radian\per\second}
-\ (f_0\approx\SI{3.39}{\mega\hertz}),
-\qquad
-\alpha=\frac{R}{2L}=\SI{2.5e5}{\radian\per\second},
+s=-\zeta\wzero\pm\jj\,\wzero\sqrt{1-\zeta^2}
+\approx-2.5\times10^{5}\pm\jj\,2.13\times10^{7}\ \si{\radian\per\second}.
 \]
-so \(\zeta=\alpha/\wzero\approx0.0117\) and \(Q=1/(2\zeta)\approx42.6\). The poles
-sit at \(s=-\alpha\pm\jj\,\omega_d\approx-2.5\times10^{5}\pm\jj\,2.13\times10^{7}\
-\si{\radian\per\second}\): the real part is about \(1/85\) of the imaginary part,
-so the poles are pressed against the \(\jj\omega\) axis---a very high-\(Q\),
-sharply peaked circuit that rings for roughly \(Q\approx43\) cycles.
-\Cref{ch:rlc} works this same circuit as a resonator.
+The real part is about \(1/85\) of the imaginary part, so the poles are pressed
+against the \(\jj\omega\) axis: a very high-\(Q\), sharply peaked response that
+rings for roughly \(Q\approx43\) cycles before decaying. Nothing here is
+electrical---these are just numbers read off the standard second-order form.
+\Cref{ch:rlc} realizes exactly this pole pair as a tuned LC circuit, showing
+which components \(L\), \(C\), and \(R\) put the poles here.
 
 \begin{exambox}
 The exam does not ask you to plot poles or draw Bode diagrams. It asks about
