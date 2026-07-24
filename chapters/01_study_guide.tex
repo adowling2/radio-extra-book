@@ -9,9 +9,12 @@ time-domain values; uppercase (\(V,I\)) are RMS phasors or steady DC values. The
 impedance, time-constant, resonance, decibel, filter, and transmission-line
 quantities below are the exam-essential ones. A handful of symbols---\(\zeta\)
 (damping ratio), \(A\) and \(\beta\) (amplifier forward gain and feedback
-fraction), \(L\) (loop gain), and \(\mathcal{H}\) (total stored energy)---appear
-only to connect the formulas to control theory and are not quantities the exam
-asks you to compute.
+fraction), \(L\) (loop gain), the complex frequency \(s\), and \(\mathcal{H}\)
+(total stored energy)---appear only to connect the formulas to control theory and
+are not quantities the exam asks you to compute. A few letters do double duty by
+long convention: \(Q\) is both the quality factor and reactive power, and
+\(\beta\) is both the feedback fraction and the transmission-line phase constant;
+the surrounding formula makes clear which is meant.
 
 \section{Quantities, Units, and Symbols}
 \begin{tabularx}{\textwidth}{@{}L{0.19\textwidth}L{0.13\textwidth}L{0.16\textwidth}Y@{}}
@@ -31,6 +34,44 @@ Frequency & \(f\) & \si{\hertz} & Cycles per second. \\
 Angular frequency & \(\omega\) & \si{\radian\per\second} & Radians per second, \(\omega=2\pi f\). \\
 \bottomrule
 \end{tabularx}
+
+The remaining symbols describe AC steady state, resonance and dynamics,
+transmission lines, and feedback. The first four groups carry exam-essential
+quantities; the damping ratio \(\zeta\), complex frequency \(s\), and feedback
+symbols are control-theory bridges.
+
+\begin{longtable}{@{}L{0.22\textwidth}L{0.12\textwidth}L{0.16\textwidth}L{0.42\textwidth}@{}}
+\toprule
+Quantity & Symbol & SI unit & Meaning \\
+\midrule
+\endhead
+Reactance & \(X\) & \si{\ohm} & Imaginary part of impedance; \(X_L=\omega L\), \(X_C=1/(\omega C)\). \\
+Impedance & \(Z\) & \si{\ohm} & \(Z=R+\jj X\), voltage-to-current phasor ratio. \\
+Admittance & \(Y\) & \si{\siemens} & \(Y=1/Z=G+\jj B\). \\
+Susceptance & \(B\) & \si{\siemens} & Imaginary part of admittance. \\
+Real / reactive power & \(P,\ Q\) & \si{\watt},\ \(\mathrm{VAR}\) & \(S=P+\jj Q\); \(Q\) here is reactive power. \\
+Time constant & \(\tau\) & \si{\second} & First-order clock, \(RC\) or \(L/R\). \\
+Resonant frequency & \(\omega_0,\ f_0\) & \si{\radian\per\second},\ \si{\hertz} & \(\omega_0=1/\sqrt{LC}\). \\
+Damped frequency & \(\omega_d\) & \si{\radian\per\second} & \(\omega_d=\omega_0\sqrt{1-\zeta^2}\). \\
+Decay rate & \(\alpha\) & \si{\per\second} & Envelope decay; \(\alpha=R/2L\) (series RLC). \\
+Damping ratio & \(\zeta\) & --- & \(\zeta=\alpha/\omega_0=1/(2Q)\). \\
+Quality factor & \(Q\) & --- & Sharpness of resonance; \(Q=\omega_0/BW\). \\
+Bandwidth & \(BW\) & \si{\hertz} & Half-power width, \(\approx f_0/Q\). \\
+Complex frequency & \(s\) & \si{\per\second} & Laplace variable \(s=\sigma+\jj\omega\). \\
+Forward gain & \(A\) & --- & Amplifier open-loop gain. \\
+Feedback fraction & \(\beta\) & --- & Fraction of output fed back. \\
+Loop gain & \(L\) & --- & \(L=A\beta\); \(L=-1\) gives oscillation. \\
+Characteristic impedance & \(Z_0\) & \si{\ohm} & Line's surge impedance (often \SI{50}{\ohm}). \\
+Reflection coefficient & \(\Gamma\) & --- & \(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\). \\
+Standing-wave ratio & \(\mathrm{SWR}\) & --- & \((1+|\Gamma|)/(1-|\Gamma|)\). \\
+Velocity factor & \(VF\) & --- & \(v_p/c\) on the line. \\
+Wavelength & \(\lambda\) & \si{\meter} & \(\lambda=v_p/f\). \\
+Phase constant & \(\beta\) & \si{\radian\per\meter} & \(\beta=2\pi/\lambda\) (line phase shift per length). \\
+Line length & \(\ell\) & \si{\meter} & Physical length of a line section. \\
+Turns ratio & \(N_p/N_s\) & --- & Transformer primary-to-secondary turns. \\
+Stored energy & \(\mathcal{H}\) & \si{\joule} & Total energy in \(L\) and \(C\). \\
+\bottomrule
+\end{longtable}
 
 \section{Core Circuit Formulas}
 \begin{longtable}{@{}L{0.25\textwidth}L{0.32\textwidth}L{0.34\textwidth}@{}}
@@ -98,10 +139,12 @@ Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0 R C}.
 Here \(Q_s\) is the series quality factor (sharpness of resonance). For many
 narrowband resonant circuits the half-power bandwidth \(BW\) is
 \[
-BW\approx \frac{f_0}{Q}.
+BW\approx \frac{f_0}{Q},
 \]
-Treat this as a useful approximation tied to half-power bandwidth, not as a
-universal definition for every topology.
+where \(Q\) is the resonant circuit's \emph{loaded} quality factor---the value
+including source and load coupling, which equals \(Q_s\) for a simple series RLC
+with no external loading. Treat this as a useful approximation tied to half-power
+bandwidth, not as a universal definition for every topology.
 
 \section{Bode, Decibels, and Power}
 \[
@@ -125,7 +168,9 @@ half amplitude.
 
 \section{s-Plane, Poles, and Feedback}
 A pole \(s=\sigma+\jj\omega\) is a natural mode \(\ee^{\sigma t}\cos\omega t\):
-left half-plane decays (stable), imaginary axis sustains, right half-plane grows.
+left half-plane decays (stable), right half-plane grows (unstable), and a pole
+exactly on the imaginary axis neither grows nor decays---a steady, self-sustaining
+oscillation, which is what an oscillator is built to do.
 The series RLC characteristic polynomial in standard form is
 \[
 s^2+2\zeta\omega_0 s+\omega_0^2,

@@ -9,12 +9,21 @@ passband, zeros placed to notch the stopband---so everything from Part~II applie
 directly.
 
 \section{Basic Filter Types}
-\begin{description}
-\item[Low-pass] Passes low frequencies and attenuates high frequencies.
-\item[High-pass] Passes high frequencies and attenuates low frequencies.
-\item[Band-pass] Passes a frequency band.
-\item[Band-stop or notch] Rejects a frequency band.
-\end{description}
+Four responses cover almost every filtering job, distinguished by which band of
+frequencies they pass:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.26\textwidth}Y@{}}
+\toprule
+Type & What it does \\
+\midrule
+Low-pass & Passes low frequencies; attenuates high frequencies. \\
+High-pass & Passes high frequencies; attenuates low frequencies. \\
+Band-pass & Passes a band of frequencies; attenuates outside it. \\
+Band-stop (notch) & Rejects a band of frequencies; passes outside it. \\
+\bottomrule
+\end{tabularx}
+\end{center}
 
 \section{A Filter from First Principles}
 Rather than take filter formulas on faith, let us build one the way a
@@ -285,6 +294,12 @@ transformers and inductors are rated for a maximum voltage-time product (or powe
 at a given frequency.
 
 \section{Worked Example: Quarter-Wave and L-Network}
+\textbf{Problem.} A transmitter feeds a \(\SI{50}{\ohm}\) system, but the load
+(say an antenna at resonance) presents a purely resistive \(\SI{200}{\ohm}\).
+Design two matching networks that make the \(\SI{200}{\ohm}\) load look like
+\(\SI{50}{\ohm}\) to the source: (a) a quarter-wave transformer, and (b) an
+L-network. Compare them.
+
 To match a real \(\SI{200}{\ohm}\) load to a \(\SI{50}{\ohm}\) system with a
 lossless quarter-wave transformer,
 \[

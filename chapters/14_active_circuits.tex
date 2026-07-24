@@ -34,8 +34,22 @@ linearity is what makes mixers and frequency multipliers work.
 
 \section{Op-Amp Ideals}
 An ideal op-amp has very high input impedance, very low output impedance, and
-very large open-loop gain \(A(s)\). Negative feedback makes practical closed-loop
-gains predictable:
+very large open-loop gain \(A(s)\).
+
+\begin{physicalbox}
+\textbf{How the op-amp is modeled.} An op-amp is \emph{not} a reactive element
+like an inductor or capacitor---it stores no energy and contributes no pole of its
+own in the ideal picture. It is modeled as a \textbf{dependent source}:
+specifically a voltage-controlled voltage source (VCVS) whose output is
+\(A(s)\,(v_+-v_-)\), the open-loop gain times the difference of the two input
+voltages. The idealizations attach to that source: infinite input impedance means
+no current flows into the \(\pm\) terminals; zero output impedance means the
+controlled source drives the output stiffly; and \(A(s)\) is enormous (and rolls
+off with frequency, \cref{sec:gbw}). Every op-amp result below is bookkeeping on
+this one dependent-source model plus the feedback wired around it.
+\end{physicalbox}
+
+Negative feedback makes practical closed-loop gains predictable:
 \[
 \text{inverting:}\quad \frac{V_o}{V_i}=-\frac{R_f}{R_{in}},
 \qquad
@@ -113,6 +127,7 @@ process-control loop.
 \end{controlsbox}
 
 \section{Gain--Bandwidth Product}
+\label{sec:gbw}
 Model the op-amp open-loop response as a single dominant pole,
 \[
 A(s)=\frac{A_0}{1+s/\omega_a},

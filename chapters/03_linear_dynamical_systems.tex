@@ -1,13 +1,13 @@
 \chapter{First- and Second-Order Systems: Time and State Space}
 \label{ch:linsys}
-Before any specific circuit, this chapter reviews the linear-systems machinery
-that the rest of the book uses, in the \emph{time and state-space} view:
+Before analyzing any specific circuit, this chapter reviews the linear-systems
+machinery that the rest of the book uses, in the \emph{time and state-space} view:
 differential equations, state-space models, step responses, damping, and
 feedback. Its companion, \cref{ch:splane}, reads the same systems in the
 \emph{frequency and s-plane} view (Bode plots, poles, zeros, root locus).
 Everything here is generic---the same mathematics whether the system is an RC
 filter, a mechanical suspension, or a chemical reactor---and Part~III then shows
-that each amateur-radio circuit is one of these systems in electrical clothing.
+that each amateur-radio circuit is one of these systems in electrical form.
 
 \section{Four Equivalent Views of a Linear System}
 A linear time-invariant system can be written four equivalent ways, and moving
@@ -38,7 +38,13 @@ numbers viewed differently.
 
 \section{Laplace Transforms and Block Diagrams}
 The explicit bridge from a differential equation to a transfer function is the
-Laplace transform, and three facts carry the whole load. With zero initial
+Laplace transform. It is defined by the integral
+\[
+\mathcal{L}\{f\}(s)=F(s)=\int_0^\infty f(t)\,\ee^{-st}\,\dd t,
+\]
+which converts a function of time \(f(t)\) into a function of the complex
+frequency \(s=\sigma+\jj\omega\). We rarely evaluate this integral directly;
+instead, three of its properties carry the whole load. With zero initial
 conditions, differentiation becomes multiplication by \(s\) and integration
 becomes division:
 \[
@@ -131,6 +137,23 @@ G(s)=\frac{K}{\tau s+1},
 s_{\text{pole}}=-\frac{1}{\tau}.
 \]
 
+\begin{physicalbox}
+\textbf{First-order systems are everywhere.} Anything with a single dominant
+energy or material store relaxing toward equilibrium is first order, and the same
+\(\tau\dot y+y=Ku\) describes them all:
+\begin{itemize}
+\item a hot object cooling toward ambient (Newton's law of cooling), \(\tau=\)
+thermal mass \(\times\) resistance;
+\item the concentration in one well-stirred tank flushed by fresh feed,
+\(\tau=\) volume\,/\,flow rate;
+\item a body's velocity settling under linear drag, \(\tau=m/c\);
+\item (electrical) a capacitor charging through a resistor, \(\tau=RC\)---one
+example among many, not the definition.
+\end{itemize}
+In each, one time constant \(\tau\) sets how fast the system forgets its initial
+condition.
+\end{physicalbox}
+
 \subsection{The Step Response}
 For a unit step input the output rises exponentially to its final value,
 \[
@@ -188,6 +211,21 @@ s=-\zeta\omega_0\pm\jj\,\omega_0\sqrt{1-\zeta^2}
 where \(\omega_d=\omega_0\sqrt{1-\zeta^2}\) is the \textbf{damped natural
 frequency}. \Cref{ch:splane} plots where these poles sit and what that does to
 the frequency response; here we read them in the time domain.
+
+\begin{physicalbox}
+\textbf{Second-order systems are everywhere.} Two coupled energy stores that
+trade energy back and forth give oscillation and, with loss, decay---the
+signature of a second-order system:
+\begin{itemize}
+\item a mass on a spring with a damper, or a small-angle pendulum;
+\item a vehicle suspension (the classic ``does it bounce or settle?'' design);
+\item an underdamped feedback or process-control loop that overshoots its
+setpoint and rings before settling;
+\item (electrical) the LC or RLC resonator of Part~III.
+\end{itemize}
+In all of them \(\omega_0\) sets the oscillation rate and \(\zeta\) (equivalently
+\(Q\)) sets how many cycles it rings before dying out.
+\end{physicalbox}
 
 \begin{controlsbox}
 \textbf{Refresher: \(\zeta\), \(Q\), and the damping regimes.} The damping ratio
