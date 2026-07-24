@@ -36,6 +36,10 @@
 \definecolor{GuideLine}{HTML}{7B858B}
 \definecolor{GuideGreen}{HTML}{2F5D50}
 \definecolor{GuideAmber}{HTML}{7A5C1E}
+\definecolor{GuideRed}{HTML}{8C2D2D}
+\definecolor{GuideTeal}{HTML}{1F6B6B}
+\definecolor{GuideIndigo}{HTML}{433D78}
+\definecolor{GuideSlate}{HTML}{51606B}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.58em}
@@ -69,13 +73,22 @@
   breakable
 }
 
-\newtcolorbox{controlsbox}{title=\textbf{Controls Connection}, colback=white, colframe=GuideBlue}
-\newtcolorbox{energybox}{title=\textbf{Energy Insight}, colback=white, colframe=GuideGreen}
-\newtcolorbox{unitsbox}{title=\textbf{Units Check}, colback=white, colframe=GuideAmber}
-\newtcolorbox{exambox}{title=\textbf{Exam Relevance}, colback=white, colframe=black!65}
-\newtcolorbox{mistakebox}{title=\textbf{Common Mistake}, colback=white, colframe=black!55}
-\newtcolorbox{physicalbox}{title=\textbf{Physical Insight}, colback=white, colframe=GuideBlue!80!black}
-\newtcolorbox{advancedbox}{title=\textbf{Advanced Note}, colback=white, colframe=black!75}
+% Callout boxes are colour-coded by type: each has its own accent frame and a
+% faint matching tint, with a coloured title bar for quick visual scanning.
+\newtcolorbox{controlsbox}{title=\textbf{Controls Connection},
+  colframe=GuideBlue,   colback=GuideBlue!5,   coltitle=white, colbacktitle=GuideBlue}
+\newtcolorbox{physicalbox}{title=\textbf{Physical Insight},
+  colframe=GuideTeal,   colback=GuideTeal!5,   coltitle=white, colbacktitle=GuideTeal}
+\newtcolorbox{energybox}{title=\textbf{Energy Insight},
+  colframe=GuideGreen,  colback=GuideGreen!5,  coltitle=white, colbacktitle=GuideGreen}
+\newtcolorbox{unitsbox}{title=\textbf{Units Check},
+  colframe=GuideAmber,  colback=GuideAmber!6,  coltitle=white, colbacktitle=GuideAmber}
+\newtcolorbox{exambox}{title=\textbf{Exam Relevance},
+  colframe=GuideIndigo, colback=GuideIndigo!5, coltitle=white, colbacktitle=GuideIndigo}
+\newtcolorbox{mistakebox}{title=\textbf{Common Mistake},
+  colframe=GuideRed,    colback=GuideRed!5,    coltitle=white, colbacktitle=GuideRed}
+\newtcolorbox{advancedbox}{title=\textbf{Advanced Note},
+  colframe=GuideSlate,  colback=GuideSlate!6,  coltitle=white, colbacktitle=GuideSlate}
 
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}

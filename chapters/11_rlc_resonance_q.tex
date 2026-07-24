@@ -102,12 +102,44 @@ answer different questions.
 
 \section{Root Locus: Damping Set by R}
 Fix \(L\) and \(C\) and sweep \(R\). Since \(\zeta=\tfrac{R}{2}\sqrt{C/L}\), the
-poles trace the canonical second-order locus of \cref{fig:rootlocus2}: at
+poles trace the canonical second-order locus (\cref{fig:rlc-rootlocus}): at
 \(R=0\) they sit on the \(\jj\omega\) axis at \(\pm\jj\omega_0\) (undamped,
 infinite \(Q\)); as \(R\) grows they arc along the \(\omega_0\) circle into the
 left half-plane, meet at \(-\omega_0\) when \(R=2\sqrt{L/C}\) (critical), then
 split along the real axis (overdamped). Selectivity, ringing, and damping are the
-one moving pole pair seen three ways.
+one moving pole pair seen three ways. This is the general second-order locus of
+\cref{fig:rootlocus2} with \(R\) as the sweep parameter.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,scale=1.15]
+\draw[->,black!70] (-3.6,0) -- (0.9,0) node[right]{\(\sigma\) (real)};
+\draw[->,black!70] (0,-2.6) -- (0,2.6) node[above]{\(\jj\omega\) (imag)};
+\draw[GuideLine,dashed] (0,0) circle (2);
+\node[GuideLine] at (1.55,1.75) {\(|s|=\wzero\)};
+\filldraw[GuideBlue] (0,2) circle (2.4pt);
+\filldraw[GuideBlue] (0,-2) circle (2.4pt);
+\node[GuideBlue,right] at (0.08,2.15) {\small \(R=0\)};
+\filldraw[GuideGreen] (-1.732,1.0) circle (2.4pt);
+\filldraw[GuideGreen] (-1.732,-1.0) circle (2.4pt);
+\filldraw[GuideAmber] (-2,0) circle (2.4pt);
+\node[GuideAmber,below left] at (-2.0,-0.08) {\small critical};
+\filldraw[black!70] (-1.25,0) circle (2.4pt);
+\filldraw[black!70] (-3.2,0) circle (2.4pt);
+\draw[->,GuideGreen,thick] (0,1.98) to[bend right=18] (-1.7,1.05);
+\draw[->,GuideGreen,thick] (0,-1.98) to[bend left=18] (-1.7,-1.05);
+\draw[->,black!70,thick] (-1.9,0.05) to[bend right=25] (-1.3,0.02);
+\draw[->,black!70,thick] (-2.1,0.05) to[bend left=25] (-3.15,0.02);
+\draw[black!55] (0,0) -- (-1.732,1.0);
+\node at (-0.55,0.55) {\small \(\theta\)};
+\node[GuideGreen] at (-2.55,1.35) {\small increasing \(R\)};
+\end{tikzpicture}
+\caption{Root locus of the series RLC poles as \(R\) increases with \(L,C\)
+fixed: from \(\pm\jj\wzero\) on the axis (undamped), along the circle of radius
+\(\wzero\), meeting at \(-\wzero\) at critical damping (\(R=2\sqrt{L/C}\)), then
+splitting along the real axis (overdamped). Here \(\cos\theta=\zeta\).}
+\label{fig:rlc-rootlocus}
+\end{figure}
 
 \section{Energy Balance}
 With \(\mathcal{H}=\tfrac12 Cv_C^2+\tfrac12 Li^2\), the series energy balance is

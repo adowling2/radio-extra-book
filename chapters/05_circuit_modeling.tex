@@ -1,0 +1,192 @@
+\chapter{Circuit Modeling: Paradigms and Components}
+\label{ch:foundations}
+Part~II built a generic linear-systems toolkit with no mention of wires. Part~III
+now grounds it in real circuits. Before any specific circuit, this chapter sets up
+the modeling paradigm the rest of the book uses---what a ``circuit'' even
+is---then introduces the ideal components (\(R\), \(L\), \(C\), and sources), the
+two conservation laws that connect them, the state variables that carry a
+circuit's memory, and the unit bookkeeping that catches errors. Everything here is
+the vocabulary the later chapters assume.
+
+\section{The Lumped-Element Modeling Paradigm}
+A real circuit is a tangle of fields spread through space. To analyze it we make
+the \textbf{lumped-element idealization}: we pretend all the interesting physics
+lives inside a few discrete two-terminal components joined by perfect wires. Each
+component is described by a single relationship between the voltage across it and
+the current through it; the wires carry current with no voltage drop and store no
+energy. This is legal whenever the circuit is small compared with the wavelength of
+the signals in it, so that a change at one end is felt essentially instantly at the
+other. When that assumption fails---long feed lines, antennas at RF---we switch to
+the distributed model of \cref{ch:lines}. Until then, ``the circuit'' means an
+idealized network of lumped elements.
+
+\begin{controlsbox}
+Lumping is the electrical version of the modeling step every engineer makes:
+replace a spatially distributed reality (a heat-conducting bar, a flexing beam,
+a mixing tank) with a finite set of state variables governed by ordinary---not
+partial---differential equations. The lumped circuit \emph{is} the ODE model.
+\end{controlsbox}
+
+\section{The Ideal Components}
+Four idealized elements carry essentially all of the exam's analog circuit
+content. Each is defined by its \textbf{element law} (or constitutive relation)
+relating its voltage and current:
+\begin{description}
+\item[Resistor \(R\)] \(v_R=Ri_R\) (Ohm's law). Dissipates energy as heat;
+carries no memory. Unit: ohm, \(\si{\ohm}\).
+\item[Capacitor \(C\)] \(i_C=C\,\dd v_C/\dd t\). Stores energy in an electric
+field; its voltage cannot jump under finite current. Unit: farad, \(\si{\farad}\).
+\item[Inductor \(L\)] \(v_L=L\,\dd i_L/\dd t\). Stores energy in a magnetic
+field; its current cannot jump under finite voltage. Unit: henry, \(\si{\henry}\).
+\item[Sources] an ideal voltage source fixes its terminal voltage regardless of
+current; an ideal current source fixes its current regardless of voltage. Sources
+are how energy and signals enter the network.
+\end{description}
+The two storage laws are the only places a derivative enters, which is why
+capacitors and inductors---not resistors---are what give a circuit dynamics. The
+stored energies are
+\[
+E_C=\tfrac{1}{2}Cv_C^2,\qquad
+E_L=\tfrac{1}{2}Li_L^2.
+\]
+
+\begin{physicalbox}
+An ideal component is a modeling fiction: a real resistor has a little
+inductance, a real capacitor a little leakage. The idealization keeps the model
+tractable, and the corrections are added back only when they matter (for example,
+a capacitor's series inductance at VHF).
+\end{physicalbox}
+
+\section{KCL as an Accumulation Balance}
+Kirchhoff's current law is a charge balance. At a node,
+\[
+\text{accumulation}=\text{inflow}-\text{outflow}.
+\]
+For an ordinary wire node with negligible stored charge, accumulation is zero,
+so the algebraic sum of currents is zero:
+\[
+\sum_k i_k=0.
+\]
+
+\begin{controlsbox}
+This is the same structure as a material balance in process systems. Capacitors
+make the accumulation term visible because \(i_C=C\,\dd v_C/\dd t\).
+\end{controlsbox}
+
+\section{KVL as Energy Consistency}
+Kirchhoff's voltage law says that the signed voltage rises and drops around a
+closed loop sum to zero:
+\[
+\sum_k v_k=0.
+\]
+Voltage is energy per unit charge. KVL is therefore an energy-consistency rule:
+after a charge goes around a closed loop and returns to the same point, its net
+change in potential energy is zero.
+
+\section{State Variables}
+The natural state variables are the quantities attached to stored energy:
+capacitor voltages and inductor currents. A circuit with one independent energy
+storage element is usually first order. A circuit with two independent storage
+elements is usually second order. These are exactly the variables that cannot jump,
+so they are what the system ``remembers''---the electrical instance of the state
+vector of \cref{ch:linsys}.
+
+\section{Electrical Units and Dimensional Checks}
+Units are not decoration; they are a fast way to catch a wrong formula. The base
+relationships all follow from the definitions above:
+\[
+\SI{1}{\coulomb}=\SI{1}{\ampere\second},
+\qquad
+\SI{1}{\volt}=\SI{1}{\joule\per\coulomb},
+\qquad
+\SI{1}{\ohm}=\SI{1}{\volt\per\ampere}.
+\]
+\[
+\SI{1}{\farad}=\SI{1}{\coulomb\per\volt},
+\qquad
+\SI{1}{\henry}=\SI{1}{\volt\second\per\ampere},
+\qquad
+\SI{1}{\watt}=\SI{1}{\joule\per\second}=\SI{1}{\volt\ampere}.
+\]
+Hertz counts cycles per second; radians per second is the angular rate used in
+calculus:
+\[
+\omega=2\pi f.
+\]
+
+\subsection{Radio Prefixes}
+\begin{tabularx}{\textwidth}{@{}L{0.2\textwidth}L{0.2\textwidth}Y@{}}
+\toprule
+Prefix & Factor & Example \\
+\midrule
+pico & \(10^{-12}\) & \(\SI{220}{\pico\farad}\) coupling capacitor. \\
+nano & \(10^{-9}\) & \(\SI{10}{\nano\farad}\) bypass capacitor. \\
+micro & \(10^{-6}\) & \(\SI{10}{\micro\henry}\) RF inductor. \\
+milli & \(10^{-3}\) & \(\SI{25}{\milli\ampere}\) current. \\
+kilo & \(10^{3}\) & \(\SI{4.7}{\kilo\ohm}\) resistor. \\
+mega & \(10^{6}\) & \(\SI{7.1}{\mega\hertz}\) frequency. \\
+giga & \(10^{9}\) & \(\SI{1.2}{\giga\hertz}\) microwave frequency. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Useful Dimensional Tests}
+\begin{unitsbox}
+\[
+RC=(\si{\ohm})(\si{\farad})
+=\left(\frac{\si{\volt}}{\si{\ampere}}\right)
+\left(\frac{\si{\ampere\second}}{\si{\volt}}\right)
+=\si{\second}.
+\]
+\[
+\frac{L}{R}
+=\frac{\si{\volt\second\per\ampere}}{\si{\volt\per\ampere}}
+=\si{\second}.
+\]
+\[
+LC=(\si{\henry})(\si{\farad})=\si{\second\squared},
+\qquad
+\frac{1}{\sqrt{LC}}=\si{\per\second}.
+\]
+\[
+\omega L=(\si{\per\second})(\si{\volt\second\per\ampere})
+=\si{\ohm},
+\qquad
+\frac{1}{\omega C}=\si{\ohm}.
+\]
+\end{unitsbox}
+
+\subsection{Worked Unit Check}
+Suppose \(R=\SI{10}{\kilo\ohm}\) and \(C=\SI{220}{\pico\farad}\). Then
+\[
+\tau=RC=(10\times10^3)(220\times10^{-12})=\SI{2.2e-6}{\second}.
+\]
+The corner (cutoff) angular frequency is the reciprocal of the time constant,
+\[
+\omega_c=\frac{1}{RC}=\frac{1}{\tau}=\SI{4.55e5}{\radian\per\second},
+\qquad
+f_c=\frac{\omega_c}{2\pi}\approx \SI{72.3}{\kilo\hertz}.
+\]
+
+\begin{mistakebox}
+Do not use \(f\) where an equation requires \(\omega\). Reactance formulas use
+\(\omega\): \(X_L=\omega L\) and \(X_C=1/(\omega C)\). If frequency is given in
+hertz, convert with \(\omega=2\pi f\).
+\end{mistakebox}
+
+\section{Key Equations}
+\[
+\sum i_k=0,\qquad \sum v_k=0,\qquad
+p(t)=v(t)i(t).
+\]
+
+\section{Key Definitions}
+\begin{description}
+\item[Lumped element] an idealized two-terminal component whose behavior is a
+single \(v\)--\(i\) law; valid when the circuit is small versus a wavelength.
+\item[KCL] Conservation of charge at a node.
+\item[KVL] Energy consistency around a loop.
+\item[State] A variable needed, with the input, to predict future behavior
+(capacitor voltages, inductor currents).
+\item[Passive sign convention] Positive absorbed power when current enters the
+positive-voltage terminal.
+\end{description}

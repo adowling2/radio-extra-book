@@ -1,12 +1,14 @@
 \chapter{One Circuit, Four Views}
 \label{ch:fourviews}
 Part~II built the generic machinery (systems seen as differential equations,
-state-space models, transfer functions, and frequency responses), and the
-previous two chapters supplied the physical laws and units. This short chapter
+state-space models, transfer functions, and frequency responses), and the earlier
+Part~III chapters supplied the pieces: the modeling paradigm and components
+(\cref{ch:foundations}), resistive networks (\cref{ch:resistive}), and the AC
+steady-state view---impedance and phasors---of \cref{ch:ac}. This short chapter
 states the organizing pattern the rest of Part~III follows. Its claim is simple:
 \emph{every circuit in this book is one of those systems}, and the way to
-understand a circuit is to look at it through the same set of views until they
-agree.
+understand a circuit is to look at it through the same set of views, each of which
+offers complementary intuition about the same object.
 
 \section{The Four Views}
 A circuit can be read as:
@@ -18,9 +20,11 @@ element laws;
 \item a \textbf{phasor / frequency-response model}, the transfer function on the
 \(\jj\omega\) axis.
 \end{enumerate}
-A fifth lens---\textbf{energy} storage and dissipation---runs alongside as a
-consistency check. All of these must agree; if they do not, a sign convention, a
-reference direction, or an assumption needs attention.
+A fifth lens---\textbf{energy} storage and dissipation---runs alongside. The
+views are complementary rather than competing: each makes a different feature of
+the circuit obvious, and together they describe one consistent object. When a
+quick cross-check between two of them disagrees, a sign convention, a reference
+direction, or an assumption needs attention.
 
 The generic systems of \cref{ch:linsys} have no schematic, so there the four
 views are the differential equation, state-space model, transfer function, and

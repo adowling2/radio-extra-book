@@ -115,6 +115,19 @@ cutoff (each pole adding \(-\SI{20}{\decibel}\)/decade, each zero
 inductors and capacitors. The \emph{order} is thus both a circuit fact (how many
 reactive parts) and a response fact (how fast it rolls off).
 
+\section{Zeros in Radio Circuits: Traps and Notches}
+If poles build the passband, \emph{zeros} are how a circuit deliberately
+\emph{rejects} energy. A transmission zero on the \(\jj\omega\) axis forces the
+output to zero at one frequency. Two dual constructions put one there. A series LC
+branch to ground has zero impedance at its resonance, shorting that frequency to
+ground and placing a transmission zero at \(\wzero=1/\sqrt{LC}\)---a trap. A
+parallel LC branch in series with the signal path is the dual: it becomes an open
+circuit at resonance, again blocking one frequency. Wherever the exam describes a
+trap, a wave trap, or a notch rejecting a specific frequency, a zero has been
+parked at that frequency (\cref{fig:pz-notch} in \cref{ch:splane} shows the
+pole--zero picture). The elliptic family below uses exactly this---stopband
+\(\jj\omega\)-axis zeros---to sharpen its skirts.
+
 \section{Designing and Tuning a Filter}
 Turn the derivation around and you have the design procedure. A filter is
 specified by a target frequency response; designing it means \emph{placing the
