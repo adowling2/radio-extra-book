@@ -1,5 +1,26 @@
 # Revision Notes — Round 2 (from "main 2.pdf" markup)
 
+## OVERARCHING DIRECTIONS (Alex, 2026-07-24) — these govern everything below
+- **Part II — math & controls from a systems / general-engineering perspective.**
+  Do NOT assume the reader knows circuits. Circuits may appear only as *optional
+  examples*, never as the vehicle an explanation depends on. (This is stronger
+  than "systems-first": Part II must stand on generic first/second-order systems,
+  Laplace, transfer functions, Bode, root locus — a circuit is at most one
+  illustration among several, clearly marked as optional.)
+- **Part III — circuits, built up in this order:**
+  1. Introduce **basic circuit modeling paradigms and components** first
+     (lumped/ideal-element modeling; R, L, C, sources; KCL/KVL; state variables).
+  2. Then review **phasors, impedance, etc. from a circuits perspective**
+     (the new AC Steady State chapter).
+  3. Then the **three main circuit types** (RC, RL, RLC), including **Bode and
+     root-locus plots for a worked example**.
+  4. For **filters, transmission lines, antennas, etc.**: give **schematics for
+     simple circuits / ideal components**, **develop the mathematical model from
+     ideal components**, and **then show Bode, root locus, Smith charts, etc.
+     derived from that model.** (This schematic → ideal-component model → plots
+     pattern is the template for every applied chapter.)
+
+
 Parsed from Alex's marked-up PDF of the 82-page build. Colors group related
 comments. This is the working plan; we'll settle the open questions, then execute.
 IDs: `Dn` decisions, `Tn` themes, `Cn-page` per-location.
@@ -32,15 +53,34 @@ IDs: `Dn` decisions, `Tn` themes, `Cn-page` per-location.
 
 ### Resulting chapter structure (target)
 - **Part I — Exam-Ready Reference:** Ch 1 "Study Guide" (was Cheat Sheet).
-- **Part II — Math & Control-Theory Foundations:** Complex Numbers & Phasors
-  (refresher only, §2.1–2.2); First/Second-Order Systems: Time & State Space;
-  Frequency Response, Bode, and the s-Plane.
-- **Part III — The Circuits:** Foundations (+ Units merged); **AC Steady State:
-  Impedance, Admittance, Power (NEW)**; One Circuit, Four Views; RC; RL; RLC
-  (+ root locus); Resistive Networks; Filters/Matching (+ Zeros in Radio Circuits);
-  Active/Feedback; Transmission Lines; Measurement.
+- **Part II — Math & Control-Theory Foundations (NO assumed circuit knowledge;
+  generic systems throughout, circuits only as optional examples):** Complex
+  Numbers & Phasors (refresher, §2.1–2.2); First- and Second-Order Systems: Time
+  & State Space; Frequency Response, Bode, and the s-Plane.
+- **Part III — The Circuits (order per Alex's directions):**
+  1. **Circuit Modeling: Paradigms and Components** (reframed Foundations + Units
+     merged): lumped/ideal-element modeling; the components R, L, C, sources;
+     KCL/KVL; state variables.
+  2. **Resistive Networks** (DC — the simplest circuits; moved earlier, right
+     after modeling/components).
+  3. **AC Steady State: Impedance, Admittance, and Power (NEW)** — phasors and
+     impedance *from a circuits perspective* (the material split out of Ch 2).
+  4. **One Circuit, Four Views** (the framework bridge).
+  5. **RC**, **RL**, **RLC** (RLC gains the root locus) — the three circuit types,
+     with a worked example carrying **Bode + root-locus** plots.
+  6. **Filters, Matching, and Transformers** — schematic → ideal-component model →
+     Bode/root-locus; folds in "Zeros in Radio Circuits".
+  7. **Transmission Lines, Reflection, SWR** — same pattern; **includes an
+     idealized-antenna model → Smith chart** treatment (new section, or its own
+     short "Antennas" chapter).
+  8. **Active Circuits, Feedback, Oscillators** — op-amp modeled as a dependent
+     source; op-amp/oscillator models → Bode/root-locus.
+  9. **Measurement and Troubleshooting.**
 - **Part IV — Practice and Study:** Worked Examples; Anchored Practice.
-- Voice: systems-first/general (D2); callout boxes color-coded (D5).
+- Every applied chapter (6–8) follows: **schematic (simple/ideal) → math model
+  from ideal components → Bode / root locus / Smith chart from the model.**
+- Voice: systems-first/general (Part II assumes no circuits); callout boxes
+  color-coded (D5).
 
 ## 0. Big decisions (remaining — see Questions at the bottom)
 
@@ -243,11 +283,22 @@ check every new/changed figure and schematic. Commit after each phase; push to
    to circuits here") and affirms Alex's own framing from p18 (voltage & current are
    sinusoids in AC steady state; phasors represent them). Place in Part III AFTER
    Foundations and BEFORE "One Circuit, Four Views". `\input` it in `main.tex`.
-3. **Merge Units into Foundations.** Fold `chapters/..._units.tex` (Base
-   Relationships, Radio Prefixes, Dimensional Tests, Worked Unit Check, Common
-   Mistakes) into the Foundations chapter as sections; remove the Units `\input`
-   and `git rm` the file. (Appendix B "Units and Prefixes" stays as the reference
-   table.)
+3. **Reframe Foundations → "Circuit Modeling: Paradigms and Components," and merge
+   Units in.** Retitle the Foundations chapter and make its opening explicitly
+   introduce (a) the lumped / ideal-element modeling paradigm and (b) the
+   components R, L, C, and sources (with their ideal element laws), before KCL/KVL
+   and state variables. Fold the Units chapter (Base Relationships, Radio Prefixes,
+   Dimensional Tests, Worked Unit Check, Common Mistakes) in as sections; remove
+   the Units `\input` and `git rm` the file. (Appendix B "Units and Prefixes"
+   stays as the reference table.) This chapter opens Part III.
+3b. **Move Resistive Networks earlier.** Place the Resistive Networks chapter right
+   after the modeling/components chapter and before AC Steady State (it is DC and
+   needs no phasors — the simplest circuits). Update `main.tex` order.
+3c. **Antennas treatment.** In the Transmission Lines chapter, add an
+   idealized-antenna section (model an antenna from ideal components — e.g.
+   radiation resistance in series with a reactance, or a series-RLC resonance
+   model — then produce its Smith chart), following the schematic → ideal model →
+   plots pattern. (Could become a short standalone "Antennas" chapter if it grows.)
 4. **Move RLC root locus → Ch 10 (RLC).** Move the `fig:rlc-rootlocus` tikz figure
    and its narration from Ch 4 (`..._s_plane...tex`) into the RLC chapter's "Root
    Locus: Damping Set by R" section (it already references it). Keep Ch 4's generic
@@ -275,10 +326,17 @@ check every new/changed figure and schematic. Commit after each phase; push to
 
 ## PHASE 2 — Content
 
-1. **Voice = systems-first/general (D2).** In the generic Part II chapters (3, 4),
-   say "LTI system" where the statement is generic; add "(e.g., a circuit)"
-   bridges. Apply p28 fix: "the circuit does" → "a second-order LTI system (e.g., a
-   circuit) does". Make the Bode-building rules readable without EE background.
+1. **Voice = systems-first/general; Part II assumes NO circuit knowledge (D2 +
+   overarching direction).** In Part II (ch 2–4) lead entirely with generic
+   first/second-order systems, Laplace, transfer functions, Bode, root locus;
+   circuits appear only as clearly-optional examples, never as the vehicle an
+   explanation needs. Concretely: **genericize Ch 4's running example** — it
+   currently says "For the RC low-pass output across the capacitor…"; replace with
+   a generic first-order system \(G(s)=1/(1+\tau s)\) (mention "e.g., an RC
+   low-pass" only as an aside). Say "LTI system" where the statement is generic;
+   apply p28 fix ("the circuit does" → "a second-order LTI system (e.g., a circuit)
+   does"); make the Bode-building rules readable without EE background. Move any
+   circuit-dependent explanation in Part II into Part III.
 2. **Engineering/physics examples (T3).** First-order examples box (thermal
    cooling, a stirred tank's concentration, velocity under drag) in the first-order
    section; second-order examples box (mass-spring-damper, pendulum, vehicle
