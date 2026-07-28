@@ -1,6 +1,6 @@
-"""A labelled Smith chart, drawn from the Mobius map Gamma = (z-1)/(z+1) rather than
+"""A labeled Smith chart, drawn from the Mobius map Gamma = (z-1)/(z+1) rather than
 traced, in the conventional orientation with infinity on the right (matching NCVEC
-Diagram E9-3). Every feature the pool asks to name is labelled: the resistance axis as
+Diagram E9-3). Every feature the pool asks to name is labeled: the resistance axis as
 the only straight line, the outer circle as the reactance axis, the prime center, the
 two families of circles and arcs, a constant-SWR circle, and the wavelength scale.
 See sec:smith."""
@@ -82,4 +82,4 @@ ax.set_xlim(-2.02, 1.58)
 ax.set_ylim(-1.70, 1.36)
 ax.set_aspect("equal")
 ax.axis("off")
-save(fig, "smith_chart_labelled")
+save(fig, "smith_chart_labeled")

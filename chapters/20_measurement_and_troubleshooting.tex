@@ -83,7 +83,7 @@ precisely what a measurement must avoid.
 \end{controlsbox}
 
 At RF the same logic applies with impedance in place of resistance, and the numbers
-get worse: a few centimetres of lead is an inductance, and a probe's tip capacitance
+get worse: a few centimeters of lead is an inductance, and a probe's tip capacitance
 loads a tuned circuit enough to shift its resonance. Touching a high-\(Q\) tank with
 a \SI{10}{\pico\farad} probe detunes it---the measurement moves the pole you were
 trying to observe.
@@ -282,7 +282,7 @@ you are moving its poles up in frequency until they no longer matter.
 The ground-lead resonance above is one failure of an assumption the schematic makes
 everywhere: that ``ground'' is a single node at zero volts. It is not. A ground
 conductor is a conductor, with resistance and---more importantly at RF---inductance,
-so current flowing in it develops a voltage, and two points labelled ``ground'' are
+so current flowing in it develops a voltage, and two points labeled ``ground'' are
 at the same potential only if no current flows between them.
 
 Make that concrete with KVL. Suppose two pieces of equipment are joined by a signal
@@ -374,13 +374,13 @@ reflection coefficient: they are one measured complex number, read three ways.
 frequency. \Cref{sec:sparams} identified that as the transfer function of the network
 in its \(Z_0\) environment---so the screen is showing \(G(\jj\omega)\), and the trace
 \emph{is} a Bode plot of the thing on the bench. \Cref{fig:s21-bode} is that screen,
-with every feature on it labelled by the section that derived it.
+with every feature on it labeled by the section that derived it.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{s21_is_bode}
 \caption{A vector network analyzer's two traces for a band-pass filter, which are a
-Bode plot of \(G(\jj\omega)\) and nothing else. Everything labelled was derived before
+Bode plot of \(G(\jj\omega)\) and nothing else. Everything labeled was derived before
 any instrument was mentioned: the in-band level is \cref{sec:filterspecs}'s insertion
 loss, \(-20\log_{10}|S_{21}|\); the \(-\SI{3}{\decibel}\) width is
 \cref{sec:halfpower}'s exact \(f_0/Q_L\); the skirts fall at

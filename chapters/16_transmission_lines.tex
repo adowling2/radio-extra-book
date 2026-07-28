@@ -441,7 +441,7 @@ two contributions.
 \end{physicalbox}
 
 \subsection{Attenuation in Decibels}
-Manufacturers do not quote \(\alpha\) in nepers per metre; they quote loss in
+Manufacturers do not quote \(\alpha\) in nepers per meter; they quote loss in
 decibels per unit length, conventionally per \SI{100}{\foot} or per
 \SI{100}{\meter}. The conversion is just \cref{sec:decibels} applied to
 \(\ee^{-\alpha x}\):
@@ -673,7 +673,7 @@ constant-\(|\Gamma|\) (constant-SWR) circle. For this book the point is
 conceptual---the chart is not a new law of circuits but a coordinate transform
 that makes the input-impedance formula something you can read off by eye.
 
-\Cref{fig:smith-labelled} is the chart with every feature the exam names labelled, and
+\Cref{fig:smith-labeled} is the chart with every feature the exam names labeled, and
 the vocabulary is worth learning deliberately because two of the names are
 counter-intuitive.
 
@@ -687,7 +687,7 @@ Now the two names that trip people. The horizontal line through the middle is th
 is how a question can ask for it without naming it. But the large outer circle is
 called the \textbf{reactance axis}, because that is where the reactance arcs
 terminate---an ``axis'' that is a circle, which is exactly the sort of thing worth
-seeing once on a labelled diagram rather than meeting first in a question. The center
+seeing once on a labeled diagram rather than meeting first in a question. The center
 is the \textbf{prime center}: \(z=1\), \(\Gamma=0\), the perfect match.
 
 \emph{Normalizing} the chart is the operation that makes it usable in any system. The
@@ -724,7 +724,7 @@ distance, circles for constant SWR, one point for a match.
 
 \begin{exambox}
 Group E9G is eleven questions of vocabulary and use, and every answer is either
-labelled in \cref{fig:smith-labelled} or stated in this section. What it \emph{calculates}:
+labeled in \cref{fig:smith-labeled} or stated in this section. What it \emph{calculates}:
 impedance along transmission lines, and impedance and SWR values. Its \emph{coordinate
 system}: resistance circles and reactance arcs---the two families, and the arcs are the
 points of constant \emph{reactance}. Its \emph{common use}: determining the length and
@@ -739,16 +739,16 @@ the \emph{line}.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{smith_chart_labelled}
-\caption{A Smith chart with every feature the exam names labelled. It is not traced:
+\includegraphics[width=0.92\textwidth]{smith_chart_labeled}
+\caption{A Smith chart with every feature the exam names labeled. It is not traced:
 each curve is computed from \(\Gamma=(z-1)/(z+1)\), the constant-resistance circles
-having centre \(r/(1+r)\) and radius \(1/(1+r)\) and the constant-reactance arcs centre
+having center \(r/(1+r)\) and radius \(1/(1+r)\) and the constant-reactance arcs center
 \((1,1/x)\) and radius \(|1/x|\). Note the two names worth learning: the
 \emph{resistance} axis is the horizontal line---the only straight line on the
 chart---while the \emph{reactance} axis is the outer \emph{circle}, where every arc
 terminates. The orientation, with \(z\to\infty\) at the right, is the conventional one
 the question pool adopted in its 2024 errata.}
-\label{fig:smith-labelled}
+\label{fig:smith-labeled}
 \end{figure}
 
 
@@ -812,7 +812,7 @@ the second being a quarter-wave monopole, half the dipole. So the \(468\) is not
 mysterious constant: it is \(984/2\) reduced by the end effect, and the \(234\) is
 just half of it.
 
-\begin{workedbox}[: cutting a dipole for 20 metres]
+\begin{workedbox}[: cutting a dipole for 20 meters]
 For \(f=\SI{14.1}{\mega\hertz}\), the antenna modeled above,
 \[
 \ell=\frac{468}{14.1}\approx\SI{33.2}{\foot}
@@ -1050,19 +1050,19 @@ feed-point split.
 
 \subsection{Where You Feed It}
 \label{sec:feedpoint}
-So far the antenna has been fed at its centre. Move the feed and the resistance
+So far the antenna has been fed at its center. Move the feed and the resistance
 changes---predictably, and by an argument that needs no electromagnetics beyond what
 \cref{sec:stubs} already set up.
 
 A half-wave dipole is an open-ended structure, so the same boundary condition that put
 a current \emph{node} at the end of an open stub puts one at each tip of the dipole.
-The current is therefore a standing wave, largest at the centre and vanishing at the
+The current is therefore a standing wave, largest at the center and vanishing at the
 ends:
 \[
 I(z)=I_0\cos\beta z,
 \qquad |z|\le\frac{\lambda}{4},
 \]
-with \(z\) measured from the centre and \(\beta=2\pi/\lambda\) as always. Now the key
+with \(z\) measured from the center and \(\beta=2\pi/\lambda\) as always. Now the key
 step, and it is conservation of power rather than a field calculation. The radiated
 power is a property of that whole current distribution, so it does not care where you
 attach the coax. But at the feed point the transmitter sees
@@ -1070,7 +1070,7 @@ attach the coax. But at the feed point the transmitter sees
 \[
 |I(z)|^2R(z)=\text{const}
 \qquad\Longrightarrow\qquad
-\boxed{\;R(z)=\frac{R_{\text{centre}}}{\cos^2\beta z}\;}
+\boxed{\;R(z)=\frac{R_{\text{center}}}{\cos^2\beta z}\;}
 \]
 Feed where the current is small and the same power demands a larger resistance. This
 assumes moving the feed does not reshape the current distribution, which is the
@@ -1083,10 +1083,10 @@ That one formula generates the whole subject:
 \toprule
 Feed position & \(\beta z\) & \(\cos^2\beta z\) & \(R\) \\
 \midrule
-Centre & \(0^\circ\) & \(1\) & \SI{73}{\ohm} \\
-\(\lambda/16\) from centre & \(22.5^\circ\) & \(0.854\) & \SI{85}{\ohm} \\
-\(\lambda/8\) from centre & \(45^\circ\) & \(\tfrac12\) & \SI{146}{\ohm} \\
-\(0.2\lambda\) from centre & \(72^\circ\) & \(0.095\) & \SI{765}{\ohm} \\
+Center & \(0^\circ\) & \(1\) & \SI{73}{\ohm} \\
+\(\lambda/16\) from center & \(22.5^\circ\) & \(0.854\) & \SI{85}{\ohm} \\
+\(\lambda/8\) from center & \(45^\circ\) & \(\tfrac12\) & \SI{146}{\ohm} \\
+\(0.2\lambda\) from center & \(72^\circ\) & \(0.095\) & \SI{765}{\ohm} \\
 End & \(90^\circ\) & \(0\) & \(\to\infty\) \\
 \bottomrule
 \end{tabular}
@@ -1094,7 +1094,7 @@ End & \(90^\circ\) & \(0\) & \(\to\infty\) \\
 
 The \(\lambda/8\) row is exact and worth remembering as a sanity check:
 \(\cos^245^\circ=\tfrac12\), so the resistance is exactly \emph{doubled}, \SI{146}{\ohm}.
-An off-centre-fed dipole works in this region, where the impedance is a few hundred
+An off-center-fed dipole works in this region, where the impedance is a few hundred
 ohms rather than \SI{73}{\ohm}, so it is reached through a step-up balun rather than
 directly. Its actual selling point is a multiband one: at the chosen offset the feed
 point lands at a comparable fraction of the standing wave on several harmonically
@@ -1234,7 +1234,7 @@ plots both families.
 
 For a \textbf{vertical} antenna the image is \emph{not} inverted, \(\phi=0\), and the
 same formula returns a \emph{maximum} at the horizon instead. That single sign is why
-verticals are favoured for low-angle work and why a horizontal antenna must be got up
+verticals are favored for low-angle work and why a horizontal antenna must be got up
 high to compete. It is also why \cref{sec:feedpoint}'s answer to ``what affects
 feed-point impedance'' was \emph{antenna height}: the image is a second element
 coupled to the first, and moving it changes the impedance as surely as moving a real
@@ -1356,14 +1356,14 @@ element must float, which is why a hairpin-matched Yagi has its driven element
 \emph{insulated from the boom} while the other schemes need not.
 
 \textbf{Gamma and delta: tap up instead.} These take the other route to the same
-place. Rather than transform the centre resistance with reactances, they move the
+place. Rather than transform the center resistance with reactances, they move the
 connection \emph{outward} along the element and use \cref{sec:feedpoint}'s
-\(R(z)=R_{\text{centre}}/\cos^2\beta z\) to find a point where the resistance already
+\(R(z)=R_{\text{center}}/\cos^2\beta z\) to find a point where the resistance already
 equals what the line wants. For a \SI{25}{\ohm} element, \(\lambda/8\) out doubles it
 to exactly \SI{50}{\ohm}. A folded driven element (\cref{sec:foldeddipole}) reaches a
 similar step-up by a different route. A \emph{delta} match does this symmetrically, fanning the
-feed to two points either side of centre; a \emph{gamma} match does it
-\emph{unbalanced}, bonding the coax shield to the centre and tapping the centre
+feed to two points either side of center; a \emph{gamma} match does it
+\emph{unbalanced}, bonding the coax shield to the center and tapping the center
 conductor out to one side---which is precisely why the gamma is the one used to
 shunt-feed a grounded tower at its base, since one side of the feed is already at
 ground.
@@ -1390,7 +1390,7 @@ Group E9E names six of these, and every answer is above (its seventh, the power
 divider, is \cref{sec:wilkinson}). The \emph{beta or hairpin}
 match is the one needing an insulated driven element, and it needs that element
 \emph{capacitive---electrically shorter than a half wave}. The \emph{gamma} match is
-the one connecting shield to centre and conductor a fraction of a wavelength to one
+the one connecting shield to center and conductor a fraction of a wavelength to one
 side, the one that shunt-feeds a grounded tower, and the one whose series capacitor
 exists \emph{to cancel unwanted inductive reactance}. The \emph{stub} match is the
 short length of line in parallel at or near the feed point. And E9E06's Q-section is
