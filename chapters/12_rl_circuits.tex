@@ -125,6 +125,23 @@ shape to the RC high-pass of \cref{fig:rc-highpass}, with corner
 same geometry as the RC pole (\cref{fig:rc-rootlocus}); as \(R\)
 increases the pole moves \emph{left} (faster), the mirror of the RC case.
 
+\begin{workedbox}[: sizing a choke]
+A bias line feeding a \SI{50}{\ohm} path must pass DC while presenting at least
+\SI{500}{\ohm} of reactance at \SI{14}{\mega\hertz}. From \(X_L=\omega L\),
+\[
+L\ge\frac{X_L}{\omega}=\frac{500}{2\pi(14\times10^6)}\approx\SI{5.7}{\micro\henry},
+\]
+so a standard \SI{10}{\micro\henry} choke (\(X_L\approx\SI{880}{\ohm}\)) is
+comfortable. Read the same part as a first-order system and the choice is the
+corner frequency: \(\tau=L/R=\SI{0.2}{\micro\second}\) puts \(f_c\approx
+\SI{796}{\kilo\hertz}\), and \SI{14}{\mega\hertz} is \(1.25\) decades past it,
+hence about \SI{25}{\decibel} of attenuation. Two vocabularies, one pole.
+\emph{But check \cref{sec:selfresonance} before trusting it:} a
+\SI{10}{\micro\henry} coil with \SI{2}{\pico\farad} of winding capacitance
+self-resonates near \SI{36}{\mega\hertz}, above which it stops being an inductor
+at all.
+\end{workedbox}
+
 \begin{controlsbox}
 \textbf{Connection.} RC and RL are the two first-order lags of circuit theory.
 Same pole structure, same Bode shape, same step response---only the state

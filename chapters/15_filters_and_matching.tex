@@ -349,6 +349,24 @@ heating, and loss of the intended impedance transformation---the reason
 transformers and inductors are rated for a maximum voltage-time product (or power)
 at a given frequency.
 
+\begin{exambox}
+Filter questions sort into four independent decisions, and naming which one is
+being asked usually settles the answer. \emph{Which band passes} gives the type
+(low-pass, high-pass, band-pass, band-stop). \emph{How steep the skirt} gives the
+order, at \(-20n\,\si{\decibel}\) per decade or about \(-6n\,\si{\decibel}\) per
+octave. \emph{What the passband and transition look like} gives the family:
+Butterworth is flat with a moderate transition, Chebyshev is sharper but rippled,
+elliptic is sharpest with ripple in both bands and stopband nulls, Bessel is
+gentlest but preserves waveform shape. \emph{Where a specific frequency is killed}
+means a zero---a trap or notch, not a steeper filter.
+
+Matching questions are a different animal: they are always the same two steps,
+cancel the reactance and then transform the resistance. An L-network's \(Q\) is
+fixed by the resistance ratio alone; a \(\pi\) or T network adds the third element
+precisely so \(Q\)---and therefore bandwidth and harmonic rejection---becomes a
+free choice.
+\end{exambox}
+
 \section{Worked Example: Quarter-Wave and L-Network}
 \textbf{Problem.} A transmitter feeds a \(\SI{50}{\ohm}\) system, but the load
 (say an antenna at resonance) presents a purely resistive \(\SI{200}{\ohm}\).

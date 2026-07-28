@@ -148,6 +148,22 @@ The \(D\ne0\) term in the second model is worth noticing: it is why the high-pas
 has a \emph{zero} (at \(s=0\), from the factor \(RCs\)) while the low-pass has none.
 A direct input-to-output path creates a zero.
 
+\begin{workedbox}[: which output, and at what frequency?]
+Take \(R=\SI{1}{\kilo\ohm}\) and \(C=\SI{160}{\pico\farad}\), so
+\(\tau=\SI{160}{\nano\second}\) and \(f_c=1/(2\pi\tau)\approx\SI{995}{\kilo\hertz}\)
+---call it \SI{1}{\mega\hertz}. At \SI{100}{\kilo\hertz}, one decade \emph{below}
+the corner, \(\omega\tau=0.1\) and
+\[
+|G_C|=\frac{1}{\sqrt{1+0.01}}\approx0.995\ \ (-\SI{0.04}{\decibel}),
+\qquad
+|G_R|=\frac{0.1}{\sqrt{1+0.01}}\approx0.0995\ \ (-\SI{20}{\decibel}).
+\]
+At \SI{10}{\mega\hertz}, one decade \emph{above}, the two swap exactly. And at the
+corner itself both are \(1/\sqrt2\)---the one frequency where the circuit splits
+the signal evenly, which is what \(|G_C|^2+|G_R|^2=1\) demands. Same components,
+same instant: the only thing that changed is which element you measured across.
+\end{workedbox}
+
 Both share the corner frequency \(\omega_c=1/(RC)\), where the gain is
 \(-\SI{3}{\decibel}\). The low-pass passes slow signals and rolls off high ones
 (\cref{fig:bode1}); the high-pass does the reverse (\cref{fig:rc-highpass}).
@@ -209,6 +225,17 @@ f_c=\frac{1}{2\pi RC}=\si{\hertz}.
 A capacitor is an open circuit only at DC steady state. During a transient or at
 AC, its current \(i=C\,\dd v_C/\dd t\) is generally nonzero.
 \end{mistakebox}
+
+\begin{exambox}
+Three numbers answer almost every RC question, and all three are the single pole
+\(-1/RC\) wearing different clothes: the time constant \(\tau=RC\) (one \(\tau\)
+covers \SI{63.2}{\percent} of a step, five \(\tau\) settles it), the corner
+frequency \(f_c=1/(2\pi RC)\), and the \(-\SI{20}{\decibel}\)/decade roll-off. Note
+the \(2\pi\): questions give frequency in hertz and time constants in seconds, and
+mixing \(f\) with \(\omega\) is the most common way to be wrong by a factor of
+\(6.28\). Then ask \emph{which element the output is across}---capacitor means
+low-pass, resistor means high-pass, and nothing else about the circuit changes.
+\end{exambox}
 
 \section{Worked Example}
 Let \(R=\SI{4.7}{\kilo\ohm}\) and \(C=\SI{100}{\nano\farad}\). Then

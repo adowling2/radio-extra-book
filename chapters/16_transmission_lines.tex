@@ -321,6 +321,16 @@ constant-\(|\Gamma|\) (constant-SWR) circle. For this book the point is
 conceptual---the chart is not a new law of circuits but a coordinate transform
 that makes the input-impedance formula something you can read off by eye.
 
+\Cref{fig:smith-basic} shows the geometry stripped to its essentials. Three
+features carry the pool's vocabulary: the horizontal line through the middle is the
+\textbf{resistance axis} (where \(z\) is purely real), the circles tangent to its
+right-hand end are \textbf{constant-resistance circles}, the arcs crossing them are
+\textbf{constant-reactance arcs}, and the center---\(z=1\), \(\Gamma=0\)---is the
+\textbf{prime center}, the perfect match. Real charts add
+\textbf{wavelength scales} around the rim, since a rotation of \(180^\circ\)
+corresponds to moving a quarter wavelength along the line (the same
+\(\beta\ell=\pi/2\) that inverts an impedance).
+
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[scale=2.0]
@@ -467,6 +477,25 @@ inductive (upper half) above \(f_0\), capacitive (lower half) below---the same
 picture a NanoVNA shows for a real antenna.}
 \label{fig:smith-antenna}
 \end{figure}
+
+\begin{exambox}
+Almost every transmission-line question is one of four, and each has a single
+governing formula. \emph{How bad is the mismatch?}
+\(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\), then
+\(\mathrm{SWR}=(1+|\Gamma|)/(1-|\Gamma|)\); for a purely resistive load this
+shortcuts to the larger of \(Z_L/Z_0\) and \(Z_0/Z_L\). \emph{How long is the line
+electrically?} \(\lambda=VF\,c/f\)---and use the real line's \(VF\), never
+free-space wavelength. \emph{What does the line do to the impedance?} A quarter
+wave inverts it about \(Z_0^2\), a half wave repeats it, a matched line leaves it
+alone. \emph{What does an unterminated piece do?} It is a pure reactance: a shorted
+stub under \(\lambda/4\) is inductive, an open stub under \(\lambda/4\) is
+capacitive, and the behavior inverts every quarter wave.
+
+Two traps. A perfect match is about \(Z_L=Z_0\), so no line length can fix a
+mismatch---it only relocates it. And reflected \emph{power} is \(|\Gamma|^2\) while
+return loss is \(-20\log_{10}|\Gamma|\), so watch whether a question is asking about
+amplitude or power.
+\end{exambox}
 
 \section{Worked Example}
 A \(\SI{100}{\ohm}\) load terminates a \(\SI{50}{\ohm}\) line:

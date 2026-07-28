@@ -153,6 +153,28 @@ Do not treat one topology's \(Q\) formula as universal, and keep the three
 answer different questions.
 \end{mistakebox}
 
+\begin{workedbox}[: the voltage magnification is real]
+A series circuit with \(L=\SI{20}{\micro\henry}\), \(C=\SI{100}{\pico\farad}\) and
+\(R=\SI{2}{\ohm}\) is driven by \SI{10}{\volt} RMS at resonance. Then
+\[
+f_0=\frac{1}{2\pi\sqrt{LC}}\approx\SI{3.56}{\mega\hertz},
+\qquad
+\omega_0L\approx\SI{447}{\ohm},
+\qquad
+Q_s=\frac{447}{2}\approx224 .
+\]
+At resonance \(Z=R=\SI{2}{\ohm}\), so the current is \(10/2=\SI{5}{\ampere}\) and
+the voltage across the inductor alone is
+\[
+V_L=I\,\omega_0L=(5)(447)\approx\SI{2.2}{\kilo\volt},
+\]
+which is \(Q\) times the \SI{10}{\volt} source---and the capacitor holds an equal
+and opposite \SI{2.2}{\kilo\volt}, which is why their sum contributes nothing and
+the source only ever sees \SI{2}{\ohm}. This is not a curiosity: it is why the
+capacitors in a high-\(Q\) tuned circuit or antenna tuner must be rated for
+kilovolts even when the transmitter output is modest.
+\end{workedbox}
+
 \section{Root Locus: Damping Set by R}
 Fix \(L\) and \(C\) and sweep \(R\). Since \(\zeta=\tfrac{R}{2}\sqrt{C/L}\), the
 poles trace the canonical second-order locus (\cref{fig:rlc-rootlocus}): at
@@ -245,40 +267,16 @@ circuit the exam calls ``selective'' is what a controls course calls ``lightly
 damped.''
 \end{controlsbox}
 
-\section{The Same Circuit as an Impedance Phasor}
-It is worth converting the same numbers into the phasor language of
-\cref{ch:ac}, since that is how a bench instrument reports them. Just above
-resonance, at \(f=1.1f_0\),
-\[
-X_L=\omega L\approx\SI{235}{\ohm},
-\qquad
-X_C=\frac{1}{\omega C}\approx\SI{194}{\ohm},
-\qquad
-X=X_L-X_C\approx\SI{41}{\ohm},
-\]
-so the impedance phasor is
-\[
-Z=R+\jj X\approx 5+\jj41\ \si{\ohm}
-=\SI{41}{\ohm}\angle 83^\circ .
-\]
-Two things are worth noticing (\cref{fig:rlc-phasor}). First, the individual
-reactances are huge---hundreds of ohms---yet they nearly cancel, leaving a net
-\SI{41}{\ohm}; \emph{resonance is a cancellation, not an absence}. Second, sweeping
-frequency moves \(Z\) along a \emph{vertical} line in the complex plane, because
-\(R\) is constant and only the reactance changes. That line crosses the real axis at
-\(Z=R\)---the one frequency where the circuit looks purely resistive, and where
-\(|Z|\) is smallest and the current therefore largest.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{rlc_series_phasor}
-\caption{The same worked example seen as an impedance phasor. \emph{Left:}
-\(Z=5+\jj41\ \si{\ohm}=\SI{41}{\ohm}\angle83^\circ\) at \(f=1.1f_0\)---rectangular
-form on the axes, polar form along the arrow. \emph{Right:} the locus of \(Z(f)\)
-from \(0.5f_0\) to \(2f_0\): a vertical line at \(\Re\{Z\}=R\), inductive above
-\(f_0\) and capacitive below, crossing the real axis at resonance.}
-\label{fig:rlc-phasor}
-\end{figure}
+\begin{exambox}
+Series-resonance questions reward separating the three quantities that do not
+interact. \(f_0=1/(2\pi\sqrt{LC})\) depends on \(L\) and \(C\) \emph{only}---any
+\(R\) in the problem statement is a distractor for this part. \(Q=\omega_0L/R\) and
+\(BW\approx f_0/Q\) then depend on \(R\), and \(R\) alone moves them. So a question
+that changes \(R\) changes selectivity and bandwidth but never the resonant
+frequency; a question that changes \(L\) or \(C\) moves \(f_0\), and moves \(Q\)
+too unless it scales both. At resonance \(Z=R\), the current is maximum, and the
+individual reactive voltages are \(Q\) times the source.
+\end{exambox}
 
 \section{Worked Example}
 Let \(L=\SI{10}{\micro\henry}\), \(C=\SI{220}{\pico\farad}\), \(R=\SI{5}{\ohm}\).
@@ -315,3 +313,39 @@ at \(f_0=\SI{3.39}{\mega\hertz}\). \emph{Right:} root locus as \(R\) is swept wi
 \(R=2\sqrt{L/C}\approx\SI{426}{\ohm}\), some 85 times larger.}
 \label{fig:rlc-worked}
 \end{figure}
+
+\subsection{The Same Circuit as an Impedance Phasor}
+It is worth converting these same numbers into the phasor language of
+\cref{ch:ac}, since that is how a bench instrument reports them. Just above
+resonance, at \(f=1.1f_0\),
+\[
+X_L=\omega L\approx\SI{235}{\ohm},
+\qquad
+X_C=\frac{1}{\omega C}\approx\SI{194}{\ohm},
+\qquad
+X=X_L-X_C\approx\SI{41}{\ohm},
+\]
+so the impedance phasor is
+\[
+Z=R+\jj X\approx 5+\jj41\ \si{\ohm}
+=\SI{41}{\ohm}\angle 83^\circ .
+\]
+Two things are worth noticing (\cref{fig:rlc-phasor}). First, the individual
+reactances are huge---hundreds of ohms---yet they nearly cancel, leaving a net
+\SI{41}{\ohm}; \emph{resonance is a cancellation, not an absence}. Second, sweeping
+frequency moves \(Z\) along a \emph{vertical} line in the complex plane, because
+\(R\) is constant and only the reactance changes. That line crosses the real axis at
+\(Z=R\)---the one frequency where the circuit looks purely resistive, and where
+\(|Z|\) is smallest and the current therefore largest.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{rlc_series_phasor}
+\caption{The same worked example seen as an impedance phasor. \emph{Left:}
+\(Z=5+\jj41\ \si{\ohm}=\SI{41}{\ohm}\angle83^\circ\) at \(f=1.1f_0\)---rectangular
+form on the axes, polar form along the arrow. \emph{Right:} the locus of \(Z(f)\)
+from \(0.5f_0\) to \(2f_0\): a vertical line at \(\Re\{Z\}=R\), inductive above
+\(f_0\) and capacitive below, crossing the real axis at resonance.}
+\label{fig:rlc-phasor}
+\end{figure}
+

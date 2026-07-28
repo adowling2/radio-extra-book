@@ -208,6 +208,54 @@ margins mean poles near the \(\jj\omega\) axis: peaked frequency response,
 overshoot, long ringing. Zero margin puts poles on the axis---sustained
 oscillation. \Cref{fig:fb-margins} shows both margins on one loop-gain Bode plot.
 
+\subsection{One Point, One Plane: the Nyquist View}
+\label{sec:nyquist}
+Defining the two margins on two separate Bode axes slightly obscures what they
+are. Both measure a distance to the \emph{same} place---the point \(-1\)---so it
+is worth seeing them in the one plane where that point lives.
+
+Plot \(L(\jj\omega)\) itself on the complex plane, sweeping \(\omega\) and marking
+where the curve goes. This is a \textbf{Nyquist plot}: the same complex numbers
+the Bode plot splits into magnitude and phase, kept together as points instead.
+The stability condition needs no translation, because it was always a statement
+about a point:
+\[
+L(\jj\omega)=-1
+\qquad\Longleftrightarrow\qquad
+\text{the curve passes through } -1 .
+\]
+Now read the margins off geometrically. The unit circle is where \(|L|=1\), and
+the negative real axis is where \(\angle L=-180^\circ\):
+\begin{description}
+\item[Gain margin] where the curve crosses the negative real axis, how far short
+of \(-1\) it stops. If it crosses at \(-0.5\), the gain can double before
+reaching \(-1\)---a gain margin of \(2\), or \SI{6}{\decibel}.
+\item[Phase margin] where the curve crosses the unit circle, the angle still
+remaining to the negative real axis.
+\end{description}
+So the two margins are the radial and angular components of one clearance, and a
+loop is comfortable exactly when its curve gives \(-1\) a wide berth. That is
+also why neither margin alone is sufficient: a curve can pass close to \(-1\)
+diagonally while both margins, measured along their own axes, look acceptable.
+
+Nothing beyond this is needed here. (The full Nyquist \emph{criterion} counts how
+many times the curve encircles \(-1\) and relates that to right-half-plane poles,
+which matters for loops that are open-loop unstable---a case no circuit in this
+book presents.) Its value is that \(L=-1\) becomes a place rather than a
+coincidence of two numbers, and \(L=-1\) is the condition behind every stability
+result in \cref{ch:highorder,ch:active}.
+
+\begin{mistakebox}
+\textbf{Two unrelated things are named after Nyquist.} The plot above, and the
+\emph{Nyquist sampling theorem}---which says a signal must be sampled at more than
+twice its highest frequency, \(f_s>2f_{\max}\), or the frequencies above
+\(f_s/2\) (the \emph{Nyquist frequency}) fold back and masquerade as lower ones.
+That folding is called aliasing, and it is why a digitizing receiver puts an
+anti-aliasing low-pass filter ahead of its converter (\cref{ch:filters}). The two
+ideas share only a surname: this chapter's Nyquist plot is about feedback
+stability and has nothing to do with sampling rates.
+\end{mistakebox}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{feedback_margins}

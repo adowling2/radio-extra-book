@@ -276,12 +276,14 @@ make \(\tau_g\) peak sharply near cutoff, so a pulse through a Chebyshev filter 
 and spreads.
 
 \begin{physicalbox}
-\textbf{Which one you want depends on what you are sending.} For a narrow SSB or CW
-signal, amplitude selectivity is everything and phase distortion is inaudible---use
-Chebyshev or elliptic. For anything where pulse shape carries the information (digital
-modes, video, or a transmitted waveform whose envelope must stay clean), group-delay
-flatness matters and Bessel or a linear-phase FIR filter is the right choice. This is
-the third axis of \cref{fig:filter-families}, and now it has a number attached.
+\textbf{Which one you want depends on what you are sending.} For a narrow
+single-sideband (SSB) or continuous-wave Morse (CW) signal, amplitude selectivity is
+everything and phase distortion is inaudible---use Chebyshev or elliptic. For
+anything where pulse shape carries the information (digital modes, video, or a
+transmitted waveform whose envelope must stay clean), group-delay flatness matters
+and Bessel---or a digital filter with no feedback, whose finite impulse response
+(FIR) can be made exactly linear phase---is the right choice. This is the third axis
+of \cref{fig:filter-families}, and now it has a number attached.
 \end{physicalbox}
 
 \section{The Limit of Infinitely Many Poles}

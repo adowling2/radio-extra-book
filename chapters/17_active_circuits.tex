@@ -137,7 +137,9 @@ op-amp.}
 
 \section{Feedback as a Loop}
 Model the amplifier as a forward path \(A(s)\) with a fraction \(\beta\) of the
-output fed back and subtracted at the input.
+output fed back and subtracted at the input (\cref{fig:feedback-loop}). This is
+\cref{ch:feedback}'s block diagram with the amplifier's names attached, so the
+results below are that chapter's results read as hardware.
 
 \begin{figure}[htbp]
 \centering
@@ -317,7 +319,9 @@ L(\jj\omega_{\text{osc}})=-1,
 |L(\jj\omega_{\text{osc}})|=1,\quad
 \angle L(\jj\omega_{\text{osc}})=-180^\circ,
 \]
-the Nyquist \(-1\) point. This is the \emph{Barkhausen criterion}. Its familiar
+the Nyquist \(-1\) point of \cref{sec:nyquist}---the oscillator is designed so its
+loop-gain curve passes exactly \emph{through} that point instead of clearing it.
+This is the \emph{Barkhausen criterion}. Its familiar
 ``unit magnitude, zero net phase'' wording refers to the round-trip transmission
 \(T=-L\), which already includes the \(-1\) of the subtracting junction; setting
 \(T=1\) is the same statement as \(L=-1\). In s-plane language the closed-loop

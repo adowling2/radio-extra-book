@@ -58,6 +58,55 @@ tractable, and the corrections are added back only when they matter (for example
 a capacitor's series inductance at very high frequencies, VHF).
 \end{physicalbox}
 
+\subsection{Self-Resonance: When a Part Becomes Its Opposite}
+\label{sec:selfresonance}
+That last point deserves a number rather than a caveat, because it decides which
+component you can use at which frequency.
+
+Every real component carries a parasitic reactance of the \emph{other} kind. A
+capacitor's leads and plates have inductance \(L_s\) in series with \(C\); a coil's
+adjacent turns have capacitance \(C_p\) in parallel with \(L\). Each pairing is
+therefore an \(L\)--\(C\) resonator, and it resonates at the frequency any \(LC\)
+pair does:
+\[
+f_{\mathrm{SRF}}=\frac{1}{2\pi\sqrt{L_sC}}
+\quad\text{(capacitor)},
+\qquad
+f_{\mathrm{SRF}}=\frac{1}{2\pi\sqrt{LC_p}}
+\quad\text{(inductor)} .
+\]
+This is the \textbf{self-resonant frequency}, and the consequence is worth stating
+sharply. Below it the part behaves as marked. Above it the \emph{parasitic}
+dominates, so
+\begin{itemize}
+\item a capacitor above its \(f_{\mathrm{SRF}}\) is an \emph{inductor}---its
+impedance rises with frequency instead of falling, which is why a bypass capacitor
+stops bypassing;
+\item an inductor above its \(f_{\mathrm{SRF}}\) is a \emph{capacitor}---its
+impedance falls with frequency, which is why an RF choke stops choking.
+\end{itemize}
+A capacitor is a series resonator, so it is a near-short at \(f_{\mathrm{SRF}}\); an
+inductor is a parallel resonator, so it is a near-open there. Those are exactly the
+two behaviors of \cref{ch:rlc,ch:rlcpar}, which is why this subsection needs no new
+theory---only the observation that the resonator was there all along.
+
+\begin{workedbox}[: where a bypass capacitor quits]
+A \(\SI{10}{\nano\farad}\) ceramic capacitor with \SI{10}{\milli\meter} of total lead
+and plate length carries roughly \(L_s\approx\SI{10}{\nano\henry}\)
+(about \SI{1}{\nano\henry} per millimetre). Then
+\[
+f_{\mathrm{SRF}}=\frac{1}{2\pi\sqrt{(10\times10^{-9})(10\times10^{-9})}}
+=\frac{1}{2\pi(10^{-8})}\approx\SI{15.9}{\mega\hertz}.
+\]
+So this part is a good bypass through the high-frequency (HF) bands and useless at
+VHF---at
+\SI{144}{\mega\hertz} its \SI{10}{\nano\henry} presents \(\omega L_s\approx\SI{9}{\ohm}\)
+of \emph{inductive} reactance while the capacitance it was bought for would have
+offered only \(\SI{0.11}{\ohm}\). The standard fix follows from the formula:
+shorten the leads (lower \(L_s\)), or parallel a large capacitor with a small one
+whose \(f_{\mathrm{SRF}}\) is higher.
+\end{workedbox}
+
 \section{KCL as an Accumulation Balance}
 Kirchhoff's current law (KCL) is a charge balance. At a node,
 \[
@@ -181,6 +230,17 @@ Do not use \(f\) where an equation requires \(\omega\). Reactance formulas use
 \(\omega\): \(X_L=\omega L\) and \(X_C=1/(\omega C)\). If frequency is given in
 hertz, convert with \(\omega=2\pi f\).
 \end{mistakebox}
+
+\begin{exambox}
+Nearly every component question on the exam is really a question about which
+idealization has failed. An ideal capacitor blocks DC and passes RF; a real one has
+lead inductance and eventually resonates. An ideal inductor passes DC and blocks
+RF; a real one has winding capacitance and does the same. When a question describes
+a part behaving as its \emph{opposite} type, it is telling you the frequency is
+above that part's self-resonance (\cref{sec:selfresonance}). When it describes a
+wire or a ground lead mattering, the lumped assumption has failed and
+\cref{ch:lines} applies.
+\end{exambox}
 
 \section{Summary: Key Equations and Definitions}
 \[

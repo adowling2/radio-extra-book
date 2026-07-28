@@ -163,6 +163,28 @@ matching form. (The loaded/unloaded/component distinction of \cref{ch:rlc} appli
 here unchanged.)
 \end{mistakebox}
 
+\begin{workedbox}[: the circulating current is real too]
+Take the dual of \cref{ch:rlc}'s magnification box: \(L=\SI{20}{\micro\henry}\),
+\(C=\SI{100}{\pico\farad}\), so \(f_0\approx\SI{3.56}{\mega\hertz}\) and
+\(\omega_0L\approx\SI{447}{\ohm}\) as before---but now the loss is a
+\(R=\SI{100}{\kilo\ohm}\) shunt, giving
+\[
+Q_p=\frac{R}{\omega_0L}=\frac{100000}{447}\approx224 .
+\]
+Drive it with \SI{10}{\milli\ampere} RMS from a current source. At resonance
+\(Z=R=\SI{100}{\kilo\ohm}\), so the node develops
+\(V=(0.010)(100000)=\SI{1}{\kilo\volt}\), and the current circulating in the
+inductor is
+\[
+I_L=\frac{V}{\omega_0L}=\frac{1000}{447}\approx\SI{2.2}{\ampere},
+\]
+which is \(Q\) times the \SI{10}{\milli\ampere} the source supplies. Compare the
+series box: there a modest voltage produced \(Q\)-fold \emph{voltages} across the
+elements; here a modest current produces a \(Q\)-fold \emph{current} around the
+loop. Same \(Q\), same \(f_0\), dual variables---and the same practical warning,
+since that circulating current is what heats a tank coil.
+\end{workedbox}
+
 The bandwidth statement, however, is topology independent:
 \[
 BW\approx\frac{f_0}{Q},
