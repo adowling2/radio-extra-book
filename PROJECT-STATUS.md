@@ -302,38 +302,159 @@ exam-relevance claim sourced from the manual as suspect.
 
 ---
 
-## 5. How to resume
+## 5. Resuming on a different computer
+
+Everything needed to build the book is in the repository. **Two things are not**, and
+both will silently degrade the workflow if you do not notice:
+
+### 5a. `references/` does not come with the clone
+
+It is gitignored, deliberately — it holds copyrighted material. After cloning you will
+have no question pools and no manuals, which means **you cannot verify pool
+identifiers or re-run any coverage check** until you replace them. The audits in
+`notes/` were built from these files:
+
+| File in `references/` | Used for | Where to get it |
+|---|---|---|
+| `HamExam.org Extra Question Pool.pdf` | Verifying every pool ID and answer letter cited in Ch 22; the coverage map in §3 | hamexam.org, "view pool" → print to PDF (Element 4, 2024–2028) |
+| `HamExam.org General Question Pool.pdf` | The General coverage check (`notes/audit-general-pool.md`) | same, Element 3 |
+| `ARRL_Extra_Class_Lcense_Manual_12th_Edition.pdf` | The four ARRL audits in `notes/` | **Get the 13th edition instead** — see §4D. The 12th is keyed to the 2020–2024 pool and produced one materially wrong finding |
+| `Ham_Extra_Circuits_Study_Guide_First_Draft.docx` | The original Word draft the book grew from | Alex's own files |
+| Other study guides (KB6NU, etc.) | Terminology cross-checks only | optional |
+
+Create the directory and drop the files in; nothing else needs configuring:
 
 ```bash
-cd /Users/adowling/GitHub/radio-extra-book
-make book          # -> main.pdf and output/Circuit_Theory_for_the_Amateur_Extra_Exam.pdf
+mkdir -p references   # then copy the PDFs in
 ```
 
-Health checks that should all stay at zero:
+**Until then, treat every pool citation in the book as unverified.** Do not add new
+ones from memory.
+
+### 5b. Toolchain
 
 ```bash
-make book >/dev/null 2>&1; grep -ci undefined main.log; grep -cE 'Overfull.*\(([2-9][0-9]|[0-9]{3,})\.' main.log
+# macOS
+brew install --cask mactex          # or basictex + tlmgr install the packages below
+brew install poppler                # pdfinfo, pdftoppm, pdftotext — used for verification
+pip3 install numpy scipy matplotlib # figure generation
+
+# Debian/Ubuntu
+sudo apt install texlive-full poppler-utils python3-numpy python3-scipy python3-matplotlib
 ```
 
-Orphan labels and dangling references — both lists should be empty:
+LaTeX packages used: `amsmath` `siunitx` `booktabs` `tabularx` `longtable` `tcolorbox`
+`tikz` `circuitikz` `pgfplots` `hyperref` `cleveref`. With a minimal TeX Live install,
+`circuitikz` and `tcolorbox` are the two most likely to be missing.
+
+### 5c. First commands on the new machine
 
 ```bash
-python3 -c "
-import re,glob
-t=''.join(open(f).read() for f in glob.glob('chapters/*.tex')+glob.glob('frontmatter/*.tex')+glob.glob('appendices/*.tex'))
-L=set(re.findall(r'\\\\label\{([^}]+)\}',t)); R=set()
-for m in re.findall(r'\\\\[cC]?ref\{([^}]+)\}',t): R.update(p.strip() for p in m.split(','))
-print('orphan:',sorted(L-R)); print('dangling:',sorted(R-L))"
+git clone <remote> radio-extra-book && cd radio-extra-book
+make all            # book + cheat sheet; PDFs land in output/
+./scripts/check.sh  # must print ALL CHECKS PASSED
 ```
 
-No hard-coded cross-references (should print nothing):
+`scripts/check.sh` is the whole verification suite in one command — undefined
+references, overfull boxes, multiply-defined labels, orphan labels, dangling
+references, hard-coded cross-references, glossary alphabetization, and figure/include
+agreement. **It should print `ALL CHECKS PASSED` on a clean checkout.** If it does not,
+the toolchain is wrong, not the book.
+
+Regenerating figures is optional — the PDFs are committed — but confirm it works
+before you edit one:
 
 ```bash
-grep -nE '(Chapter|Section|Figure|Table|Appendix) *~?[0-9]' chapters/*.tex frontmatter/*.tex appendices/*.tex | grep -v '\\label'
+make figures        # or: cd figures/src && python3 <name>.py
 ```
 
-Before committing figure changes, render and eyeball them:
+### 5d. Verifying a figure you changed
+
+Committed figures were all visually inspected. Any change must be too, because
+matplotlib will happily overlap two labels:
 
 ```bash
-pdftoppm -r 110 -png figures/<name>.pdf /tmp/chk && open /tmp/chk-1.png
+pdftoppm -r 130 -png figures/<name>.pdf /tmp/chk && open /tmp/chk-1.png
 ```
+
+### 5e. Where to start reading
+
+1. This file, §1 (structure and conventions) and §4 (what to do next).
+2. The **LEDGER** at the end of `ARRL-GAP-PROPOSAL.md` — the reconciled list of every
+   outstanding suggestion, ranked. Alex has approved all four tiers.
+3. `notes/README.md` if you need the full reasoning behind a specific item.
+4. §6 below for the agreed order of work.
+
+---
+
+## 6. The approved work plan (Tiers A–D)
+
+Alex approved **all four tiers** of the ledger. This is the order to take them in, and
+why. Each item is short; none needs a new chapter.
+
+### Tier A first — because the book asserts these itself
+
+These are not new content. They are places where the book violates its own
+**derive-don't-assert** convention, which makes them defects rather than additions.
+Fixing them also *removes* text in a couple of cases.
+
+| Order | Item | Home | The move |
+|---|---|---|---|
+| A1 | **Exact half-power bandwidth** | `ch:rlc` §Q and Bandwidth | `\|Z\|² = R²[1 + Q²(ω/ω₀ − ω₀/ω)²]`; half power gives a quadratic whose two roots **differ by exactly `ω₀/Q`** and **multiply to exactly `ω₀²`**. So `BW = f₀/Q` is an equality for the current response, and the band edges straddle resonance *geometrically*: `f₀ = √(f₁f₂)`. Quantify the error in arithmetic centring (≈`1/8Q²`). Then relax the hedge in the four other places that state it. |
+| A2 | **Series↔parallel, `R_p = (1+Q²)R_s`** | `ch:rlcpar`, after §Why Q Inverts | Equate `1/Z_series` with `Y_parallel` at one frequency. Retires three of *our* assertions: a real tank's `Z_max` is `Q²R_s` (not "approximately the circuit resistance"); `Q_s` and `Q_p` are one quantity seen through this map; and solving `R_hi = R_lo(1+Q²)` **is** `ch:filters`'s asserted L-network `Q`. Cross-ref from Ch 23 problem 3, which currently does this conversion as an unexplained step. |
+| A3 | **Skin depth** | `sec:selfresonance` | `∂²J/∂x² = μσ ∂J/∂t` with `e^{jωt}` gives `J ∝ e^{−x/δ}e^{−jx/δ}`, `δ = √(2/ωμσ)`. Copper: 66 µm at 1 MHz, 5.5 µm at 144 MHz. Then `R_AC ∝ √f` from an annulus of thickness `δ` — the law we now assert in **four** places. Also explains why coil `Q ∝ √f` rises then falls. |
+| A4 | **Conduction-angle efficiency** | `sec:classes` | Fourier `a₀`/`a₁` of a cosine truncated at half-angle `θ`; `η = ½(a₁/a₀)(V₁/V_dc)` returns ½ at `θ=180°`, ¼ resistively loaded (the asserted 25 %), `π/4 = 78.5 %` at `θ=90°`. For switching, `p = vi` with an ideal switch forces one factor to zero always, so `∫p dt = 0` identically. Replaces four numbers currently on ARRL's authority. |
+| A5 | **Push-pull even-order cancellation** | `sec:classes` + `sec:mixers` | `f(x) − f(−x) = 2Σ_{n odd}aₙxⁿ`. Even orders cancel *identically for any f*, which is why the pair must be **matched** rather than specially biased. Two corollaries: push-pull does **nothing** for third-order IMD (the product `sec:powerseries` says matters), and the same algebra is why a *balanced* mixer nulls carrier feedthrough — which `sec:mixers` currently takes on faith. |
+
+### Tier B — the thesis bridges. Start with B1.
+
+**B1. S-parameters, and `S₂₁` *is* the transfer function.** Alex specifically flagged
+this one, and it is the best remaining bridge in the book. The groundwork is already
+laid: `ch:lines` splits `V` and `I` into forward and reverse waves, which is the hard
+part. Then
+
+- define `a = (V + Z₀I)/2√Z₀`, `b = (V − Z₀I)/2√Z₀` — an invertible **change of basis**
+  from `(V, I)`, exactly the kind of coordinate change the state-space chapters already
+  make;
+- for a one-port, `S₁₁ = b/a = (Z − Z₀)/(Z + Z₀) = Γ` **identically**, so `\|S₁₁\|²` is
+  the reflected power fraction and return loss is `−20log₁₀\|S₁₁\|` — both already in
+  the book;
+- and the payoff: **`S₂₁` is the forward transmission of a two-port terminated in
+  `Z₀`, i.e. it *is* `G(jω)`** from Chs 3–4. Therefore **a VNA's magnitude-and-phase
+  sweep is literally a Bode plot**, and a filter's `\|S₂₁\|` trace is the `ch:filters`
+  response measured rather than computed.
+- Three calibration standards (short, match, open → `Γ = −1, 0, +1`) because the error
+  network has three unknown complex terms. Three equations, three unknowns.
+
+Home: definition in `ch:lines` right after §Reflection Coefficient; the VNA reading in
+`ch:measurement` §SWR Bridge and Antenna Analyzer. Pool: E4B03/04/05/07/11.
+
+*Suggested framing:* this is the moment the book's two halves shake hands — the
+instrument on the bench is measuring the object Part II taught. Worth a `controlsbox`
+saying exactly that.
+
+**B2–B7**, in ledger order: feedback sets impedance (retires the op-amp ideals as
+axioms) · antenna efficiency `η = R_rad/(R_rad+R_loss)` with the counterintuitive
+payoff that loss *widens* SWR bandwidth while lowering efficiency · feed-point
+impedance `R(z) = R_center/cos²βz` · the two-element array factor · the crystal as two
+resonances · the named antenna matches as our L-network built from our stubs.
+
+### Tier C and D
+
+Tier C is fifteen small items — take them opportunistically, several are two or three
+sentences. Tier D is housekeeping: **Ch 21 is the weakest chapter in the book** and
+should either become a pure map or be rebuilt on the running examples; figure
+provenance is 2 of 29 captions; Ch 22 mixes two structural registers; Appendix B
+restates Ch 7.
+
+### Working rules for any of it
+
+- Run `./scripts/check.sh` before every commit. Zero everywhere.
+- **Re-derive every number independently** before committing it. This session found
+  four errors that way, including one in an audit's central claim.
+- Cite, don't re-derive. If an earlier chapter has the result, `\cref` it.
+- New section ⇒ give it a `\label` **and reference it from somewhere**, or the orphan
+  check will catch you. Ch 6 spent a whole round as an orphan.
+- Update the ledger in `ARRL-GAP-PROPOSAL.md` as items land.
+
+---

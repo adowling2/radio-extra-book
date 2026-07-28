@@ -11,11 +11,21 @@ lines, and the rest of the exam's circuit content intelligible rather than arbit
 ## 👉 Start here
 
 **[`PROJECT-STATUS.md`](PROJECT-STATUS.md) is the running status file** — current
-structure, what the last session did, prioritized next steps, and open decisions.
+structure, what the last session did, the approved work plan, and open decisions.
 Read it before doing anything else.
 
+**Setting up on a new machine?** Go straight to PROJECT-STATUS **§5**. One thing will
+bite you: `references/` is gitignored, so a fresh clone has no question pools and no
+manuals, and until you replace them **no pool citation can be verified**. §5a lists
+exactly which files are needed.
+
+**Picking up the work?** PROJECT-STATUS **§6** is the agreed plan (Tiers A–D), and the
+**LEDGER** at the end of [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md) is the
+reconciled list of every outstanding suggestion — 26 done, 31 open, ranked.
+
 Per-round markup plans are the archive: `revision-notes.md` (Round 1),
-`revision-notes-round2.md`, `revision-notes-round3.md`.
+`revision-notes-round2.md`, `revision-notes-round3.md`. Full audit reasoning is in
+[`notes/`](notes/README.md).
 
 ## Prerequisites
 
@@ -35,8 +45,16 @@ make all
 make clean
 ```
 
-Compiled PDFs are copied to `output/`. A healthy build reports **0 undefined
-references and 0 overfull boxes above 20 pt**.
+Compiled PDFs are copied to `output/`. Then verify:
+
+```bash
+./scripts/check.sh
+```
+
+This must print **ALL CHECKS PASSED**. It checks undefined references, overfull boxes,
+multiply-defined and orphan labels, dangling references, hard-coded cross-references,
+glossary alphabetization, and figure/include agreement. On a clean checkout a failure
+means the toolchain is wrong, not the book.
 
 ## Project structure
 
@@ -48,6 +66,8 @@ references and 0 overfull boxes above 20 pt**.
 - `appendices/` — formula index (with a "Derived in" column), units, glossary
 - `figures/src/*.py` — figure sources; generated PDFs are committed to `figures/`
 - `cheat_sheet.tex` — standalone two-column card
+- `scripts/check.sh` — the whole verification suite in one command
+- `notes/` — full working notes from the Round 4 audits (concept inventories only)
 - `references/` — question pools and reference texts (**gitignored**, copyrighted)
 
 ## Conventions
