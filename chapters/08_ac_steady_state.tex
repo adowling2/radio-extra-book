@@ -102,8 +102,10 @@ resonance, a fact \cref{ch:rlc} builds on.
 \draw (0,0) to[sV,l=\(v_s\)] (0,2)
       to[R,l=\(R\)] (2.6,2)
       to[L,l=\(L\)] (5.2,2)
-      to[C,l=\(C\)] (5.2,0)
+      to[C,l=\(C\),v=\(v_o\)] (5.2,0)
       -- (0,0);
+\draw (5.2,2) to[short,-o] (6.2,2) node[right]{\(+\)};
+\draw (5.2,0) to[short,-o] (6.2,0) node[right]{\(-\)};
 \end{circuitikz}
 \caption{Series connection: the same current flows through all three elements, so
 their impedances add, \(Z=R+\jj(\omega L-1/\omega C)\). \Cref{ch:rlc} analyzes this
@@ -142,6 +144,9 @@ of impedance its own name, which the next section does.
 \draw (3.4,2.2) to[L,l=\(L\)] (3.4,0);
 \draw (5,2.2) to[C,l=\(C\)] (5,0);
 \node[ground] at (2.6,0) {};
+\draw (5,2.2) to[short,-o] (6.0,2.2) node[right]{\(+\)};
+\draw (5,0) to[short,-o] (6.0,0) node[right]{\(-\)};
+\node at (6.45,1.1) {\(v_o\)};
 \end{circuitikz}
 \caption{A parallel RLC circuit. All three elements share the same voltage, so the
 branch currents add (KCL) and it is the \emph{reciprocals} of the impedances that
@@ -178,7 +183,7 @@ so \(Y_{\mathrm{eq}}=0.010+\jj0.010=\SI{0.0141}{\siemens}\angle45^\circ\), and t
 parallel impedance is
 \[
 Z_{\mathrm{eq}}=\frac{1}{Y_{\mathrm{eq}}}\approx\SI{70.7}{\ohm}\angle{-45^\circ}
-=50-\jj50\ \Omega.
+=50-\jj50\ \si{\ohm}.
 \]
 Adding admittances turned a parallel combination into one addition. Note that the
 \(45^\circ\) admittance angle became \(-45^\circ\) on inversion, and that neither
@@ -307,7 +312,7 @@ First convert frequency to angular frequency, then take the reactance:
 \qquad
 X_L=\omega L=(4.46\times10^7)(10\times10^{-6})\approx\SI{446}{\ohm}.
 \]
-Thus \(Z=50+\jj446\ \Omega\), and in polar form
+Thus \(Z=50+\jj446\ \si{\ohm}\), and in polar form
 \[
 |Z|=\sqrt{50^2+446^2}\approx\SI{449}{\ohm},
 \qquad

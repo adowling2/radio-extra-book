@@ -1,4 +1,5 @@
 \chapter{Formula Index}
+\label{app:formulas}
 Every formula below is derived somewhere in the book; the last column says where, so
 this index doubles as a map back to the reasoning. Nothing here needs to be memorized
 that can be re-derived from the element laws, KCL, and KVL.
@@ -48,7 +49,7 @@ Formula & Use & Derived in \\
 \(Q_s=\omega_0L/R\) & \emph{Series} RLC quality factor. & \cref{ch:rlc} \\
 \(Q_p=R/(\omega_0L)=\omega_0RC\) & \emph{Parallel} RLC quality factor. & \cref{ch:rlcpar} \\
 \(BW\approx f_0/Q\) & Narrowband half-power bandwidth. & \cref{ch:rlc} \\
-\(G=\wzero^2/(s^2+\tfrac{\wzero}{Q}s+\wzero^2)\) & LC low-pass as a filter. & \cref{sec:lc-lowpass} \\
+\(G=\omega_0^2/(s^2+\tfrac{\omega_0}{Q}s+\omega_0^2)\) & LC low-pass as a filter. & \cref{sec:lc-lowpass} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Feedback and active circuits}}\\
 \(A_{\mathrm{cl}}=A/(1+A\beta)\) & Closed-loop gain; \(L=A\beta\) is loop gain. & \cref{ch:feedback} \\
@@ -58,7 +59,7 @@ Formula & Use & Derived in \\
 \(\beta=R_g/(R_f+R_g)\) & Feedback fraction from the resistors. & \cref{sec:beta-resistors} \\
 \(-R_f/R_{in}\), \(1+R_f/R_g\) & Inverting and non-inverting gains. & \cref{ch:active} \\
 \(L=-1\): \(|L|=1,\ \angle L=-180^\circ\) & Barkhausen oscillation condition. & \cref{ch:feedback} \\
-\(\wzero=1/\sqrt{R_1R_2C_1C_2}\) & Sallen--Key corner frequency. & \cref{ch:active} \\
+\(\omega_0=1/\sqrt{R_1R_2C_1C_2}\) & Sallen--Key corner frequency. & \cref{ch:active} \\
 \(f_{\mathrm{LO}}\pm f_{\mathrm{RF}}\) & Mixer output frequencies (nonlinear!). & \cref{sec:mixers} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Matching and transformers}}\\

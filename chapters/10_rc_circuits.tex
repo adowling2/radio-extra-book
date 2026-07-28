@@ -188,8 +188,14 @@ bookkeeping as adding first-order lags in a control loop.
 \section{Energy Interpretation}
 The capacitor stores \(E_C=\tfrac12 Cv_C^2\). During charging, source energy
 splits between the electric field and resistive heat; during discharge, the
-stored field energy is dissipated in \(R\). The time constant \(\tau=RC\) is how
-long that energy exchange takes.
+stored field energy is dissipated in \(R\).
+
+\begin{energybox}
+The time constant \(\tau=RC\) is how long that energy exchange takes. Over a full
+charge--discharge cycle the capacitor returns everything it stored, so the resistor is
+the only place energy actually leaves---the time-domain reason a first-order circuit
+has nothing to sustain an oscillation with.
+\end{energybox}
 
 \begin{unitsbox}
 \[

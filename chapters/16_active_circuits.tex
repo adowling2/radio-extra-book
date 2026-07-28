@@ -1,5 +1,12 @@
 \chapter{Active Circuits, Feedback, and Oscillators}
 \label{ch:active}
+Everything so far has been \emph{passive}: circuits that store and dissipate the
+energy handed to them. An active circuit adds a device that can supply gain, and with
+gain comes the one operation passive circuits cannot perform---feedback around a
+loop. This chapter is therefore where \cref{ch:feedback} finally meets hardware, and
+where the resonators of \cref{ch:rlc,ch:rlcpar} stop being things to analyze and
+become things a designer places deliberately.
+
 \section{Why Active Circuits Appear}
 The Extra exam includes amplifiers, op-amps, feedback, oscillators, mixers, and
 regulated power supplies. A full electronics text is not needed here; the goal is
@@ -15,8 +22,9 @@ those results, this chapter puts them to work on real devices, so it is worth ha
 
 \section{Amplifier Gain and Classes}
 \label{sec:classes}
-Voltage gain is \(A_v=V_o/V_i\); in decibels \(A_{v,\dB}=20\log_{10}|A_v|\). Power
-gain is \(G_{\dB}=10\log_{10}(P_o/P_i)\).
+Voltage gain is \(A_v=V_o/V_i\); in decibels \(A_{v,\dB}=20\log_{10}|A_v|\), and power
+gain is \(G_{\dB}=10\log_{10}(P_o/P_i)\)---the \(20\log\) versus \(10\log\)
+distinction of \cref{sec:decibels}.
 
 Amplifier \emph{class} describes how much of the input cycle the active device
 conducts, which trades linearity against efficiency:
@@ -31,9 +39,9 @@ distortion; common in linear single-sideband (SSB) power amplifiers.
 where a tuned output tank restores the sinusoid (as in frequency-modulation, FM,
 and continuous-wave Morse, CW, transmitters).
 \end{description}
-Class C is nonlinear on purpose: the output tank is a high-\(Q\) resonator (a
-pole pair near the \(\jj\omega\) axis) that rings at the fundamental and rejects
-the harmonics the clipped current injects. The same nonlinearity that spoils
+Class C is nonlinear on purpose: the output tank is the high-\(Q\) parallel resonator
+of \cref{ch:rlcpar} (a pole pair near the \(\jj\omega\) axis) that rings at the
+fundamental and rejects the harmonics the clipped current injects. The same nonlinearity that spoils
 linearity is what makes mixers and frequency multipliers work.
 
 \section{Op-Amp Ideals}
@@ -363,15 +371,15 @@ the two RC nodes with the buffer enforcing \(v_-=V_o\)---so that \(C_2\) feeds t
 output back to the \emph{first} node rather than to ground---and eliminating the middle
 node gives
 \[
-G(s)=\frac{\wzero^2}{s^2+\dfrac{\wzero}{Q}s+\wzero^2},
+G(s)=\frac{\omega_0^2}{s^2+\dfrac{\omega_0}{Q}s+\omega_0^2},
 \qquad
-\wzero=\frac{1}{\sqrt{R_1R_2C_1C_2}},
+\omega_0=\frac{1}{\sqrt{R_1R_2C_1C_2}},
 \qquad
 \frac{1}{Q}=\sqrt{\frac{C_2}{C_1}}
 \left(\sqrt{\frac{R_1}{R_2}}+\sqrt{\frac{R_2}{R_1}}\right).
 \]
 This is precisely the standard second-order form of \cref{ch:linsys}---the same one the
-LC circuit of \cref{ch:rlc} produced---so everything about \(\wzero\), \(\zeta\), and
+LC circuit of \cref{ch:rlc} produced---so everything about \(\omega_0\), \(\zeta\), and
 resonant peaking transfers unchanged. What is new is the \emph{knob}: with equal
 resistors the bracket becomes \(2\), leaving
 \[
@@ -392,7 +400,7 @@ Q=\frac{1}{2}\sqrt{\frac{C_1}{C_2}}=\frac{1}{\sqrt2}
 C_1=2\,C_2 .
 \]
 Choosing \(R_1=R_2=\SI{10}{\kilo\ohm}\) and imposing
-\(\wzero=1/(R\sqrt{C_1C_2})=2\pi(\SI{3}{\kilo\hertz})\) gives
+\(\omega_0=1/(R\sqrt{C_1C_2})=2\pi(\SI{3}{\kilo\hertz})\) gives
 \[
 C_2\approx\SI{3.75}{\nano\farad},
 \qquad
@@ -421,7 +429,7 @@ topology to \SI{300}{\kilo\hertz} and it would not.
 \end{circuitikz}
 \caption{Sallen--Key second-order low-pass. Two RC stages around a unity-gain
 op-amp buffer create a complex pole pair without an inductor;
-\(\wzero=1/\sqrt{R_1R_2C_1C_2}\).}
+\(\omega_0=1/\sqrt{R_1R_2C_1C_2}\).}
 \label{fig:sallenkey}
 \end{figure}
 

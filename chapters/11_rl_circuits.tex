@@ -134,9 +134,15 @@ Learn one and you have both.
 
 \section{Energy Interpretation}
 The inductor stores \(E_L=\tfrac12 Li^2\) in its magnetic field. When current is
-interrupted, that energy must go somewhere, which is why breaking an inductive
-current can produce large voltage spikes (the reason for flyback diodes and
-snubbers).
+interrupted, that energy must go somewhere.
+
+\begin{energybox}
+Because \(E_L=\tfrac12Li^2\) cannot vanish instantly, breaking an inductive current
+forces the inductor to produce whatever voltage is needed to keep the current
+flowing---which is why an opening switch arcs, and why flyback diodes and snubbers
+exist. The dual statement for a capacitor is that shorting it produces whatever
+\emph{current} is needed to keep its voltage continuous.
+\end{energybox}
 
 \begin{exambox}
 Remember the natural state: capacitor voltage and inductor current. That one

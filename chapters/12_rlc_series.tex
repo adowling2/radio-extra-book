@@ -102,7 +102,7 @@ The poles follow from the standard form as
 \(s=-\zeta\omega_0\pm\jj\omega_0\sqrt{1-\zeta^2}=-\alpha\pm\jj\omega_d\) with
 \(\omega_d=\sqrt{\omega_0^2-\alpha^2}\).
 
-\begin{physicalbox}
+\begin{controlsbox}
 \textbf{The poles are the eigenvalues.} These must be the same two numbers found
 from \(\det(sI-A)=0\) above, and they are. Substituting
 \(\alpha=R/2L\) and \(\omega_0^2=1/LC\) into the eigenvalue expression,
@@ -116,7 +116,7 @@ where the last step assumes the underdamped case \(\alpha<\omega_0\) (which is w
 makes the square root imaginary). Eigenvalues of the state matrix, roots of the
 characteristic polynomial, and poles of the transfer function are three names for
 one pair of numbers---exactly as \cref{ch:linsys} promised.
-\end{physicalbox}
+\end{controlsbox}
 Now the second-order results of \cref{ch:linsys} transfer wholesale: the step
 responses of \cref{fig:step2} (over/critical/under-damped), the pole geometry of
 \cref{fig:poles2} (on the \(\omega_0\) circle, \(\cos\theta=\zeta\)), and the
@@ -169,7 +169,7 @@ one moving pole pair seen three ways. This is the general second-order locus of
 \draw[->,black!70] (-3.6,0) -- (0.9,0) node[right]{\(\sigma\) (real)};
 \draw[->,black!70] (0,-2.6) -- (0,2.6) node[above]{\(\jj\omega\) (imag)};
 \draw[GuideLine,dashed] (0,0) circle (2);
-\node[GuideLine] at (1.55,1.75) {\(|s|=\wzero\)};
+\node[GuideLine] at (1.55,1.75) {\(|s|=\omega_0\)};
 \filldraw[GuideBlue] (0,2) circle (2.4pt);
 \filldraw[GuideBlue] (0,-2) circle (2.4pt);
 \node[GuideBlue,right] at (0.08,2.15) {\small \(R=0\)};
@@ -188,8 +188,8 @@ one moving pole pair seen three ways. This is the general second-order locus of
 \node[GuideGreen] at (-2.55,1.35) {\small increasing \(R\)};
 \end{tikzpicture}
 \caption{Root locus of the series RLC poles as \(R\) increases with \(L,C\)
-fixed: from \(\pm\jj\wzero\) on the axis (undamped), along the circle of radius
-\(\wzero\), meeting at \(-\wzero\) at critical damping (\(R=2\sqrt{L/C}\)), then
+fixed: from \(\pm\jj\omega_0\) on the axis (undamped), along the circle of radius
+\(\omega_0\), meeting at \(-\omega_0\) at critical damping (\(R=2\sqrt{L/C}\)), then
 splitting along the real axis (overdamped). Here \(\cos\theta=\zeta\).}
 \label{fig:rlc-rootlocus}
 \end{figure}
@@ -230,9 +230,13 @@ With \(\mathcal{H}=\tfrac12 Cv_C^2+\tfrac12 Li^2\), the series energy balance is
 \[
 \frac{\dd\mathcal{H}}{\dd t}=u(t)\,i(t)-R\,i^2(t).
 \]
-The inductor and capacitor trade energy back and forth at \(\omega_0\); the
-resistor is the only drain. High \(Q\) means little is lost per cycle, so the
-exchange rings for many cycles---the time-domain face of a sharp resonance.
+\begin{energybox}
+The inductor and capacitor trade energy back and forth at \(\omega_0\); the resistor
+is the only drain. High \(Q\) means little is lost per cycle, so the exchange rings
+for many cycles---the time-domain face of a sharp resonance, and the reason
+\(Q=2\pi\times\)(stored)/(lost per cycle) is the definition that survives across
+topologies (\cref{ch:rlcpar}).
+\end{energybox}
 
 \begin{controlsbox}
 High \(Q\) \(\Leftrightarrow\) low \(\zeta\) \(\Leftrightarrow\) poles near the
@@ -240,6 +244,41 @@ High \(Q\) \(\Leftrightarrow\) low \(\zeta\) \(\Leftrightarrow\) poles near the
 circuit the exam calls ``selective'' is what a controls course calls ``lightly
 damped.''
 \end{controlsbox}
+
+\section{The Same Circuit as an Impedance Phasor}
+It is worth converting the same numbers into the phasor language of
+\cref{ch:ac}, since that is how a bench instrument reports them. Just above
+resonance, at \(f=1.1f_0\),
+\[
+X_L=\omega L\approx\SI{235}{\ohm},
+\qquad
+X_C=\frac{1}{\omega C}\approx\SI{194}{\ohm},
+\qquad
+X=X_L-X_C\approx\SI{41}{\ohm},
+\]
+so the impedance phasor is
+\[
+Z=R+\jj X\approx 5+\jj41\ \si{\ohm}
+=\SI{41}{\ohm}\angle 83^\circ .
+\]
+Two things are worth noticing (\cref{fig:rlc-phasor}). First, the individual
+reactances are huge---hundreds of ohms---yet they nearly cancel, leaving a net
+\SI{41}{\ohm}; \emph{resonance is a cancellation, not an absence}. Second, sweeping
+frequency moves \(Z\) along a \emph{vertical} line in the complex plane, because
+\(R\) is constant and only the reactance changes. That line crosses the real axis at
+\(Z=R\)---the one frequency where the circuit looks purely resistive, and where
+\(|Z|\) is smallest and the current therefore largest.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{rlc_series_phasor}
+\caption{The same worked example seen as an impedance phasor. \emph{Left:}
+\(Z=5+\jj41\ \si{\ohm}=\SI{41}{\ohm}\angle83^\circ\) at \(f=1.1f_0\)---rectangular
+form on the axes, polar form along the arrow. \emph{Right:} the locus of \(Z(f)\)
+from \(0.5f_0\) to \(2f_0\): a vertical line at \(\Re\{Z\}=R\), inductive above
+\(f_0\) and capacitive below, crossing the real axis at resonance.}
+\label{fig:rlc-phasor}
+\end{figure}
 
 \section{Worked Example}
 Let \(L=\SI{10}{\micro\henry}\), \(C=\SI{220}{\pico\farad}\), \(R=\SI{5}{\ohm}\).
@@ -275,39 +314,4 @@ at \(f_0=\SI{3.39}{\mega\hertz}\). \emph{Right:} root locus as \(R\) is swept wi
 \(\jj\omega\) axis; the poles would meet on the real axis only at the critical value
 \(R=2\sqrt{L/C}\approx\SI{426}{\ohm}\), some 85 times larger.}
 \label{fig:rlc-worked}
-\end{figure}
-
-\section{The Same Circuit as an Impedance Phasor}
-It is worth converting the same numbers into the phasor language of
-\cref{ch:ac}, since that is how a bench instrument reports them. Just above
-resonance, at \(f=1.1f_0\),
-\[
-X_L=\omega L\approx\SI{235}{\ohm},
-\qquad
-X_C=\frac{1}{\omega C}\approx\SI{194}{\ohm},
-\qquad
-X=X_L-X_C\approx\SI{41}{\ohm},
-\]
-so the impedance phasor is
-\[
-Z=R+\jj X\approx 5+\jj41\ \si{\ohm}
-=\SI{41}{\ohm}\angle 83^\circ .
-\]
-Two things are worth noticing (\cref{fig:rlc-phasor}). First, the individual
-reactances are huge---hundreds of ohms---yet they nearly cancel, leaving a net
-\SI{41}{\ohm}; \emph{resonance is a cancellation, not an absence}. Second, sweeping
-frequency moves \(Z\) along a \emph{vertical} line in the complex plane, because
-\(R\) is constant and only the reactance changes. That line crosses the real axis at
-\(Z=R\)---the one frequency where the circuit looks purely resistive, and where
-\(|Z|\) is smallest and the current therefore largest.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{rlc_series_phasor}
-\caption{The same worked example seen as an impedance phasor. \emph{Left:}
-\(Z=5+\jj41\ \si{\ohm}=\SI{41}{\ohm}\angle83^\circ\) at \(f=1.1f_0\)---rectangular
-form on the axes, polar form along the arrow. \emph{Right:} the locus of \(Z(f)\)
-from \(0.5f_0\) to \(2f_0\): a vertical line at \(\Re\{Z\}=R\), inductive above
-\(f_0\) and capacitive below, crossing the real axis at resonance.}
-\label{fig:rlc-phasor}
 \end{figure}
