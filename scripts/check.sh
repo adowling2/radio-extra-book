@@ -37,7 +37,8 @@ refs = set()
 for m in re.findall(r'\\[cC]?ref\{([^}]+)\}', text):
     refs.update(p.strip() for p in m.split(','))
 orphan, dangling = sorted(labels - refs), sorted(refs - labels)
-print(f"{'orphan labels (never \\cref-ed)':<42} {'OK (0)' if not orphan else 'FAIL: ' + ', '.join(orphan)}")
+orphan_title = 'orphan labels (never \\cref-ed)'
+print(f"{orphan_title:<42} {'OK (0)' if not orphan else 'FAIL: ' + ', '.join(orphan)}")
 print(f"{'dangling refs (no such label)':<42} {'OK (0)' if not dangling else 'FAIL: ' + ', '.join(dangling)}")
 sys.exit(1 if (orphan or dangling) else 0)
 PY
