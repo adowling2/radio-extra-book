@@ -265,7 +265,9 @@ shunt capacitor) each add a third element over the L-network, giving the extra
 degree of freedom that sets the loaded \(Q\) through the internal virtual
 resistance \(R_v\).}
 \label{fig:pit-network}
-\end{figure} Choosing \(R_v\) below both terminations sets a loaded \(Q\) of roughly
+\end{figure}
+
+Choosing \(R_v\) below both terminations sets a loaded \(Q\) of roughly
 \[
 Q_{\text{loaded}}\approx\sqrt{\frac{R_{\max}}{R_v}-1},
 \]
@@ -325,7 +327,8 @@ Design two matching networks that make the \(\SI{200}{\ohm}\) load look like
 L-network. Compare them.
 
 To match a real \(\SI{200}{\ohm}\) load to a \(\SI{50}{\ohm}\) system with a
-lossless quarter-wave transformer,
+lossless quarter-wave transformer (the formula \(Z_t=\sqrt{Z_0Z_L}\) is derived in
+\cref{ch:lines}),
 \[
 Z_t=\sqrt{Z_0Z_L}=\sqrt{(50)(200)}=\SI{100}{\ohm}.
 \]

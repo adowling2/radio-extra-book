@@ -1,9 +1,10 @@
 \chapter{Feedback: State-Space and Frequency-Domain Views}
 \label{ch:feedback}
-Every system in \cref{ch:linsys,ch:splane} has been \emph{open loop}: an input goes
-in, an output comes out, and nothing the output does affects the input. Feedback
-breaks that one-way street---we measure the output, compare it with what we wanted,
-and use the difference to drive the system. That single change is powerful enough to
+Apart from one block-diagram rule in \cref{ch:linsys}, every system in
+\cref{ch:linsys,ch:splane} has been analyzed \emph{open loop}: an input goes in, an
+output comes out, and nothing the output does affects the input. Feedback breaks that
+one-way street---we measure the output, compare it with what we wanted, and use the
+difference to drive the system. That single change is powerful enough to
 reshape a system's dynamics, and it is worth its own chapter because feedback is the
 one operation that \emph{moves the poles} rather than merely combining them.
 
@@ -35,6 +36,10 @@ L(s)=A(s)\,\beta .\;}
 \]
 \(A_{\mathrm{cl}}\) is the \textbf{closed-loop} transfer function and \(L\) is the
 \textbf{loop gain}---the gain accumulated once around the loop with it cut open.
+This is the same result as the block-diagram rule \(G_{\mathrm{cl}}=G/(1+GH)\) in
+\cref{ch:linsys}, renamed for amplifier work: \(G\to A\) for the forward path and
+\(H\to\beta\) for the feedback path. The amplifier symbols are used from here on,
+because they are the ones the radio literature and \cref{ch:active} use.
 
 Because \(\beta\) here is a constant---the error is multiplied by a fixed number
 and nothing else---this is \textbf{proportional feedback}, the simplest and most

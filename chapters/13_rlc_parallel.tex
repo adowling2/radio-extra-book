@@ -158,10 +158,9 @@ two topologies.
 
 \begin{mistakebox}
 Do not carry a \(Q\) formula across topologies. Ask first whether the loss is in
-series with the resonating current or in parallel with the resonator; then use the
-matching form. And keep the three \(Q\)'s straight: \emph{loaded} \(Q\) includes
-source and load coupling, \emph{unloaded} \(Q\) is the resonator's own internal
-loss, and \emph{component} \(Q\) is the loss of one inductor or capacitor.
+series with the resonating current or in parallel with the resonator, then use the
+matching form. (The loaded/unloaded/component distinction of \cref{ch:rlc} applies
+here unchanged.)
 \end{mistakebox}
 
 The bandwidth statement, however, is topology independent:
@@ -170,6 +169,28 @@ BW\approx\frac{f_0}{Q},
 \]
 because it is a statement about pole geometry---the distance from the
 \(\jj\omega\) axis---not about wiring (\cref{ch:splane}).
+
+\section{Root Locus and Energy Balance}
+Both of these carry over from \cref{ch:rlc} by duality, so they need only a sentence
+each.
+
+The \emph{root locus} is identical in shape: the poles are
+\(s=-\alpha\pm\jj\omega_d\) with the same \(\omega_0\), so sweeping the loss
+resistance still walks them along the circle of radius \(\omega_0\) from the
+\(\jj\omega\) axis to the real axis (\cref{fig:rlc-rootlocus}). Only the sweep
+direction reverses: for the series circuit the poles move away from the axis as
+\(R\) \emph{increases}, while here they move away as \(R\) \emph{decreases}. For the
+parallel circuit the more informative plot is usually the \emph{impedance} locus,
+which is what \cref{fig:rlcpar-worked} shows.
+
+The \emph{energy balance} is the dual statement of the series one. With
+\(\mathcal{H}=\tfrac12 Cv^2+\tfrac12 Li_L^2\),
+\[
+\frac{\dd\mathcal{H}}{\dd t}=u(t)\,v(t)-\frac{v^2(t)}{R},
+\]
+where the loss term is now \(v^2/R\) instead of \(Ri^2\)---the same physics through
+the dual variable. High \(Q_p\) again means little energy lost per cycle, so the
+\(L\)--\(C\) exchange rings for many cycles.
 
 \section{Worked Example}
 Take the same \(L=\SI{10}{\micro\henry}\) and \(C=\SI{220}{\pico\farad}\) as the

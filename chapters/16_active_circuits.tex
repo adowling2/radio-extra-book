@@ -7,9 +7,11 @@ to connect the circuit formulas to system behavior---and, in this chapter, to th
 classical feedback ideas that a controls background already contains. The device
 details (bias points, transistor models, tube parameters) live in the ARRL
 manual; what follows is the systems view that ties them together. The feedback
-groundwork from \cref{ch:linsys}---closed-loop gain \(A/(1+A\beta)\), the
-large-loop-gain limit \(A_{\text{cl}}\to1/\beta\), and pole motion under
-feedback---is the backbone of this chapter; here it is put to work.
+groundwork of \cref{ch:feedback}---closed-loop gain \(A/(1+A\beta)\), the
+large-loop-gain limit \(A_{\text{cl}}\to1/\beta\), pole motion under feedback, and
+the gain and phase margins---is the backbone of this chapter. Rather than restate
+those results, this chapter puts them to work on real devices, so it is worth having
+\cref{ch:feedback} fresh in mind.
 
 \section{Amplifier Gain and Classes}
 Voltage gain is \(A_v=V_o/V_i\); in decibels \(A_{v,\dB}=20\log_{10}|A_v|\). Power
@@ -118,36 +120,33 @@ fact is why the inverting and non-inverting formulas above depend only on
 resistor ratios.
 
 \begin{controlsbox}
-\textbf{Refresher: loop gain and the sensitivity trade.} \(L(s)=A(s)\beta\) is the
-gain around the loop with it broken open. Everything classical control says about
-a unity-feedback loop applies. Large \(|L|\) desensitizes the closed-loop gain to
-changes in \(A\): a fractional change \(\dd A/A\) becomes \(\dd A_{\text{cl}}/
-A_{\text{cl}}=(\dd A/A)/(1+L)\). You are spending loop gain to buy immunity from
-device variation, temperature, and distortion---the same currency you spend in a
-process-control loop.
+\textbf{What this buys.} By the sensitivity result of \cref{ch:feedback},
+\(\dd A_{\text{cl}}/A_{\text{cl}}=(\dd A/A)/(1+L)\): the loop divides the device's
+imperfections by \(1+L\). For an op-amp that is the whole design philosophy---spend
+the enormous surplus gain \(A\) to buy immunity from device variation, temperature,
+and distortion, and let two resistors set the answer.
 \end{controlsbox}
 
 \section{Gain--Bandwidth Product}
 \label{sec:gbw}
-Model the op-amp open-loop response as a single dominant pole,
+An internally compensated op-amp is deliberately built so that one pole dominates,
 \[
 A(s)=\frac{A_0}{1+s/\omega_a},
 \]
-with large DC gain \(A_0\) and a low open-loop corner \(\omega_a\). Close the loop
-with constant \(\beta\):
-\[
-A_{\text{cl}}(s)=\frac{A_0}{1+A_0\beta}\cdot
-\frac{1}{1+s/\bigl[\omega_a(1+A_0\beta)\bigr]}.
-\]
-The closed-loop DC gain drops by \((1+A_0\beta)\) and the closed-loop corner rises
-by the same factor. Their product is invariant:
+with an enormous DC gain \(A_0\) (often \(10^5\)) and a very low open-loop corner
+\(\omega_a\) (often a few hertz). That is precisely the first-order plant analyzed
+in \cref{ch:feedback}, so its result transfers unchanged: closing the loop with
+constant \(\beta\) divides the DC gain by \((1+A_0\beta)\) and multiplies the corner
+by the same factor, leaving the product invariant,
 \[
 (\text{gain})\times(\text{bandwidth})=A_0\,\omega_a=\text{constant}.
 \]
-This is the \emph{gain--bandwidth product}. In pole language, negative feedback
-slides the single pole to the left---faster response, wider bandwidth---at the
-cost of gain. Doubling closed-loop gain halves closed-loop bandwidth
-(\cref{fig:opamp-gbw}).
+For amplifiers this invariant has a name and a datasheet value: the
+\textbf{gain--bandwidth product}, quoted as the \emph{unity-gain frequency}
+\(f_T=A_0f_a\)---the frequency at which the op-amp can no longer provide any gain at
+all. Every closed-loop configuration you build with that part lands on the same
+diagonal (\cref{fig:opamp-gbw}), so choosing a closed-loop gain \emph{is} choosing a
+bandwidth: doubling one halves the other.
 
 \begin{figure}[htbp]
 \centering
@@ -159,14 +158,17 @@ along it, so every closed-loop corner lands on the same unity-gain frequency
 \label{fig:opamp-gbw}
 \end{figure}
 
-\begin{controlsbox}
-\textbf{Refresher: pole motion under feedback.} Wrapping feedback around
-\(A_0/(1+s/\omega_a)\) puts the closed-loop pole at
-\(s=-\omega_a(1+A_0\beta)\). As you increase \(\beta\), the pole travels left
-along the real axis---a one-branch root locus. A single pole can never be
-destabilized by more feedback; it just gets faster. Instability needs at least
-two poles, which is the next section.
-\end{controlsbox}
+\begin{exambox}
+Gain--bandwidth questions are the practical face of this: an op-amp with
+\(f_T=\SI{1}{\mega\hertz}\) configured for a gain of \(100\) has roughly
+\SI{10}{\kilo\hertz} of bandwidth, not \SI{1}{\mega\hertz}. If a stage needs both
+high gain and wide bandwidth, it needs either a faster part or two cascaded stages
+of modest gain.
+\end{exambox}
+
+As \cref{ch:feedback} showed, this single-pole model can never be destabilized by
+more feedback---the pole only slides left. Instability requires the extra phase lag
+of additional poles, which every real amplifier has.
 
 \section{Stability, Phase Margin, and Gain Margin}
 Real amplifiers have more than one pole. With two or more poles the loop gain
@@ -175,22 +177,11 @@ while \(|L|\ge 1\), the subtracting junction effectively adds---the feedback has
 become positive at that frequency and the closed-loop poles move toward, or
 into, the right half-plane.
 
-\begin{controlsbox}
-\textbf{Refresher: gain and phase margin.} Evaluate the loop gain
-\(L(\jj\omega)\) around the loop.
-\begin{itemize}
-\item The \emph{gain-crossover} frequency is where \(|L(\jj\omega)|=1\)
-(\(\SI{0}{\decibel}\)). The \emph{phase margin} is how far the phase there is
-above \(-180^\circ\).
-\item The \emph{phase-crossover} frequency is where \(\angle L=-180^\circ\). The
-\emph{gain margin} is how far \(|L|\) there is below \(\SI{0}{\decibel}\).
-\end{itemize}
-Positive margins mean the closed-loop poles stay in the left half-plane. Small
-margins mean poles near the \(\jj\omega\) axis: ringing, overshoot, a peaked
-frequency response. Zero margin means poles on the axis---the boundary of
-oscillation. This is the Nyquist/Bode stability story from a classical controls
-course, applied to an RF or audio amplifier instead of a chemical process.
-\end{controlsbox}
+The gain and phase margins of \cref{ch:feedback} are exactly how amplifier
+stability is specified and measured: positive margins keep the closed-loop poles in
+the left half-plane, small margins put them near the \(\jj\omega\) axis (ringing,
+overshoot, a peaked response), and zero margin puts them on it. An op-amp datasheet's
+phase-margin figure is that number for the part's own internal loop.
 
 The same story reads on the s-plane as a root locus (\cref{fig:opamp-rootlocus}):
 as loop gain rises, the closed-loop poles of a multi-pole amplifier migrate, and
@@ -308,7 +299,6 @@ element to null the error, with the same stability considerations as any feedbac
 system. Equal-value resistors across series filter capacitors equalize the shared
 voltage and discharge stored energy after power is removed.
 
-\section{Exam Relevance}
 \begin{exambox}
 For active-circuit questions, keep three layers separate: small-signal gain,
 power handling, and stability. Feedback questions almost always reduce to one

@@ -1,7 +1,8 @@
 \chapter{One Circuit, Four Views}
 \label{ch:fourviews}
 Part~II built the generic machinery (systems seen as differential equations,
-state-space models, transfer functions, and frequency responses), and the earlier
+state-space models, transfer functions, and frequency responses, then closed with
+feedback), and the earlier
 Part~III chapters supplied the pieces: the modeling paradigm and components
 (\cref{ch:foundations}), resistive networks (\cref{ch:resistive}), and---especially
 ---the AC steady-state view of impedance and phasors in \cref{ch:ac}. This short chapter
@@ -41,7 +42,7 @@ Part~II's results apply at once;
 \end{enumerate}
 
 \section{The Map from Circuits to Systems}
-Three circuits carry most of the exam's analog content, and each is a generic
+Four circuits carry most of the exam's analog content, and each is a generic
 system in disguise:
 
 \begin{center}
@@ -52,6 +53,7 @@ Circuit & Order / state(s) & Generic system & Key parameters \\
 Series RC & first / \(v_C\) & \(\tau\dot y+y=Ku\) & \(\tau=RC\), pole \(-1/RC\) \\
 Series RL & first / \(i_L\) & \(\tau\dot y+y=Ku\) & \(\tau=L/R\), pole \(-R/L\) \\
 Series RLC & second / \(v_C,i_L\) & \(\ddot y+2\zeta\omega_0\dot y+\omega_0^2 y=\omega_0^2u\) & \(\omega_0=\tfrac{1}{\sqrt{LC}}\), \(\zeta=\tfrac{R}{2}\sqrt{C/L}\) \\
+Parallel RLC & second / \(v,i_L\) & same standard form & \(\omega_0=\tfrac{1}{\sqrt{LC}}\), \(\zeta=\tfrac{1}{2R}\sqrt{L/C}\) \\
 \bottomrule
 \end{tabularx}
 \end{center}

@@ -1,7 +1,8 @@
 \chapter{Modeling LTI Systems}
 \label{ch:linsys}
-Before analyzing any specific circuit, this chapter reviews how a linear system is
-\emph{modeled}: the differential equation, the state-space model, and the transfer
+Before analyzing any specific circuit, this chapter reviews how a
+\textbf{linear time-invariant (LTI)} system---one whose behavior obeys
+superposition and does not change over time---is \emph{modeled}: the differential equation, the state-space model, and the transfer
 function, together with the time responses they predict. These are not competing
 descriptions but three ways of writing the same system down, and this chapter's job
 is to build all three and move between them. Its companion, \cref{ch:splane}, then
@@ -13,7 +14,7 @@ then shows that each amateur-radio circuit is one of these systems in electrical
 form.
 
 \section{Four Equivalent Views of a Linear System}
-A linear time-invariant (LTI) system can be written four equivalent ways, and moving
+An LTI system can be written four equivalent ways, and moving
 between them is the central skill of this book:
 \begin{enumerate}
 \item a \textbf{differential equation} relating output \(y(t)\) to input \(u(t)\);
@@ -236,7 +237,13 @@ same information as the \textbf{quality factor}
 Q=\frac{1}{2\zeta},
 \]
 so a lightly damped, high-\(Q\) resonator and an underdamped control system are
-the same object described in two vocabularies. We will use \(\zeta\) when thinking
+the same object described in two vocabularies. Physically, \(Q\) counts stored
+energy against energy lost per cycle,
+\[
+Q=2\pi\,\frac{\text{energy stored}}{\text{energy lost per cycle}},
+\]
+which is why a high-\(Q\) system rings for many cycles before its oscillation dies
+away. We will use \(\zeta\) when thinking
 about damping and \(Q\) when thinking about sharpness, but they carry identical
 content.
 
