@@ -255,7 +255,9 @@ Real amplifiers have more than one pole. With two or more poles the loop gain
 \(L(\jj\omega)\) accumulates phase lag, and if the phase reaches \(-180^\circ\)
 while \(|L|\ge 1\), the subtracting junction effectively adds---the feedback has
 become positive at that frequency and the closed-loop poles move toward, or
-into, the right half-plane.
+into, the right half-plane. \Cref{sec:threepoles} counts how many poles that takes:
+one or two can never satisfy both conditions at once, three can, and the same
+phase accounting fixes the critical gain at \(K=8\) for three identical lags.
 
 The gain and phase margins of \cref{ch:feedback} are exactly how amplifier
 stability is specified and measured: positive margins keep the closed-loop poles in
@@ -380,7 +382,12 @@ G(s)=\frac{\omega_0^2}{s^2+\dfrac{\omega_0}{Q}s+\omega_0^2},
 \]
 This is precisely the standard second-order form of \cref{ch:linsys}---the same one the
 LC circuit of \cref{ch:rlc} produced---so everything about \(\omega_0\), \(\zeta\), and
-resonant peaking transfers unchanged. What is new is the \emph{knob}: with equal
+resonant peaking transfers unchanged. That is also what makes one stage enough to
+build any order: by \cref{sec:factoring} a filter of order \(n\) is a product of
+sections of exactly this form, and \cref{sec:poleplacement} tabulates the
+\((\omega_0,Q)\) each section needs. An order-5 Butterworth, for instance, is two of
+the stages below---one at \(Q=0.618\), one at \(Q=1.618\)---plus a single RC section
+for the leftover real pole. What is new is the \emph{knob}: with equal
 resistors the bracket becomes \(2\), leaving
 \[
 Q=\frac{1}{2}\sqrt{\frac{C_1}{C_2}} ,

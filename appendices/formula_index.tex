@@ -29,7 +29,16 @@ Formula & Use & Derived in \\
 \(\tau_{RL}=L/R\) & RL time constant. & \cref{ch:rl} \\
 \(G_C=1/(1+RCs)\) & RC low-pass (output across \(C\)). & \cref{sec:rc-freq} \\
 \(G_R=RCs/(1+RCs)\) & RC high-pass (output across \(R\)). & \cref{sec:rc-freq} \\
-\(-20n\ \si{\decibel}\)/decade & Roll-off of an \(n\)-pole response. & \cref{ch:filters} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Higher order: cascades, pole patterns, delay}}\\
+\(G=K\prod\frac{1}{1+\tau_ks}\prod\frac{\omega_{0j}^2}{s^2+2\zeta_j\omega_{0j}s+\omega_{0j}^2}\) & Factoring theorem: every real \(G(s)\) is first- and second-order sections. & \cref{sec:factoring} \\
+\(20\log|G|=\sum_k 20\log|G_k|\) & Cascades add in decibels; phases add in degrees. & \cref{sec:cascadeadd} \\
+\(-20n\ \si{\decibel}\)/decade, \(-90n^\circ\) & Roll-off and phase lag of an \(n\)-pole response. & \cref{sec:cascadeadd} \\
+\(\omega_{\mathrm{osc}}=\sqrt3\,\omega_0\) at \(K=8\) & Three identical lags: the gain and frequency at which a loop oscillates. & \cref{sec:threepoles} \\
+\(G(s)=\ee^{-sT}\) & Pure delay: \(|G|=1\), \(\angle G=-\omega T\) without bound. & \cref{sec:puredelay} \\
+\(|G|^2=1/[1+(\omega/\omega_c)^{2n}]\) & Butterworth magnitude; poles equally spaced on a semicircle. & \cref{sec:poleplacement} \\
+\(Q=1/(2\cos\phi)\) & Section \(Q\) of a pole pair at angle \(\phi\); source of the Butterworth table. & \cref{sec:poleplacement} \\
+\(\tau_g=-\dd\phi/\dd\omega\) & Group delay; constant \(\tau_g\) is linear phase. & \cref{sec:groupdelay} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Phasors, impedance, power}}\\
 \(Z_R=R\) & Resistor impedance. & \cref{ch:ac} \\

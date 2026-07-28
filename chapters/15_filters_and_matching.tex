@@ -67,6 +67,12 @@ cutoff (each pole adding \(-\SI{20}{\decibel}\)/decade, each zero
 inductors and capacitors. The \emph{order} is thus both a circuit fact (how many
 reactive parts) and a response fact (how fast it rolls off).
 
+That roll-off rule is not an approximation peculiar to filters:
+\cref{sec:cascadeadd} derives it from the fact that cascaded sections multiply,
+so their decibel magnitudes and their phases simply add. The same section explains
+why the accompanying phase lag approaches \(-90n^\circ\)---which is what limits how
+many stages can be wrapped in a feedback loop (\cref{sec:threepoles}).
+
 \section{Zeros in Radio Circuits: Traps and Notches}
 If poles build the passband, \emph{zeros} are how a circuit deliberately
 \emph{rejects} energy. A transmission zero on the \(\jj\omega\) axis forces the
@@ -97,16 +103,18 @@ passband flatness against transition sharpness against phase linearity.
 That last choice is what the named families are: different rules for placing the
 poles (and zeros) of a given order. \Cref{fig:filter-families} shows them at the
 same order, and \cref{fig:butterworth-poles} shows the archetype---Butterworth
-poles equally spaced on a circle.
+poles equally spaced on a circle. \Cref{sec:poleplacement} derives that pattern
+and turns it into the table of section \(Q\) values a designer actually builds
+from, so the families below are summarized here rather than re-derived.
 
 \begin{tabularx}{\textwidth}{@{}L{0.19\textwidth}Y@{}}
 \toprule
 Family & Pole/zero placement and consequence \\
 \midrule
-Butterworth & Poles equally spaced on a semicircle of radius \(\omega_0\) in the left half-plane. Maximally flat passband, no ripple, moderate transition. \\
-Chebyshev & Poles on an ellipse pushed closer to the \(\jj\omega\) axis. Sharper cutoff at the price of passband ripple and worse phase/transient behavior. \\
-Elliptic (Cauer; ``elliptical'' in the pool) & Chebyshev-like poles plus transmission \emph{zeros} on the \(\jj\omega\) axis in the stopband. Sharpest transition; ripple in both bands. \\
-Bessel & Poles positioned for maximally flat \emph{group delay} (linear phase); gentle amplitude cutoff. Good for pulse fidelity. \\
+Butterworth & Poles equally spaced on a semicircle of radius \(\omega_0\) in the left half-plane (derived in \cref{sec:poleplacement}, with the section-\(Q\) table). Maximally flat passband, no ripple, moderate transition. \\
+Chebyshev & Poles on an ellipse pushed closer to the \(\jj\omega\) axis, raising every section's \(Q\) (\cref{sec:poleplacement}). Sharper cutoff at the price of passband ripple and worse phase/transient behavior. \\
+Elliptic (Cauer; ``elliptical'' in the pool) & Chebyshev-like poles plus transmission \emph{zeros} on the \(\jj\omega\) axis in the stopband---depth bought at specific frequencies rather than slope everywhere. Sharpest transition; ripple in both bands. \\
+Bessel & Poles positioned for maximally flat \emph{group delay} \(\tau_g=-\dd\phi/\dd\omega\), i.e.\ linear phase (defined in \cref{sec:groupdelay}); gentle amplitude cutoff. Good for pulse fidelity. \\
 Crystal / cavity & Very high-\(Q\) resonators (poles hugging the axis) for narrow, highly selective band-pass shapes. \\
 DSP FIR & Digital (DSP, digital signal processing) filter with no feedback (FIR, finite impulse response): no poles away from the origin, so it can be exactly linear phase. \\
 DSP IIR & Recursive digital filter (IIR, infinite impulse response): has poles, so it mimics analog families efficiently but with nonlinear phase. \\
@@ -161,21 +169,26 @@ magnitude response, from which the pole positions follow. For order \(n\) and cu
 |G|^2_{\text{Chebyshev}}=\frac{1}{1+\varepsilon^2T_n^2(\omega/\omega_c)},
 \]
 where \(T_n\) is the order-\(n\) Chebyshev polynomial and \(\varepsilon\) sets the
-ripple. Butterworth's poles are the left-half-plane roots of
-\(1+(s/\jj\omega_c)^{2n}=0\)---which is exactly why they land equally spaced on a
-circle of radius \(\omega_c\) (\cref{fig:butterworth-poles}). Chebyshev's roots lie
-on an ellipse; elliptic (Cauer) filters replace \(T_n\) with a rational elliptic
-function, which is what introduces the finite stopband zeros; Bessel poles come from
-Bessel polynomials chosen to flatten group delay. \Cref{fig:filter-families} was
-generated numerically from these standard designs (via \texttt{scipy.signal}) rather
-than sketched, so the ripple depths and skirt slopes are quantitatively right.
+ripple. \Cref{sec:poleplacement} takes the Butterworth specification apart and shows
+why its poles land equally spaced on a circle of radius \(\omega_c\)
+(\cref{fig:butterworth-poles}), and what section \(Q\) each conjugate pair
+therefore carries. The other families are variations on that one calculation:
+Chebyshev's roots lie on an ellipse; elliptic (Cauer) filters replace \(T_n\) with a
+rational elliptic function, which is what introduces the finite stopband zeros; and
+Bessel poles come from Bessel polynomials chosen to flatten group delay
+(\cref{sec:groupdelay}). \Cref{fig:filter-families} was generated numerically from
+these standard designs (via \texttt{scipy.signal}) rather than sketched, so the
+ripple depths and skirt slopes are quantitatively right.
 \end{advancedbox}
 
 Finally, the same target poles can be \emph{realized} several ways: a passive LC
 ladder, an active Sallen--Key stage (\cref{ch:active}) that makes complex poles
 without inductors, a crystal or cavity when very high \(Q\) is needed, or a DSP
-filter (FIR/IIR) that places the poles and zeros in software. Same poles,
-different hardware---so ``customizing'' a filter means choosing the order (skirt
+filter (FIR/IIR) that places the poles and zeros in software. What licenses that
+freedom is the factoring theorem of \cref{sec:factoring}: any response of order
+\(n\), however it is built, is a cascade of first- and second-order sections, so
+a design reduces to a list of \((\omega_0,\zeta)\) pairs and the hardware only has
+to hit them. Same poles, different hardware---so ``customizing'' a filter means choosing the order (skirt
 steepness), the family (the flatness/sharpness/phase trade), the cutoff (by
 scaling \(L\) and \(C\)), and the realization that suits the frequency range and
 available parts.

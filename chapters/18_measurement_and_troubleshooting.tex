@@ -179,10 +179,12 @@ condition \(R_1C_1=R_2C_2\).}
 \begin{exambox}
 The probe is worth remembering as the concrete answer to ``what does a zero
 \emph{do}?'' A pole alone rolls the response off; a zero placed on top of it cancels
-that roll-off exactly. The same cancellation, deliberately mistuned, is how
-oscilloscope engineers build peaking networks---and the same idea, applied to a
-transfer function instead of a divider, is what \cref{ch:filters} calls placing a
-notch.
+that roll-off exactly---the extreme case of the slope bookkeeping in
+\cref{sec:cascadeadd}, where a pole bends the magnitude down by
+\SI{20}{\decibel}/decade and a zero bends it back up by the same amount. The same
+cancellation, deliberately mistuned, is how oscilloscope engineers build peaking
+networks---and the same idea, applied to a transfer function instead of a divider,
+is what \cref{ch:filters} calls placing a notch.
 \end{exambox}
 
 \section{Ground-Lead Inductance: an Accidental Resonator}

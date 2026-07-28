@@ -20,6 +20,12 @@ continuum of states \(v(x,t)\) and \(i(x,t)\) indexed by position \(x\). Positio
 becomes part of the state description, so the model is a partial differential
 equation with an infinite set of natural modes rather than a handful of
 eigenvalues.
+
+This is the edge \cref{sec:infinitepoles} walked up to: order \(n\) needs no new
+machinery for any finite \(n\), but the \(n\to\infty\) limit of a ladder of
+identical sections is qualitatively different---it is a delay, and a delay has
+infinitely many crossings of every phase condition. The transition is continuous,
+which is why so much of this chapter is Part~III's algebra reused.
 \end{controlsbox}
 
 \section{The Line as a Distributed System: Telegrapher's Equations}
@@ -268,6 +274,11 @@ electrical length---equivalently, every odd and even multiple of a base frequenc
 That is the concrete meaning of the ``infinite set of natural modes'' promised in
 this chapter's opening: a lumped RLC circuit has one pole pair, while a line has
 infinitely many, and the tangent is how they show up in a closed-form expression.
+\Cref{sec:puredelay} anticipated exactly this from the other direction: a pure
+delay has unbounded phase lag at undiminished magnitude, so it must cross every
+multiple of \(-180^\circ\), and a line is a delay. \Cref{sec:infinitepoles} shows
+the two pictures meeting---a cascade of \(n\) identical lags becomes a pure delay
+as \(n\to\infty\), which is the lumped ladder of this section taken to its limit.
 
 This is also why a stub makes a trap. \Cref{ch:filters} built notches from lumped
 LC branches; a quarter-wave shorted stub bridged across a feed line does the same
