@@ -1,65 +1,80 @@
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
 This book teaches the circuit theory behind the Amateur Extra exam from the
-perspective of a control engineer. The intended reader already knows differential
-equations, eigenvalues, and state-space systems, and has at least a rusty
-acquaintance with classical frequency-domain ideas---poles and zeros, Bode plots,
-and the root locus. A chemical, mechanical, electrical, or systems engineer
-returning to circuits after years away is exactly the audience. Such a reader does
-not want to memorize exam answers; they want to \emph{see} each radio circuit as a
-dynamical system: to write its differential equation, cast it in state-space form,
-locate its poles, and read its Bode and root-locus plots. The organizing idea of
-the book is that one circuit can be understood as a physical object, a set of
-conservation laws, a differential equation, a state-space system, a
-phasor/frequency response, and an energy balance---and that these views offer
-complementary intuition about the same object.
+perspective of a (chemical) engineer who has an undergraduate background in
+controls. The intended reader is comfortable with differential equations,
+eigenvalues, and state-space systems, and has seen classical frequency-domain
+ideas including poles and zeros, Bode plots, and the root locus. Such a reader
+does not want to memorize exam answers; they want to \emph{see} each radio
+circuit as a dynamical system: to write its differential equation, cast it in
+state-space form, locate its poles, and read its Bode and root-locus plots. The
+organizing idea of the book is that a circuit can be understood as a physical
+object, a set of conservation laws, a differential equation, a state-space
+system, a phasor/frequency response, and an energy balance---and that these
+views offer complementary intuition about the same object.
 
-My personal note on where this came from. I am a chemical engineering professor at
-the University of Notre Dame, with a research and teaching background in process
-systems engineering. I recently earned my General ham radio license
-and am studying for the Amateur Extra exam. Rather than memorize the circuit
-questions, I wanted to \emph{understand} them---to see each radio circuit as a
-dynamical system I could write down, analyze in state space, and understand in the
-frequency domain. This book is a study companion I
-wished I had. It was drafted with the help of large language models (ChatGPT) and
-then developed, corrected, and typeset iteratively with Claude Code, with me
-steering the pedagogy and critiquing the text.
+This book was created for me. I am a chemical engineering professor at the
+University of Notre Dame, with a research and teaching background in process
+systems engineering. I recently earned my General ham radio license and am
+studying for the Amateur Extra exam. Rather than memorize the circuit questions,
+I wanted to \emph{understand} them---to see each radio circuit as a dynamical
+system I could write down, analyze in state space, and understand in the
+frequency domain. Moreover, when I teach process controls for chemical
+engineering, I emphasize mathematical modeling with differential equations and
+analysis of state-space models. We forgo frequency-domain analysis in favor of
+other topics: nonlinear dynamical systems, optimization, and model predictive
+control. Developing this book also gave me an excuse to review classical
+analysis tools from control theory in the context of radio applications. I learn
+best when I can connect mathematical concepts to physical systems. For many
+chemical engineering applications, analyzing a dynamical system with a
+sinusoidal input seems contrived and not realistic. But in AC circuits, the
+frequency-domain perspective makes sense.
+
+I drafted this book with extensive assistance from large language models. The
+initial concept outline was generated with ChatGPT. I then used Claude Code to
+refine, critique, expand, and format the text. I marked up many drafts on an
+iPad, and worked with Claude Code to parse my handwritten comments into
+significant revisions. These iterative critiques and revisions helped me
+critically engage and ultimately understand the material. You can find these
+versions in the git history associated with this project.
 
 The book is in five parts. Part~I is a compact, exam-ready reference. Part~II
-reviews, generically, the mathematics and control theory the rest of the book leans
-on: complex numbers and phasors; first- and second-order linear systems in time and
-state space; frequency response, Bode plots, poles, zeros, and the root locus;
-feedback; and the extension to higher order. Part~III then builds the simple
-circuits---RC, RL, and the two RLC arrangements---as instances of that generic
-machinery. Part~IV shows that those simple circuits are what make the advanced
-topics tractable: filters, transmission lines and antennas, active circuits and
-oscillators, sampling and digital signal processing, receiver noise and dynamic
-range, and measurement. Part~V is practice---an exam map, real question-pool
-items reasoned through, and problems that span several chapters at once. Laplace transforms and
-state-space models appear throughout as bridges to familiar engineering language;
-they are not calculations the Amateur Extra exam directly asks the reader to
-perform.
+reviews, generically, the mathematics and control theory the rest of the book
+leans on: complex numbers and phasors; first- and second-order linear systems in
+time and state space; frequency response, Bode plots, poles, zeros, and the root
+locus; feedback; and the extension to higher order. Part~III then builds the
+simple circuits---RC, RL, and the two RLC arrangements---as instances of that
+generic machinery. Part~IV shows that those simple circuits are what make the
+advanced topics tractable: filters, transmission lines and antennas, active
+circuits and oscillators, sampling and digital signal processing, receiver noise
+and dynamic range, and measurement. Part~V is practice---an exam map, real
+question-pool items reasoned through, and problems that span several chapters at
+once. Laplace transforms and state-space models appear throughout as bridges to
+familiar engineering language; they are not calculations the Amateur Extra exam
+directly asks the reader to perform.
 
-\textbf{What this book covers, and what it does not.} The Amateur Extra exam draws
-one question from each of fifty topic groups, and passing requires
-thirty-seven correct. This book is about \emph{circuit theory}, so it addresses the
-groups that turn on circuit behavior: resonance and \(Q\), time constants and phase,
-impedance and admittance, filters and matching networks, amplifiers and their
-efficiency, oscillators and phase-locked loops, op-amps, transmission lines, the Smith
-chart and \(S\)-parameters, antenna feed-point impedance, efficiency and patterns,
-sampling and digital signal processing, receiver noise and dynamic range, and test
-equipment. It deliberately does \emph{not} cover rules and regulations, operating
-practices, propagation, safety and RF exposure, digital protocols and modes, or
-semiconductor device physics and digital logic---all of which are examined, and none
-of which circuit theory illuminates. Treat this book as the
-deepest available treatment of one part of the syllabus and pair it with a
-conventional study guide for the rest; passing on this book alone is not possible.
+This book is narrowly scoped, and deliberately so: it goes deep on the circuit
+theory the exam draws on, and leaves the rest of the syllabus alone. The exam
+draws one question from each of fifty topic groups, and passing requires
+thirty-seven correct. This book is about \emph{circuit theory}, so it addresses
+the groups that turn on circuit behavior: resonance and \(Q\), time constants
+and phase, impedance and admittance, filters and matching networks, amplifiers
+and their efficiency, oscillators and phase-locked loops, op-amps, transmission
+lines, the Smith chart and \(S\)-parameters, antenna feed-point impedance,
+efficiency and patterns, sampling and digital signal processing, receiver noise
+and dynamic range, and test equipment. It deliberately does \emph{not} cover
+rules and regulations, operating practices, propagation, safety and RF exposure,
+digital protocols and modes, or semiconductor device physics and digital
+logic---all of which are examined, and none of which circuit theory illuminates.
+Treat this book as the deepest available treatment of one part of the syllabus
+and pair it with a conventional study guide for the rest; passing on this book
+alone is not possible.
 
 This is an independent educational study guide. It is not affiliated with,
 endorsed by, or sponsored by the ARRL, NCVEC, or the FCC. Its worked practice is
 anchored to the current (2024--2028) Amateur Extra question pool, but question
-identifiers and wording change each cycle, so final preparation should be checked
-against the official current pool and the current FCC rules.
+identifiers and wording change each cycle, so final preparation should be
+checked against the official current pool and the current FCC rules.
 
 Several references informed the book's coverage and terminology: the \emph{ARRL
 Extra Class License Manual}, the NCVEC Element~4 question pool as published at
