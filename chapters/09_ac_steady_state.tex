@@ -277,6 +277,56 @@ back and forth between the source and the reactive elements each cycle. The
 conjugate is what makes \(P\) come out as the in-phase product, and the magnitude
 \(|S|\) is the apparent power, measured in volt-amperes (VA).
 
+\subsection{Where ``Sloshing'' Comes From}
+\label{sec:instpower}
+That last paragraph used a metaphor, and the metaphor is avoidable: the sloshing is
+a term in an equation. Multiply the actual waveforms together rather than their
+phasors. With \(v=V_p\cos\omega t\) and a current lagging by \(\theta\),
+\(i=I_p\cos(\omega t-\theta)\), the \emph{instantaneous} power is
+\[
+p(t)=v\,i=V_pI_p\cos\omega t\,\cos(\omega t-\theta),
+\]
+and the product-to-sum identity
+\(\cos A\cos B=\tfrac12[\cos(A-B)+\cos(A+B)]\) splits it into exactly two pieces:
+\[
+\boxed{\;
+p(t)=\underbrace{V_{\RMS}I_{\RMS}\cos\theta}_{\text{constant}}
++\underbrace{V_{\RMS}I_{\RMS}\cos(2\omega t-\theta)}_{\text{oscillates at }2\omega} \;}
+\]
+using \(V_pI_p/2=V_{\RMS}I_{\RMS}\) from \cref{sec:rms}. Read the two terms:
+\begin{itemize}
+\item The first is \emph{constant in time}---it is the average power \(P\), and it
+carries the factor \(\cos\theta\). That factor has a name, the \textbf{power
+factor}: it is the fraction of the apparent power \(|S|=V_{\RMS}I_{\RMS}\) that is
+actually consumed.
+\item The second oscillates at \emph{twice} the signal frequency and averages to
+zero over a cycle. It is energy going out to the reactive elements and coming back,
+twice per cycle. That is the sloshing---not a metaphor but a \(2\omega\) term with
+zero mean.
+\end{itemize}
+Two limits confirm it. For a resistor, \(\theta=0\), so \(P=V_{\RMS}I_{\RMS}\) and
+the oscillating term never makes \(p(t)\) negative---power always flows into the
+resistor. For a pure reactance, \(\theta=\pm90^\circ\), the constant term vanishes
+\emph{identically}, and \(p(t)\) is a pure \(2\omega\) sinusoid: positive half the
+time and negative the other half, so the element absorbs and returns energy in equal
+measure and consumes nothing on average. ``Reactive elements dissipate no power'' is
+therefore a theorem, not a convention.
+
+Finally, connect it back to the circuit. Since \(\cos\theta=R/|Z|\) for an impedance
+\(Z=R+\jj X\),
+\[
+P=|S|\cos\theta=I_{\RMS}^2|Z|\cdot\frac{R}{|Z|}=I_{\RMS}^2R,
+\]
+so the two power formulas are one formula: \emph{only the resistance consumes},
+whatever the reactance does.
+
+\begin{mistakebox}
+The power factor \(\cos\theta\) cannot tell you whether a load is inductive or
+capacitive, because cosine is even---\(\theta=+45^\circ\) and \(\theta=-45^\circ\)
+give the same \(0.707\). The \emph{sign} of the reactive power
+\(Q=|S|\sin\theta\) is what distinguishes them, positive being inductive.
+\end{mistakebox}
+
 \begin{workedbox}[: real and reactive power]
 A load draws \(I=2\angle{-30^\circ}\ \si{\ampere}\) (RMS) from
 \(V=120\angle0^\circ\ \si{\volt}\) (RMS)---current lagging, so the load is
