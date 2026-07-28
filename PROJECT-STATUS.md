@@ -223,9 +223,20 @@ on any count. Full inventory: see the scratchpad file
 
 ### A. Decide on the ARRL audit findings
 
-**See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md). Tier 1 is now DONE** — Alex
-authorized the noise chapter and the DSP topic, both of which shipped (§2e). The
-remaining Tier 2 and Tier 3 items are still open and still worth reading.
+**See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
+the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
+the General-pool check, and the four ARRL chapter audits — against the book as built,
+so nothing can be silently dropped. Current score: **26 done, 31 open**, with the open
+items ranked in four tiers.
+
+The highest-priority open items are **Tier A: things the book asserts itself**, and so
+are defects by our own derive-don't-assert convention rather than new content — the
+exact half-power bandwidth (asserted in five places), the series-to-parallel
+`(1+Q²)` transformation (which *is* Ch 15's asserted L-network `Q`), skin depth
+(asserted in four places), the conduction-angle efficiency integral, and push-pull
+even-order cancellation. Then **Tier B**, the best remaining thesis bridges, led by
+**S-parameters** (`S₂₁` *is* `G(jω)`, so a VNA sweep is literally a Bode plot) and
+**feedback setting impedance** (which retires the op-amp ideals as axioms).
 
 Alex's standing request was to review ARRL Extra manual Chs 4, 6, 7 and 9 for content
 that is missing from the book but within its scope and spirit — framed as "they

@@ -1,8 +1,9 @@
 # ARRL Manual Audit — What They Assert, What We Could Derive
 
-**Round 4 deliverable. This is a proposal, not a plan of record — nothing here has been
-written into the book except where noted.** Produced 2026-07-28 by auditing ARRL
-*Extra Class License Manual* chapters 4, 6, 7 and 9 against `chapters/*.tex`.
+**Round 4 deliverable.** Produced 2026-07-28 by auditing ARRL *Extra Class License
+Manual* chapters 4, 6, 7 and 9 against `chapters/*.tex`. The proposal is below;
+**the LEDGER at the end of this file records what has since been built and what is
+still open** — read that first if you are picking this up cold.
 
 Per-chapter working notes with full reasoning live in the session scratchpad as
 `arrl_ch{4,6,7,9}_gaps.md`.
@@ -82,7 +83,7 @@ bench technique, and Ch 18 was just expanded. Item 3's expansion itself belongs 
 | # | Item | Why | Home |
 |---|---|---|---|
 | 7 | **Feedback sets impedance, not just gain** | We own `1/(1+L)` and use it only for gain sensitivity. Extending it to driving-point impedance retires four separate ARRL assertions at once: the op-amp's "ideal" infinite input and zero output impedance become the `L→∞` limit rather than axioms; the emitter follower's high input impedance is the series-feedback case; and a regulator's "load regulation" and "low output impedance" are literally the same number. | Ch 17, before `sec:gbw` |
-| 8 | **The PLL as a control loop** | The single best thesis fit in the audit, and wholly absent. A VCO integrates frequency into phase, so it *is* a `1/s`; the loop is therefore type-1, which is why locked means zero steady-state phase error — derived, not described. Loop filter and gain give `ω_n` and `ζ` directly. Lock vs capture range is the linear/nonlinear distinction. Phase noise is loop shaping: reference noise passed inside the loop bandwidth, VCO noise suppressed by `1/(1+L)`, and the `1/N` divider multiplying VCO noise by `N` — the real reason synthesizer noise degrades at high output frequency. | Ch 17, after Oscillators |
+| 8 | **The PLL as a control loop** | The single best thesis fit in the audit, and wholly absent. A VCO integrates frequency into phase, so it *is* a `1/s`; the loop is therefore type-1. (**The audit's claim that this gives zero steady-state phase error for a frequency step is wrong** — checked symbolically: a phase step gives zero error, a frequency step leaves a constant `Δω/K`. So "locked" means the *frequency* is exact with a residual static phase offset. `sec:pll` states it correctly.) Loop filter and gain give `ω_n` and `ζ` directly. Lock vs capture range is the linear/nonlinear distinction. Phase noise is loop shaping: reference noise passed inside the loop bandwidth, VCO noise suppressed by `1/(1+L)`, and the `1/N` divider multiplying VCO noise by `N` — the real reason synthesizer noise degrades at high output frequency. | Ch 17, after Oscillators |
 | 9 | **Where the efficiency numbers come from** | Ch 17 currently states 25 %, 50 %, ~60 %, ~80 % on ARRL's authority. Fourier `a₀` and `a₁` of a truncated cosine give `η = ½(a₁/a₀)(V₁/V_dc)`: `θ=180°` returns ½ (and ¼ resistively loaded — the source of the asserted 25 %), `θ=90°` returns `π/4 = 78.5 %`, and `θ<90°` rises toward 100 % as output power collapses. For switching, `p = vi` with an ideal switch forces one factor to zero at all times, so `∫p dt = 0` identically and no conduction angle enters. | Ch 17 `sec:classes` |
 | 10 | **Why push-pull cancels even-order products** | Three lines of pure symmetry, no device model: `f(x) − f(−x) = 2Σ_{n odd} a_n xⁿ`, so even orders cancel *identically for any f* — which is why the pair must be matched, not specially biased. Two corollaries the ARRL never draws: push-pull does **nothing** for third-order IMD, the very product we single out as mattering; and the same algebra is why a *balanced* mixer nulls carrier feedthrough, which `sec:mixers` currently takes on faith. | Ch 17 `sec:classes` + `sec:mixers` |
 | 11 | **The crystal is two resonances, not one** | We call a crystal "a resonator of very high Q" and never show the network. `R–L_m–C_m` in parallel with `C₀` gives a series resonance (impedance zero) and a parallel resonance (pole) separated by `√(1+C_m/C₀)` — a few hundred ppm, which *is* the entire pulling range and sets a lattice filter's bandwidth. Between them the reactance is inductive: that narrow window is where a Pierce oscillator lives. `∂f/∂C_L ∝ −C_m/(C₀+C_L)²` is why a few pF of stray matters and why `C_L` must be specified. And `Q = ω_s L_m/R` in the 10⁴–10⁶ range becomes arithmetic. | Ch 13 §, or Ch 17 box |
@@ -141,3 +142,97 @@ grounding and lightning practice; operating and troubleshooting practice
 metrology vocabulary with nothing to derive. Circulators and isolators were rejected
 for a specific reason worth remembering: none of our existing tools produce
 nonreciprocal behaviour, so it would need genuinely new machinery.
+
+---
+
+# LEDGER — every audit item, and whether it landed
+
+Added 2026-07-28 after Alex asked whether any suggestion had been orphaned. This
+reconciles **all three audits** (the Round 4 read-through, the General-pool coverage
+check, and the four ARRL chapter audits) against the book as built, by label lookup
+and regex over `chapters/`, `frontmatter/` and `appendices/`.
+
+**Four items initially scored "present" were false positives on inspection and are
+listed as open below:** figure provenance (only 2 of 29 captions, not all), feed-point
+impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appears in
+`sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
+bandwidth (the "geometrically" hits were unrelated).
+
+Score: **26 done, 31 open.** Nothing has been silently dropped.
+
+## ✅ Done (26)
+
+**Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
+acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
+effect moved out of the practice chapter (`sec:selfresonance`) · Ch 13 ordering ·
+orphan labels 9 → 0 · glossary order + 30 → 65 entries · `exambox` in Chs 7/11/13/15/16
+· `workedbox` in Chs 11–14 · Ch 17 §Power Supplies rebuilt
+
+**General-pool gaps (all 9):** RMS/PEP (`sec:rms`, `sec:pep`) · lossy lines
+(`sec:lineloss`) · rectifiers and ripple · neutralization (`sec:neutralization`) ·
+ferrites, common-mode, ground loops (`sec:commonmode`, `sec:groundloops`) · filter
+datasheet vocabulary (`sec:filterspecs`) · antenna length and dBi/dBd
+(`sec:antennalength`) · mixer roles and the two-tone test · S units and link budgets
+(`sec:sunits`)
+
+**ARRL Tier 1 (all 7 → Ch 19):** `kTB` and −174 dBm/Hz · noise figure · Friis ·
+the power series and IIP3 · DR3's ⅔ · reciprocal mixing and the `1/Q_L²` skirt ·
+noise bandwidth
+
+**ARRL Tier 2 (1 of 10):** the PLL (`sec:pll`)
+
+**ARRL Tier 3 (4 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
+(`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
+its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
+
+## ⬜ Open (31), ranked
+
+### Tier A — the book asserts these itself, so they are defects by our own convention
+
+| # | Item | Why it ranks here |
+|---|---|---|
+| T3.18 | **Exact half-power bandwidth** | We now state `BW ≈ f₀/Q` in **five** places and derive it nowhere. The half-power condition is a quadratic whose roots differ by exactly `ω₀/Q` and multiply to exactly `ω₀²` — so it is an *equality* for the current response, and the band edges straddle resonance **geometrically**, not arithmetically. |
+| T3.19 | **Series-to-parallel, `R_p = (1+Q²)R_s`** | One identity retires four assertions, three of them ours: a real tank's `Z_max` is `Q²R_s`; `Q_s` and `Q_p` are one quantity through this transformation; and solving `R_hi = R_lo(1+Q²)` **is** Ch 15's asserted L-network `Q`. |
+| T3.17 | **Skin depth from the diffusion equation** | We assert `R ∝ √f` in **four** places now (Chs 7, 16, 19, 22) and hand-wave the mechanism. `δ = √(2/ωμσ)` from `∂²J/∂x² = μσ ∂J/∂t` is the same PDE-to-solution move as the telegrapher's equations, and copper's 66 µm at 1 MHz checks the ARRL's own figures. |
+| T2.9 | **Conduction-angle efficiency integral** | Ch 17 states 25 %, 50 %, ~60 %, ~80 % on ARRL's authority. Fourier `a₀`/`a₁` of a truncated cosine gives `η = ½(a₁/a₀)(V₁/V_dc)`, returning ½ at `θ=180°` and `π/4` at `θ=90°`. |
+| T2.10 | **Push-pull even-order cancellation** | `f(x) − f(−x) = 2Σ_{n odd}aₙxⁿ` — three lines, no device model. Also explains why a *balanced* mixer nulls carrier feedthrough, which `sec:mixers` currently takes on faith. |
+
+### Tier B — best remaining thesis bridges
+
+| # | Item | Why |
+|---|---|---|
+| T2.15 | **S-parameters; `S₂₁` *is* `G(jω)`** | The strongest bridge left. Ch 16 already splits `V` and `I` into forward/reverse waves, so `S₁₁ = Γ` follows identically — and `S₂₁` is the transfer function of Chs 3–4 measured in a matched system, which makes **a VNA sweep literally a Bode plot**. Also E4B03/04/05/07/11. |
+| T2.7 | **Feedback sets impedance, not just gain** | We use `1/(1+L)` for gain sensitivity only. Extending it to driving-point impedance turns the op-amp's "ideal" infinite input and zero output impedance from axioms into the `L→∞` limit, and shows a regulator's load regulation and output impedance are the same number. |
+| T2.14 | **Antenna efficiency** | The book has `R_rad` but **no loss resistance and no efficiency anywhere**. `η = R_rad/(R_rad+R_loss)` is Ch 8's divider applied to power — and the payoff is counterintuitive: adding loss *widens* SWR bandwidth while *lowering* efficiency, so a lossy short antenna can look **better** on an SWR meter. |
+| T2.13 | **Feed-point impedance vs feed position** | `R(z) = R_center/cos²βz` generates the whole ARRL section — 73 Ω at centre, ~146 Ω at λ/8 (explaining the OCFD's 4:1), `R→∞` at the end (explaining why an end-fed half wave needs the λ/4 inversion we derive). |
+| T2.12 | **Two-element array factor** | `\|F\| = 2\|cos((φ+βd cosθ)/2)\|` — pure phasor addition. Turns a memorized table of four patterns into four substitutions, and gives the DF sense antenna free. |
+| T2.11 | **Crystal as two resonances** | `R–L_m–C_m` parallel `C₀` gives an impedance zero and pole a few hundred ppm apart — which *is* the pulling range, sets lattice-filter bandwidth, and explains why `C_L` must be specified. E6D02, E7H12. |
+| T2.16 | **Named antenna matches** | Hairpin, gamma, delta, stub — all absent, though we own both the L-network and stub reactances. The hairpin is a shorted stub `<λ/4`, hence inductive, hence the network **demands** a series capacitance — so "the element must be capacitive" becomes a consequence. Six pool questions, zero new math. |
+
+### Tier C — smaller, still worthwhile
+
+T3.20 τ = `R_Th·C_eq` for multi-element networks (and the honest limit of the
+combine-everything recipe) · T3.23 insertion loss as `Q_L/Q_U`, which is why duplexers
+need cavities · T3.24 ring-down `τ = Q/(πf₀)` bounding how narrow a filter should be ·
+T3.27 thermal runaway as a DC loop with `L_th ≥ 1` · T3.26 folded dipole's 4:1 by
+even/odd mode · T3.25 ground reflection as an image source (needs T2.12 first) ·
+T3.28a comparator hysteresis · T3.28b parasitic suppressor as `R∥sL` · T3.28c
+dip-then-load as resonance-then-transformation · T3.28d `VF = 1/√ε_r` closing our own
+velocity-factor loop · T3.28e the λ/8 stub as the only length where `\|X\| = Z₀` ·
+T3.28f ERP/EIRP as our link budget truncated · T3.28g terminated traveling-wave
+antennas as `Γ_L = 0` · T3.28h Wilkinson divider by even/odd symmetry · T3.28i
+frequency-counter ±1 count plus ppm · the oscilloscope fold-back application of
+`sec:samplingthm` in Ch 20
+
+### Tier D — housekeeping, carried since Round 3
+
+- **Ch 10 and Ch 21 have no callout boxes and no figures.** Ch 10 is defensible as a
+  two-page hinge; Ch 21 is not — it is still the weakest chapter, with four examples
+  carrying zero cross-references and component values unrelated to the book's running
+  ones.
+- **Figure provenance: only 2 of 29 captions** say how the figure was computed
+  (`filter_families` and `line_attenuation`). Consider a one-line clause per caption or
+  one front-matter note.
+- **Ch 22 mixes two structural registers** — numbered sections with starred
+  per-question subsections, then abandons the pattern.
+- **Appendix B still restates Ch 7's units material** (cross-referenced, not merged).
