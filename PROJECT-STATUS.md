@@ -1,7 +1,7 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-07-28 (Round 4, plus the Round 5 environment check below).
+Last updated: 2026-07-28 (end of Round 5).
 
 ## Round 5 (in progress)
 
@@ -297,15 +297,13 @@ exam-relevance claim sourced from the manual as suspect.
 3. ✅ **Phase-locked loops (E7H) — done** (`sec:pll`, in Ch 17 after the oscillators).
    With it written, the top remaining content gap is **Tier A of the ledger** (§6),
    which is defect-fixing rather than new content, followed by **B1 S-parameters**.
-4. **Rebuild Ch 21 (Worked Examples).** Unchanged and still the weakest chapter: four
-   examples with zero cross-references, zero poles, and component values unrelated to
-   the book's running examples — a direct contradiction of the thesis, in the chapter
-   meant to demonstrate it. Either make it a pure map (Ch 21 carries the real
-   cross-chapter practice) or rebuild it around the book's running values.
-5. **Antenna patterns and gain (E9A/E9B).** `sec:antennalength` added dBi/dBd and
-   length; ERP/EIRP and beamwidth remain.
-6. **S-parameters and the VNA (E4B).** `S₁₁` *is* `Γ`, already derived; `S₂₁` is
-   forward gain. Half a page.
+4. ✅ **Ch 21 rebuilt** — one circuit through seven questions and one antenna through
+   three, on the book's own running values, every answer cross-referenced.
+5. ✅ **Antenna patterns and gain** — mostly done. `sec:arrayfactor` derives the
+   two-element pattern, `sec:groundimage` gets the ground reflection as an image, and
+   ERP/EIRP landed with the gain references. **Beamwidth and front-to-back are still
+   absent**, and are the one place a pattern *figure* would be needed — see §4C.
+6. ✅ **S-parameters and the VNA (E4B) — done** (`sec:sparams`, `sec:vna`).
 
 ### C. Smaller cleanups still outstanding
 
@@ -318,9 +316,21 @@ exam-relevance claim sourced from the manual as suspect.
   question* vs *Group synthesis*), so the mixture is intentional.
 - ✅ **Appendix B** keeps its lookup tables (a one-page reference earns its place) and
   gained a third table of the compound and referenced units the book never gathered.
-- **No figure has been added since Round 3.** Several new sections would benefit from
-  one: `sec:nyquist` especially wants a Nyquist plot showing the two margins as one
-  clearance, and `sec:lineloss` wants an attenuation-versus-frequency curve.
+- **No figure has been added since Round 3, and Round 5 added none.** This is now the
+  largest single thing outstanding, and it is deliberately left for your call because
+  every candidate is a judgment about what earns a page:
+  - `sec:nyquist` wants a Nyquist plot showing both margins as one clearance from one
+    point. (`sec:lineloss` already has `line_attenuation.pdf`.)
+  - An antenna **pattern** figure would let the book cover beamwidth and
+    front-to-back ratio (E9B), which are the last clearly in-scope pool items still
+    absent — and `sec:arrayfactor` and `sec:groundimage` now supply everything needed
+    to *compute* one rather than trace it.
+  - `sec:crystal` would read better with an impedance-versus-frequency sweep showing
+    the two resonances and the narrow inductive window between them.
+  - `sec:conductionangle` would benefit from the truncated-cosine current waveform at
+    two or three conduction angles.
+  All four are computable from material already derived, so each is a short script in
+  `figures/src/` rather than new physics.
 
 ### D. Still awaiting Alex's judgment
 
