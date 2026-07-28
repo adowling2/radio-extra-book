@@ -272,7 +272,11 @@ impedance and SWR across a band---which means its display \emph{is} the Smith lo
 \cref{fig:smith-antenna}. Everything the analyzer tells you was derived in
 \cref{ch:lines,ch:rlc}: the frequency where the trace crosses the real axis is
 \(\omega_0=1/\sqrt{LC}\) for the antenna's series-RLC model, the distance from center
-is \(|\Gamma|\), and the width of the low-SWR region is \(BW\approx f_0/Q\).
+is \(|\Gamma|\), and the width of the low-SWR region is \(BW\approx f_0/Q\). The
+\(\approx\) is real here, and it is not the one \cref{sec:halfpower} removed: that
+equality is for the \emph{half-power} edges, while an analyzer's usable band is
+whatever SWR limit you chose---commonly \(2{:}1\)---so the two widths agree only in
+order of magnitude.
 
 \begin{mistakebox}
 \textbf{SWR measured at the shack is not SWR at the antenna.} A \emph{lossless} line

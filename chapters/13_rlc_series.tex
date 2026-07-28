@@ -133,24 +133,99 @@ current is maximum for a fixed applied voltage. The reactive voltages across \(L
 and \(C\) individually can then exceed the source voltage by a factor of \(Q\).
 
 \section{Q and Bandwidth}
+\label{sec:halfpower}
 The quality factor measures sharpness. For the series circuit,
 \[
 Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0 RC},
 \]
-and the half-power bandwidth is
+and the half-power bandwidth is \(BW=f_0/Q\). That is usually quoted with an
+\(\approx\), as though it were a narrowband estimate. It is not: for this circuit it
+is an identity, and deriving it also reveals where the band edges actually sit.
+
+Factor \(R\) out of the impedance. Using the first form of \(Q_s\) for the inductive
+term (\(\omega L/R=Q\omega/\omega_0\)) and the second for the capacitive one
+(\(1/\omega CR=Q\omega_0/\omega\)),
 \[
-BW\approx\frac{f_0}{Q},
+Z=R\left[1+\jj Q\,D(\omega)\right],
+\qquad
+D(\omega)\equiv\frac{\omega}{\omega_0}-\frac{\omega_0}{\omega},
+\qquad\text{so}\qquad
+|Z|^2=R^2\left[1+Q^2D(\omega)^2\right].
 \]
-so on the Bode magnitude (\cref{fig:bode2}) higher \(Q\) means a taller, narrower
-peak---poles pressed against the \(\jj\omega\) axis. \Cref{ch:rlcpar} shows that
-the parallel circuit's \(Q\) is the \emph{reciprocal} combination, and why.
+Every appearance of frequency is now inside the single \emph{detuning} function
+\(D\), which vanishes at resonance. The current is \(I=V/Z\), so the power delivered
+to \(R\) is \(P=|I|^2R=V^2R/|Z|^2\), largest at \(\omega_0\) where \(|Z|=R\). Half
+that power means \(|Z|^2=2R^2\), which is simply
+\[
+Q\,D(\omega)=\pm1 .
+\]
+Two exact consequences follow, and neither needs \(Q\) to be large.
+
+\textbf{The edges straddle resonance geometrically.} Substitute \(\omega_0^2/\omega\)
+for \(\omega\):
+\(D(\omega_0^2/\omega)=\omega_0/\omega-\omega/\omega_0=-D(\omega)\). Reflecting a
+frequency through \(\omega_0\) in this reciprocal sense flips the sign of the
+detuning, so it maps the \(+1\) solution onto the \(-1\) solution: the two half-power
+frequencies are precisely such a pair. Hence
+\[
+\omega_1\omega_2=\omega_0^2,
+\qquad\text{that is}\qquad
+f_0=\sqrt{f_1f_2}\;.
+\]
+Resonance is the \emph{geometric} mean of the band edges, not the midpoint between
+them.
+
+\textbf{The width is exactly \(\omega_0/Q\).} That result licenses writing the edges
+as \(\omega_2=r\omega_0\) and \(\omega_1=\omega_0/r\) for a single \(r>1\). The upper
+edge satisfies \(QD=+1\), which is \(Q(r-1/r)=1\). But the bandwidth is that same
+combination:
+\[
+BW=\omega_2-\omega_1=\omega_0\left(r-\frac{1}{r}\right)=\frac{\omega_0}{Q},
+\qquad\text{so}\qquad
+BW=\frac{f_0}{Q}
+\]
+with no approximation anywhere in the argument. Solving the same quadratic gives the
+edges themselves,
+\(r=\tfrac{1}{2Q}+\sqrt{1+1/4Q^2}\).
+
+The two results also say how wrong it is to centre a band arithmetically. Since
+\(r+1/r=\sqrt{(r-1/r)^2+4}\),
+\[
+\frac{\omega_1+\omega_2}{2}=\frac{\omega_0}{2}\left(r+\frac{1}{r}\right)
+=\omega_0\sqrt{1+\frac{1}{4Q^2}}
+\approx\omega_0\left(1+\frac{1}{8Q^2}\right),
+\]
+so the midpoint of the two \(-\SI{3}{\decibel}\) frequencies sits above resonance by
+a fraction \(1/8Q^2\)---\SI{2.5}{ppm} at the \(Q\approx224\) of the box below,
+\SI{68}{ppm} at the \(Q\approx43\) of this chapter's worked example, and still only
+\SI{0.4}{\percent} at \(Q=5.7\). That is why splitting the difference on a bench
+sweep never bites, and why the exact statement went unnoticed.
+
+On the Bode magnitude (\cref{fig:bode2}) higher \(Q\) therefore means a taller,
+narrower peak---poles pressed against the \(\jj\omega\) axis, and it confirms
+\cref{sec:polegeometry}'s reading of the pole diagram: \(\omega_0/Q=2\alpha\) is
+exactly twice the distance from that axis, so ``distance from the imaginary axis is
+half the bandwidth'' is an equality too. \Cref{ch:rlcpar} shows that the parallel circuit's \(Q\)
+is the \emph{reciprocal} combination, and why.
 
 \begin{mistakebox}
-Do not treat one topology's \(Q\) formula as universal, and keep the three
-\(Q\)'s straight. \emph{Loaded} \(Q\) includes source and load coupling;
-\emph{unloaded} \(Q\) describes the resonator's own internal losses;
-\emph{component} \(Q\) describes the loss of one inductor or capacitor. They
-answer different questions.
+Two things about \(BW=f_0/Q\) do \emph{not} generalize, and neither is the equals
+sign.
+
+\textbf{The \(\approx\) you have seen elsewhere belongs to the output.} The equality
+holds for the \emph{current}---equivalently for the voltage across \(R\), the bandpass
+output---because that is the response whose magnitude is governed by \(|Z|\) alone.
+Take the output across \(C\) instead and the peak's \(-\SI{3}{\decibel}\) width
+matches \(\omega_0/Q\) only as \(Q\) grows: it is \SI{0.05}{\percent} wide of it at
+\(Q=22\) but \SI{6}{\percent} off at \(Q=2.2\), where the edges are no longer
+geometrically centred either. So the familiar hedge is not about high-\(Q\)
+sloppiness---it is about which variable you called the output.
+
+\textbf{The formula for \(Q\) is topology-dependent, and there are three of them.}
+Do not carry one topology's \(Q\) into another, and keep the three straight:
+\emph{loaded} \(Q\) includes source and load coupling; \emph{unloaded} \(Q\)
+describes the resonator's own internal losses; \emph{component} \(Q\) describes the
+loss of one inductor or capacitor. They answer different questions.
 \end{mistakebox}
 
 \begin{workedbox}[: the voltage magnification is real]
@@ -271,7 +346,7 @@ damped.''
 Series-resonance questions reward separating the three quantities that do not
 interact. \(f_0=1/(2\pi\sqrt{LC})\) depends on \(L\) and \(C\) \emph{only}---any
 \(R\) in the problem statement is a distractor for this part. \(Q=\omega_0L/R\) and
-\(BW\approx f_0/Q\) then depend on \(R\), and \(R\) alone moves them. So a question
+\(BW=f_0/Q\) then depend on \(R\), and \(R\) alone moves them. So a question
 that changes \(R\) changes selectivity and bandwidth but never the resonant
 frequency; a question that changes \(L\) or \(C\) moves \(f_0\), and moves \(Q\)
 too unless it scales both. At resonance \(Z=R\), the current is maximum, and the
@@ -292,7 +367,9 @@ The poles sit at \(s=-\alpha\pm\jj\omega_d\approx-2.5\times10^5\pm\jj\,2.13\time
 the real part is about \(1/85\) of the imaginary part, so the poles are pressed
 against the \(\jj\omega\) axis---a very high-\(Q\), sharply peaked circuit that
 rings for roughly \(Q\approx43\) cycles. The half-power bandwidth is
-\(BW\approx f_0/Q\approx\SI{80}{\kilo\hertz}\).
+\(BW=f_0/Q\approx\SI{80}{\kilo\hertz}\), and by \cref{sec:halfpower} the two
+\(-\SI{3}{\decibel}\) frequencies are \SI{3.35}{\mega\hertz} and
+\SI{3.43}{\mega\hertz}---whose \emph{product} is \(f_0^2\).
 
 \Cref{fig:rlc-worked} plots this particular circuit on real axes. The magnitude
 peaks about \(\SI{33}{\decibel}\) (a factor of \(43\)) above the passband at

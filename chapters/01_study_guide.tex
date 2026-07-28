@@ -140,15 +140,20 @@ Z=R+\jj\left(\omega L-\frac{1}{\omega C}\right),
 \qquad
 Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0 R C}.
 \]
-Here \(Q_s\) is the series quality factor (sharpness of resonance). For many
-narrowband resonant circuits the half-power bandwidth \(BW\) is
+Here \(Q_s\) is the series quality factor (sharpness of resonance). The half-power
+bandwidth \(BW\) is
 \[
-BW\approx \frac{f_0}{Q},
+BW=\frac{f_0}{Q},
+\qquad
+f_0=\sqrt{f_1f_2},
 \]
 where \(Q\) is the resonant circuit's \emph{loaded} quality factor---the value
 including source and load coupling, which equals \(Q_s\) for a simple series RLC
-with no external loading. Treat this as a useful approximation tied to half-power
-bandwidth, not as a universal definition for every topology.
+with no external loading. Both are exact for the resonant response of a series or
+parallel RLC, not narrowband estimates (\cref{sec:halfpower}); the second says the
+band edges \(f_1,f_2\) straddle resonance \emph{geometrically}, so \(f_0\) is not
+quite the midpoint between them. What is topology-dependent is the formula for \(Q\)
+itself, so do not carry one topology's \(Q\) into another.
 
 \section{Bode, Decibels, and Power}
 \[

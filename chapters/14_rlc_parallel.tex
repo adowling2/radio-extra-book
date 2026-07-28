@@ -187,10 +187,17 @@ since that circulating current is what heats a tank coil.
 
 The bandwidth statement, however, is topology independent:
 \[
-BW\approx\frac{f_0}{Q},
+BW=\frac{f_0}{Q},
 \]
 because it is a statement about pole geometry---the distance from the
-\(\jj\omega\) axis---not about wiring (\cref{ch:splane}).
+\(\jj\omega\) axis---not about wiring (\cref{ch:splane}). Duality also carries over
+the \emph{exactness} that \cref{sec:halfpower} established. Repeat that derivation on
+the admittance,
+\(Y=G\left[1+\jj Q_p(\omega/\omega_0-\omega_0/\omega)\right]\) with \(G=1/R\), and
+every step goes through with \(Y\) for \(Z\): a current source drives the tank, the
+voltage across it is the response, half power is \(|Y|^2=2G^2\), and the same two
+conclusions follow---the width is exactly \(\omega_0/Q_p\) and the band edges satisfy
+\(f_0=\sqrt{f_1f_2}\).
 
 \section{Root Locus and Energy Balance}
 Both of these carry over from \cref{ch:rlc} by duality, so they need only a sentence
@@ -233,7 +240,7 @@ f_0=\frac{1}{2\pi\sqrt{LC}}\approx\SI{3.39}{\mega\hertz}
 \qquad
 Q_p=\frac{R}{\omega_0 L}=\frac{18000}{213}\approx 84 .
 \]
-The half-power bandwidth is \(BW\approx f_0/Q_p\approx\SI{40}{\kilo\hertz}\), and at
+The half-power bandwidth is \(BW=f_0/Q_p\approx\SI{40}{\kilo\hertz}\), and at
 resonance the tank presents \(Z=\SI{18}{\kilo\ohm}\), purely resistive---a high
 impedance an oscillator or Class C stage can develop signal voltage across. Note
 the contrast with \cref{ch:rlc}: there, \(R=\SI{5}{\ohm}\) in series gave

@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **26 done, 31 open.** Nothing has been silently dropped.
+Score: **27 done, 30 open.** Nothing has been silently dropped.
 
-## ✅ Done (26)
+## ✅ Done (27)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -181,17 +181,18 @@ noise bandwidth
 
 **ARRL Tier 2 (1 of 10):** the PLL (`sec:pll`)
 
-**ARRL Tier 3 (4 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
+**Tier A (1 of 5):** the exact half-power bandwidth (`sec:halfpower`) — `BW = f₀/Q` is now derived as an identity, not quoted with a hedge, and the band edges are located: `f₀ = √(f₁f₂)`. The `≈` was relaxed in Chs 1, 4, 13, 14, 16, 22, 23, the formula index and the cheat sheet; it was *kept*, with the reason now stated, in Ch 20 (an analyzer's usable band is an SWR limit, not the half-power one) and in Ch 16's antenna model (the lumped RLC, not the algebra, is the approximation).
+
+**ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (31), ranked
+## ⬜ Open (30), ranked
 
 ### Tier A — the book asserts these itself, so they are defects by our own convention
 
 | # | Item | Why it ranks here |
 |---|---|---|
-| T3.18 | **Exact half-power bandwidth** | We now state `BW ≈ f₀/Q` in **five** places and derive it nowhere. The half-power condition is a quadratic whose roots differ by exactly `ω₀/Q` and multiply to exactly `ω₀²` — so it is an *equality* for the current response, and the band edges straddle resonance **geometrically**, not arithmetically. |
 | T3.19 | **Series-to-parallel, `R_p = (1+Q²)R_s`** | One identity retires four assertions, three of them ours: a real tank's `Z_max` is `Q²R_s`; `Q_s` and `Q_p` are one quantity through this transformation; and solving `R_hi = R_lo(1+Q²)` **is** Ch 15's asserted L-network `Q`. |
 | T3.17 | **Skin depth from the diffusion equation** | We assert `R ∝ √f` in **four** places now (Chs 7, 16, 19, 22) and hand-wave the mechanism. `δ = √(2/ωμσ)` from `∂²J/∂x² = μσ ∂J/∂t` is the same PDE-to-solution move as the telegrapher's equations, and copper's 66 µm at 1 MHz checks the ARRL's own figures. |
 | T2.9 | **Conduction-angle efficiency integral** | Ch 17 states 25 %, 50 %, ~60 %, ~80 % on ARRL's authority. Fourier `a₀`/`a₁` of a truncated cosine gives `η = ½(a₁/a₀)(V₁/V_dc)`, returning ½ at `θ=180°` and `π/4` at `θ=90°`. |

@@ -192,7 +192,7 @@ second-order LTI system (for example, a circuit) does:
 per decade means \(n\) poles. Steeper skirts reject out-of-band signals harder.
 \item[Resonant peak] a bump near \(\omega_0\) signals a high-\(Q\) pole pair; its
 height grows with \(Q\) and its \(-\SI{3}{\decibel}\) width is the bandwidth
-\(BW\approx f_0/Q\).
+\(BW=f_0/Q\) (\cref{sec:halfpower}).
 \item[Phase] the phase slope near a corner flags how much lead or lag the stage
 adds---the quantity that governs stability once the stage sits inside a feedback
 loop (\cref{ch:feedback}).
@@ -216,6 +216,7 @@ Zeros do not affect stability, but they shape how the stable modes appear.
 \end{controlsbox}
 
 \subsection{Reading the Pole Geometry}
+\label{sec:polegeometry}
 For the second-order pole pair \(s=-\zeta\omega_0\pm\jj\omega_d\), two facts make
 the plot readable by eye (\cref{fig:poles2}). First, while underdamped the poles
 lie on a circle of radius \(\omega_0\), because
@@ -227,7 +228,10 @@ envelope decay rate \emph{and} half the half-power bandwidth: the full bandwidth
 \[
 BW=2\alpha=\frac{\omega_0}{Q}\quad[\si{\radian\per\second}].
 \]
-\emph{Distance from the imaginary axis is half the bandwidth.} A pole hugging the
+\emph{Distance from the imaginary axis is half the bandwidth.} \Cref{sec:halfpower}
+earns the equals sign, by solving the half-power condition exactly for a series RLC;
+it also locates the two band edges, which turn out to straddle \(\omega_0\)
+geometrically rather than arithmetically. A pole hugging the
 axis rings for a long time and shows a narrow, tall peak; a pole far from the axis
 settles quickly and shows a broad, low peak.
 

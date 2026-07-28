@@ -3,11 +3,19 @@
 **Running status file — update this at the end of each working session.**
 Last updated: 2026-07-28 (Round 4, plus the Round 5 environment check below).
 
-**Round 5 start-up check (new machine):** `make all` and `make figures` both succeed;
+## Round 5 (in progress)
+
+**Start-up check on the new machine:** `make all` and `make figures` both succeed;
 figures regenerate byte-identically; `./scripts/check.sh` prints **ALL CHECKS PASSED**
-(181 pages, 23 chapters, 29 figures, 47 section labels, 65 glossary entries). One
-portability bug was fixed in the checker itself — see §5b. `references/` is **absent**,
-as expected on a fresh clone, so **no pool citation can be verified right now** (§5a).
+(182 pages, 23 chapters, 29 figures, 49 section labels, 65 glossary entries). One
+portability bug was fixed in the checker itself — see §5b.
+
+**The question pools are now in the repo** (§5a), with greppable markdown extracts of
+their circuit questions. Pool citations are verifiable again; the ARRL manual is still
+gitignored, so the `notes/` audits still cannot be re-run.
+
+**Ledger progress: A1 done** — the exact half-power bandwidth (`sec:halfpower`). See
+§6 for what A2–A5 are and the LEDGER in `ARRL-GAP-PROPOSAL.md` for the running score.
 
 Per-round markup plans live alongside this file and are the archive, not the status:
 `revision-notes.md` (Round 1), `revision-notes-round2.md` (Round 2),
@@ -33,7 +41,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 181 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 182 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -59,7 +67,7 @@ Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedbac
 `ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 47 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 49 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
@@ -68,7 +76,8 @@ Section labels, all 47 of them: `sec:complexrefresher` `sec:rms` `sec:secondorde
 `sec:probe` `sec:groundloops` `sec:instpower` `sec:fourier` `sec:parseval`
 `sec:samplingismult` `sec:samplingthm` `sec:quantnoise` `sec:decimation` `sec:firiir`
 `sec:noisefloor` `sec:noisefigure` `sec:friis` `sec:powerseries` `sec:compression`
-`sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits` `sec:pll`.
+`sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits` `sec:pll`
+`sec:halfpower` `sec:polegeometry`.
 
 ### Conventions in force
 
@@ -234,7 +243,7 @@ Round 4 hand-filtered.
 **See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
 the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
 the General-pool check, and the four ARRL chapter audits — against the book as built,
-so nothing can be silently dropped. Current score: **26 done, 31 open**, with the open
+so nothing can be silently dropped. Current score: **27 done, 30 open**, with the open
 items ranked in four tiers.
 
 The highest-priority open items are **Tier A: things the book asserts itself**, and so
@@ -430,7 +439,7 @@ Fixing them also *removes* text in a couple of cases.
 
 | Order | Item | Home | The move |
 |---|---|---|---|
-| A1 | **Exact half-power bandwidth** | `ch:rlc` §Q and Bandwidth | `\|Z\|² = R²[1 + Q²(ω/ω₀ − ω₀/ω)²]`; half power gives a quadratic whose two roots **differ by exactly `ω₀/Q`** and **multiply to exactly `ω₀²`**. So `BW = f₀/Q` is an equality for the current response, and the band edges straddle resonance *geometrically*: `f₀ = √(f₁f₂)`. Quantify the error in arithmetic centring (≈`1/8Q²`). Then relax the hedge in the four other places that state it. |
+| ✅ A1 | **Exact half-power bandwidth** — done (`sec:halfpower`) | `ch:rlc` §Q and Bandwidth | `\|Z\|² = R²[1 + Q²(ω/ω₀ − ω₀/ω)²]`; half power gives a quadratic whose two roots **differ by exactly `ω₀/Q`** and **multiply to exactly `ω₀²`**. So `BW = f₀/Q` is an equality for the current response, and the band edges straddle resonance *geometrically*: `f₀ = √(f₁f₂)`. Quantify the error in arithmetic centring (≈`1/8Q²`). Then relax the hedge in the four other places that state it. |
 | A2 | **Series↔parallel, `R_p = (1+Q²)R_s`** | `ch:rlcpar`, after §Why Q Inverts | Equate `1/Z_series` with `Y_parallel` at one frequency. Retires three of *our* assertions: a real tank's `Z_max` is `Q²R_s` (not "approximately the circuit resistance"); `Q_s` and `Q_p` are one quantity seen through this map; and solving `R_hi = R_lo(1+Q²)` **is** `ch:filters`'s asserted L-network `Q`. Cross-ref from Ch 23 problem 3, which currently does this conversion as an unexplained step. |
 | A3 | **Skin depth** | `sec:selfresonance` | `∂²J/∂x² = μσ ∂J/∂t` with `e^{jωt}` gives `J ∝ e^{−x/δ}e^{−jx/δ}`, `δ = √(2/ωμσ)`. Copper: 66 µm at 1 MHz, 5.5 µm at 144 MHz. Then `R_AC ∝ √f` from an annulus of thickness `δ` — the law we now assert in **four** places. Also explains why coil `Q ∝ √f` rises then falls. |
 | A4 | **Conduction-angle efficiency** | `sec:classes` | Fourier `a₀`/`a₁` of a cosine truncated at half-angle `θ`; `η = ½(a₁/a₀)(V₁/V_dc)` returns ½ at `θ=180°`, ¼ resistively loaded (the asserted 25 %), `π/4 = 78.5 %` at `θ=90°`. For switching, `p = vi` with an ideal switch forces one factor to zero always, so `∫p dt = 0` identically. Replaces four numbers currently on ARRL's authority. |
