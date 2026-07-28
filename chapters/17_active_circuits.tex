@@ -309,6 +309,49 @@ compensated op-amp) restores phase margin by making the loop gain fall through
 \SI{0}{\decibel} before the second pole adds its lag. It buys stability with
 bandwidth---the same trade, again.
 
+\subsection{Neutralization: Cancelling a Loop You Did Not Ask For}
+\label{sec:neutralization}
+Compensation assumes you know where the loop is. RF amplifiers have a harder
+problem: a feedback path exists whether or not the designer put one there.
+
+Every active device has capacitance between its output and its input---collector to
+base, drain to gate, plate to grid. That capacitance is an impedance, so it feeds a
+fraction of the output back, and at RF the fraction is not small: the feedback
+admittance \(\jj\omega C\) grows with frequency, so a device that is unconditionally
+stable at audio can have substantial loop gain at \SI{30}{\mega\hertz}. Worse, the
+feedback arrives through a \emph{capacitor}, which contributes its own
+\(+90^\circ\)---so the phase condition of \cref{sec:threepoles} can be met by the
+device's own strays and the stage oscillates at a frequency nobody designed.
+
+\textbf{Neutralization} is the cure, and it is the only place in this book where
+feedback is deliberately cancelled rather than shaped. A second path is added from
+output to input, matched in magnitude to the stray but opposite in phase---typically
+by taking the feedback from the other end of a center-tapped tank, which supplies a
+signal \(180^\circ\) out of phase, through an adjustable capacitor set to match the
+offending one. The two paths then sum to zero at the input:
+\[
+\underbrace{\jj\omega C_{\text{stray}}}_{\text{unwanted path}}
++\underbrace{\bigl(-\jj\omega C_{\text{neut}}\bigr)}_{\text{added path}}=0
+\qquad\text{when}\qquad
+C_{\text{neut}}=C_{\text{stray}} .
+\]
+With the loop gain driven to zero there is no \(L\) to satisfy \(L=-1\), and the
+stage cannot oscillate at any drive level. Screen-grid tubes attack the same problem
+structurally rather than by cancellation---the screen is an earthed electrode
+interposed between grid and plate, which reduces \(C_{\text{stray}}\) itself---and
+modern practice often avoids the issue by choosing devices whose feedback capacitance
+is small enough to leave the loop gain below unity throughout.
+
+\begin{controlsbox}
+\textbf{Three ways to keep a loop stable, and they are not interchangeable.}
+Compensation reshapes \(L(\jj\omega)\) so its magnitude falls below unity before its
+phase reaches \(-180^\circ\); it keeps the loop and makes it well behaved.
+Neutralization \emph{removes} the loop by summing it against an equal and opposite
+copy. Choosing a better device shrinks the loop's gain at source. All three are
+statements about the same \(L\), which is why one framework covers an op-amp, a
+regulator, and a neutralized RF power amplifier.
+\end{controlsbox}
+
 \section{Oscillators: Poles Placed on the Axis}
 An oscillator is a feedback loop designed to sit exactly on the stability
 boundary. The closed-loop poles are the roots of \(1+L(s)=0\), so they reach the
@@ -485,6 +528,39 @@ filtering \emph{after} the mixer can separate it from the wanted signal, because
 then they are identical. It must be rejected before mixing, which is what the front-end
 filter is for.
 
+The image's location follows from the same absolute value, and is worth having as a
+number. If the wanted signal sits at \(f_{\text{LO}}-f_{\text{IF}}\), then the
+frequency \(f_{\text{LO}}+f_{\text{IF}}\) mixes to the same place, so the two are
+separated by
+\[
+f_{\text{image}}-f_{\text{signal}}=2f_{\text{IF}} .
+\]
+\emph{The image is always twice the intermediate frequency away.} That single fact
+drives receiver architecture: a high first IF pushes the image far out where a
+modest front-end filter can reject it, which is exactly why up-converting receivers
+use first IFs above the highest received frequency.
+
+\subsection{The Same Multiplier, Four Jobs}
+A mixer's algebra does not care which port you call which, so the same circuit
+appears under four names depending on what is connected and what is kept:
+\begin{description}
+\item[Mixer / converter] RF in, local oscillator in, keep the difference: translate
+a signal to the IF. The receiving case above.
+\item[Balanced modulator] audio in, carrier in, and---by balancing the circuit so
+the two inputs cancel at the output---keep \emph{only} the sum and difference. The
+carrier itself is suppressed, leaving double sideband (DSB). Filter off one of the
+two sidebands and the result is single sideband; this is how an SSB transmitter
+generates its signal.
+\item[Product detector] IF in, reinserted carrier in, keep the difference: the
+audio. It is the balanced modulator run backwards, which is why an SSB receiver and
+an SSB transmitter contain the same part twice.
+\item[Frequency multiplier] one input, driven hard into nonlinearity, and keep a
+\emph{harmonic} rather than a mixing product---the \(m f_1\) terms with a tuned
+circuit selecting one.
+\end{description}
+Recognizing that these are one operation with different ports and different
+post-filters is worth more than memorizing four block diagrams.
+
 \emph{Intermodulation.} Real mixers and overdriven amplifiers do not multiply cleanly;
 their nonlinearity contains higher-order terms, which generate combinations
 \(m f_1\pm n f_2\) of any two signals present. The third-order products
@@ -493,6 +569,30 @@ signals they land \emph{nearby too}---inside the passband, where no filter can r
 them. That is why receiver front ends are specified for intermodulation
 performance, and why an amplifier driven into nonlinearity produces spurious signals
 rather than merely a distorted one.
+
+Concretely, with \(f_1=\SI{14.20}{\mega\hertz}\) and \(f_2=\SI{14.21}{\mega\hertz}\),
+the third-order products land at
+\[
+2f_1-f_2=\SI{14.19}{\mega\hertz},
+\qquad
+2f_2-f_1=\SI{14.22}{\mega\hertz},
+\]
+\SI{10}{\kilo\hertz} either side of the pair---the same spacing as the originals,
+and hopelessly inside any filter wide enough to pass them. Even-order products, by
+contrast, land near DC or near \(2f\), where filtering removes them easily. That
+asymmetry is why odd-order intermodulation is the specification that matters.
+
+\begin{physicalbox}
+\textbf{Why the two-tone test is the standard measurement.} The algebra above also
+prescribes how to measure linearity. Feed the amplifier two equal tones that are
+\emph{not} harmonically related---so that nothing they produce can be confused with
+simple harmonic distortion---and look at the output spectrum. A perfectly linear
+stage returns exactly two lines. Any third-order curvature announces itself as a
+symmetric pair of new lines at \(2f_1-f_2\) and \(2f_2-f_1\), whose level relative
+to the wanted tones \emph{is} the intermodulation figure. Two tones rather than one,
+because a single tone would produce only harmonics---far away, easily filtered, and
+therefore uninformative about the in-band products that actually matter.
+\end{physicalbox}
 
 \begin{physicalbox}
 \textbf{The same nonlinearity, wanted and unwanted.} Class C amplification
@@ -513,12 +613,85 @@ is linear and every tool in Part~II applies.
 \end{exambox}
 
 \section{Power Supplies}
-Rectifiers, filter capacitors, bleeder resistors, regulators, and switching
-converters reuse the elements from earlier chapters. A linear regulator is itself
-a feedback loop---it compares the output to a reference and drives the pass
-element to null the error, with the same stability considerations as any feedback
-system. Equal-value resistors across series filter capacitors equalize the shared
-voltage and discharge stored energy after power is removed.
+A power supply looks like a different subject and is not: it is a rectifier, an RC
+discharge, a low-pass filter, and a feedback loop, all of which are already in hand.
+Taking it in that order costs nothing new.
+
+\subsection{Rectification and Ripple}
+A \textbf{rectifier} uses diodes to make current flow one way only. Two
+arrangements matter, and the difference between them is a conduction angle:
+\begin{description}
+\item[Half-wave] one diode, which conducts on one polarity and blocks the other, so
+it conducts through \(180^\circ\) of each input cycle. The output is a train of
+pulses at the \emph{line} frequency \(f_{\text{line}}\).
+\item[Full-wave] two diodes with a center-tapped transformer (or four in a bridge),
+arranged so that whichever half-cycle the input is in, some path conducts. Current
+therefore flows through the full \(360^\circ\), and---this is the useful
+part---\emph{both} half-cycles are folded to the same polarity, so the output pulses
+arrive at \(2f_{\text{line}}\).
+\end{description}
+That doubling is the reason full-wave rectification is worth the extra parts. The
+ripple to be removed sits at twice the frequency, so the filter that removes it
+needs a corner an octave higher---or, at a fixed corner, attenuates the ripple
+\SI{6}{\decibel} harder (\cref{sec:decibels}). From \SI{60}{\hertz} mains, a
+half-wave supply must filter \SI{60}{\hertz} and a full-wave supply
+\SI{120}{\hertz}.
+
+\subsection{The Filter Is a Low-Pass, and the Bleeder Is an RC Discharge}
+What follows the rectifier is a low-pass filter built from exactly the elements of
+\cref{ch:filters}: a shunt capacitor, sometimes with a series inductor (a
+\emph{choke}) ahead of it to make it second order. Its job is stated in the language
+of \cref{sec:lc-lowpass}---pass DC, reject everything at \(2f_{\text{line}}\) and
+above---so the design rule is simply that the corner frequency must sit well below
+the ripple frequency. A large capacitor is a low corner.
+
+The \textbf{bleeder resistor} across the filter capacitor is
+\cref{ch:rc} unchanged. With the supply off, capacitor and bleeder are an isolated
+RC pair, so the stored charge decays as \(\ee^{-t/RC}\) and is gone after about
+\(5\tau\). This is a safety component: a large filter capacitor at several hundred
+volts holds \(E_C=\tfrac12CV^2\) of energy that will otherwise sit there
+indefinitely.
+
+\begin{workedbox}[: how long until it is safe?]
+A \SI{100}{\micro\farad} filter capacitor charged to \SI{400}{\volt} stores
+\[
+E_C=\tfrac12CV^2=\tfrac12(100\times10^{-6})(400)^2=\SI{8}{\joule},
+\]
+which is emphatically dangerous. Fit a \SI{100}{\kilo\ohm} bleeder and
+\[
+\tau=RC=(10^5)(100\times10^{-6})=\SI{10}{\second},
+\]
+so the capacitor is effectively discharged after \(5\tau\approx\SI{50}{\second}\).
+The bleeder wastes \(V^2/R=\SI{1.6}{\watt}\) continuously in normal operation---the
+standard trade, safety against standing loss. Note the two competing pulls: a
+smaller resistor discharges faster but wastes more, and the pole \(-1/RC\) is the
+only thing being moved.
+\end{workedbox}
+
+When several capacitors are stacked in series to withstand a high voltage,
+equal-value resistors across each one do double duty: they bleed the stack down, and
+because they are a \emph{divider} (\cref{ch:resistive}) they force the total voltage
+to share equally instead of according to the capacitors' leakage.
+
+\subsection{Regulation Is a Feedback Loop}
+A linear regulator compares its output against a reference and drives a pass element
+to null the difference---so it is literally \cref{ch:feedback}'s block diagram with
+a transistor as the forward path. Everything from that chapter therefore applies:
+the large-loop-gain limit is why the output tracks the reference rather than the
+transistor's parameters, the sensitivity result \(1/(1+L)\) is what ``line and load
+regulation'' measure, and the margins are why a regulator with too much loop gain
+or a marginal output capacitor \emph{rings}. Switching converters replace the
+dissipative pass element with a duty-cycle-modulated switch and an LC filter; the
+high switching frequency is chosen deliberately, because a higher ripple frequency
+means the same attenuation from far smaller reactive components.
+
+\begin{exambox}
+Power-supply questions usually reduce to one of three facts. Full-wave rectification
+puts ripple at \emph{twice} the line frequency and half-wave at the line frequency.
+The filter is a low-pass, so bigger capacitance means a lower corner and less
+ripple. And the bleeder is an RC discharge whose \(\tau=RC\) sets how long the supply
+stays lethal after switch-off.
+\end{exambox}
 
 \begin{exambox}
 For active-circuit questions, keep three layers separate: small-signal gain,

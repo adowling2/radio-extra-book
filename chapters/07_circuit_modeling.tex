@@ -90,6 +90,25 @@ inductor is a parallel resonator, so it is a near-open there. Those are exactly 
 two behaviors of \cref{ch:rlc,ch:rlcpar}, which is why this subsection needs no new
 theory---only the observation that the resonator was there all along.
 
+\subsubsection*{Skin Effect: Why the Loss Term Grows Too}
+The parasitic \emph{reactances} above are one way the ideal element fails; the
+resistance is another, and it is not constant either.
+
+A changing magnetic field inside a conductor induces circulating eddy currents,
+and those oppose the current flow most strongly at the center. The net effect is
+that high-frequency current is pushed out into a thin surface layer---the
+\textbf{skin depth}---so the cross-section actually carrying current shrinks as
+frequency rises. Since resistance goes inversely with area, the AC resistance
+climbs, roughly as
+\[
+R_{\mathrm{AC}}\propto\sqrt{f} .
+\]
+Three consequences the rest of the book uses: an inductor's \(Q=\omega_0L/R\) does
+\emph{not} improve indefinitely with frequency, because \(R\) is rising too;
+RF conductors are stranded, tubular, or silver-plated, since only the surface
+matters; and a transmission line's attenuation inherits the same \(\sqrt f\) law
+(\cref{sec:lineloss}).
+
 \begin{workedbox}[: where a bypass capacitor quits]
 A \(\SI{10}{\nano\farad}\) ceramic capacitor with \SI{10}{\milli\meter} of total lead
 and plate length carries roughly \(L_s\approx\SI{10}{\nano\henry}\)

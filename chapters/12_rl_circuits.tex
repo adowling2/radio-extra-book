@@ -149,6 +149,63 @@ variable (voltage vs current) and the direction of the \(R\)-dependence differ.
 Learn one and you have both.
 \end{controlsbox}
 
+\section{Ferrites and Common-Mode Current}
+\label{sec:commonmode}
+The most common inductor in a real station is one nobody drew: a ferrite bead or
+toroid clamped over a cable. Understanding it needs one new idea---not about
+inductors, but about which current the inductor is in series with.
+
+\subsection{Two Currents on the Same Cable}
+Take any cable with two or more conductors. The currents in them can be decomposed
+into two independent parts:
+\begin{description}
+\item[Differential mode] equal and opposite in the two conductors. This is the
+wanted signal: current out along one conductor and back along the other, with the
+two magnetic fields cancelling outside the cable.
+\item[Common mode] equal and in the \emph{same} direction in every conductor,
+returning by some other path entirely---through the ground, the mains wiring, or the
+operator. Its fields do \emph{not} cancel, so a common-mode current turns the cable
+into an antenna.
+\end{description}
+That is the whole diagnosis of a great deal of interference. A feed line radiating,
+a microphone lead picking up RF, a computer cable polluting the band: in each case
+the differential signal is fine and a common-mode current is doing the damage.
+
+\subsection{Why a Ferrite Choke Is Selective}
+Now the circuit question: how do you add impedance to one mode and not the other?
+Thread the whole cable through a ferrite core. The core links whatever net flux the
+conductors produce, and that is precisely the distinction:
+\begin{itemize}
+\item For the \emph{differential} current the two conductors' fields cancel, so
+there is no net flux, so the core adds \emph{no} inductance. The wanted signal
+passes untouched.
+\item For the \emph{common-mode} current all the conductors push flux the same way,
+so the core sees the full sum and presents a series impedance \(\jj\omega L\) to it.
+\end{itemize}
+So a ferrite choke is an inductance that exists only for the current you want to
+suppress---not a filter in frequency, but a filter in \emph{mode}. It is the RL
+circuit of this chapter with the common-mode path's resistance playing the role of
+\(R\), and \(\tau=L/R\) again setting where the suppression begins.
+
+Two practical consequences follow from the formulas already in hand. More turns
+through the core raises \(L\) (roughly as the square of the turn count, since both
+the flux and the linking scale), which lowers the frequency at which the choke
+starts working. And a ferrite's \textbf{mix}---its material composition---determines
+the frequency range over which it is lossy rather than merely reactive; a lossy mix
+is preferable here, because dissipating the common-mode energy is better than
+storing and re-radiating it.
+
+\begin{physicalbox}
+\textbf{Why a toroid, and not a rod.} A closed core keeps its flux inside the
+magnetic circuit, so almost all of it links the winding: that gives a large
+inductance per turn and, just as usefully, little external field to couple into
+neighboring circuits. An open rod leaks flux through the air, so it needs far more
+turns for the same inductance and it broadcasts to its surroundings. The same
+containment argument is why toroidal cores dominate in RF work generally---the
+inductance is high, the coupling to everything else is low, and the mix can be
+chosen per band.
+\end{physicalbox}
+
 \section{Energy Interpretation}
 The inductor stores \(E_L=\tfrac12 Li^2\) in its magnetic field. When current is
 interrupted, that energy must go somewhere.

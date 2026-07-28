@@ -212,6 +212,50 @@ tip cuts \(L\) to \SI{20}{\nano\henry} and pushes the resonance to about
 you are moving its poles up in frequency until they no longer matter.
 \end{physicalbox}
 
+\section{Ground Loops: KVL Around the Return Path}
+\label{sec:groundloops}
+The ground-lead resonance above is one failure of an assumption the schematic makes
+everywhere: that ``ground'' is a single node at zero volts. It is not. A ground
+conductor is a conductor, with resistance and---more importantly at RF---inductance,
+so current flowing in it develops a voltage, and two points labelled ``ground'' are
+at the same potential only if no current flows between them.
+
+Make that concrete with KVL. Suppose two pieces of equipment are joined by a signal
+cable \emph{and} both are grounded to the mains. Then there is a closed loop:
+out along the cable shield, through one chassis, down its safety ground, along the
+building wiring, and back up the other. Any current circulating in that loop---
+induced by a nearby transformer at \SI{60}{\hertz}, or by a transmitter at
+RF---develops a voltage along the shield, and that voltage adds directly to the
+signal, because the receiving end measures its input \emph{relative to} its own
+ground. This is a \textbf{ground loop}, and \SI{60}{\hertz} hum is its signature.
+
+The cure follows from the loop equation rather than from folklore. Since the problem
+is a circulating current in a closed path, either break the path or shrink its
+impedance:
+\begin{description}
+\item[Single-point (star) grounding] bond every chassis to \emph{one} common point
+with its own short conductor, so no two ground paths form a loop at all. This is the
+structural fix.
+\item[Bonding] where a loop is unavoidable, make its enclosed impedance as low as
+possible with short, wide straps---a strap has less inductance than a round wire of
+the same length, which matters because it is \(\omega L\) and not \(R\) that
+dominates at RF.
+\item[Common-mode choking] add series impedance to the loop current specifically,
+with a ferrite over the cable (\cref{sec:commonmode}). This attacks the current
+rather than the path.
+\end{description}
+
+\begin{physicalbox}
+\textbf{Why long ground leads fail twice.} A ground conductor a significant
+fraction of a wavelength long is not a short at all: by \cref{ch:lines} its input
+impedance is \(\jj Z_0\tan\beta\ell\), which passes through \emph{infinity} at a
+quarter wavelength. So a ``ground'' wire can present a high impedance and develop
+large RF voltages at its open end---which is how an earthed chassis comes to bite
+the operator, and why RF grounding is about electrical length rather than about
+digging a deeper rod. It is the same tangent that made a stub a resonator in
+\cref{sec:stubs}, arriving here as a hazard instead of a component.
+\end{physicalbox}
+
 \section{SWR Bridge and Antenna Analyzer}
 An SWR bridge separates the forward and reflected waves of \cref{ch:lines} and reports
 their ratio as SWR. An antenna analyzer goes further and sweeps frequency, reporting
@@ -253,6 +297,50 @@ Always check which reference is meant. \textbf{dBW} references \(\SI{1}{\watt}\)
 \textbf{dBm} references \(\SI{1}{\milli\watt}\), so the two differ by exactly
 \SI{30}{\decibel} (\(\SI{1}{\watt}=\SI{30}{dBm}\)). A bare ``dB'' with no reference
 is a ratio---gain, loss, or return loss---and not a level at all.
+
+\subsection{Adding It All Up: Link Budgets and S Units}
+The reason referenced decibels are worth the bookkeeping is that they turn a chain of
+multiplications into a sum. \Cref{sec:cascadeadd} established this for cascaded
+transfer functions; the same arithmetic applied to a whole radio path is a
+\textbf{link budget}. Start from the transmitter power as a level, then add every gain
+and subtract every loss along the way:
+\[
+P_{\text{rx}}\,[\mathrm{dBm}]
+=P_{\text{tx}}-L_{\text{feed}}+G_{\text{tx}}
+-L_{\text{path}}+G_{\text{rx}}-L_{\text{feed,rx}} .
+\]
+The \textbf{link margin} is then simply how much is left over above the receiver's
+minimum usable level---a subtraction, not a ratio, because both are already levels.
+
+\begin{workedbox}[: a link budget in one line]
+A \SI{100}{\watt} transmitter (\SI{50}{dBm}) feeds \SI{100}{\foot} of RG-213 at
+\SI{144}{\mega\hertz}, so \SI{2}{\decibel} of line loss (\cref{sec:lineloss}), into
+an antenna with \SI{10}{\decibel} of gain. The path costs \SI{130}{\decibel} and the
+receiving station has a \SI{3}{\decibel} antenna and \SI{1}{\decibel} of feed loss:
+\[
+50-2+10-130+3-1=\SI{-70}{dBm}.
+\]
+If the receiver needs \SI{-110}{dBm} to be usable, the link margin is
+\SI{40}{\decibel}---comfortable. Note what the arithmetic makes obvious: the
+\SI{2}{\decibel} of feed line and the \SI{10}{\decibel} of antenna gain are directly
+comparable, and trading a better cable against a better antenna is a matter of
+counting decibels.
+\end{workedbox}
+
+Receiver reports use their own referenced scale. One \textbf{S unit} is defined as
+\SI{6}{\decibel}, which is a factor of four in power (\(10^{6/10}\approx3.98\)). So a
+signal reported one S unit stronger needs four times the transmitter power, all else
+equal, and ``\SI{20}{\decibel} over S9'' means a hundred times the power of an S9
+signal. The awkwardness of the scale is exactly that it is logarithmic while the
+power behind it is not: going from S8 to S9 is the same \SI{6}{\decibel}---the same
+\(4\times\)---as going from S3 to S4.
+
+\begin{mistakebox}
+Do not read S units as a linear signal-strength scale. Each unit is
+\SI{6}{\decibel}, so two S units is \SI{12}{\decibel} (\(16\times\) the power), not
+twice one unit's worth. And above S9 the scale is abandoned entirely in favor of
+``\(n\) dB over S9,'' precisely because the S numbers would otherwise run out.
+\end{mistakebox}
 
 \section{Troubleshooting Pattern}
 The chapters of this book supply a checklist, because every one of them rests on

@@ -568,6 +568,74 @@ regime); above it, inductive (\(X>0\), ``too long''); at \(\omega_0\) the
 reactance vanishes and \(Z=R_{\text{rad}}\) is purely real. A half-wave dipole is
 ``resonant'' precisely because it is the length at which those two cancel.
 
+\subsection{From Wavelength to Wire Length}
+\label{sec:antennalength}
+That last sentence has a practical corollary: the resonant length is a
+\emph{wavelength} statement, so it can be turned into a number with a tape measure.
+The familiar formulas are worth deriving, because doing so shows where their odd
+constants come from.
+
+In free space \(\lambda=c/f\). Working in the units the formulas are quoted
+in---feet and megahertz---and using
+\(c\approx\SI{9.836e8}{\foot\per\second}\),
+\[
+\lambda\,[\mathrm{ft}]\approx\frac{984}{f\,[\mathrm{MHz}]},
+\qquad\text{so}\qquad
+\frac{\lambda}{2}\approx\frac{492}{f} .
+\]
+A real dipole is slightly \emph{shorter} than that. The wire has thickness and its
+ends have capacitance to their surroundings---the \textbf{end effect}---which adds a
+little capacitive loading, so resonance arrives at a physical length about
+\SI{5}{\percent} short of the free-space half wavelength. Applying that factor:
+\[
+\boxed{\;
+\ell_{\lambda/2}\,[\mathrm{ft}]\approx\frac{0.95\times492}{f}
+\approx\frac{468}{f\,[\mathrm{MHz}]},
+\qquad
+\ell_{\lambda/4}\,[\mathrm{ft}]\approx\frac{234}{f\,[\mathrm{MHz}]} \;}
+\]
+the second being a quarter-wave monopole, half the dipole. So the \(468\) is not a
+mysterious constant: it is \(984/2\) reduced by the end effect, and the \(234\) is
+just half of it.
+
+\begin{workedbox}[: cutting a dipole for 20 metres]
+For \(f=\SI{14.1}{\mega\hertz}\), the antenna modeled above,
+\[
+\ell=\frac{468}{14.1}\approx\SI{33.2}{\foot}
+\qquad\text{total, so about \SI{16.6}{\foot} per leg.}
+\]
+Compare the two \(\SI{5}{\percent}\) corrections that appear in this chapter and do
+\emph{not} confuse them: the end-effect factor above applies to an antenna radiating
+in space, while the velocity factor \(VF\) of \cref{sec:lineloss}'s cables applies to
+a wave guided \emph{inside} a line. A \(\lambda/4\) matching \emph{stub} of RG-213 at
+this frequency is \(234/14.1\times0.66\approx\SI{11}{\foot}\)---shortened by
+\(VF\), not by end effect.
+\end{workedbox}
+
+\subsection{Gain, and Two Reference Antennas}
+Antenna gain is a ratio, so \cref{sec:decibels} applies unchanged---but a ratio needs
+a reference, and antenna work uses two:
+\begin{description}
+\item[dBi] gain relative to an \emph{isotropic} radiator, a hypothetical lossless
+antenna radiating equally in every direction. It is a mathematical fiction, which is
+what makes it a clean reference.
+\item[dBd] gain relative to a half-wave \emph{dipole} in free space.
+\end{description}
+A dipole is not isotropic---it concentrates its radiation broadside, and that
+concentration is worth \SI{2.15}{\decibel}. So the two scales differ by a constant:
+\[
+\boxed{\;\mathrm{dBi}=\mathrm{dBd}+2.15\;}
+\]
+which means a figure quoted in dBi always looks \SI{2.15}{\decibel} better than the
+same antenna quoted in dBd. Nothing physical changes; only the reference does.
+
+\begin{mistakebox}
+Gain here is \emph{directivity}, not amplification. A passive antenna adds no energy:
+\SI{10}{\decibel} of gain in one direction is bought by radiating less in others.
+This is why gain and pattern are the same statement, and why an antenna cannot have
+gain in every direction at once.
+\end{mistakebox}
+
 \subsection{Putting Numbers On It}
 Take a dipole resonant in the \SI{20}{\meter} band at
 \(f_0=\SI{14.1}{\mega\hertz}\), with radiation resistance

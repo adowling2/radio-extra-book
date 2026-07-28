@@ -56,7 +56,9 @@ which falls at \(-\SI{40}{\decibel}\) per decade and peaks by \(\approx Q\) near
 Those two supply everything a filter designer needs: a \emph{corner frequency}
 set by the reactance values, a \emph{roll-off rate} set by the number of poles,
 and---for second order and above---a \emph{peaking} set by the damping. The rest
-of this chapter is about choosing them deliberately.
+of this chapter is about choosing them deliberately, and
+\cref{sec:filterspecs} then translates the result into the numbers a data sheet
+actually quotes.
 
 \section{Order, Energy Stores, and Roll-Off}
 The pattern generalizes. Each independent energy-storage element (an \(L\) or a
@@ -192,6 +194,43 @@ to hit them. Same poles, different hardware---so ``customizing'' a filter means 
 steepness), the family (the flatness/sharpness/phase trade), the cutoff (by
 scaling \(L\) and \(C\)), and the realization that suits the frequency range and
 available parts.
+
+\section{Reading a Filter's Specification}
+\label{sec:filterspecs}
+A data sheet does not describe a filter by its pole locations; it quotes a handful of
+numbers. Each one is a measurement of the response this chapter has been shaping, and
+naming them makes the datasheet and the transfer function the same object.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.24\textwidth}Y@{}}
+\toprule
+Specification & What it measures on \(|G(\jj\omega)|\) \\
+\midrule
+Cutoff frequency & The \(-\SI{3}{\decibel}\) (half-power) edge of the passband. For a band-pass, there are two, and their separation is the bandwidth. \\
+Insertion loss & Attenuation \emph{inside} the passband---what the filter costs you on the signal you wanted. Ideally \SI{0}{\decibel}; real components make it a fraction of a decibel to a few decibels. \\
+Ripple & Peak-to-peak variation within the passband: zero for Butterworth, a design choice for Chebyshev and elliptic. \\
+Ultimate rejection & The attenuation floor far into the stopband. Poles give slope forever in theory, but stray coupling around the filter sets a real-world limit---often \SI{60}{\decibel} to \SI{100}{\decibel}. \\
+Shape factor & The ratio of the stopband width to the passband width, conventionally \(\SI{-60}{\decibel}\) bandwidth divided by \(\SI{-6}{\decibel}\) bandwidth. It is one number for skirt steepness: \(1.0\) would be a brick wall, and smaller is sharper. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Two of these deserve comment because they are where the idealization leaks.
+\emph{Insertion loss} exists because the inductors and capacitors have finite
+component \(Q\) (\cref{ch:rlc})---a lossless filter would have none, and a
+high-order, narrow filter built from mediocre parts can have several decibels of it.
+\emph{Ultimate rejection} exists because signals get around a filter without going
+through it, by stray capacitance or shared ground impedance
+(\cref{sec:groundloops}); adding poles past that point buys nothing, which is why
+crystal filters are physically shielded compartment by compartment.
+
+\begin{exambox}
+Shape factor and order both describe skirt steepness, and a question may give you
+either. Order is the theoretical statement---\(n\) poles give
+\(-20n\,\si{\decibel}\) per decade. Shape factor is the measured statement, and it
+folds in the family: at the same order a Chebyshev has a smaller (better) shape
+factor than a Butterworth, which is exactly the ripple-for-sharpness trade.
+\end{exambox}
 
 \section{Impedance Matching}
 An impedance-matching network does two jobs:
