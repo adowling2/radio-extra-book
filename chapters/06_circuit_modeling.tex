@@ -1,12 +1,12 @@
 \chapter{Circuit Modeling: Paradigms and Components}
 \label{ch:foundations}
-Part~II built a generic linear-systems toolkit with no mention of wires. Part~III
+Part~II built a generic linear-systems toolkit. Part~III
 now grounds it in real circuits. Before any specific circuit, this chapter sets up
 the modeling paradigm the rest of the book uses---what a ``circuit'' even
 is---then introduces the ideal components (\(R\), \(L\), \(C\), and sources), the
 two conservation laws that connect them, the state variables that carry a
 circuit's memory, and the unit bookkeeping that catches errors. Everything here is
-the vocabulary the later chapters assume.
+the vocabulary the later chapters use.
 
 \section{The Lumped-Element Modeling Paradigm}
 A real circuit is a tangle of fields spread through space. To analyze it we make
@@ -14,7 +14,7 @@ the \textbf{lumped-element idealization}: we pretend all the interesting physics
 lives inside a few discrete two-terminal components joined by perfect wires. Each
 component is described by a single relationship between the voltage across it and
 the current through it; the wires carry current with no voltage drop and store no
-energy. This is legal whenever the circuit is small compared with the wavelength of
+energy. This is reasonable whenever the circuit is small compared with the wavelength of
 the signals in it, so that a change at one end is felt essentially instantly at the
 other. When that assumption fails---long feed lines, antennas at radio
 frequencies (RF)---we switch to
@@ -59,7 +59,7 @@ a capacitor's series inductance at very high frequencies, VHF).
 \end{physicalbox}
 
 \section{KCL as an Accumulation Balance}
-Kirchhoff's current law is a charge balance. At a node,
+Kirchhoff's current law (KCL) is a charge balance. At a node,
 \[
 \text{accumulation}=\text{inflow}-\text{outflow}.
 \]
@@ -75,7 +75,7 @@ make the accumulation term visible because \(i_C=C\,\dd v_C/\dd t\).
 \end{controlsbox}
 
 \section{KVL as Energy Consistency}
-Kirchhoff's voltage law says that the signed voltage rises and drops around a
+Kirchhoff's voltage law (KVL) says that the signed voltage rises and drops around a
 closed loop sum to zero:
 \[
 \sum_k v_k=0.
@@ -102,6 +102,12 @@ relationships all follow from the definitions above:
 \qquad
 \SI{1}{\ohm}=\SI{1}{\volt\per\ampere}.
 \]
+Note the direction of these definitions: the \textbf{ampere is an SI base unit},
+defined by fixing the elementary charge, so current is the primitive electrical
+quantity and the coulomb is \emph{derived} from it (\(\SI{1}{\coulomb}
+=\SI{1}{\ampere\second}\)), not the other way around. Everything else here---volt,
+ohm, farad, henry, watt---is then built from the ampere together with the mechanical
+base units.
 \[
 \SI{1}{\farad}=\SI{1}{\coulomb\per\volt},
 \qquad
@@ -174,13 +180,13 @@ Do not use \(f\) where an equation requires \(\omega\). Reactance formulas use
 hertz, convert with \(\omega=2\pi f\).
 \end{mistakebox}
 
-\section{Key Equations}
+\section{Summary: Key Equations and Definitions}
 \[
 \sum i_k=0,\qquad \sum v_k=0,\qquad
 p(t)=v(t)i(t).
 \]
 
-\section{Key Definitions}
+\medskip
 \begin{description}
 \item[Lumped element] an idealized two-terminal component whose behavior is a
 single \(v\)--\(i\) law; valid when the circuit is small versus a wavelength.

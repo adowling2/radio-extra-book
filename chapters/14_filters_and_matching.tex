@@ -135,13 +135,34 @@ concrete.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{filter_families}
-\caption{Order-5 low-pass responses. Butterworth is maximally flat with a moderate
-transition; Chebyshev trades passband ripple for a sharper skirt; elliptic is
+\caption{Order-5 low-pass responses, all normalized to the same cutoff
+\(\omega_c\). Butterworth is maximally flat with a moderate transition; Chebyshev
+trades \SI{1}{\decibel} of passband ripple for a sharper skirt; elliptic is
 sharpest of all, with ripple in both bands and stopband nulls (its
 \(\jj\omega\)-axis zeros); Bessel is gentlest, chosen for clean phase and pulse
 fidelity rather than sharpness.}
 \label{fig:filter-families}
 \end{figure}
+
+\begin{advancedbox}
+\textbf{Where those curves come from.} Each family is defined by a formula for the
+magnitude response, from which the pole positions follow. For order \(n\) and cutoff
+\(\omega_c\):
+\[
+|G|^2_{\text{Butterworth}}=\frac{1}{1+(\omega/\omega_c)^{2n}},
+\qquad
+|G|^2_{\text{Chebyshev}}=\frac{1}{1+\varepsilon^2T_n^2(\omega/\omega_c)},
+\]
+where \(T_n\) is the order-\(n\) Chebyshev polynomial and \(\varepsilon\) sets the
+ripple. Butterworth's poles are the left-half-plane roots of
+\(1+(s/\jj\omega_c)^{2n}=0\)---which is exactly why they land equally spaced on a
+circle of radius \(\omega_c\) (\cref{fig:butterworth-poles}). Chebyshev's roots lie
+on an ellipse; elliptic (Cauer) filters replace \(T_n\) with a rational elliptic
+function, which is what introduces the finite stopband zeros; Bessel poles come from
+Bessel polynomials chosen to flatten group delay. \Cref{fig:filter-families} was
+generated numerically from these standard designs (via \texttt{scipy.signal}) rather
+than sketched, so the ripple depths and skirt slopes are quantitatively right.
+\end{advancedbox}
 
 Finally, the same target poles can be \emph{realized} several ways: a passive LC
 ladder, an active Sallen--Key stage (\cref{ch:active}) that makes complex poles
@@ -193,10 +214,17 @@ bandwidth is fixed once the resistances are chosen.
 % ground rail
 \draw (lb) -- (rb);
 \node[ground] at (3,0){};
+% input / output port labels
+\node[above=0.05cm,GuideBlue] at (lt) {\small input (source side)};
+\node[above=0.05cm,GuideBlue] at (rt) {\small output (load side)};
+\draw[GuideBlue,-{Latex}] (-0.55,1.3) -- (-0.55,1.85);
+\draw[GuideBlue,-{Latex}] (6.05,1.85) -- (6.05,1.3);
 \end{circuitikz}
 \caption{An L-network matching a low resistance \(R_{\text{lo}}\) to a high one
-\(R_{\text{hi}}\) (both drawn as resistors to the ground rail): series reactance
-on the low side, shunt reactance on the high side. Swapping which element is the
+\(R_{\text{hi}}\) (both drawn as resistors to the ground rail). The network sits
+\emph{between} the two terminations: the source drives the left-hand port and the
+load hangs on the right-hand one. The series reactance goes on the low-resistance
+side, the shunt reactance on the high-resistance side. Swapping which element is the
 inductor makes it high-pass instead of low-pass.}
 \label{fig:lnetwork}
 \end{figure}

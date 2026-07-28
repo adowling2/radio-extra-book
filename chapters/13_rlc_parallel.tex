@@ -191,6 +191,27 @@ the contrast with \cref{ch:rlc}: there, \(R=\SI{5}{\ohm}\) in series gave
 \(Q_s\approx43\); here \(R=\SI{18}{\kilo\ohm}\) in parallel gives \(Q_p\approx84\).
 Small series \(R\) and large parallel \(R\) both mean a good resonator.
 
+\Cref{fig:rlcpar-worked} plots it. Set this against the series example's
+\cref{fig:rlc-phasor} and the duality becomes visual rather than verbal: the series
+circuit's \(|Z|\) \emph{dips} to \(R\) at \(f_0\) while this one \emph{peaks} at
+\(R\); the series impedance locus is a straight vertical line while this one is a
+circle through the origin. Both are the same second-order pole pair, read through
+reciprocal coordinates.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{rlc_parallel_worked}
+\caption{The parallel worked example, \(L=\SI{10}{\micro\henry}\),
+\(C=\SI{220}{\pico\farad}\), \(R=\SI{18}{\kilo\ohm}\). \emph{Left:} the tank
+impedance magnitude peaks at \(|Z|=R=\SI{18}{\kilo\ohm}\) at
+\(f_0=\SI{3.39}{\mega\hertz}\), falling away on both sides with a half-power
+bandwidth of about \SI{40}{\kilo\hertz}---the opposite of the series circuit's dip.
+\emph{Right:} the impedance locus is a circle through the origin, inductive below
+\(f_0\) and capacitive above (again the reverse of the series case), crossing the
+real axis at \(Z=R\).}
+\label{fig:rlcpar-worked}
+\end{figure}
+
 \begin{exambox}
 Exam questions on resonance almost always hinge on one decision: series or
 parallel? Series resonance means minimum impedance and maximum current; parallel

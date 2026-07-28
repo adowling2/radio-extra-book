@@ -1,16 +1,42 @@
 \chapter{RL Circuits}
 \label{ch:rl}
-Inductors appear in RF chokes, tuned circuits, filters, relays, transformers, and
-antenna loading coils. An RL circuit is the current-domain sibling of the RC
-circuit: it is the same \emph{first-order system} of \cref{ch:linsys}, but now the
-natural state is the inductor current \(i_L\), which holds the stored magnetic
-energy.
+An RL circuit is the current-domain sibling of the RC circuit: it is the same
+\emph{first-order system} of \cref{ch:linsys}, but now the natural state is the
+inductor current \(i_L\), which holds the stored magnetic energy.
+
+\section{Where RL Circuits Appear}
+Inductors most often appear \emph{with} capacitors, in the resonant circuits of
+\cref{ch:rlc,ch:rlcpar}---so it is fair to ask where an inductor works against a
+resistance alone. Several places, and they matter:
+\begin{description}
+\item[RF chokes] a coil in a bias or supply lead, there to pass DC while blocking
+RF. What matters is the choke's inductance against the resistance of the path it
+feeds, and \(\tau=L/R\) sets how well it isolates.
+\item[Relay and solenoid coils] a coil switched by a transistor is an inductance in
+series with its own winding resistance, nothing more. Its \(L/R\) governs how fast
+it pulls in---and its stored energy is why the switch needs a flyback diode.
+\item[Transformer and motor windings] modeled as leakage inductance in series with
+winding resistance, which is what limits how fast the current can change.
+\item[Loading coils and conductor loss] the coil in a shortened antenna is an
+inductance whose unavoidable series resistance sets its \(Q\), directly limiting
+efficiency and bandwidth (\cref{ch:lines}).
+\item[Every real inductor] a coil \emph{is} an RL circuit by itself, since its
+winding resistance sits in series with its inductance; its self-capacitance only
+matters near self-resonance.
+\end{description}
+The RL circuit therefore earns its own chapter both because these cases are real and
+because the RC/RL duality it exposes is the fastest way to remember either one.
 
 \section{The Circuit}
 A source \(u(t)\) drives a resistor \(R\) in series with an inductor \(L\)
-(\cref{fig:rl-schematic}). Here the output is taken across the resistor, so
-\(v_o=v_R\), which gives a low-pass response in the current sense; taking it
-across the inductor instead gives a high-pass response.
+(\cref{fig:rl-schematic}). The state is the inductor current \(i\), but the
+\emph{output} is a \textbf{voltage}---the one across the resistor:
+\[
+v_o=v_R=R\,i .
+\]
+Since \(v_R\) is simply \(R\) times the state, this output is a scaled picture of
+the inductor current, which is why it is called low-pass ``in the current sense.''
+Taking \(v_o\) across the inductor instead gives a high-pass response.
 
 \begin{figure}[htbp]
 \centering
@@ -22,8 +48,9 @@ across the inductor instead gives a high-pass response.
 \draw (3,0) to[short,-o] (4,0) node[right]{$-$};
 \node at (4.35,1) {\(v_o\)};
 \end{circuitikz}
-\caption{Series RL circuit with the output across the resistor (low-pass in the
-current sense). The state variable is the inductor current \(i(t)\).}
+\caption{Series RL circuit. The state variable is the inductor current \(i(t)\);
+the output is the \emph{voltage} across the resistor, \(v_o=v_R=Ri\), which is
+low-pass in the current sense.}
 \label{fig:rl-schematic}
 \end{figure}
 
@@ -37,11 +64,25 @@ u(t)=L\frac{\dd i}{\dd t}+R\,i(t)
 \]
 
 \section{State-Space Form and the Generic Match}
-With the single state \(x=i\),
+With the single state \(x=i\), and remembering that the output is the resistor
+voltage,
 \[
-\dot{x}=-\frac{R}{L}\,x+\frac{1}{L}\,u .
+\dot{x}=-\frac{R}{L}\,x+\frac{1}{L}\,u,
+\qquad
+y=v_o=v_R=R\,x .
 \]
-Comparing with \(\tau\dot y+y=Ku\) from \cref{ch:linsys},
+The output equation is what distinguishes this from a bare current model: \(y\) is
+the resistor voltage, so \(C_{\text{out}}=R\) and \(D=0\). Transforming the state
+equation gives the transfer function to the current, and multiplying by \(R\) gives
+the one to the output:
+\[
+\frac{I(s)}{U(s)}=\frac{1/L}{s+R/L},
+\qquad
+G(s)=\frac{V_o(s)}{U(s)}=R\cdot\frac{1/L}{s+R/L}=\frac{1}{1+(L/R)s},
+\]
+a unity-DC-gain first-order low-pass---the same form as the RC circuit's
+\(G_C\). Comparing the state equation with \(\tau\dot y+y=Ku\) from
+\cref{ch:linsys} (taking \(y\) as the \emph{current}, whose DC gain is \(1/R\)),
 \[
 \tau=\frac{L}{R},
 \qquad
@@ -114,5 +155,33 @@ s_{\text{pole}}=-\frac{R}{L}=-\SI{5e6}{\per\second},
 so the corner frequency is \(f_c=1/(2\pi\tau)\approx\SI{796}{\kilo\hertz}\). At
 \SI{14}{\mega\hertz}---well above the corner---the reactance
 \(X_L=2\pi(14\times10^6)(10\times10^{-6})\approx\SI{880}{\ohm}\) dominates the
-\SI{50}{\ohm} resistor, so the inductor's impedance sets the behavior, exactly as
-the high-pass Bode plot predicts a decade past the corner.
+\SI{50}{\ohm} resistor, so the inductor's impedance sets the behavior.
+
+\Cref{fig:rl-worked} plots this specific circuit. On the magnitude curve the
+\SI{14}{\mega\hertz} point sits about \SI{25}{\decibel} down---consistent with being
+roughly \(1.25\) decades past the corner at \(-\SI{20}{\decibel}\) per decade---which
+is exactly the choke behavior this combination is used for: it passes DC and audio
+while attenuating HF.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{rl_worked}
+\caption{The worked example, \(L=\SI{10}{\micro\henry}\) with
+\(R=\SI{50}{\ohm}\). \emph{Left:} the Bode plot of \(v_R/u\) on a real frequency
+axis, with the \SI{796}{\kilo\hertz} corner and the \SI{14}{\mega\hertz} operating
+point marked. \emph{Right:} the root locus as \(R\) is swept with \(L\) fixed. The
+pole \(s=-R/L\) moves \emph{left} (faster) as \(R\) grows---the mirror of the RC
+case, where larger \(R\) moved the pole right.}
+\label{fig:rl-worked}
+\end{figure}
+
+\begin{physicalbox}
+\textbf{How does adjusting \(R\) change the dynamics?} As with the RC circuit, the
+single real pole can only slide along the real axis---no value of \(R\) produces
+ringing. But the \emph{direction} is reversed: here \(\tau=L/R\), so increasing
+\(R\) \emph{shortens} the time constant and moves the pole left (faster, higher
+cutoff), whereas in the RC circuit increasing \(R\) lengthened \(\tau\) and moved
+the pole right. This is the RC/RL duality in one sentence, and it is the detail most
+often misremembered: for a choke, \emph{lowering} the circuit resistance is what
+makes the isolation better at low frequencies.
+\end{physicalbox}

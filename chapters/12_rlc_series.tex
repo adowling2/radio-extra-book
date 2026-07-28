@@ -256,3 +256,58 @@ the real part is about \(1/85\) of the imaginary part, so the poles are pressed
 against the \(\jj\omega\) axis---a very high-\(Q\), sharply peaked circuit that
 rings for roughly \(Q\approx43\) cycles. The half-power bandwidth is
 \(BW\approx f_0/Q\approx\SI{80}{\kilo\hertz}\).
+
+\Cref{fig:rlc-worked} plots this particular circuit on real axes. The magnitude
+peaks about \(\SI{33}{\decibel}\) (a factor of \(43\)) above the passband at
+\SI{3.39}{\mega\hertz} and then falls at \(-\SI{40}{\decibel}\) per decade; the
+phase swings the full \(0^\circ\to-180^\circ\) that two poles must supply, passing
+\(-90^\circ\) exactly at \(f_0\). On the locus, the design point sits a hair off the
+\(\jj\omega\) axis---which is what ``\(Q=43\)'' looks like geometrically.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{rlc_series_worked}
+\caption{The worked example, \(L=\SI{10}{\micro\henry}\),
+\(C=\SI{220}{\pico\farad}\), \(R=\SI{5}{\ohm}\). \emph{Left:} Bode magnitude and
+phase of \(v_C/u\) on a real frequency axis, with the \(Q\approx43\) resonant peak
+at \(f_0=\SI{3.39}{\mega\hertz}\). \emph{Right:} root locus as \(R\) is swept with
+\(L,C\) fixed. The design point (\(R=\SI{5}{\ohm}\)) is pressed against the
+\(\jj\omega\) axis; the poles would meet on the real axis only at the critical value
+\(R=2\sqrt{L/C}\approx\SI{426}{\ohm}\), some 85 times larger.}
+\label{fig:rlc-worked}
+\end{figure}
+
+\subsection*{The Same Circuit as an Impedance Phasor}
+It is worth converting the same numbers into the phasor language of
+\cref{ch:ac}, since that is how a bench instrument reports them. Just above
+resonance, at \(f=1.1f_0\),
+\[
+X_L=\omega L\approx\SI{235}{\ohm},
+\qquad
+X_C=\frac{1}{\omega C}\approx\SI{194}{\ohm},
+\qquad
+X=X_L-X_C\approx\SI{41}{\ohm},
+\]
+so the impedance phasor is
+\[
+Z=R+\jj X\approx 5+\jj41\ \si{\ohm}
+=\SI{41}{\ohm}\angle 83^\circ .
+\]
+Two things are worth noticing (\cref{fig:rlc-phasor}). First, the individual
+reactances are huge---hundreds of ohms---yet they nearly cancel, leaving a net
+\SI{41}{\ohm}; \emph{resonance is a cancellation, not an absence}. Second, sweeping
+frequency moves \(Z\) along a \emph{vertical} line in the complex plane, because
+\(R\) is constant and only the reactance changes. That line crosses the real axis at
+\(Z=R\)---the one frequency where the circuit looks purely resistive, and where
+\(|Z|\) is smallest and the current therefore largest.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{rlc_series_phasor}
+\caption{The same worked example seen as an impedance phasor. \emph{Left:}
+\(Z=5+\jj41\ \si{\ohm}=\SI{41}{\ohm}\angle83^\circ\) at \(f=1.1f_0\)---rectangular
+form on the axes, polar form along the arrow. \emph{Right:} the locus of \(Z(f)\)
+from \(0.5f_0\) to \(2f_0\): a vertical line at \(\Re\{Z\}=R\), inductive above
+\(f_0\) and capacitive below, crossing the real axis at resonance.}
+\label{fig:rlc-phasor}
+\end{figure}

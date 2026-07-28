@@ -6,10 +6,10 @@ a \emph{phasor}, the complex number that stands in for a steady sinusoid. This
 short chapter is a self-contained refresher on both. It stays generic: a phasor
 is a tool for \emph{any} sinusoidally driven linear system, mechanical or
 electrical, and nothing here assumes a circuit. The circuit-specific
-payoff---impedance, admittance, and complex power---waits until \cref{ch:ac}, once
-Part~III has introduced the components themselves.
+connections---impedance, admittance, and complex power---wait until \cref{ch:ac}.
 
 \section{Complex Number Refresher}
+\label{sec:complexrefresher}
 A complex number in \textbf{rectangular form} is \(z=a+\jj b\), with real part
 \(a\) and imaginary part \(b\). Addition and subtraction are component-wise:
 \[
@@ -34,19 +34,26 @@ complex algebra.
 \(\operatorname{atan2}(b,a)\), or reason from the signs of both coordinates.
 \end{mistakebox}
 
-\subsection{Worked Conversion}
+\begin{workedbox}[: converting between forms]
 Convert \(z=3+\jj4\) to polar: \(r=\sqrt{9+16}=5\),
 \(\theta=\operatorname{atan2}(4,3)\approx53.1^\circ\), so \(z=5\angle53.1^\circ\).
 Going back, \(10\angle{-30^\circ}=10\cos(-30^\circ)+\jj\,10\sin(-30^\circ)
-\approx 8.66-\jj5\). Use rectangular form to add, polar form to multiply.
+\approx 8.66-\jj5\).
+\end{workedbox}
+
+\begin{exambox}
+\textbf{Remember this.} \emph{Use rectangular form to add, polar form to
+multiply.} Nearly every impedance calculation in this book is some sequence of
+those two moves, and choosing the wrong form is what turns a one-line problem into
+a page of algebra.
+\end{exambox}
 
 \section{Why Complex Numbers Appear: Phasors}
 Drive a linear system with a steady sinusoid and, once transients die out, every
 voltage, current, force, or flow in it is a sinusoid at the \emph{same}
 frequency---differing only in amplitude and phase. A \textbf{phasor} captures
 exactly those two numbers, amplitude and phase, as a single complex number, so
-that the shared \(\cos\omega t\) can be carried along silently instead of written
-out everywhere.
+that the shared \(\cos\omega t\) can be captured instead of written out everywhere.
 
 Concretely, a sinusoid is written as the real part of a rotating complex
 exponential:
@@ -54,15 +61,22 @@ exponential:
 x(t)=\sqrt{2}\,\Re\{X\,\ee^{\jj\omega t}\}.
 \]
 Here \(X\) is the \textbf{phasor}: a \emph{complex} constant whose magnitude is
-the signal's RMS amplitude and whose angle is its phase, \(X=|X|\angle\phi\). It
-does not depend on time; all the time dependence sits in the universal factor
-\(\ee^{\jj\omega t}\).
+the signal's \textbf{root-mean-square (RMS)} amplitude and whose angle is its
+phase, \(X=|X|\angle\phi\). It does not depend on time; all the time dependence
+sits in the universal factor \(\ee^{\jj\omega t}\). (RMS is the
+constant-equivalent amplitude for power: the DC value that would dissipate the same
+average power in a resistor. For a sinusoid it is the peak value divided by
+\(\sqrt2\), which is where the \(\sqrt2\) in the formula above comes from.)
+
+Throughout the book, \(\phi\) denotes a \emph{signal's phase}---the angle of a
+phasor---while \(\theta\) is reserved for the generic polar form \(z=r\angle\theta\)
+of \cref{sec:complexrefresher} and for impedance angles.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{phasor_unit_circle}
 \caption{The phasor picture. \emph{Left:} the complex constant
-\(X=|X|\angle\phi\) shown in both polar (\(r\angle\theta\)) and rectangular
+\(X=|X|\angle\phi\) shown in both polar (magnitude and angle) and rectangular
 (\(a+\jj b\)) form. \emph{Right:} multiplying by \(\ee^{\jj\omega t}\) spins it
 counter-clockwise at rate \(\omega\); the real-axis projection traces the
 time-domain sinusoid \(x(t)=\sqrt{2}\,\Re\{X\ee^{\jj\omega t}\}\).}

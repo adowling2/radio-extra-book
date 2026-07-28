@@ -11,19 +11,20 @@ charge = 1 - np.exp(-t)
 discharge = np.exp(-t)
 
 fig, ax = plt.subplots(figsize=(6.2, 3.0))
-ax.plot(t, charge, color=GUIDE_BLUE, label=r"charging: $v_C=E\,(1-e^{-t/RC})$")
-ax.plot(t, discharge, color=GUIDE_GREEN, label=r"discharging: $v_C=V_0\,e^{-t/RC}$")
+ax.plot(t, charge, color=GUIDE_BLUE, label=r"$v_C=E\,(1-e^{-t/RC})$  (across $C$)")
+ax.plot(t, discharge, color=GUIDE_GREEN, ls="--",
+        label=r"$v_R=E\,e^{-t/RC}$  (across $R$)")
 ax.axvline(1, color=GUIDE_AMBER, ls="--", lw=0.9)
 ax.plot(1, 1-np.exp(-1), "o", color=GUIDE_BLUE, ms=5, zorder=5)
 ax.plot(1, np.exp(-1), "o", color=GUIDE_GREEN, ms=5, zorder=5)
 ax.annotate(r"$63.2\%$ at $t=RC$", xy=(1, 1-np.exp(-1)), xytext=(1.7, 0.56),
             ha="left", va="center",
             arrowprops=dict(arrowstyle="->", color="0.35", lw=0.8))
-ax.annotate(r"$36.8\%$ at $t=RC$", xy=(1, np.exp(-1)), xytext=(1.7, 0.40),
+ax.annotate(r"$36.8\%$ at $t=RC$", xy=(1, np.exp(-1)), xytext=(1.7, 0.38),
             ha="left", va="center",
             arrowprops=dict(arrowstyle="->", color="0.35", lw=0.8))
 ax.set_xlabel(r"Time $t/RC$")
-ax.set_ylabel(r"Capacitor voltage (normalized)")
+ax.set_ylabel(r"Voltage (normalized to $E$)")
 ax.set_xlim(0, 5)
 ax.set_ylim(0, 1.05)
 ax.legend(loc="center right", fontsize=8)

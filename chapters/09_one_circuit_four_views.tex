@@ -3,8 +3,8 @@
 Part~II built the generic machinery (systems seen as differential equations,
 state-space models, transfer functions, and frequency responses), and the earlier
 Part~III chapters supplied the pieces: the modeling paradigm and components
-(\cref{ch:foundations}), resistive networks (\cref{ch:resistive}), and the AC
-steady-state view---impedance and phasors---of \cref{ch:ac}. This short chapter
+(\cref{ch:foundations}), resistive networks (\cref{ch:resistive}), and---especially
+---the AC steady-state view of impedance and phasors in \cref{ch:ac}. This short chapter
 states the organizing pattern the rest of Part~III follows. Its claim is simple:
 \emph{every circuit in this book is one of those systems}, and the way to
 understand a circuit is to look at it through the same set of views, each of which
@@ -21,20 +21,13 @@ element laws;
 \(\jj\omega\) axis.
 \end{enumerate}
 A fifth lens---\textbf{energy} storage and dissipation---runs alongside. The
-views are complementary rather than competing: each makes a different feature of
+views are complementary: each makes a different feature of
 the circuit obvious, and together they describe one consistent object. When a
 quick cross-check between two of them disagrees, a sign convention, a reference
 direction, or an assumption needs attention.
 
-The generic systems of \cref{ch:linsys} have no schematic, so there the four
-views are the differential equation, state-space model, transfer function, and
-frequency response. A \emph{circuit} adds the physical network as the concrete
-starting point and reads the transfer function together with its frequency
-response---the same machinery, entered through the wiring diagram.
-
 \section{The Recipe for Part III}
-The next chapters each apply the same recipe to a specific circuit, and it is
-worth stating once so the pattern is visible:
+The next chapters each apply the following recipe to specific circuits:
 \begin{enumerate}
 \item draw the schematic and name the state variables (capacitor voltages,
 inductor currents);
@@ -65,5 +58,4 @@ Series RLC & second / \(v_C,i_L\) & \(\ddot y+2\zeta\omega_0\dot y+\omega_0^2 y=
 
 Once a circuit is matched to its row, everything from \cref{ch:linsys}---step
 response, time constant or damping ratio, pole geometry, resonant peak, root
-locus---transfers directly. The circuit chapters that follow do exactly this,
-one circuit at a time.
+locus---transfers directly.

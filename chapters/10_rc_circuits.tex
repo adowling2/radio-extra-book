@@ -3,13 +3,24 @@
 RC circuits appear as coupling and bypass networks, timing circuits, audio
 filters, and detector components. An RC circuit is the electrical embodiment of
 the \emph{first-order system} of \cref{ch:linsys}: one energy store, one time
-constant, one real pole. This chapter walks the Part~III recipe end to end.
+constant, one real pole.
 
 \section{The Circuit}
-Take a source \(u(t)\) driving a resistor \(R\) in series with a capacitor \(C\),
-with the output taken across the capacitor (\cref{fig:rc-schematic}). The natural
-state variable is the capacitor voltage \(v_C\), because it holds the stored
-energy.
+Take a source \(u(t)\) driving a resistor \(R\) in series with a capacitor \(C\)
+(\cref{fig:rc-schematic}). The natural state variable is the capacitor voltage
+\(v_C\), because it holds the stored energy.
+
+We must also say what the \emph{output} is, since one circuit can deliver several.
+Write \(v_o\) for the output voltage---the quantity we measure and the one the
+transfer function refers to. Here we take it across the capacitor, so
+\[
+v_o(t)=v_C(t),
+\]
+which turns out to be the low-pass response. Taking \(v_o\) across the resistor
+instead, \(v_o=v_R=u-v_C\), gives the high-pass response from the very same
+circuit; \cref{sec:rc-freq} works out both. Whenever a circuit's behavior is
+described in this book, it is behavior \emph{from \(u\) to \(v_o\)}, and the choice
+of \(v_o\) is part of the model.
 
 \begin{figure}[htbp]
 \centering
@@ -21,9 +32,9 @@ energy.
 \draw (3,0) to[short,-o] (4,0) node[right]{$-$};
 \node at (4.4,1) {\(v_o\)};
 \end{circuitikz}
-\caption{Series RC circuit with the output taken across the capacitor (a
-low-pass filter). Taking the output across the resistor instead gives a
-high-pass filter.}
+\caption{Series RC circuit. The input is the source \(u(t)\); the output \(v_o\)
+is taken across the capacitor here, so \(v_o=v_C\) and the circuit is a low-pass
+filter. Taking \(v_o\) across the resistor instead gives a high-pass filter.}
 \label{fig:rc-schematic}
 \end{figure}
 
@@ -40,15 +51,31 @@ Substituting the second into the first,
 \boxed{\,RC\frac{\dd v_C}{\dd t}+v_C=u(t).\,}
 \]
 
-\section{State-Space Form}
-With the single state \(x=v_C\),
+\section{State-Space Form and the Transfer Function}
+With the single state \(x=v_C\), and output \(y=v_o=v_C\),
 \[
 \dot{x}=-\frac{1}{RC}\,x+\frac{1}{RC}\,u,
 \qquad
-y=x=v_C .
+y=x=v_o .
 \]
 There is one state because there is one independent energy store, so there is one
-pole, at \(s=-1/(RC)\).
+pole. To make that pole explicit, Laplace-transform either the boxed ODE or the
+state equation---both give the same thing. From the state equation with zero
+initial conditions,
+\[
+sX=-\frac{1}{RC}X+\frac{1}{RC}U
+\;\Rightarrow\;
+\Bigl(s+\frac{1}{RC}\Bigr)X=\frac{1}{RC}U
+\;\Rightarrow\;
+G(s)=\frac{Y}{U}=\frac{X}{U}=\frac{1/RC}{s+1/RC}=\frac{1}{1+RCs}.
+\]
+Now the pole is visible as the value of \(s\) that makes the denominator vanish:
+\[
+s_{\text{pole}}=-\frac{1}{RC}.
+\]
+The two forms say the same thing---the state-space coefficient \(-1/RC\) \emph{is}
+the pole, because for a single state the \(1\times1\) ``matrix'' is its own
+eigenvalue---but the transfer function displays it directly.
 
 \section{Matching the Generic First-Order System}
 Compare with the canonical first-order system \(\tau\dot y+y=Ku\) from
@@ -64,35 +91,63 @@ Every first-order result from \cref{ch:linsys} now applies with no extra work:
 the step response, the \(63.2\%\) rule, the corner frequency, and the Bode shape.
 
 \section{Transient Response}
-For a capacitor charging from a DC step of height \(E\), and for discharge from
-initial voltage \(V_0\),
+For a DC step of height \(E\) applied at \(t=0\) with the capacitor initially
+uncharged, the two outputs are
 \[
 v_C(t)=E\left(1-\ee^{-t/RC}\right),
 \qquad
-v_C(t)=V_0\,\ee^{-t/RC}.
+v_R(t)=E-v_C(t)=E\,\ee^{-t/RC},
 \]
-This is the first-order response of \cref{ch:linsys} read as a capacitor voltage
-(\cref{fig:rc-transient}): after one time constant \(\tau=RC\) the capacitor has
-charged to \(63.2\%\) of \(E\) (or discharged to \(36.8\%\)), and after about
-\(5\tau\) it is settled.
+and a capacitor discharging from an initial voltage \(V_0\) with the source removed
+follows \(v_C(t)=V_0\,\ee^{-t/RC}\). These are the first-order responses of
+\cref{ch:linsys} read as circuit voltages (\cref{fig:rc-transient}): after one time
+constant \(\tau=RC\) the capacitor has charged to \(63.2\%\) of \(E\) while the
+resistor voltage has fallen to \(36.8\%\), and after about \(5\tau\) the circuit is
+settled.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{rc_transient}
-\caption{RC capacitor-voltage transient. Charging and discharging are mirror
-exponentials with the same time constant \(\tau=RC\); one \(\tau\) covers
-\(63.2\%\) of the change.}
+\caption{RC step response, both outputs. The capacitor voltage \(v_C\) rises
+toward \(E\) while the resistor voltage \(v_R=E-v_C\) decays---mirror exponentials
+sharing the time constant \(\tau=RC\), one \(\tau\) covering \(63.2\%\) of the
+change. These are the time-domain faces of the low-pass and high-pass responses of
+\cref{sec:rc-freq}.}
 \label{fig:rc-transient}
 \end{figure}
 
 \section{Frequency Response: Low-Pass and High-Pass}
-The same circuit is a low-pass or a high-pass filter depending on where the
-output is taken:
+\label{sec:rc-freq}
+The same circuit is a low-pass or a high-pass filter depending on where \(v_o\) is
+taken, and both transfer functions come from the one state-space model already in
+hand---no new circuit analysis is needed.
+
+\emph{Output across \(C\).} This is the case developed above, \(y=v_C\), so
+\(G_C(s)=1/(1+RCs)\) directly.
+
+\emph{Output across \(R\).} The output equation changes but the state equation does
+not. KVL gives \(v_R=u-v_C=u-x\), so in state-space terms only \(C_{\text{out}}\)
+and \(D\) change:
 \[
-G_C(\jj\omega)=\frac{1}{1+\jj\omega RC}\ \text{(across }C\text{, low-pass)},
+\dot x=-\frac{1}{RC}x+\frac{1}{RC}u,
 \qquad
-G_R(\jj\omega)=\frac{\jj\omega RC}{1+\jj\omega RC}\ \text{(across }R\text{, high-pass)}.
+y=v_R=\underbrace{(-1)}_{C_{\text{out}}}x+\underbrace{(1)}_{D}u .
 \]
+Transforming, \(Y=-X+U\) with \(X=G_C(s)\,U\) from before:
+\[
+G_R(s)=\frac{Y}{U}=1-G_C(s)=1-\frac{1}{1+RCs}=\frac{RCs}{1+RCs}.
+\]
+So the two responses are complements, \(G_C+G_R=1\)---at every frequency, whatever
+the capacitor does not pass, the resistor does. On the imaginary axis,
+\[
+G_C(\jj\omega)=\frac{1}{1+\jj\omega RC}\ \text{(low-pass)},
+\qquad
+G_R(\jj\omega)=\frac{\jj\omega RC}{1+\jj\omega RC}\ \text{(high-pass)}.
+\]
+The \(D\ne0\) term in the second model is worth noticing: it is why the high-pass
+has a \emph{zero} (at \(s=0\), from the factor \(RCs\)) while the low-pass has none.
+A direct input-to-output path creates a zero.
+
 Both share the corner frequency \(\omega_c=1/(RC)\), where the gain is
 \(-\SI{3}{\decibel}\). The low-pass passes slow signals and rolls off high ones
 (\cref{fig:bode1}); the high-pass does the reverse (\cref{fig:rc-highpass}).
@@ -107,10 +162,10 @@ decade rise below the corner, flat above, phase from \(+90^\circ\) to
 \end{figure}
 
 \section{The Pole and the Root Locus}
-The single pole sits on the negative real axis at \(-1/(RC)\). Changing \(R\) or
-\(C\) slides it along that axis: a larger \(RC\) (slower circuit, lower cutoff)
-moves the pole toward the origin; a smaller \(RC\) moves it left toward faster
-response (\cref{fig:rc-rootlocus}). Because the pole never leaves the real axis,
+The single pole sits on the negative real axis at \(-1/(RC)\)
+(\cref{fig:rc-rootlocus}). Changing \(R\) or \(C\) slides it along that axis: a
+larger \(RC\) (slower circuit, lower cutoff) moves the pole toward the origin; a
+smaller \(RC\) moves it left toward faster response. Because the pole never leaves the real axis,
 an RC circuit cannot overshoot or ring---the first-order signature.
 
 \begin{figure}[htbp]
@@ -156,9 +211,36 @@ Let \(R=\SI{4.7}{\kilo\ohm}\) and \(C=\SI{100}{\nano\farad}\). Then
 \qquad
 f_c=\frac{1}{2\pi\tau}\approx\SI{339}{\hertz}.
 \]
-The pole is at \(-1/\tau\approx-\SI{2130}{\per\second}\). Reading the low-pass
-Bode plot (\cref{fig:bode1}) at this corner: signals well below \SI{339}{\hertz}
-pass nearly unattenuated, signals a decade above (\(\sim\!\SI{3.4}{\kilo\hertz}\))
-are down about \SI{20}{\decibel}, and the phase lag is \(45^\circ\) right at the
-corner. In the time domain the same circuit settles a step in roughly
-\(5\tau\approx\SI{2.4}{\milli\second}\).
+The pole is at \(-1/\tau\approx-\SI{2130}{\per\second}\).
+
+\Cref{fig:rc-worked} plots this specific circuit, with real frequency in hertz on
+the axis rather than the normalized axes of the generic figures. (Those generic
+plots---\cref{fig:bode1,fig:rc-rootlocus}---show the \emph{shape}, which is the
+same for every first-order system; this one shows \emph{this} circuit.) Reading it:
+signals well below \SI{339}{\hertz} pass nearly unattenuated, signals a decade above
+(\(\sim\!\SI{3.4}{\kilo\hertz}\)) are down about \SI{20}{\decibel}, and the phase
+lag is \(45^\circ\) right at the corner. In the time domain the same circuit settles
+a step in roughly \(5\tau\approx\SI{2.4}{\milli\second}\).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{rc_worked}
+\caption{The worked example, \(R=\SI{4.7}{\kilo\ohm}\) and
+\(C=\SI{100}{\nano\farad}\). \emph{Left:} its Bode plot on a real frequency axis;
+the corner sits at \(f_c=\SI{339}{\hertz}\), where the gain is \(-\SI{3}{\decibel}\)
+and the phase \(-45^\circ\). \emph{Right:} the root locus as \(R\) is swept with
+\(C\) fixed. The pole \(s=-1/RC\) only slides along the real axis---toward the
+origin (slower, lower cutoff) as \(R\) grows---so no value of \(R\) can make this
+circuit ring.}
+\label{fig:rc-worked}
+\end{figure}
+
+\begin{physicalbox}
+\textbf{How does changing \(R\) change the dynamics?} Only one thing moves: the
+pole, and only along the real axis. Doubling \(R\) doubles \(\tau\), halves \(f_c\),
+and halves the pole's distance from the origin---the circuit gets uniformly slower
+without any change in the \emph{character} of the response. There is no overshoot to
+gain and no ringing to provoke, because a single real pole has no imaginary part to
+acquire. That is the practical meaning of ``first order,'' and it is why RC timing
+and coupling networks are so predictable.
+\end{physicalbox}

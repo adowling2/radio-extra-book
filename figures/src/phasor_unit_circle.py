@@ -34,9 +34,9 @@ axA.plot([0, a], [b, b], ls=":", color=GUIDE_GREEN, lw=1.1)
 # angle arc
 arc = np.linspace(0, phi, 40)
 axA.plot(0.34*np.cos(arc), 0.34*np.sin(arc), color=GUIDE_AMBER, lw=1.1)
-axA.annotate(r"$\theta=\phi$", xy=(0.42, 0.13), color=GUIDE_AMBER, fontsize=9)
-axA.annotate(r"$r=|X|$", xy=(0.45*a, 0.55*b), color=GUIDE_BLUE, fontsize=9,
-             rotation=np.degrees(phi), ha="center", va="bottom")
+axA.annotate(r"$\phi$", xy=(0.40, 0.12), color=GUIDE_AMBER, fontsize=10)
+axA.annotate(r"$r=|X|$", xy=(0.48*a-0.20, 0.48*b+0.17), color=GUIDE_BLUE,
+             fontsize=9, rotation=np.degrees(phi), ha="center", va="center")
 axA.annotate(r"$a=|X|\cos\phi$", xy=(a, 0), xytext=(a-0.05, -0.22),
              color=GUIDE_GREEN, fontsize=8, ha="center")
 axA.annotate(r"$b=|X|\sin\phi$", xy=(0, b), xytext=(-0.16, b),
@@ -46,7 +46,7 @@ axA.set_xlim(-1.4, 1.5)
 axA.set_ylim(-1.4, 1.5)
 axA.set_xlabel("real")
 axA.set_ylabel("imaginary")
-axA.set_title(r"$X=r\angle\theta=a+\mathrm{j}b$", fontsize=9)
+axA.set_title(r"$X=|X|\angle\phi=a+\mathrm{j}b$", fontsize=9)
 axA.grid(False)
 
 # ---- Panel B: rotation -> sinusoid ----
@@ -56,21 +56,20 @@ axB.plot(wt, x, color=GUIDE_BLUE, lw=1.8)
 amp = np.sqrt(2)*r
 axB.axhline(amp, ls="--", color=GUIDE_LINE, lw=0.8)
 axB.axhline(-amp, ls="--", color=GUIDE_LINE, lw=0.8)
-axB.annotate(r"$\sqrt{2}\,|X|$", xy=(2*2*np.pi, amp), xytext=(-6, 3),
+axB.annotate(r"$\sqrt{2}\,|X|$", xy=(2*2*np.pi, amp), xytext=(-4, 4),
              textcoords="offset points", color="0.35", fontsize=8, ha="right")
 # phase marker: peak occurs at wt = -phi (i.e. first peak left of 0), mark shift
 axB.plot(0, np.sqrt(2)*r*np.cos(phi), "o", color=GUIDE_GREEN, ms=5, zorder=6)
-axB.annotate(r"value at $t=0$: $\sqrt{2}|X|\cos\phi$",
-             xy=(0, np.sqrt(2)*r*np.cos(phi)), xytext=(1.2, 1.35),
-             color=GUIDE_GREEN, fontsize=8,
+axB.annotate(r"$x(0)=\sqrt{2}|X|\cos\phi$",
+             xy=(0, np.sqrt(2)*r*np.cos(phi)), xytext=(0.62, 1.93),
+             color=GUIDE_GREEN, fontsize=8, ha="left", va="center",
              arrowprops=dict(arrowstyle="->", color="0.4", lw=0.8))
 # rotation annotation
-axB.annotate(r"$\times\,e^{\mathrm{j}\omega t}$: rotate at $\omega$"
-             "\n(one turn per period)",
-             xy=(np.pi, 0), xytext=(3.5, -1.55), color=GUIDE_AMBER, fontsize=8,
-             ha="center")
+axB.annotate(r"$\times\,e^{\mathrm{j}\omega t}$ rotates at $\omega$: one turn per period $T$",
+             xy=(np.pi*2, -1.90), color=GUIDE_AMBER, fontsize=8, ha="center",
+             va="center")
 axB.set_xlim(0, 2*2*np.pi)
-axB.set_ylim(-1.9, 1.9)
+axB.set_ylim(-2.15, 2.15)
 axB.set_xticks([0, 2*np.pi, 4*np.pi])
 axB.set_xticklabels(["0", r"$T$", r"$2T$"])
 axB.set_xlabel(r"time $t$")
