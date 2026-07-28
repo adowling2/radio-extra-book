@@ -25,7 +25,7 @@ reason for coil `Q` falling, and A5 found the same mistold for push-pull and IMD
 
 **Tier B1 (S-parameters) is also done** — `sec:sparams` in Ch 16 and `sec:vna` in
 Ch 20, the latter carrying the `controlsbox` where Part II's `G(jω)` and Part IV's
-circuits finally meet on an instrument screen. **B2 (feedback sets impedance) is done too** — `sec:feedbackz`. **Next: B3 onward.**
+circuits finally meet on an instrument screen. **Tier B is complete as well (B1–B7).** Next: **Tier C**, fifteen small items.
 See §6 for the plan, and the LEDGER in `ARRL-GAP-PROPOSAL.md` for the running score.
 
 Per-round markup plans live alongside this file and are the archive, not the status:
@@ -52,7 +52,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 200 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 202 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -78,7 +78,7 @@ Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedbac
 `ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 62 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 63 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
@@ -88,7 +88,7 @@ Section labels, all 62 of them: `sec:complexrefresher` `sec:rms` `sec:secondorde
 `sec:samplingismult` `sec:samplingthm` `sec:quantnoise` `sec:decimation` `sec:firiir`
 `sec:noisefloor` `sec:noisefigure` `sec:friis` `sec:powerseries` `sec:compression`
 `sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits` `sec:pll`
-`sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna` `sec:feedbackz` `sec:antennaeff` `sec:feedpoint` `sec:quarterwave` `sec:arrayfactor` `sec:crystal`.
+`sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna` `sec:feedbackz` `sec:antennaeff` `sec:feedpoint` `sec:quarterwave` `sec:arrayfactor` `sec:crystal` `sec:antennamatches`.
 
 ### Conventions in force
 
@@ -254,7 +254,7 @@ Round 4 hand-filtered.
 **See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
 the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
 the General-pool check, and the four ARRL chapter audits — against the book as built,
-so nothing can be silently dropped. Current score: **37 done, 20 open**, with the open
+so nothing can be silently dropped. Current score: **38 done, 19 open**, with the open
 items ranked in four tiers.
 
 The highest-priority open items are **Tier A: things the book asserts itself**, and so
@@ -456,7 +456,7 @@ Fixing them also *removes* text in a couple of cases.
 | ✅ A4 | **Conduction-angle efficiency** — done (`sec:conductionangle`, `sec:switching`) | `sec:classes` | Fourier `a₀`/`a₁` of a cosine truncated at half-angle `θ`; `η = ½(a₁/a₀)(V₁/V_dc)` returns ½ at `θ=180°`, ¼ resistively loaded (the asserted 25 %), `π/4 = 78.5 %` at `θ=90°`. For switching, `p = vi` with an ideal switch forces one factor to zero always, so `∫p dt = 0` identically. Replaces four numbers currently on ARRL's authority. |
 | ✅ A5 | **Push-pull even-order cancellation** — done (`sec:pushpull`) | `sec:classes` + `sec:mixers` | `f(x) − f(−x) = 2Σ_{n odd}aₙxⁿ`. Even orders cancel *identically for any f*, which is why the pair must be **matched** rather than specially biased. Two corollaries: push-pull does **nothing** for third-order IMD (the product `sec:powerseries` says matters), and the same algebra is why a *balanced* mixer nulls carrier feedthrough — which `sec:mixers` currently takes on faith. |
 
-### Tier B — the thesis bridges. Start with B1.
+### ✅ Tier B — complete. All seven landed in Round 5.
 
 **✅ B1 — done** (`sec:sparams`, `sec:vna`). One caveat the plan below did not
 anticipate: `S₂₁ = V₂/V₁` only when the input is matched; in general

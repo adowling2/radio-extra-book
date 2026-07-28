@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **37 done, 20 open.** Nothing has been silently dropped.
+Score: **38 done, 19 open.** Nothing has been silently dropped.
 
-## ✅ Done (37)
+## ✅ Done (38)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -203,19 +203,17 @@ noise bandwidth
 
 **Tier B6 — the crystal as two resonances (`sec:crystal`).** The motional arm `R–L_m–C_m` is a series resonator, so `f_s = 1/2π√(L_mC_m)` is an impedance minimum (Ch 13); just above it the arm is net inductive and resonates against `C_0` as a parallel circuit (Ch 14), giving a maximum at `f_p = f_s√(1+C_m/C_0) ≈ f_s(1+C_m/2C_0)` — the two capacitances are in series around that loop. Worked example at 10.000 MHz: `f_p` = 10.014989 MHz, 1499 ppm (15 kHz) away, motional `Q ≈ 7×10⁴` against ~200 for an LC tank, and `L_m` = 16.9 mH — no wound coil of that value has anything like that `Q`, which is *why* quartz. Three consequences, each a pool question: the inductive window between `f_s` and `f_p` is where a Pierce or Colpitts runs, so `C_L` must be specified (E7H12 — 32 pF puts it 203 ppm up, not 1499); the pulling range *is* the gap, so VXO tuning is tens of ppm by construction; and lattice-filter bandwidth is bounded by the same gap, which is why crystal filters are narrow. E6D02's equivalent circuit is the model itself.
 
+**Tier B7 — the named antenna matches (`sec:antennamatches`).** Hairpin, gamma, delta and stub are all `sec:lnetwork`'s L-network with its two reactances built from antenna hardware, and one exam fact becomes a consequence. A Yagi element at 25 Ω needs `Q = √(50/25−1) = 1`, so `|X_series| = 25 Ω` and `|X_shunt| = 50 Ω`. A hairpin is a shorted stub under λ/4, so `jZ₀tan βℓ` is *inductive* and supplies the shunt arm — therefore the series arm **must** be capacitive, and rather than fit a capacitor you cut the element short of resonance. **“The driven element must be capacitive” (E9E05) is the L-network demanding an opposite-type element, not a rule about hairpins.** With 300 Ω rods the hairpin is 9.5°, about 5.5 cm at 144 MHz. Gamma and delta instead *tap up* via `sec:feedpoint` (λ/8 doubles 25 Ω to exactly 50 Ω), and because the tap conductor is a loop it adds inductance the antenna cannot cancel — hence the gamma's series capacitor, whose purpose is exactly E9E04's *cancel unwanted inductive reactance*. The insulated-boom requirement (E9E01) follows from a shunt element needing two floating terminals; the grounded-tower use (E9E09) from the gamma being the unbalanced one. Six pool answers, no new mathematics.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (20), ranked
+## ⬜ Open (19), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
-### Tier B — best remaining thesis bridges
-
-| # | Item | Why |
-|---|---|---|
-| T2.16 | **Named antenna matches** | Hairpin, gamma, delta, stub — all absent, though we own both the L-network and stub reactances. The hairpin is a shorted stub `<λ/4`, hence inductive, hence the network **demands** a series capacitance — so "the element must be capacitive" becomes a consequence. Six pool questions, zero new math. |
+### Tier B — ✅ complete (all seven landed in Round 5; see Done above)
 
 ### Tier C — smaller, still worthwhile
 

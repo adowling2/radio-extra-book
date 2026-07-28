@@ -799,7 +799,8 @@ Checking the band edges with \(\Gamma=(Z-Z_0)/(Z+Z_0)\) confirms it: at
 \(Z\approx35+\jj7.0\ \si{\ohm}\) and \(\mathrm{SWR}\approx1.5\). The residual
 \(\mathrm{SWR}\approx1.4\) even at resonance is not a reactance problem at all---it is
 simply that \(35\,\si{\ohm}\ne50\,\si{\ohm}\), which is what a matching network from
-\cref{ch:filters} would fix.
+\cref{ch:filters} would fix---or, in the forms antenna work gives proper names to,
+one of the schemes of \cref{sec:antennamatches}.
 
 \begin{physicalbox}
 \textbf{Why a short loaded whip is narrowband.} Shorten the antenna and
@@ -1012,6 +1013,89 @@ phase give a \emph{cardioid}. Rather than memorizing which is which, evaluate
 \(|F|=2|\cos((\phi+\beta d\cos\theta)/2)|\) at \(\theta=0^\circ\) and
 \(90^\circ\)---two arithmetic steps, and the pattern name follows from where the zero
 lands.
+\end{exambox}
+
+\subsection{The Named Antenna Matches}
+\label{sec:antennamatches}
+Antenna books present four matching schemes under proper names---hairpin (or beta),
+gamma, delta, and stub---and they look like four separate tricks. They are not. Every
+one is an L-network from \cref{sec:lnetwork} whose elements are built from things this
+chapter has already derived: stub reactances (\cref{sec:stubs}) and the feed-point
+tap of \cref{sec:feedpoint}. No new mathematics is needed, and one of them turns a
+memorized exam fact into a consequence.
+
+\textbf{The hairpin, and why the element must be short.} A Yagi's driven element,
+pulled down by the parasitic elements coupled to it, presents a resistance well
+\emph{below} \SI{50}{\ohm}---call it \SI{25}{\ohm}. Matching that up needs
+\cref{sec:lnetwork}'s network with the shunt element on the \SI{50}{\ohm} side:
+\[
+Q=\sqrt{\frac{50}{25}-1}=1,
+\qquad
+|X_{\text{series}}|=QR_{\text{lo}}=\SI{25}{\ohm},
+\qquad
+|X_{\text{shunt}}|=\frac{R_{\text{hi}}}{Q}=\SI{50}{\ohm}.
+\]
+A \emph{hairpin} is a shorted stub---two parallel rods with a strap across the far
+end---placed in shunt right at the feed point. \Cref{sec:stubs} gives its reactance as
+\(\jj Z_0\tan\beta\ell\), and for any length under \(\lambda/4\) the tangent is
+positive, so \emph{a hairpin is an inductor}. It supplies the shunt element.
+
+Now the consequence. \Cref{sec:lnetwork} showed the two L-network reactances must be of
+\emph{opposite} type, because the transformed reactance has to be cancelled. The shunt
+element is inductive, so the series element must be \emph{capacitive}---and nobody
+installs a capacitor. Instead the driven element is cut \emph{electrically shorter
+than a half wave}, which by \cref{sec:antennalength} puts it below resonance, where
+\cref{fig:antenna-model}'s series-RLC model is capacitive. \emph{``The driven element
+must be capacitive'' is not a rule about hairpins; it is the L-network demanding an
+opposite-type series element, with the antenna's own detuning supplying it.} The
+required \SI{25}{\ohm} of capacitive reactance says exactly how much shorter.
+
+That also fixes the hardware. With hairpin rods of
+\(Z_0\approx\SI{300}{\ohm}\), \(\jj Z_0\tan\beta\ell=\jj\SI{50}{\ohm}\) needs
+\(\beta\ell=\arctan(50/300)=9.5^\circ\), so \(\ell\approx0.026\lambda\)---about
+\SI{5.5}{\centi\meter} at \SI{144}{\mega\hertz}. A few inches of wire, as observed.
+And because the hairpin bridges the two feed terminals, both halves of the driven
+element must float, which is why a hairpin-matched Yagi has its driven element
+\emph{insulated from the boom} while the other schemes need not.
+
+\textbf{Gamma and delta: tap up instead.} These take the other route to the same
+place. Rather than transform the centre resistance with reactances, they move the
+connection \emph{outward} along the element and use \cref{sec:feedpoint}'s
+\(R(z)=R_{\text{centre}}/\cos^2\beta z\) to find a point where the resistance already
+equals what the line wants. For a \SI{25}{\ohm} element, \(\lambda/8\) out doubles it
+to exactly \SI{50}{\ohm}. A \emph{delta} match does this symmetrically, fanning the
+feed to two points either side of centre; a \emph{gamma} match does it
+\emph{unbalanced}, bonding the coax shield to the centre and tapping the centre
+conductor out to one side---which is precisely why the gamma is the one used to
+shunt-feed a grounded tower at its base, since one side of the feed is already at
+ground.
+
+But a tap is not only a resistance change: the conductor running out to the tap and
+back is a loop, so it adds series \emph{inductance}. Something must cancel it, and
+here the antenna cannot help---the tap point is chosen for resistance, not reactance.
+Hence the series capacitor that every gamma match carries. Its purpose is not DC
+isolation and not impedance transformation; it \emph{cancels the unwanted inductive
+reactance} the tap arrangement introduced. Same L-network logic as the hairpin, with
+the roles of the two elements exchanged.
+
+\textbf{Stub match: the general case.} A shorted or open stub placed in parallel at or
+near the feed point, its length and position both adjustable, is simply
+\cref{sec:stubs} used as a two-degree-of-freedom matching network---the position
+choosing what impedance the line presents at that plane, the stub length supplying the
+susceptance that cancels its imaginary part. It needs no antenna modification at all,
+which is why it works on anything and why the others exist only as tidier packages for
+specific geometries.
+
+\begin{exambox}
+Group E9E names six of these, and every answer is above. The \emph{beta or hairpin}
+match is the one needing an insulated driven element, and it needs that element
+\emph{capacitive---electrically shorter than a half wave}. The \emph{gamma} match is
+the one connecting shield to centre and conductor a fraction of a wavelength to one
+side, the one that shunt-feeds a grounded tower, and the one whose series capacitor
+exists \emph{to cancel unwanted inductive reactance}. The \emph{stub} match is the
+short length of line in parallel at or near the feed point. And E9E06's Q-section is
+\cref{sec:quarterwave} arithmetic: \(\sqrt{50\times100}=\SI{70.7}{\ohm}\), so of the
+choices offered the \SI{75}{\ohm} cable is the one to use.
 \end{exambox}
 
 
