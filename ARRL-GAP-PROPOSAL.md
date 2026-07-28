@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **31 done, 26 open.** Nothing has been silently dropped.
+Score: **32 done, 25 open.** Nothing has been silently dropped.
 
-## ✅ Done (31)
+## ✅ Done (32)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -191,11 +191,13 @@ noise bandwidth
 
 **Tier A, fifth item:** push-pull even-order cancellation (`sec:pushpull`) — `f(x) − f(−x) = 2Σ_odd aₙxⁿ`, three lines and no device model. Every even order vanishes *for any f*, the `aₙ` never entering, which is why the pair must be **matched** rather than specially biased: mismatched devices leave `aₙ − bₙ`, so a drifting pair shows up first as a second harmonic. Two corrections to how this is usually told. It is not two distortions cancelling — the operation extracts the *odd part* of `f` and the even part is absent, not suppressed. And push-pull does **nothing** for third-order IMD: it doubles the fundamentals and the `2f₁−f₂` products by the same factor, leaving the ratio that `sec:powerseries` cares about untouched. The same parity argument, applied to the RF port instead, nulls a balanced modulator's carrier — `sec:mixers` no longer takes that on faith, and its vague “the two inputs cancel at the output” is gone.
 
+**Tier B1 — S-parameters (`sec:sparams`, `sec:vna`).** The bridge Alex flagged. `a = (V+Z₀I)/2√Z₀` and `b = (V−Z₀I)/2√Z₀` collapse, on substituting Ch 16's own `V = V⁺+V⁻` and `Z₀I = V⁺−V⁻`, to `a = V⁺/√Z₀` and `b = V⁻/√Z₀` — an invertible change of basis (det `−½`), with `|a|²` the incident power. Hence `S₁₁ = Γ` *identically*, so return loss and SWR are three readings of one number. `S₂₁` is the forward transmission of the `Z₀`-embedded two-port, i.e. `G(jω)`, so **a VNA sweep is a Bode plot** and `−20log|S₂₁|` is `sec:filterspecs`'s insertion loss. Calibration is three standards because the one-port error model is bilinear with three complex unknowns, and the natural three are the `Γ = −1, 0, +1` that Ch 16 already evaluated. `sec:vna` carries the `controlsbox` where the book's two halves shake hands. **Precision point the usual telling gets wrong:** `S₂₁ ≠ V₂/V₁` in general — `V₂/V₁ = S₂₁/(1+S₁₁)`, equal only when the input is matched — so the identification is safe in a filter's passband and wrong at its band edges; a `mistakebox` says so. Pool: E4B03/04/05/07/09/11, all verified against `references/` (E4B09, "filter frequency response," is literally the `|S₂₁|` sweep).
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (26), ranked
+## ⬜ Open (25), ranked
 
 ### Tier A — the book asserts these itself, so they are defects by our own convention
 

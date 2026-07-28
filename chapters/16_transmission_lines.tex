@@ -175,6 +175,113 @@ load matches \(Z_0\). ``Matched'' means the same thing in both places: the load 
 presenting the ratio the source side is built to work into.
 \end{controlsbox}
 
+\section{Wave Coordinates: S-Parameters}
+\label{sec:sparams}
+The previous section did the hard part. Once \(V\) and \(I\) have been split into a
+forward and a backward wave, the standard language of RF measurement is available for
+the price of a change of variables---and the change of variables is the same kind of
+move the state-space chapters keep making.
+
+Define, at any port,
+\[
+a=\frac{V+Z_0I}{2\sqrt{Z_0}},
+\qquad
+b=\frac{V-Z_0I}{2\sqrt{Z_0}} .
+\]
+Substitute the previous section's \(V=V^{+}+V^{-}\) and \(Z_0I=V^{+}-V^{-}\) and the
+two definitions collapse:
+\[
+a=\frac{V^{+}}{\sqrt{Z_0}},
+\qquad
+b=\frac{V^{-}}{\sqrt{Z_0}} .
+\]
+So \(a\) and \(b\) are nothing but the incident and reflected wave amplitudes,
+rescaled. The rescaling is chosen so that the squared magnitudes are \emph{powers}:
+with RMS phasors, \(|a|^2=|V^{+}|^2/Z_0\) is the power flowing in and \(|b|^2\) the
+power coming back.
+
+\begin{controlsbox}
+\textbf{A change of basis, and an invertible one.} Solving backwards,
+\(V=\sqrt{Z_0}\,(a+b)\) and \(I=(a-b)/\sqrt{Z_0}\), so
+\[
+\begin{bmatrix}a\\b\end{bmatrix}
+=\frac{1}{2\sqrt{Z_0}}
+\begin{bmatrix}1 & Z_0\\ 1 & -Z_0\end{bmatrix}
+\begin{bmatrix}V\\I\end{bmatrix},
+\qquad
+\det=-\tfrac12\ne0 .
+\]
+No information is created or lost; \((a,b)\) and \((V,I)\) describe the same state in
+two coordinate systems, exactly as \cref{sec:seriesparallel} rewrote one impedance two
+ways and \cref{ch:rlc} found the poles were the eigenvalues whichever description you
+started from. The reason to prefer wave coordinates at RF is practical: they are what
+an instrument can actually separate, since a directional coupler responds to
+\emph{direction of travel}, not to \(V\) or \(I\) individually.
+\end{controlsbox}
+
+For a one-port the whole story is one number, and it is one we already have:
+\[
+S_{11}=\frac{b}{a}=\frac{V^{-}}{V^{+}}=\Gamma
+\]
+\emph{identically}---not approximately, and not a new quantity. So \(|S_{11}|^2\) is
+the reflected power fraction, return loss is \(-20\log_{10}|S_{11}|\), and SWR follows
+from \(|S_{11}|\) by the formula of the next section. Three names for one measurement.
+
+A two-port needs four numbers, because either port can be driven and either can
+respond. Drive port 1 with port 2 terminated in \(Z_0\) (so nothing comes back into
+port 2, \(a_2=0\)) and the two useful ones are
+\[
+S_{11}=\frac{b_1}{a_1}\bigg|_{a_2=0}
+\quad\text{(what reflects)},
+\qquad
+S_{21}=\frac{b_2}{a_1}\bigg|_{a_2=0}
+\quad\text{(what gets through)} .
+\]
+The subscripts are just \emph{out, in}: \(S_{21}\) is the wave out of port 2 per wave
+into port 1. And \(S_{21}\) is the payoff, because it is a transfer function---the
+forward transmission of the network as it sits in its \(Z_0\) environment. Everything
+Chs \ref{ch:linsys} and \ref{ch:splane} said about \(G(\jj\omega)\) therefore applies
+to it: magnitude and phase versus frequency, poles and zeros, decibels per decade,
+group delay. \emph{A sweep of \(S_{21}\) is a Bode plot}, and a filter's
+\(|S_{21}|\) trace is the response \cref{ch:filters} computes, measured instead. Its
+in-band value is that chapter's \emph{insertion loss}
+(\cref{sec:filterspecs}): \(-20\log_{10}|S_{21}|\), since \(|S_{21}|^2\) is the
+fraction of incident power delivered. \Cref{sec:vna} is the instrument that performs
+this sweep, and what it puts on its screen.
+
+\begin{mistakebox}
+\textbf{\(S_{21}\) is a wave ratio, not \(V_2/V_1\).} They coincide only when the
+input is matched. In general \(V_1=\sqrt{Z_0}(a_1+b_1)\) includes the reflected wave,
+so
+\[
+\frac{V_2}{V_1}=\frac{S_{21}}{1+S_{11}} ,
+\]
+and the two agree exactly when \(S_{11}=0\). For a filter doing its job in a
+\SI{50}{\ohm} system that is the passband condition, which is why the identification
+of \(S_{21}\) with the voltage transfer function is safe where you care and wrong at
+the band edges. What never needs the caveat is power: \(|S_{21}|^2\) is the
+transmitted power fraction whatever the match.
+\end{mistakebox}
+
+\begin{advancedbox}
+\textbf{Why three calibration standards, and why those three.} A network analyzer
+cannot measure \(a\) and \(b\) at the plane you care about; it measures them past its
+own couplers, cables and connectors. All of that imperfection is a linear two-port
+between the instrument and the device, and pushing an unknown \(\Gamma\) through a
+linear two-port gives a bilinear relation
+\[
+\Gamma_{\text{meas}}=e_{00}+\frac{e_{\text{t}}\,\Gamma}{1-e_{11}\Gamma}
+\]
+with exactly \emph{three} independent complex unknowns---conventionally directivity
+\(e_{00}\), source match \(e_{11}\), and reflection tracking \(e_{\text{t}}\). Three
+unknowns need three equations, so three known standards suffice, and the natural three
+are the ones the previous section already evaluated: a short (\(\Gamma=-1\)), a
+matched load (\(\Gamma=0\)) and an open (\(\Gamma=+1\)). Measure those, solve the
+three equations once, and every later measurement can be corrected back to the
+reference plane. Calibration is not a tuning ritual; it is solving a \(3\times3\)
+system whose right-hand side you obtained by measuring things you already knew.
+\end{advancedbox}
+
 \section{Standing Waves, SWR, and Return Loss}
 Incident and reflected waves overlap everywhere along the line, and because they
 travel in opposite directions their relative phase depends on position. At distance

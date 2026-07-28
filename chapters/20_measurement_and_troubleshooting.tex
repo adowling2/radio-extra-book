@@ -298,6 +298,55 @@ mismatched antenna---and the power is not saved, it is dissipated in the coax. M
 at the antenna feed point when it matters.
 \end{mistakebox}
 
+\subsection{The Vector Network Analyzer}
+\label{sec:vna}
+A vector network analyzer is the same idea with the phase kept and a second port
+added. It sends a known wave in, separates what returns from what continues, and
+reports the ratios---that is, it measures the \(S\)-parameters of
+\cref{sec:sparams}. Two consequences are worth stating plainly, because between them
+they close the loop this book has been drawing.
+
+\emph{One port.} What the instrument reports is \(S_{11}\), and
+\cref{sec:sparams} showed that \(S_{11}=\Gamma\) identically. So a one-port sweep
+yields the reflection coefficient, and from it---by formulas already derived, not by
+separate instrument magic---the input impedance \(Z=Z_0(1+\Gamma)/(1-\Gamma)\), the
+return loss \(-20\log_{10}|\Gamma|\), and the SWR. That is why a VNA is correctly
+described as measuring input impedance \emph{and} output impedance \emph{and}
+reflection coefficient: they are one measured complex number, read three ways.
+
+\emph{Two ports.} The instrument reports \(S_{21}\) as magnitude and phase against
+frequency. \Cref{sec:sparams} identified that as the transfer function of the network
+in its \(Z_0\) environment---so the screen is showing \(G(\jj\omega)\), and the trace
+\emph{is} a Bode plot of the thing on the bench.
+
+\begin{controlsbox}
+\textbf{This is where the book's two halves shake hands.} Part II built
+\(G(\jj\omega)\) as a mathematical object: a ratio of polynomials in \(s\), read on log
+axes, with poles setting corners and slopes counted in decibels per decade. Part IV
+built filters, matching networks and lines as circuits. A VNA closes the gap by
+\emph{measuring} the object Part II defined. Sweep a band-pass filter and the
+\(|S_{21}|\) trace shows the passband, the \(-\SI{3}{\decibel}\) edges whose
+separation is \(f_0/Q\) exactly (\cref{sec:halfpower}), the insertion loss of
+\cref{sec:filterspecs}, and skirts falling at \(-20n\,\si{\decibel}\) per decade from
+which you can read the order \(n\) (\cref{sec:cascadeadd}). Nothing on that screen is
+new physics; it is \cref{ch:filters}'s design equations, verified. The phase trace is
+just as real: its slope is the group delay of \cref{sec:groupdelay}, so a filter's
+delay is measurable, and \(S_{21}\) of an amplifier plus \(S_{12}\) of its unintended
+reverse path is the loop whose stability \cref{ch:feedback} governs---which is why
+\cref{sec:neutralization} matters at all.
+\end{controlsbox}
+
+\begin{exambox}
+Group E4B expects four things about \(S\)-parameters and analyzers, and each is a line
+from \cref{sec:sparams}. The subscripts name \emph{the ports at which measurements are
+made}---out, then in. \(S_{11}\) is input return loss or reflection coefficient, and
+it is equivalent to SWR because SWR is a function of \(|\Gamma|\) alone. \(S_{21}\) is
+forward gain, being what leaves port 2 per unit sent into port 1. A two-port VNA
+measures a \emph{filter's frequency response}, which is the \(|S_{21}|\) sweep above.
+And the three calibration loads are a \textbf{short, an open, and \SI{50}{\ohm}}---the
+\(\Gamma=-1,+1,0\) standards, three because the error model has three unknowns.
+\end{exambox}
+
 \section{Decibels in Measurement}
 The decibel definitions of \cref{sec:decibels} apply unchanged, but on a bench they
 usually carry a \emph{reference}, which converts a ratio into an absolute level:

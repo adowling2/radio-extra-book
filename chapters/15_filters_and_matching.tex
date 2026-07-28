@@ -207,7 +207,7 @@ naming them makes the datasheet and the transfer function the same object.
 Specification & What it measures on \(|G(\jj\omega)|\) \\
 \midrule
 Cutoff frequency & The \(-\SI{3}{\decibel}\) (half-power) edge of the passband. For a band-pass, there are two, and their separation is the bandwidth. \\
-Insertion loss & Attenuation \emph{inside} the passband---what the filter costs you on the signal you wanted. Ideally \SI{0}{\decibel}; real components make it a fraction of a decibel to a few decibels. \\
+Insertion loss & Attenuation \emph{inside} the passband---what the filter costs you on the signal you wanted. Ideally \SI{0}{\decibel}; real components make it a fraction of a decibel to a few decibels. Measured as \(-20\log_{10}|S_{21}|\) (\cref{sec:sparams}), which is what a network analyzer plots (\cref{sec:vna}). \\
 Ripple & Peak-to-peak variation within the passband: zero for Butterworth, a design choice for Chebyshev and elliptic. \\
 Ultimate rejection & The attenuation floor far into the stopband. Poles give slope forever in theory, but stray coupling around the filter sets a real-world limit---often \SI{60}{\decibel} to \SI{100}{\decibel}. \\
 Noise bandwidth & The width of the ideal rectangular filter passing the same noise, \(B_n=\int|H|^2\dd f/|H|^2_{\max}\). Always \emph{wider} than the \(-\SI{3}{\decibel}\) figure---by \SI{1.96}{\decibel} for one pole---because the skirts admit noise the nameplate ignores (\cref{sec:noisebw}). \\

@@ -113,6 +113,10 @@ Formula & Use & Derived in \\
 \(Z_0=\sqrt{L'/C'},\ v_p=1/\sqrt{L'C'}\) & Line impedance and phase velocity. & \cref{ch:lines} \\
 \(\lambda=v_p/f=VF\,c/f\) & Wavelength on the line. & \cref{ch:lines} \\
 \(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\) & Load reflection coefficient. & \cref{ch:lines} \\
+\(a=(V+Z_0I)/2\sqrt{Z_0}\), \(b=(V-Z_0I)/2\sqrt{Z_0}\) & Wave coordinates; \(|a|^2\) is incident power. & \cref{sec:sparams} \\
+\(S_{11}=b/a=\Gamma\) & One-port \(S\)-parameter \emph{is} the reflection coefficient. & \cref{sec:sparams} \\
+\(S_{21}=b_2/a_1\) & Forward transmission; a sweep of it is a Bode plot of \(G(\jj\omega)\). & \cref{sec:sparams} \\
+\(V_2/V_1=S_{21}/(1+S_{11})\) & \(S_{21}\) equals the voltage gain only when the input is matched. & \cref{sec:sparams} \\
 \(\mathrm{SWR}=(1+|\Gamma|)/(1-|\Gamma|)\) & Standing wave ratio. & \cref{ch:lines} \\
 \(\mathrm{RL}=-20\log_{10}|\Gamma|\) & Return loss in decibels. & \cref{ch:lines} \\
 \(Z_{\mathrm{in}}=Z_0\dfrac{Z_L+\jj Z_0\tan\beta\ell}{Z_0+\jj Z_L\tan\beta\ell}\) & Input impedance along a lossless line. & \cref{ch:lines} \\
