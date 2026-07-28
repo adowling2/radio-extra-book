@@ -8,6 +8,12 @@ line turns out to be built from the same \(L\) and \(C\) element laws, obeys the
 same KVL and KCL, and produces the same resonances as \cref{ch:rlc,ch:rlcpar}, only
 distributed along a length instead of concentrated in two parts.
 
+The development is staged: everything through \cref{sec:stubs} treats the line as
+\emph{lossless}, which is the right first model and makes every result clean, and
+\cref{sec:lineloss} then puts the loss back and shows what changes---feed-line
+attenuation, why it climbs with frequency, and why a mismatch measured at the
+transmitter looks better than it is.
+
 \section{Why Lines Matter}
 Transmission lines are distributed systems. When a feed line is a significant
 fraction of a wavelength, voltage and current vary along the line and a lumped
@@ -207,6 +213,189 @@ The symbol \(\mathrm{RL}\) for return loss has nothing to do with the RL circuit
 \(\beta\) in this chapter is unrelated to the feedback fraction \(\beta\) of
 \cref{ch:feedback}---both notations are entrenched in their own fields, and only
 context distinguishes them.
+\end{mistakebox}
+
+\section{Real Lines: Attenuation and the Complex Propagation Constant}
+\label{sec:lineloss}
+Everything so far has assumed a \emph{lossless} line, and that assumption has been
+doing real work: it is why \(|\Gamma|\) was the same everywhere, why a stub was
+purely reactive, and why SWR was a property of the load alone. Real coax
+dissipates, so this section puts the loss back. It costs two more per-unit-length
+parameters and one more derivation, and it repays them by explaining feed-line
+loss, why that loss rises with frequency, and why a mismatch looks better at the
+shack than it is at the antenna.
+
+\subsection{Two More Parameters, One More Derivation}
+The lossless slice had a series inductance \(L'\dd x\) and a shunt capacitance
+\(C'\dd x\). A real slice adds the two dissipative elements alongside them: a
+series resistance \(R'\dd x\) for the conductors, and a shunt conductance
+\(G'\dd x\) for leakage through the dielectric. Applying KVL and KCL to the slice
+as before---but now in phasor form, so \(\partial/\partial t\to\jj\omega\)---gives
+the telegrapher's equations with loss:
+\[
+\frac{\dd V}{\dd x}=-\bigl(R'+\jj\omega L'\bigr)I,
+\qquad
+\frac{\dd I}{\dd x}=-\bigl(G'+\jj\omega C'\bigr)V .
+\]
+The structure is unchanged; each element law simply picked up its lossy companion.
+Now run the same manoeuvre as before---differentiate the first with respect to
+\(x\) and substitute the second:
+\[
+\frac{\dd^2V}{\dd x^2}
+=-\bigl(R'+\jj\omega L'\bigr)\frac{\dd I}{\dd x}
+=\underbrace{\bigl(R'+\jj\omega L'\bigr)\bigl(G'+\jj\omega C'\bigr)}_{\gamma^2}V .
+\]
+So \(V(x)\) obeys \(\dd^2V/\dd x^2=\gamma^2V\), whose solutions are
+\(\ee^{\mp\gamma x}\), and the constant that governs everything is the
+\textbf{complex propagation constant}
+\[
+\boxed{\;
+\gamma=\sqrt{\bigl(R'+\jj\omega L'\bigr)\bigl(G'+\jj\omega C'\bigr)}
+=\alpha+\jj\beta \;}
+\]
+Splitting \(\gamma\) into its real and imaginary parts is what makes it useful,
+because a forward wave is then
+\[
+V(x)=V^{+}\ee^{-\gamma x}
+=V^{+}\underbrace{\ee^{-\alpha x}}_{\text{decays}}
+\underbrace{\ee^{-\jj\beta x}}_{\text{rotates}} .
+\]
+The two parts do independent jobs: \(\beta\) is the \emph{phase constant} already
+met in \cref{sec:stubs}, counting radians of delay per unit length, while
+\(\alpha\) is the \textbf{attenuation constant}, shrinking the amplitude
+exponentially with distance. Loss and delay, one complex number.
+
+The same two parameters also make the characteristic impedance complex:
+\[
+Z_0=\sqrt{\frac{R'+\jj\omega L'}{G'+\jj\omega C'}} .
+\]
+Setting \(R'=G'=0\) recovers everything from before---\(\gamma=\jj\omega\sqrt{L'C'}\),
+so \(\alpha=0\) and \(\beta=\omega\sqrt{L'C'}\), and \(Z_0=\sqrt{L'/C'}\) real. The
+lossless line was the special case all along.
+
+\subsection{The Low-Loss Limit, Which Is the Practical One}
+Good coax is close to lossless: \(R'\ll\omega L'\) and \(G'\ll\omega C'\) across its
+useful range. Expanding \(\gamma\) to first order in the small quantities---using
+\(\sqrt{1+u}\approx1+u/2\) twice---gives
+\[
+\gamma\approx\jj\omega\sqrt{L'C'}
+\left(1+\frac{R'}{2\jj\omega L'}+\frac{G'}{2\jj\omega C'}\right),
+\]
+and separating real from imaginary parts leaves the two results worth remembering:
+\[
+\boxed{\;
+\alpha\approx\frac{R'}{2Z_0}+\frac{G'Z_0}{2},
+\qquad
+\beta\approx\omega\sqrt{L'C'},
+\qquad
+Z_0\approx\sqrt{\frac{L'}{C'}} \;}
+\]
+So in the low-loss regime the phase behavior and the impedance are exactly the
+lossless ones---which retroactively justifies every earlier result---and the loss
+appears only in \(\alpha\), as two independent contributions: a \emph{conductor}
+term \(R'/2Z_0\) and a \emph{dielectric} term \(G'Z_0/2\).
+
+\begin{physicalbox}
+\textbf{Why loss rises with frequency, and at two different rates.} The two terms in
+\(\alpha\) have different frequency dependence, and both come from physics already
+met.
+
+Conductor loss grows because of \emph{skin effect}: at higher frequency the current
+crowds into a thinner outer layer of the conductor, so the usable cross-section
+shrinks and \(R'\) rises roughly as \(\sqrt f\). Dielectric loss grows because the
+insulation's leakage tracks the displacement current through it, making \(G'\)
+roughly proportional to \(f\).
+
+Hence coax attenuation goes as \(\sqrt f\) where conductor loss dominates---the
+entire HF and VHF range for ordinary cable---and crosses over to a steeper,
+proportional-to-\(f\) behavior at microwave frequencies, where the dielectric term
+takes over. That is the whole explanation of the shape of a manufacturer's
+attenuation-versus-frequency curve.
+\end{physicalbox}
+
+\subsection{Attenuation in Decibels}
+Manufacturers do not quote \(\alpha\) in nepers per metre; they quote loss in
+decibels per unit length, conventionally per \SI{100}{\foot} or per
+\SI{100}{\meter}. The conversion is just \cref{sec:decibels} applied to
+\(\ee^{-\alpha x}\):
+\[
+\text{loss in dB}=-20\log_{10}\ee^{-\alpha x}=20\,\alpha x\log_{10}\ee
+\approx8.686\,\alpha x .
+\]
+Because it is a decibel figure it is \emph{proportional to length}, which is what
+makes the per-100-foot quotation useful: double the run, double the decibels.
+Representative figures for common cable, which vary between manufacturers and
+should be read off the actual data sheet:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.22\textwidth}Y Y Y@{}}
+\toprule
+Cable & Matched loss per \SI{100}{\foot} at \SI{14}{\mega\hertz} & \dots\ and at \SI{144}{\mega\hertz} & \(Z_0\) \\
+\midrule
+RG-58 (small coax) & \(\approx\SI{1.5}{\decibel}\) & \(\approx\SI{5}{\decibel}\) & \SI{50}{\ohm} \\
+RG-213 (large coax) & \(\approx\SI{0.6}{\decibel}\) & \(\approx\SI{2}{\decibel}\) & \SI{50}{\ohm} \\
+Open-wire / ladder & \(\approx\SI{0.1}{\decibel}\) & \(\approx\SI{0.4}{\decibel}\) & \SI{450}{\ohm} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{workedbox}[: does the \(\sqrt f\) law hold?]
+Test the physics against the table. Between \SI{14}{\mega\hertz} and
+\SI{144}{\mega\hertz} the frequency ratio is \(144/14\approx10.3\), so if conductor
+loss dominates the attenuation should rise by
+\[
+\sqrt{10.3}\approx3.2\times .
+\]
+For RG-58 the table gives \(5/1.5\approx3.3\times\); for RG-213,
+\(2.0/0.6\approx3.3\times\). Both match the \(\sqrt f\) prediction closely, which
+confirms that ordinary coax is conductor-loss dominated through VHF---and that the
+dielectric term has not yet begun to matter. Note also why open-wire line is so
+much better: almost all of its field is in air, so \(G'\) is tiny, and its high
+\(Z_0\) shrinks the conductor term \(R'/2Z_0\) as well.
+\end{workedbox}
+
+\subsection{Loss on a Mismatched Line}
+Loss and mismatch interact, and in two directions worth separating.
+
+\emph{Extra loss.} On a matched line a single wave travels once to the load. On a
+mismatched line the reflected wave travels the length again, and the standing-wave
+pattern concentrates current at some points and voltage at others---and since the
+loss mechanisms are \(I^2R'\) and \(V^2G'\), those peaks dissipate more than a flat
+distribution would. The total loss therefore exceeds the matched-line loss. Writing
+\(a=10^{ML/10}\) for the matched-line loss \(ML\) expressed as a power ratio, the
+total is
+\[
+\text{total loss (dB)}=10\log_{10}
+\frac{a^2-|\Gamma_L|^2}{a\bigl(1-|\Gamma_L|^2\bigr)} .
+\]
+The formula is easier to trust after two checks. With \(|\Gamma_L|=0\) it collapses
+to \(10\log_{10}(a^2/a)=ML\), the matched-line loss, as it must. And with \(a=1\) (a
+\emph{lossless} line) it gives \(10\log_{10}1=0\) for \emph{any} \(|\Gamma_L|\)---so
+high SWR on a lossless line costs nothing at all. That second limit is the important
+one conceptually: SWR does not itself consume power. It only aggravates loss that the
+line was already going to have, which is why a high SWR is a minor matter on short
+runs of good cable at HF and a serious one on long runs at VHF.
+
+\emph{Masked mismatch.} The reflected wave is also attenuated on its way back, so
+the reflection coefficient seen at the input is smaller than the one at the load:
+\[
+\Gamma_{\mathrm{in}}=\Gamma_L\,\ee^{-2\gamma\ell}
+\qquad\Longrightarrow\qquad
+|\Gamma_{\mathrm{in}}|=|\Gamma_L|\,\ee^{-2\alpha\ell} .
+\]
+The factor of two is the round trip, so a line with \SI{3}{\decibel} of matched-line
+loss attenuates the reflected wave by \SI{6}{\decibel}---halving \(|\Gamma|\), since
+\(20\log_{10}2\approx\SI{6}{\decibel}\). \Cref{ch:measurement} works that arithmetic
+through and draws the practical conclusion: an SWR meter at the transmitter can
+report a comfortable match while the antenna is badly mismatched.
+
+\begin{mistakebox}
+Two statements about SWR are both true and easily confused. On a \emph{lossless}
+line the SWR is the same everywhere, because \(|\Gamma|\) does not change---only its
+phase rotates. On a \emph{lossy} line the SWR falls as you move away from the load,
+because \(|\Gamma|\) itself decays as \(\ee^{-2\alpha\ell}\). The first is the
+idealization the Smith chart's constant-SWR circles assume; the second is what a
+real meter reads.
 \end{mistakebox}
 
 \section{Input Impedance Along the Line}

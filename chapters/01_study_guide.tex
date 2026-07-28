@@ -93,7 +93,9 @@ Parallel resistors & \(1/R_{\mathrm{eq}}=\sum_k 1/R_k\) & Same voltage across ea
 Voltage divider & \(V_o=V_i R_2/(R_1+R_2)\) & Unloaded two-resistor divider. \\
 Current divider & \(I_1=I\,R_2/(R_1+R_2)\) & Two parallel branches; current favors smaller resistance. \\
 Thevenin/Norton & \(I_N=V_{Th}/R_{Th}\) & Linear one-port equivalents. \\
-RMS sine & \(V_{\RMS}=V_p/\sqrt{2}\) & \(V_{pp}=2V_p\). \\
+RMS sine & \(V_{\RMS}=V_p/\sqrt{2}\) & \(V_{pp}=2V_p\); so \(V_{\RMS}=V_{pp}/(2\sqrt2)\). \\
+Power from a scope & \(P=V_{pp}^2/(8R)\) & Resistive load; follows from the line above. \\
+Peak envelope power & \(\mathrm{PEP}=V_{pp,\max}^2/(8R)\) & Average power over the largest RF cycle; equals average power for an unmodulated carrier. \\
 \bottomrule
 \end{longtable}
 

@@ -290,6 +290,67 @@ the load's reactance. A purely reactive load (\(\pm90^\circ\)) would show
 \(P=0\): it consumes no average power.
 \end{workedbox}
 
+\section{Average Power and Peak Envelope Power}
+\label{sec:pep}
+Complex power settles how much power a load consumes at one instant in the steady
+state. Radio work needs two further readings of the same quantity, because a
+transmitter's output is not a steady sinusoid---its amplitude moves with the
+modulation.
+
+\emph{Average power in a resistance.} Because RMS was defined precisely to make
+this work (\cref{sec:rms}), the DC formulas carry over with no correction:
+\[
+P=V_{\RMS}I_{\RMS}=\frac{V_{\RMS}^2}{R}=I_{\RMS}^2R .
+\]
+If a voltage is quoted as a peak or peak-to-peak value---which is what an
+oscilloscope reads---convert first:
+\[
+V_{\RMS}=\frac{V_p}{\sqrt2}=\frac{V_{pp}}{2\sqrt2},
+\qquad\text{so}\qquad
+P=\frac{V_{pp}^2}{8R} .
+\]
+That last form is worth keeping, because a scope across a known load is the usual
+way RF power is actually measured, and \(8R\) is easier to remember than the chain
+of conversions behind it.
+
+\emph{Peak envelope power.} Now let the amplitude vary. The \textbf{envelope} is
+the curve traced by the peaks of the waveform, and \textbf{peak envelope power}
+(PEP) is the average power computed over the single RF cycle where that envelope is
+largest:
+\[
+\mathrm{PEP}=\frac{V_{pp,\max}^2}{8R} .
+\]
+The definition is a mouthful, but its structure is simple---it is still an
+\emph{average} over a cycle, just the worst cycle. Two limits make it concrete. For
+an unmodulated carrier the envelope is flat, so every cycle is the largest one and
+\(\mathrm{PEP}\) equals the average power exactly: the ratio is \(1.00\). For a
+modulated signal the envelope varies, so PEP exceeds the average power, and by how
+much depends entirely on the modulation---which is why transmitter limits are
+written in PEP. It is the one number that does not depend on what you are
+transmitting.
+
+\begin{workedbox}[: reading power off a scope]
+A transmitter drives a \SI{50}{\ohm} dummy load, and at the peak of a voice
+syllable the scope shows \SI{200}{\volt} peak-to-peak. Then
+\[
+\mathrm{PEP}=\frac{V_{pp}^2}{8R}=\frac{200^2}{8(50)}=\frac{40000}{400}
+=\SI{100}{\watt}.
+\]
+Checking the long way round: \(V_{\RMS}=200/(2\sqrt2)=\SI{70.7}{\volt}\), and
+\(70.7^2/50=\SI{100}{\watt}\). Same answer, as it must be. Note that the
+\emph{average} power over the whole transmission is much lower---speech spends most
+of its time well below peak---which is why an amplifier can be rated for
+\SI{100}{\watt} PEP on single sideband while its heat sink never sees
+\SI{100}{\watt}.
+\end{workedbox}
+
+\begin{mistakebox}
+Do not mix the amplitude conventions when computing power. \(P=V^2/R\) needs
+\emph{RMS} volts; feeding it a peak or peak-to-peak value overstates the power by
+\(2\times\) or \(8\times\) respectively. If a problem gives you a scope reading, the
+safe route is to convert to RMS first and only then square.
+\end{mistakebox}
+
 \section{Worked Example: Series Reactance}
 Find the impedance of a \(\SI{50}{\ohm}\) resistor in series with
 \(\SI{10}{\micro\henry}\) at \(\SI{7.1}{\mega\hertz}\)
