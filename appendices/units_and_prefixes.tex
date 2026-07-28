@@ -1,8 +1,11 @@
 \chapter{Units and Prefixes}
 \label{app:units}
-A one-page quick reference for exam conditions. \Cref{ch:foundations} develops where
-these relationships come from and why the ampere, not the coulomb, is the SI base
-unit; this appendix is only the lookup table.
+A quick reference for exam conditions. \Cref{ch:foundations} develops where the base
+relationships come from and why the ampere, not the coulomb, is the SI base unit, so
+the first table below is deliberately a restatement---a lookup table is worth having
+even when the reasoning lives elsewhere. The \emph{third} table is not a restatement:
+it collects the compound and referenced units the later chapters introduce one at a
+time and never gather in one place, which is the thing hardest to look up mid-problem.
 
 \section{Electrical Units}
 \begin{tabularx}{\textwidth}{@{}L{0.22\textwidth}L{0.18\textwidth}Y@{}}
@@ -38,3 +41,35 @@ giga & G & \(10^{9}\) \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\section{Compound and Referenced Units Used Later}
+These appear scattered through Parts~III--V. The point of tabulating them is that
+several are \emph{referenced} rather than absolute---a number in dBm means nothing
+until you know the reference---and two of them are easy to confuse.
+
+\begin{tabularx}{\textwidth}{@{}L{0.20\textwidth}L{0.20\textwidth}Y@{}}
+\toprule
+Unit & Where used & What it means \\
+\midrule
+VA (\si{\volt\ampere}) & \cref{ch:ac} & Apparent power \(|S|\); equals watts only when the load is purely resistive. \\
+VAR & \cref{sec:instpower} & Reactive power \(Q\); energy shuttled in and out of storage each cycle, dissipating nothing. \\
+dBW, dBm & \cref{sec:decibels} & Power referenced to \SI{1}{\watt} and to \SI{1}{\milli\watt}; the two differ by exactly \SI{30}{\decibel}. \\
+dBm/Hz & \cref{sec:noisefloor} & Power \emph{spectral density}---power per unit bandwidth, hence the \SI{-174}{dBm} floor. \\
+dBi, dBd & \cref{sec:antennalength} & Antenna gain referenced to an isotropic radiator or to a dipole; \(\mathrm{dBi}=\mathrm{dBd}+2.15\). \\
+Np (neper) & \cref{sec:lineloss} & Natural-log attenuation, the units of \(\alpha\); \(1\,\mathrm{Np}=\SI{8.686}{\decibel}\), the \(20\log_{10}\ee\) of that section. \\
+ppm & \cref{sec:crystal}, \cref{sec:instrumentlimits} & Parts per million, \(10^{-6}\) fractional; the natural unit for crystal pulling and timebase error. \\
+\si{\kelvin\per\watt} & \cref{sec:thermalrunaway} & Thermal resistance \(\theta_{JA}\); temperature rise per watt dissipated. \\
+\si{\siemens\per\meter} & \cref{sec:selfresonance} & Conductivity \(\sigma\); copper is \SI{5.8e7}{\siemens\per\meter}. \\
+\si{\henry\per\meter} & \cref{sec:selfresonance} & Permeability \(\mu\); \(\mu_0=4\pi\times10^{-7}\). \\
+S unit & \cref{sec:sunits} & Receiver signal-strength step of \SI{6}{\decibel}, i.e.\ a factor of four in power. \\
+\bottomrule
+\end{tabularx}
+
+\begin{mistakebox}
+Two pairs cause most of the trouble. \textbf{VA and VAR are not watts}: only watts
+leave the circuit as heat or radiation, and a purely reactive load can show large VA
+and VAR while consuming no average power (\cref{sec:instpower}). And \textbf{a bare
+``dB'' is not a level}---it is a ratio, so ``\SI{10}{\decibel}'' answers ``how many
+times?'' while ``\SI{10}{dBm}'' answers ``how much?''. Adding two bare decibel figures
+is meaningful; adding two dBm figures is not.
+\end{mistakebox}

@@ -1,5 +1,14 @@
 \chapter{Worked Examples and Exam Map}
 \label{ch:exammap}
+This chapter is a \emph{map}. It does not develop anything new; it shows how the
+derivations of Parts~II--IV get used on exam-style questions, and where to go back to
+when a question does not yield. Rather than isolated arithmetic, it works one circuit
+(\cref{sec:onecircuit}) and one antenna (\cref{sec:oneantenna}) through everything the
+exam asks about them---both taken unchanged from the chapters that derived them, so
+every number here can be traced back. \Cref{ch:practice} then reasons through real pool items
+one at a time, and \cref{ch:crossproblems} poses problems that need several chapters at
+once.
+
 \section{How the Topics Map to Exam-Style Thinking}
 \begin{tabularx}{\textwidth}{@{}L{0.24\textwidth}Y@{}}
 \toprule
@@ -17,64 +26,119 @@ Active circuits & Separate gain, feedback, bandwidth, distortion, and stability.
 \bottomrule
 \end{tabularx}
 
-\section{Example: Capacitive Reactance}
-Find \(X_C\) for \(C=\SI{100}{\pico\farad}\) at \(f=\SI{14.2}{\mega\hertz}\).
+\section{One Circuit, Seven Questions}
+\label{sec:onecircuit}
+Isolated examples teach the arithmetic and hide the point. So take a single
+circuit---\cref{ch:rlc}'s running series RLC, with
 \[
-\omega=2\pi f=2\pi(14.2\times10^6).
+L=\SI{10}{\micro\henry},
+\qquad
+C=\SI{220}{\pico\farad},
+\qquad
+R=\SI{5}{\ohm},
 \]
-\[
-X_C=\frac{1}{\omega C}
-=\frac{1}{2\pi(14.2\times10^6)(100\times10^{-12})}
-\approx \SI{112}{\ohm}.
-\]
-The impedance is \(Z_C=-\jj\SI{112}{\ohm}\).
+and ask it everything an exam might. Every answer below is a formula derived earlier,
+cited so it can be checked, and no new component values are introduced.
 
-\section{Example: Series RLC Resonance}
-Given \(L=\SI{2.2}{\micro\henry}\) and \(C=\SI{150}{\pico\farad}\),
+\paragraph{1. Reactance of one part.}
+At \(f=\SI{14.2}{\mega\hertz}\), that capacitor alone has
+\(X_C=1/\omega C=\SI{51}{\ohm}\) (\cref{ch:ac}), so \(Z_C=-\jj\SI{51}{\ohm}\). The
+sign and the \(\omega=2\pi f\) conversion are where these questions are lost, not the
+division.
+
+\paragraph{2. Resonant frequency.}
 \[
 f_0=\frac{1}{2\pi\sqrt{LC}}
-\approx \SI{8.76}{\mega\hertz}.
+=\frac{1}{2\pi\sqrt{(10^{-5})(2.2\times10^{-10})}}
+\approx\SI{3.393}{\mega\hertz}
+\qquad(\cref{ch:rlc}).
 \]
-If \(R=\SI{3}{\ohm}\),
-\[
-Q_s=\frac{2\pi f_0 L}{R}
-\approx 40.4,
-\qquad
-BW\approx \frac{8.76\times10^6}{40.4}
-\approx \SI{217}{\kilo\hertz}.
-\]
+\(R\) does not appear: any resistance in the question is a distractor for this part.
+At \(f_0\) both reactances are \SI{213}{\ohm} and cancel exactly---which is the check
+worth doing, since \(X_L=X_C\) \emph{is} the definition of resonance.
 
-\section{Example: Decibel Ratio}
-A filter attenuates a voltage by a factor of 0.25 with the same source and load
-impedance. The voltage ratio in decibels is
-\[
-20\log_{10}(0.25)= -\SI{12.0}{\decibel}.
-\]
-The corresponding power ratio is \(0.25^2=0.0625\), which is also
-\[
-10\log_{10}(0.0625)= -\SI{12.0}{\decibel}.
-\]
+\paragraph{3. Quality factor.}
+\(Q_s=\omega_0L/R=213/5\approx42.6\) (\cref{ch:rlc}). Note it is
+\emph{this} topology's formula; \cref{ch:rlcpar} inverts it, and
+\cref{sec:seriesparallel} shows why the two are one quantity.
 
-\section{Example: SWR}
-If \(|\Gamma|=0.2\), then
-\[
-\mathrm{SWR}=\frac{1+0.2}{1-0.2}=1.5.
-\]
-The reflected power fraction is \(|\Gamma|^2=0.04\), or \(4\%\).
+\paragraph{4. Bandwidth---and the band edges.}
+\(BW=f_0/Q=\SI{79.6}{\kilo\hertz}\), and \cref{sec:halfpower} showed this is an
+\emph{equality}, not an estimate. The same section locates the edges: they straddle
+\(f_0\) geometrically, at \SI{3.354}{\mega\hertz} and \SI{3.433}{\mega\hertz}, whose
+\emph{product} is \(f_0^2\). A question asking for the edges rather than the width is
+testing that distinction.
 
-\section{Practice}
-Worked practice comes in two places. \Cref{ch:practice} reasons through real
-question-pool items one at a time, and \cref{ch:crossproblems} poses cross-chapter
-problems---each needing results from several chapters at once, which is closer to how
-the material is actually used.
+\paragraph{5. Voltage across a reactive element.}
+Driven with \SI{10}{\volt} RMS at resonance, \(Z=R\), so \(I=10/5=\SI{2}{\ampere}\)
+and
+\(V_L=I\,\omega_0L=\SI{426}{\volt}\)---exactly \(Q\) times the source
+(\cref{ch:rlc}). This is why tuned-circuit capacitors need voltage ratings the
+transmitter's output would never suggest.
+
+\paragraph{6. Pole location, and ringing.}
+\(\alpha=R/2L=\SI{2.5e5}{\per\second}\) and \(\omega_d\approx\omega_0\), so the poles
+sit at \(-2.5\times10^5\pm\jj\,2.13\times10^7\) (\cref{ch:rlc}). The envelope decays
+with \(\tau=1/\alpha=\SI{4}{\micro\second}\)---and \cref{sec:ringdown}'s
+\(\tau=1/\pi BW\) gives \SI{4}{\micro\second} too, from the bandwidth alone. Two
+routes, one number.
+
+\paragraph{7. What changes if \(R\) doubles?}
+\(f_0\) does not move at all. \(Q\) halves, \(BW\) doubles, the poles move directly
+away from the \(\jj\omega\) axis, and the ringing shortens by half
+(\cref{sec:polegeometry}). Questions of the form ``which of these changes when\dots''
+are asking whether you know which parameter each quantity depends on.
+
+\begin{controlsbox}
+\textbf{Why one circuit answers seven questions.} Nothing above was a separate fact to
+memorize. Reactance, resonance, \(Q\), bandwidth, magnification, pole location and
+ring-down are seven readings of one second-order transfer function, and the exam
+samples them at random. That is the whole thesis of this book applied to a test: learn
+the object, not the seven questions. If a question resists, identify which \emph{view}
+of the pole pair it is asking for---frequency, time, or complex plane---and
+\cref{ch:fourviews} is the chapter that connects them.
+\end{controlsbox}
+
+\section{One Antenna, Three Questions}
+\label{sec:oneantenna}
+The same treatment for \cref{ch:lines}'s running antenna, a resonant dipole presenting
+\(R_{\text{rad}}=\SI{35}{\ohm}\) to \SI{50}{\ohm} coax.
+
+\paragraph{Reflection coefficient.}
+\(\Gamma=(35-50)/(35+50)=-0.176\) (\cref{sec:reflectionsection}). The negative sign
+says the reflected wave is inverted, because the load is \emph{below} \(Z_0\).
+
+\paragraph{SWR and return loss.}
+\(\mathrm{SWR}=(1+0.176)/(1-0.176)=1.43\), and return loss is
+\(-20\log_{10}|\Gamma|=\SI{15.1}{\decibel}\). Both are the same number read two ways,
+and \cref{sec:sparams} adds a third name for it: \(|S_{11}|\).
+
+\paragraph{How much power comes back.}
+\(|\Gamma|^2=0.031\), so \SI{3.1}{\percent} is reflected and \SI{96.9}{\percent}
+delivered. Note what this is \emph{not}: it says nothing about how much is
+\emph{radiated}, which is \cref{sec:antennaeff}'s \(\eta\) and cannot be measured from
+the shack.
+
+\begin{exambox}
+Decibel questions are the other place a single conversion is tested repeatedly, and one
+worked line covers them. A filter that attenuates voltage to \(0.25\) of its input, at
+equal source and load impedance, is
+\[
+20\log_{10}(0.25)=-\SI{12.0}{\decibel},
+\qquad\text{and}\qquad
+10\log_{10}(0.25^2)=10\log_{10}(0.0625)=-\SI{12.0}{\decibel}.
+\]
+The two agree \emph{because} the impedances are equal (\cref{sec:decibels}); when they
+are not, the \(20\log\) form is simply wrong, and that qualification is what such a
+question is usually probing.
+\end{exambox}
 
 \section{Where Each Topic Is Developed}
-This chapter is a map, not a substitute for the chapters. For the reasoning behind
-any row above, see: units and components \cref{ch:foundations}; series/parallel
-combining \cref{ch:resistive}; impedance, admittance, and complex power
-\cref{ch:ac}; first-order circuits \cref{ch:rc,ch:rl}; resonance and \(Q\)
-\cref{ch:rlc,ch:rlcpar}; poles, zeros, and Bode \cref{ch:splane}; feedback and
-stability margins \cref{ch:feedback}; filters and matching \cref{ch:filters};
-transmission lines and the Smith chart \cref{ch:lines}; active circuits and
-oscillators \cref{ch:active}; and measurement \cref{ch:measurement}.
-\Cref{ch:practice} then reasons through real pool questions.
+For the reasoning behind any row of the table, see: units and components
+\cref{ch:foundations}; series/parallel combining \cref{ch:resistive}; impedance,
+admittance, and complex power \cref{ch:ac}; first-order circuits \cref{ch:rc,ch:rl};
+resonance and \(Q\) \cref{ch:rlc,ch:rlcpar}; poles, zeros, and Bode
+\cref{ch:splane}; feedback and stability margins \cref{ch:feedback}; filters and
+matching \cref{ch:filters}; transmission lines and the Smith chart \cref{ch:lines};
+active circuits and oscillators \cref{ch:active}; and measurement
+\cref{ch:measurement}.

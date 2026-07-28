@@ -25,7 +25,7 @@ reason for coil `Q` falling, and A5 found the same mistold for push-pull and IMD
 
 **Tier B1 (S-parameters) is also done** — `sec:sparams` in Ch 16 and `sec:vna` in
 Ch 20, the latter carrying the `controlsbox` where Part II's `G(jω)` and Part IV's
-circuits finally meet on an instrument screen. **Tiers B and C are complete as well.** Only **Tier D** (four housekeeping items) is left.
+circuits finally meet on an instrument screen. **All four tiers are complete.** The ledger stands at 58 done, 0 open.
 See §6 for the plan, and the LEDGER in `ARRL-GAP-PROPOSAL.md` for the running score.
 
 Per-round markup plans live alongside this file and are the archive, not the status:
@@ -52,7 +52,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 210 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 213 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -78,7 +78,7 @@ Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedbac
 `ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 75 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 77 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
@@ -91,7 +91,8 @@ Section labels, all 75 of them: `sec:complexrefresher` `sec:rms` `sec:secondorde
 `sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna` `sec:feedbackz` `sec:antennaeff` `sec:feedpoint` `sec:quarterwave` `sec:arrayfactor` `sec:crystal` `sec:antennamatches` `sec:qlqu` `sec:ringdown` `sec:reflectionsection` `sec:groundimage`
 `sec:foldeddipole` `sec:travelingwave` `sec:wilkinson`
 `sec:thermalrunaway` `sec:hysteresis` `sec:rthc`
-`sec:instrumentlimits` `sec:diploading`.
+`sec:instrumentlimits` `sec:diploading` `sec:onecircuit`
+`sec:oneantenna`.
 
 ### Conventions in force
 
@@ -257,7 +258,7 @@ Round 4 hand-filtered.
 **See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
 the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
 the General-pool check, and the four ARRL chapter audits — against the book as built,
-so nothing can be silently dropped. Current score: **54 done, 4 open** (58 items), with the open
+so nothing can be silently dropped. Current score: **58 done, 0 open** — the ledger is complete, with the open
 items ranked in four tiers.
 
 The highest-priority open items are **Tier A: things the book asserts itself**, and so
@@ -308,14 +309,15 @@ exam-relevance claim sourced from the manual as suspect.
 
 ### C. Smaller cleanups still outstanding
 
-- **Ch 10 and Ch 21 have no callout boxes and no figures.** Ch 10 is defensible as a
-  two-page hinge; Ch 21 is not (see B4).
-- **Figure provenance:** 26 of 27 computed figures still don't say how they were
-  generated. Consider a one-line "computed from…" clause per caption, or one note in
-  the front matter.
-- **Ch 22 mixes two structural registers** — numbered sections with starred
-  per-question subsections, then abandons the pattern halfway.
-- **Appendix B** still restates Ch 7's units material (cross-referenced, not merged).
+- ✅ **Ch 21 rebuilt** on the book's running values, with cross-references and its
+  first callout boxes. Ch 10 remains without boxes or figures, which is defensible
+  for a two-page hinge.
+- ✅ **Figure provenance** is now a front-matter note: every computed figure comes
+  from the identically-named script in `figures/src/`.
+- ✅ **Ch 22's two registers** are now declared and tagged per section (*Question by
+  question* vs *Group synthesis*), so the mixture is intentional.
+- ✅ **Appendix B** keeps its lookup tables (a one-page reference earns its place) and
+  gained a third table of the compound and referenced units the book never gathered.
 - **No figure has been added since Round 3.** Several new sections would benefit from
   one: `sec:nyquist` especially wants a Nyquist plot showing the two margins as one
   clearance, and `sec:lineloss` wants an attenuation-versus-frequency curve.
