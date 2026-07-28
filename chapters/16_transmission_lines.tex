@@ -608,6 +608,7 @@ impedance at its even harmonics.
 \end{physicalbox}
 
 \section{Quarter-Wave and Half-Wave Transformers}
+\label{sec:quarterwave}
 The quarter-wave limit is worth carrying one step further, because it is the
 transformer formula the exam asks for. At \(\beta\ell=\pi/2\) the line inverts the
 load about \(Z_0^2\),
@@ -873,6 +874,79 @@ vertical: \emph{a ground radial system}, because it attacks \(R_{\text{loss}}\).
 Watch the distractor that defines efficiency as ERP over transmitter output---that is
 a different ratio, and it folds in feed-line loss and antenna gain rather than the
 feed-point split.
+\end{exambox}
+
+\subsection{Where You Feed It}
+\label{sec:feedpoint}
+So far the antenna has been fed at its centre. Move the feed and the resistance
+changes---predictably, and by an argument that needs no electromagnetics beyond what
+\cref{sec:stubs} already set up.
+
+A half-wave dipole is an open-ended structure, so the same boundary condition that put
+a current \emph{node} at the end of an open stub puts one at each tip of the dipole.
+The current is therefore a standing wave, largest at the centre and vanishing at the
+ends:
+\[
+I(z)=I_0\cos\beta z,
+\qquad |z|\le\frac{\lambda}{4},
+\]
+with \(z\) measured from the centre and \(\beta=2\pi/\lambda\) as always. Now the key
+step, and it is conservation of power rather than a field calculation. The radiated
+power is a property of that whole current distribution, so it does not care where you
+attach the coax. But at the feed point the transmitter sees
+\(P=|I(z)|^2R(z)\) with RMS values. One power, two ways of writing it:
+\[
+|I(z)|^2R(z)=\text{const}
+\qquad\Longrightarrow\qquad
+\boxed{\;R(z)=\frac{R_{\text{centre}}}{\cos^2\beta z}\;}
+\]
+Feed where the current is small and the same power demands a larger resistance. This
+assumes moving the feed does not reshape the current distribution, which is the
+standard approximation and a good one away from the extreme ends.
+
+That one formula generates the whole subject:
+
+\begin{center}
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Feed position & \(\beta z\) & \(\cos^2\beta z\) & \(R\) \\
+\midrule
+Centre & \(0^\circ\) & \(1\) & \SI{73}{\ohm} \\
+\(\lambda/16\) from centre & \(22.5^\circ\) & \(0.854\) & \SI{85}{\ohm} \\
+\(\lambda/8\) from centre & \(45^\circ\) & \(\tfrac12\) & \SI{146}{\ohm} \\
+\(0.2\lambda\) from centre & \(72^\circ\) & \(0.095\) & \SI{765}{\ohm} \\
+End & \(90^\circ\) & \(0\) & \(\to\infty\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The \(\lambda/8\) row is exact and worth remembering as a sanity check:
+\(\cos^245^\circ=\tfrac12\), so the resistance is exactly \emph{doubled}, \SI{146}{\ohm}.
+An off-centre-fed dipole works in this region, where the impedance is a few hundred
+ohms rather than \SI{73}{\ohm}, so it is reached through a step-up balun rather than
+directly. Its actual selling point is a multiband one: at the chosen offset the feed
+point lands at a comparable fraction of the standing wave on several harmonically
+related bands, giving a \emph{similar} impedance on each---which is a statement about
+where the nodes fall, not about any one band's number.
+
+The last row is the interesting one. \(R\to\infty\) at the end means an end-fed half
+wave is a \emph{voltage} feed: there is almost no current to drive, and no ordinary
+line can match it directly. But \cref{sec:quarterwave} already derived the cure. A
+quarter-wave section inverts, \(Z_{\mathrm{in}}=Z_0^2/Z_L\), so it turns that very
+high impedance into a very low one---which is why an end-fed half wave is fed through
+a quarter-wave transformer, a high-ratio transformer, or an L-network doing the same
+job. The mechanism is not special to antennas; it is the impedance inversion of
+\cref{sec:quarterwave} used deliberately.
+
+\begin{exambox}
+E9A asks which factors affect feed-point impedance, and the answer is \emph{antenna
+height}---not line length, not tuner settings, not power level. This section explains
+why the first two are excluded: the feed-point impedance is a property of the current
+distribution on the antenna, so it changes when the antenna's surroundings change the
+distribution (height above ground does, via the ground reflection) and not when you
+alter something on the transmitter side of the feed point. A line merely
+\emph{transforms} what is already there (\cref{ch:lines}), which is a different claim
+from changing it.
 \end{exambox}
 
 \begin{figure}[htbp]

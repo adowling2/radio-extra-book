@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **34 done, 23 open.** Nothing has been silently dropped.
+Score: **35 done, 22 open.** Nothing has been silently dropped.
 
-## ✅ Done (34)
+## ✅ Done (35)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -197,11 +197,13 @@ noise bandwidth
 
 **Tier B3 — antenna efficiency (`sec:antennaeff`).** The book had `R_rad` and no loss resistance anywhere. Splitting `R = R_rad + R_loss` and noting both carry the same series current makes `η = R_rad/(R_rad+R_loss)` Ch 8's divider applied to power. The counterintuitive payoff is now a `mistakebox` with numbers: for a 15 Ω short antenna, adding 35 Ω of loss takes efficiency to 30 % (−5.2 dB) while the SWR at resonance walks from 3.3:1 to a *perfect* 1.0:1 — because at resonance SWR is just `Z₀/R`. The bandwidth improves too, and exactly, since `Q = ω₀L/R` falls and A1 made `BW = f₀/Q` an equality. A dummy load is the limiting case: flawless 1:1, radiating nothing. Pool E9A09/E9A10, verified.
 
+**Tier B4 — feed-point impedance vs position (`sec:feedpoint`).** The dipole's open ends impose the same current node as `sec:stubs`'s open stub, so `I(z) = I₀cos βz`. Radiated power does not depend on where the coax attaches, but the feed sees `P = |I(z)|²R(z)`, so `R(z) = R_centre/cos²βz` — conservation of power, no field theory. λ/8 gives exactly `cos²45° = ½`, hence exactly double, 146 Ω; the end gives `R → ∞`, a *voltage* feed, cured by the `Z₀²/Z_L` inversion `sec:quarterwave` already derived. **Two corrections to the plan's framing:** the OCFD's real selling point per E9C05 is a *similar impedance on multiple bands*, not a 4:1 ratio (200 Ω sits at 0.147λ, not λ/8), so the text says that instead; and E9A04's answer is *antenna height*, which the section now explains — line length and tuner settings are excluded because a line only transforms what the current distribution already set. `sec:quarterwave` is a new label added so two self-referential `\cref{ch:lines}` citations inside Ch 16 could point somewhere useful.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (23), ranked
+## ⬜ Open (22), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
@@ -209,7 +211,6 @@ its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
 | # | Item | Why |
 |---|---|---|
-| T2.13 | **Feed-point impedance vs feed position** | `R(z) = R_center/cos²βz` generates the whole ARRL section — 73 Ω at centre, ~146 Ω at λ/8 (explaining the OCFD's 4:1), `R→∞` at the end (explaining why an end-fed half wave needs the λ/4 inversion we derive). |
 | T2.12 | **Two-element array factor** | `\|F\| = 2\|cos((φ+βd cosθ)/2)\|` — pure phasor addition. Turns a memorized table of four patterns into four substitutions, and gives the DF sense antenna free. |
 | T2.11 | **Crystal as two resonances** | `R–L_m–C_m` parallel `C₀` gives an impedance zero and pole a few hundred ppm apart — which *is* the pulling range, sets lattice-filter bandwidth, and explains why `C_L` must be specified. E6D02, E7H12. |
 | T2.16 | **Named antenna matches** | Hairpin, gamma, delta, stub — all absent, though we own both the L-network and stub reactances. The hairpin is a shorted stub `<λ/4`, hence inductive, hence the network **demands** a series capacitance — so "the element must be capacitive" becomes a consequence. Six pool questions, zero new math. |
