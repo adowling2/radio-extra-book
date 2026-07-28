@@ -137,6 +137,71 @@ during each transition, so loss grows with switching frequency; and the output i
 unwanted. Hence the one thing a switching amplifier cannot do without: a low-pass or
 band-pass filter on its output, which is the \cref{ch:filters} design problem.
 
+\subsection{Push-Pull: Even Orders Cancel Identically}
+\label{sec:pushpull}
+A push-pull stage drives two devices in antiphase and subtracts their outputs. Write
+the device's input--output relation as a power series---any smooth nonlinearity has
+one, and \cref{sec:powerseries} will make heavy use of the same expansion:
+\[
+f(x)=\sum_{n\ge0}a_nx^n .
+\]
+One device sees \(x\), the other \(-x\), and the output is the difference. Since
+\((-x)^n=(-1)^nx^n\),
+\[
+f(x)-f(-x)=\sum_{n\ge0}a_n\left[1-(-1)^n\right]x^n
+=2\!\!\sum_{n\ \mathrm{odd}}\!\!a_nx^n .
+\]
+The bracket is \(0\) for even \(n\) and \(2\) for odd \(n\). \emph{Every even-order
+term vanishes, for any \(f\) whatsoever}---the \(a_n\) never had to be known, let
+alone controlled. Two consequences follow that are easy to get wrong.
+
+\textbf{The pair must be matched, not specially biased.} Nothing above referenced the
+operating point, so no bias trick is involved; a push-pull Class A, AB, B or C stage
+cancels even orders equally. What the derivation \emph{did} assume is that both
+devices obey the \emph{same} \(f\). Give them different series \(f\) and \(g\) and the
+output is \(\sum(a_n-(-1)^nb_n)x^n\), whose even terms are \(a_n-b_n\)---zero only to
+the extent that the devices match. That is why push-pull power amplifiers are built
+from matched pairs, and why a drifting or mismatched pair shows up first as a
+\emph{second} harmonic.
+
+\textbf{It does nothing whatever for third-order intermodulation.} The troublesome
+products of \cref{sec:mixers}---\(2f_1-f_2\) and \(2f_2-f_1\)---come from the cubic
+term, and cubic is odd. Push-pull doubles the odd terms, so it doubles the wanted
+fundamental \emph{and} the third-order products by exactly the same factor, leaving
+their ratio untouched. A push-pull final is therefore cleaner in even harmonics and no
+better at all on the intermodulation figures that
+\cref{sec:powerseries,sec:dynamicrange} show actually set receiver and transmitter
+dynamic range. It is a filter you get for free in \emph{order}, not in \emph{level}.
+
+\begin{controlsbox}
+\textbf{Symmetry, not cancellation of quantities.} It is tempting to describe this as
+two distortions cancelling because they are equal and opposite, but the derivation
+says something stronger and cheaper: the antiphase-and-subtract operation extracts the
+\emph{odd part} of \(f\), and the even part is discarded before it can appear.
+Decomposing a response into even and odd parts is the same style of move as splitting
+a signal into symmetric and antisymmetric components, or a transmission line's
+\(V\) and \(I\) into forward and reverse waves (\cref{ch:lines})---choose the
+decomposition the circuit's own symmetry prefers, and the unwanted half is not
+suppressed but absent.
+\end{controlsbox}
+
+The same algebra explains a mixer, and it is worth spending three more lines here so
+that \cref{sec:mixers} can lean on the result instead of asserting it. Apply the
+antiphase-and-subtract trick to the \emph{RF} port while feeding the local oscillator
+to both devices in common:
+\[
+y=f(v_{\mathrm{LO}}+v_{\mathrm{RF}})-f(v_{\mathrm{LO}}-v_{\mathrm{RF}}) .
+\]
+This is the odd part with respect to \(v_{\mathrm{RF}}\), so every term that does
+\emph{not} contain an odd power of \(v_{\mathrm{RF}}\) is gone---and that includes
+every term in \(v_{\mathrm{LO}}\) alone. Set \(v_{\mathrm{RF}}=0\) and the output is
+identically zero: the oscillator, however strong, leaks nothing. Meanwhile the
+quadratic term contributes \(a_2\left[(v_{\mathrm{LO}}+v_{\mathrm{RF}})^2-(v_{\mathrm{LO}}-v_{\mathrm{RF}})^2\right]=4a_2v_{\mathrm{LO}}v_{\mathrm{RF}}\),
+the wanted product, doubled. \emph{Carrier suppression in a balanced modulator is not
+a trimming adjustment; it is the same parity argument as push-pull, applied to a
+different port}---and the residual carrier a real one leaks is, once again, a measure
+of how well its two halves match.
+
 \begin{exambox}
 The pool's amplifier-class questions (group E7B) ask for the mechanism, not the
 percentage. A Class C stage on SSB gives ``distortion and excessive bandwidth,''
@@ -845,9 +910,11 @@ appears under four names depending on what is connected and what is kept:
 \begin{description}
 \item[Mixer / converter] RF in, local oscillator in, keep the difference: translate
 a signal to the IF. The receiving case above.
-\item[Balanced modulator] audio in, carrier in, and---by balancing the circuit so
-the two inputs cancel at the output---keep \emph{only} the sum and difference. The
-carrier itself is suppressed, leaving double sideband (DSB). Filter off one of the
+\item[Balanced modulator] audio in, carrier in, and keep \emph{only} the sum and
+difference. The carrier itself is suppressed, leaving double sideband (DSB). The
+suppression is the parity argument of \cref{sec:pushpull}: feed the audio to the two
+halves in antiphase and subtract, and every term without an odd power of the audio---
+the whole carrier included---is absent rather than trimmed away. Filter off one of the
 two sidebands and the result is single sideband; this is how an SSB transmitter
 generates its signal.
 \item[Product detector] IF in, reinserted carrier in, keep the difference: the

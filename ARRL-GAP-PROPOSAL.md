@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **30 done, 27 open.** Nothing has been silently dropped.
+Score: **31 done, 26 open.** Nothing has been silently dropped.
 
-## ✅ Done (30)
+## ✅ Done (31)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -181,7 +181,7 @@ noise bandwidth
 
 **ARRL Tier 2 (1 of 10):** the PLL (`sec:pll`)
 
-**Tier A (4 of 5):** the exact half-power bandwidth (`sec:halfpower`) — `BW = f₀/Q` is now derived as an identity, not quoted with a hedge, and the band edges are located: `f₀ = √(f₁f₂)`. The `≈` was relaxed in Chs 1, 4, 13, 14, 16, 22, 23, the formula index and the cheat sheet; it was *kept*, with the reason now stated, in Ch 20 (an analyzer's usable band is an SWR limit, not the half-power one) and in Ch 16's antenna model (the lumped RLC, not the algebra, is the approximation).
+**Tier A — all 5 done:** the exact half-power bandwidth (`sec:halfpower`) — `BW = f₀/Q` is now derived as an identity, not quoted with a hedge, and the band edges are located: `f₀ = √(f₁f₂)`. The `≈` was relaxed in Chs 1, 4, 13, 14, 16, 22, 23, the formula index and the cheat sheet; it was *kept*, with the reason now stated, in Ch 20 (an analyzer's usable band is an SWR limit, not the half-power one) and in Ch 16's antenna model (the lumped RLC, not the algebra, is the approximation).
 
 **Tier A, second item:** the series↔parallel transformation (`sec:seriesparallel`) — `R_p = (1+Q²)R_s`, `X_p = (1+Q⁻²)X_s`, derived by matching admittances at one frequency. The invariant is `Q` itself (`R_p/X_p = X_s/R_s`), which is the literal form of Ch 14's previously hand-waved claim that “there is only one `Q`.” Retires three of our own assertions: a real tank's peak impedance is `(1+Q²)r ≈ L/(Cr)`, not “roughly the loss resistance”; `Q_s` and `Q_p` are one quantity through the map; and `sec:lnetwork` now *derives* all three L-network formulas from this identity instead of asserting them — including the fact that the transformed reactance is exactly the `R_hi/Q` the shunt element cancels, so an L-network is one transformation plus a cancellation. Ch 23's oscillator-tank problem no longer converts loss to shunt resistance as an unexplained step.
 
@@ -189,17 +189,18 @@ noise bandwidth
 
 **Tier A, fourth item:** the conduction-angle efficiency integral (`sec:conductionangle`) — Fourier `I_dc` and `I₁` of a cosine truncated at half-angle `θ` give `η = ½(I₁/I_dc)(V₁/V_dc)`, two independent factors. The current factor is the conduction angle: exactly `½` at 360° and exactly `π/4` at 180°, so 78.5 % *is* `π/4`. The voltage factor is the load coupling, and it alone explains why Class A is quoted at both 50 % and 25 % — a resistive load must carry the DC, halving the available swing. Four numbers previously on ARRL's authority, now one integral. Also added `sec:switching`: for an ideal switch `p = vi` has one factor zero at every instant, so `∫p dt = 0` identically and there is no ceiling to derive — which fills a real gap, since the book did not cover Class D at all and the pool asks about it three times (E7B02, E7B03, E7B08).
 
+**Tier A, fifth item:** push-pull even-order cancellation (`sec:pushpull`) — `f(x) − f(−x) = 2Σ_odd aₙxⁿ`, three lines and no device model. Every even order vanishes *for any f*, the `aₙ` never entering, which is why the pair must be **matched** rather than specially biased: mismatched devices leave `aₙ − bₙ`, so a drifting pair shows up first as a second harmonic. Two corrections to how this is usually told. It is not two distortions cancelling — the operation extracts the *odd part* of `f` and the even part is absent, not suppressed. And push-pull does **nothing** for third-order IMD: it doubles the fundamentals and the `2f₁−f₂` products by the same factor, leaving the ratio that `sec:powerseries` cares about untouched. The same parity argument, applied to the RF port instead, nulls a balanced modulator's carrier — `sec:mixers` no longer takes that on faith, and its vague “the two inputs cancel at the output” is gone.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (27), ranked
+## ⬜ Open (26), ranked
 
 ### Tier A — the book asserts these itself, so they are defects by our own convention
 
 | # | Item | Why it ranks here |
 |---|---|---|
-| T2.10 | **Push-pull even-order cancellation** | `f(x) − f(−x) = 2Σ_{n odd}aₙxⁿ` — three lines, no device model. Also explains why a *balanced* mixer nulls carrier feedthrough, which `sec:mixers` currently takes on faith. |
 
 ### Tier B — best remaining thesis bridges
 
