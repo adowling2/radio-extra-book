@@ -105,6 +105,34 @@ constant \(\tau=RC\) the capacitor has charged to \(63.2\%\) of \(E\) while the
 resistor voltage has fallen to \(36.8\%\), and after about \(5\tau\) the circuit is
 settled.
 
+\subsection{Which \texorpdfstring{\(R\)}{R}, When There Is More Than One?}
+\label{sec:rthc}
+Real circuits rarely present a lone \(R\) and \(C\) in series. The rule that covers
+them is \cref{ch:resistive}'s Th\'evenin reduction, applied from the capacitor's point
+of view: \emph{look out from the capacitor's terminals with all independent sources
+zeroed, and whatever resistance you see is the one that sets the time constant.}
+\[
+\tau=R_{\mathrm{Th}}\,C_{\mathrm{eq}} .
+\]
+For a source feeding through \(R_1\) with \(R_2\) shunting the capacitor, the
+capacitor sees \(R_1\parallel R_2\), not \(R_1\)---so \(R_1=\SI{1}{\kilo\ohm}\),
+\(R_2=\SI{2}{\kilo\ohm}\) and \(C=\SI{1}{\micro\farad}\) give
+\(\tau=\SI{0.67}{\milli\second}\), not \SI{1}{\milli\second}. The final value is still
+the divider's \(\tfrac23E\); charging speed and final value are set by different
+combinations, which is exactly the sort of thing the recipe is for.
+
+\begin{mistakebox}
+\textbf{One energy store, one time constant---and no further.} The recipe above works
+because there is a single capacitor, so the circuit has one state and one pole. Add a
+second independent capacitor or an inductor and it \emph{fails}: the circuit then has
+two eigenvalues, and no single \(R_{\mathrm{Th}}C\) product describes it. Combining
+every element into one \(R\) and one \(C\) is not a general technique; it is a
+first-order technique. This is precisely why \cref{ch:rlc} could not proceed by
+combining components and had to solve \(\det(sI-A)=0\) instead---and why ``how many
+independent energy stores?'' is the first question to ask about any circuit
+(\cref{ch:linsys}).
+\end{mistakebox}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{rc_transient}

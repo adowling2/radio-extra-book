@@ -158,13 +158,13 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **50 done, 8 open** (58 items). Nothing has been silently dropped.
+Score: **54 done, 4 open** (58 items). Nothing has been silently dropped.
 
 *Count corrected 2026-07-28:* earlier revisions said 57 items, because Tier C was
 described as fifteen items while sixteen were listed. The enumerated lists below
 are authoritative; the total is 58.
 
-## ✅ Done (50)
+## ✅ Done (54)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -215,13 +215,15 @@ noise bandwidth
 
 **Tier C, active circuits and the divider (four items).** T3.27: a transistor's current rises with temperature, which raises dissipation, which raises temperature — a closed loop, so `L_th = (∂I_C/∂T)·θ_JA·V_CE` and **thermal runaway is `L = +1` at DC**. The three factors are the three cures: emitter resistor (holds `∂I_C/∂T ≈ 2 mV/K ÷ R_E`), heat sink (`θ_JA`), lower `V_CE` or a switching class. 10 Ω, 5 K/W, 20 V gives `L_th = 0.02`; drop the emitter resistor and the same stage sits at `2` and dies. A `controlsbox` notes this loop *adds*, so it is `1−L` rather than `1+L`, and the emitter resistor works by nesting a negative loop inside the thermal one. T3.28a: the same sign used on purpose — feeding `β` back to the *non-inverting* input puts the thresholds at `±βV_sat`, so `ΔV = 2βV_sat`; 1 k/99 k on ±12 V rails gives ±0.12 V, and the loop gain exceeding unity during the transition is why a Schmitt trigger *snaps*. T3.28b: a parasitic suppressor is `Z = R∥sL`, a high-pass in impedance with its corner at `R/L` — 100 Ω with 0.1 µH corners at 159 MHz, presenting j8.8 Ω at 14 MHz but ~69 Ω at 150 MHz, so it lowers `|L|` below unity only where the parasitic wants to oscillate. T3.28h: the Wilkinson (`sec:wilkinson`) by even/odd symmetry — even mode puts no current in the bridge resistor, so two λ/4 sections of `Z₀√2` loaded by `Z₀` present `2Z₀` each and parallel to `Z₀`; odd mode makes the resistor's midpoint a virtual ground and the λ/4 shorted, hence open, so each output sees exactly `Z₀`. The resistor is invisible to the wanted signal and the only thing the unwanted one sees.
 
+**Tier C, the last four (measurement and RC).** T3.20: `τ = R_Th·C_eq` — look out from the capacitor with sources zeroed, so a source through `R₁` with `R₂` shunting gives `R₁∥R₂` and 1 k / 2 k / 1 µF is 0.67 ms, not 1 ms, while the final value is still the divider's ⅔. A `mistakebox` states the honest limit: this is a **one-energy-store** result and fails outright with two, which is exactly why Ch 13 had to solve `det(sI−A) = 0` instead of combining components. T3.28i: a counter has exactly two error terms, `1/T_gate` (frequency-independent) and `f·ppm/10⁶`, and at RF it is not close — 1 Hz against 146 Hz at 146 MHz with a 1 ppm timebase, so E4B01's *time base accuracy* is the answer and a longer gate improves only the term already negligible. Scope fold-back: `f_displayed = |f − nf_s|`, so at 100 MSa/s a 70 MHz signal shows as 30 MHz *at full amplitude*, and since `sec:samplingthm` proved a real 30 MHz gives identical samples, no internal processing can distinguish them — change the timebase, because a real signal keeps its frequency and an alias moves. T3.28c: dip-then-load is `sec:lnetwork`'s two jobs done one at a time — the dip is minimum supply current because Ch 14's tank is at *maximum* impedance at resonance, and loading then sets the transformation ratio that actually determines power. A `mistakebox` warns that a dip is not a match: a stage can dip beautifully into far too high an impedance, delivering little power while developing `Q`-fold tank voltage.
+
 **Tier C, filters (`sec:qlqu`, `sec:ringdown`).** T3.23: in a series-resonant band-pass with coil loss `r` between `R_s` and `R_L`, insertion loss is `20log[(R_s+R_L+r)/(R_s+R_L)]`, and since `Q_L/Q_U = r/(R_s+R_L+r)` exactly, that *is* `IL = −20log(1 − Q_L/Q_U)` — derived inside our own series-RLC rather than quoted. A `physicalbox` gets the duplexer: narrow rejection needs high `Q_L`, but the loss depends on the *ratio*, so `Q_U` must be far higher still — cavities are there because `Q_U` is the denominator, not for power handling. T3.24: `τ = 1/α = Q/(πf₀)`, and substituting A1's exact `BW = f₀/Q` gives **`τ = 1/(πBW)`** — the ring-down depends on bandwidth *alone*, not centre frequency or order. A 500 Hz CW filter rings 0.64 ms at 455 kHz or at 7 MHz; against a 60 ms dot at 20 wpm that sets the floor on useful narrowness, with 50 Hz (6.4 ms) audibly smearing keying.
 
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (8), ranked
+## ⬜ Open (4), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
@@ -229,13 +231,11 @@ its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
 ### Tier C — smaller, still worthwhile
 
-**Four left.** T3.20 `τ = R_Th·C_eq` for multi-element networks (and the honest
-limit of the combine-everything recipe) · T3.28c dip-then-load as
-resonance-then-transformation · T3.28i frequency-counter ±1 count plus ppm · the
-oscilloscope fold-back application of `sec:samplingthm` in Ch 20
+**✅ Tier C is complete.** All sixteen items landed in Round 5.
 
-*Done in Round 5:* T3.23, T3.24 (filters) · T3.25, T3.26, T3.28d, T3.28e, T3.28f,
-T3.28g, T3.28h (lines and antennas) · T3.27, T3.28a, T3.28b (active). See Done above.
+*Grouped in Round 5 as:* T3.23, T3.24 (filters) · T3.25, T3.26, T3.28d, T3.28e,
+T3.28f, T3.28g, T3.28h (lines and antennas) · T3.27, T3.28a, T3.28b (active) ·
+T3.20, T3.28c, T3.28i and the scope fold-back (measurement). See Done above.
 
 ### Tier D — housekeeping, carried since Round 3
 

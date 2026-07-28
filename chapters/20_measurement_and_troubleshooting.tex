@@ -87,6 +87,62 @@ get worse: a few centimetres of lead is an inductance, and a probe's tip capacit
 loads a tuned circuit enough to shift its resonance. Touching a high-\(Q\) tank with
 a \SI{10}{\pico\farad} probe detunes it---the measurement moves the pole you were
 trying to observe.
+And when the node has more than one resistor, the time constant an instrument
+disturbs is \cref{sec:rthc}'s \(R_{\mathrm{Th}}C\), not the series \(RC\) the
+schematic seems to show.
+
+\section{Two Instrument Limits That Are Already Derived}
+\label{sec:instrumentlimits}
+Before the probe, two accuracy limits that need no new theory---one from
+\cref{ch:dsp}, one from arithmetic.
+
+\subsection{Why a Digital Scope Lies About Fast Signals}
+A digital oscilloscope samples, so \cref{sec:samplingthm} governs it completely. Feed
+it a signal above half its sampling rate and the display does not break up or go
+blank---it shows a \emph{lower} frequency, at full amplitude, looking entirely
+respectable. The displayed frequency is the fold-back formula,
+\[
+f_{\text{displayed}}=\left|f-nf_s\right|,
+\]
+with \(n\) the nearest integer multiple. On a scope sampling at
+\SI{100}{\mega\hertz}, a \SI{70}{\mega\hertz} signal appears at
+\SI{30}{\mega\hertz}, a \SI{120}{\mega\hertz} signal at \SI{20}{\mega\hertz}, and a
+\SI{210}{\mega\hertz} signal at \SI{10}{\mega\hertz}. Worse, a genuine
+\SI{30}{\mega\hertz} signal \emph{also} appears at \SI{30}{\mega\hertz}, and
+\cref{sec:samplingthm} showed the two produce \emph{identical} sample sequences---so
+no amount of processing inside the instrument can tell you which you are looking at.
+
+That is why the highest frequency a digital scope can display accurately is set by its
+converter's sampling rate, and why the right response to a suspicious trace is to
+change the timebase: a real signal keeps its frequency, an alias moves.
+
+\subsection{Frequency Counter Accuracy: Two Terms}
+A counter gates its input for a known time and counts cycles, so exactly two things
+limit it. The count itself can be off by one, because the gate opens and closes at
+arbitrary points in the input cycle---an error of \(1/T_{\text{gate}}\) in hertz,
+\emph{independent of the frequency measured}. And the gate time comes from the
+instrument's own timebase oscillator, whose fractional error multiplies the reading:
+\[
+\Delta f\approx\underbrace{\frac{1}{T_{\text{gate}}}}_{\pm1\text{ count}}
++\underbrace{f\times\frac{\text{ppm}}{10^6}}_{\text{timebase}} .
+\]
+Which dominates is not a close call at radio frequencies. With a \SI{1}{\second} gate
+the \(\pm1\) count is \SI{1}{\hertz} whatever you measure, while a \SI{1}{ppm}
+timebase contributes \SI{146}{\hertz} at \SI{146}{\mega\hertz}---a factor of
+\(146\). \emph{The timebase is what limits a frequency counter}, which is why counters
+are specified by their reference oscillator and why a good one has an oven-stabilized
+or GPS-locked timebase. Lengthening the gate improves only the term that was already
+negligible.
+
+\begin{exambox}
+E4B asks which factor most affects a frequency counter's accuracy, and the answer is
+\emph{time base accuracy}---not the input attenuator, not the decade dividers, not the
+logic's temperature coefficient. The two-term formula above is why: every other error
+source either cancels or is swamped, and only the timebase error scales with the
+frequency being measured. E4A separately asks what limits the highest frequency a
+digital oscilloscope can display, and the answer is the \emph{sampling rate of its
+analog-to-digital converter}, for the fold-back reason above.
+\end{exambox}
 
 \section{The Oscilloscope Probe: Pole-Zero Cancellation on the Bench}
 \label{sec:probe}
@@ -407,6 +463,41 @@ twice one unit's worth. And above S9 the scale is abandoned entirely in favor of
 ``\(n\) dB over S9,'' precisely because the S numbers would otherwise run out.
 \end{mistakebox}
 
+\section{Tuning a Tank: Dip, Then Load}
+\label{sec:diploading}
+A pi-network output stage has two controls, traditionally \textsc{tune} and
+\textsc{load}, and the ritual for using them is worth restating as circuit theory
+because the ritual is exactly \cref{sec:lnetwork}'s two jobs performed one at a time.
+
+Recall from \cref{ch:filters} that matching does two independent things: cancel
+reactance, then transform resistance. A pi-network's two variable capacitors are those
+two degrees of freedom, and the procedure separates them.
+
+\emph{Dip} first. Adjusting \textsc{tune} sweeps the tank through resonance, and at
+resonance the parallel circuit of \cref{ch:rlcpar} presents its \emph{maximum}
+impedance---so the current the supply must deliver is at its \emph{minimum}. That is
+the dip: a minimum in plate or collector current marks the frequency where the
+reactances have cancelled. Nothing about the load has been set yet; the dip only says
+the tank is resonant.
+
+\emph{Then load.} Adjusting \textsc{load} changes the transformation ratio, presenting
+a different resistance to the device---which is what actually sets output power, since
+\cref{ch:resistive}'s maximum-power-transfer condition depends on that resistance and
+nothing else. But changing the loading also perturbs the tuning, because the two
+controls are not perfectly orthogonal, so the dip must be re-found. Hence the
+alternation: dip, load, re-dip, until both are right.
+
+\begin{mistakebox}
+\textbf{A dip is not a match.} The dip locates resonance, not correct loading---a stage
+can dip beautifully into far too high an impedance and deliver almost no power while
+developing dangerous voltage across the tank (\cref{ch:rlc}'s \(Q\)-fold voltage
+magnification is real). Conversely, tuning for maximum output without watching the dip
+can settle on an off-resonance operating point where the device sees a reactive load
+and dissipates the difference. \emph{Resonance and transformation are separate
+conditions and need separate confirmation}, which is the whole reason there are two
+knobs rather than one.
+\end{mistakebox}
+
 \section{Troubleshooting Pattern}
 The chapters of this book supply a checklist, because every one of them rests on
 assumptions that a real circuit can violate:
@@ -414,7 +505,9 @@ assumptions that a real circuit can violate:
 \item Identify the expected DC operating point.
 \item Check whether the signal path is AC-coupled, DC-coupled, filtered, or matched.
 \item Estimate the node's impedance \emph{before} attaching an instrument, and confirm
-your meter or probe is far enough off it (\cref{sec:probe}).
+your meter or probe is far enough off it (\cref{sec:probe}), and that the instrument's own
+limits---sampling rate and timebase (\cref{sec:instrumentlimits})---are not what you
+are actually looking at.
 \item Compare the measured gain, attenuation, phase, or SWR against the simple model.
 \item If they differ, ask which assumption failed, and note that each one belongs to a
 specific chapter: the \emph{ideal element} and \emph{lumped} assumptions of
