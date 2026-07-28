@@ -661,6 +661,98 @@ offset and scales as \(1/Q_L^2\)---\emph{doubling the loaded \(Q\) buys
 oscillator raises the apparent noise floor near strong signals.
 \end{physicalbox}
 
+\subsection{The Crystal Is Two Resonances}
+\label{sec:crystal}
+That last remark makes the quartz crystal worth a page, because everything special
+about it is one equivalent circuit built from parts this book already owns---and it
+has \emph{two} resonances a few parts per million apart, which is the fact all the
+practical consequences hang on.
+
+Mechanically, a quartz plate is a vibrating mass with stiffness and friction, and a
+piezoelectric plate converts that motion to charge. Driven electrically it therefore
+behaves as a series \(R\)--\(L_m\)--\(C_m\) branch---the \emph{motional} arm, whose
+elements stand for mechanical mass, stiffness and loss. But the electrodes are also
+just two plates with quartz between them, so a genuine capacitance \(C_0\) sits across
+the whole thing whether the plate is vibrating or not. That is the entire model: a
+series RLC shunted by \(C_0\).
+
+Now read off the two frequencies, using nothing but \cref{ch:rlc,ch:rlcpar}. The
+motional arm alone is a series resonator, so at
+\[
+f_s=\frac{1}{2\pi\sqrt{L_mC_m}}
+\]
+its reactance vanishes and the crystal's impedance is a \emph{minimum}, essentially
+\(R\). Slightly higher up, the motional arm has become net inductive, and an inductor
+in parallel with \(C_0\) is a parallel resonator (\cref{ch:rlcpar}), so the impedance
+goes through a \emph{maximum}. That happens where the motional arm's inductance
+resonates with \(C_m\) and \(C_0\) in \emph{series}---because the two capacitances are
+in series around that loop:
+\[
+f_p=\frac{1}{2\pi\sqrt{L_m\dfrac{C_mC_0}{C_m+C_0}}}
+=f_s\sqrt{1+\frac{C_m}{C_0}}
+\;\approx\;f_s\left(1+\frac{C_m}{2C_0}\right).
+\]
+A crystal is thus a series resonance and a parallel resonance separated by a fraction
+\(C_m/2C_0\)---and since the motional capacitance is femtofarads while the holder
+capacitance is picofarads, that fraction is small. The gap is the crystal's whole
+working range.
+
+\begin{workedbox}[: how far apart, and how high a \(Q\)]
+Take \(C_m=\SI{15}{\femto\farad}\), \(C_0=\SI{5}{\pico\farad}\),
+\(R=\SI{15}{\ohm}\), and pick \(L_m\) to put \(f_s\) at exactly \SI{10}{\mega\hertz};
+that requires \(L_m=\SI{16.9}{\milli\henry}\). Then
+\[
+\frac{f_p}{f_s}=\sqrt{1+\frac{15\times10^{-15}}{5\times10^{-12}}}=1.001499,
+\qquad
+f_p=\SI{10.014989}{\mega\hertz},
+\]
+so the two resonances sit \SI{1499}{ppm}---about \SI{15}{\kilo\hertz}---apart. The
+motional \(Q\) is
+\[
+Q=\frac{\omega_sL_m}{R}=\frac{2\pi(10^7)(0.0169)}{15}\approx 7\times10^4 ,
+\]
+against roughly \(200\) for a good LC tank. And notice what \(L_m\) is:
+\SI{16.9}{\milli\henry} at \SI{10}{\mega\hertz}. No wound coil of that inductance has
+anything remotely like that \(Q\)---which is exactly why quartz is used. The
+``inductor'' is a lump of vibrating rock, and mechanical losses are far lower than
+copper ones.
+\end{workedbox}
+
+Three consequences follow, and each is a pool question:
+
+\textbf{The oscillator must be told which resonance to use.} Between \(f_s\) and
+\(f_p\) the crystal looks \emph{inductive}, and that narrow band is where a
+Pierce or Colpitts oscillator operates---it is using the crystal as the
+high-\(Q\) inductor of its tank. Where in the band it lands depends on what
+capacitance the circuit puts in series with the crystal, because that capacitance adds
+to \(C_0\) in the formula above and slides \(f_p\) down toward \(f_s\). Hence a
+crystal is specified with a \textbf{load capacitance} \(C_L\): the manufacturer's
+marked frequency is only delivered if the circuit presents that value. With the
+numbers above, \(C_L=\SI{32}{\pico\farad}\) puts the oscillator \SI{203}{ppm} above
+\(f_s\) rather than the \SI{1499}{ppm} of the unloaded parallel resonance.
+
+\textbf{The pulling range is the gap.} Trimming \(C_L\) can only move the frequency
+within the \(f_s\)-to-\(f_p\) window, which is why a crystal oscillator is adjustable
+by tens of parts per million and not by kilohertz. A VXO's tuning range is not a
+design choice; it is \(C_m/2C_0\).
+
+\textbf{Lattice-filter bandwidth is the gap too.} A crystal filter is built by
+arranging several crystals so their series and parallel resonances interleave, and the
+passband it can span is bounded by that same separation. That is why crystal filters
+come in narrow bandwidths---a few hundred hertz for CW, a few kilohertz for SSB---and
+why widening one means choosing crystals with a larger \(C_m/C_0\), not adjusting a
+component.
+
+\begin{exambox}
+E6D asks for the equivalent circuit outright: \emph{a series RLC in parallel with a
+shunt \(C\) representing electrode and stray capacitance}. Read the distractors
+carefully---they permute ``series'' and ``parallel'' and swap which capacitances
+combine which way, and the model above is what settles it. E7H then asks what ensures
+a crystal oscillator runs on the manufacturer's marked frequency: \emph{provide the
+crystal with a specified parallel capacitance}. That is \(C_L\), and the reason it
+matters is the \(C_0+C_L\) in the \(f_p\) formula.
+\end{exambox}
+
 \section{The Phase-Locked Loop}
 \label{sec:pll}
 An oscillator places its poles on the \(\jj\omega\) axis; the obvious next question is

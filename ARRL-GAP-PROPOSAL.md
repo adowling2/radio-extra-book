@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **36 done, 21 open.** Nothing has been silently dropped.
+Score: **37 done, 20 open.** Nothing has been silently dropped.
 
-## ✅ Done (36)
+## ✅ Done (37)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -201,11 +201,13 @@ noise bandwidth
 
 **Tier B5 — the two-element array factor (`sec:arrayfactor`).** Pure phasor addition: the far element's extra path `d cos θ` is a phase `βd cos θ`, add the feed phase `φ`, and the common element pattern divides out, leaving `F = 1 + e^{j(φ+βd cos θ)}`. Factor out half the angle as with any two phasors and `|F| = 2|cos((φ+βd cos θ)/2)|`. The three patterns E9C01/02/03 ask for by name are then three substitutions evaluated at `θ = 0°` and `90°` — verified against the pool: λ/2 in phase → figure-eight broadside, λ/2 out of phase → figure-eight along the axis, λ/4 at 90° → cardioid. A `physicalbox` gets the DF sense antenna free and explains why direction finding nulls rather than peaks: a cosine is flat at its maximum and steep at its zero, so the sharpness is calculus, not hardware.
 
+**Tier B6 — the crystal as two resonances (`sec:crystal`).** The motional arm `R–L_m–C_m` is a series resonator, so `f_s = 1/2π√(L_mC_m)` is an impedance minimum (Ch 13); just above it the arm is net inductive and resonates against `C_0` as a parallel circuit (Ch 14), giving a maximum at `f_p = f_s√(1+C_m/C_0) ≈ f_s(1+C_m/2C_0)` — the two capacitances are in series around that loop. Worked example at 10.000 MHz: `f_p` = 10.014989 MHz, 1499 ppm (15 kHz) away, motional `Q ≈ 7×10⁴` against ~200 for an LC tank, and `L_m` = 16.9 mH — no wound coil of that value has anything like that `Q`, which is *why* quartz. Three consequences, each a pool question: the inductive window between `f_s` and `f_p` is where a Pierce or Colpitts runs, so `C_L` must be specified (E7H12 — 32 pF puts it 203 ppm up, not 1499); the pulling range *is* the gap, so VXO tuning is tens of ppm by construction; and lattice-filter bandwidth is bounded by the same gap, which is why crystal filters are narrow. E6D02's equivalent circuit is the model itself.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (21), ranked
+## ⬜ Open (20), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
@@ -213,7 +215,6 @@ its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
 | # | Item | Why |
 |---|---|---|
-| T2.11 | **Crystal as two resonances** | `R–L_m–C_m` parallel `C₀` gives an impedance zero and pole a few hundred ppm apart — which *is* the pulling range, sets lattice-filter bandwidth, and explains why `C_L` must be specified. E6D02, E7H12. |
 | T2.16 | **Named antenna matches** | Hairpin, gamma, delta, stub — all absent, though we own both the L-network and stub reactances. The hairpin is a shorted stub `<λ/4`, hence inductive, hence the network **demands** a series capacitance — so "the element must be capacitive" becomes a consequence. Six pool questions, zero new math. |
 
 ### Tier C — smaller, still worthwhile
