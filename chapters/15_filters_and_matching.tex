@@ -268,9 +268,19 @@ envelope of a resonator's decay falls as \(\ee^{-\alpha t}\) with
 \[
 \tau=\frac{1}{\alpha}=\frac{2Q}{\omega_0}=\frac{Q}{\pi f_0}.
 \]
-Two ways of reading that, and the second is the useful one. First, \(\tau f_0=Q/\pi\):
-a resonator always rings for about \(Q/\pi\) cycles, whatever its frequency. Second,
-substitute \cref{sec:halfpower}'s exact \(BW=f_0/Q\):
+Two ways of reading that, and the second is the useful one. First,
+\(\tau f_0=Q/\pi\): one time constant is \(Q/\pi\) cycles, whatever the frequency.
+
+\emph{That is worth reconciling with the rule of thumb quoted earlier in the book,}
+that a resonator ``rings for roughly \(Q\) cycles'' (\cref{ch:linsys,ch:rlc}). Both are
+right, and they differ only in how much decay counts as finished. After \(n\) cycles
+the envelope is \(\ee^{-\pi n/Q}\), so \(Q/\pi\) cycles takes it to \(1/\ee\)
+(\SI{37}{\percent}), while \(Q\) cycles---exactly \(\pi\) time constants---takes it
+to \(\ee^{-\pi}\), or \SI{4.3}{\percent}. So ``\(Q\) cycles'' is the ring heard out
+to near-inaudibility and \(Q/\pi\) is the time constant that governs it. Use \(\tau\)
+for anything quantitative.
+
+Second, substitute \cref{sec:halfpower}'s exact \(BW=f_0/Q\):
 \[
 \boxed{\;\tau=\frac{1}{\pi\,BW}\;}
 \]

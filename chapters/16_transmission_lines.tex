@@ -8,11 +8,13 @@ line turns out to be built from the same \(L\) and \(C\) element laws, obeys the
 same KVL and KCL, and produces the same resonances as \cref{ch:rlc,ch:rlcpar}, only
 distributed along a length instead of concentrated in two parts.
 
-The development is staged: everything through \cref{sec:stubs} treats the line as
-\emph{lossless}, which is the right first model and makes every result clean, and
-\cref{sec:lineloss} then puts the loss back and shows what changes---feed-line
+The development is staged. The line is treated as \emph{lossless} from here through
+\cref{sec:sparams}---the right first model, and the one that makes every result
+clean. \Cref{sec:lineloss} then puts the loss back and shows what changes: feed-line
 attenuation, why it climbs with frequency, and why a mismatch measured at the
-transmitter looks better than it is.
+transmitter looks better than it is. Everything after that---input impedance, stubs,
+transformers, the Smith chart and the antenna---returns to the lossless model, because
+loss changes the numbers without changing the structure.
 
 \section{Why Lines Matter}
 Transmission lines are distributed systems. When a feed line is a significant
@@ -382,7 +384,7 @@ V(x)=V^{+}\ee^{-\gamma x}
 \underbrace{\ee^{-\jj\beta x}}_{\text{rotates}} .
 \]
 The two parts do independent jobs: \(\beta\) is the \emph{phase constant} already
-met in \cref{sec:stubs}, counting radians of delay per unit length, while
+met in the standing-wave section above, counting radians of delay per unit length, while
 \(\alpha\) is the \textbf{attenuation constant}, shrinking the amplitude
 exponentially with distance. Loss and delay, one complex number.
 
@@ -721,8 +723,8 @@ phone, but a \emph{picture} in which the algebra's structure is visible---rotati
 distance, circles for constant SWR, one point for a match.
 
 \begin{exambox}
-Group E9G is eleven questions of vocabulary and use, and every answer is in
-\cref{fig:smith-labelled} or the two paragraphs above it. What it \emph{calculates}:
+Group E9G is eleven questions of vocabulary and use, and every answer is either
+labelled in \cref{fig:smith-labelled} or stated in this section. What it \emph{calculates}:
 impedance along transmission lines, and impedance and SWR values. Its \emph{coordinate
 system}: resistance circles and reactance arcs---the two families, and the arcs are the
 points of constant \emph{reactance}. Its \emph{common use}: determining the length and
@@ -862,14 +864,17 @@ The only difference is which reference the gain used, so
 watts. A \SI{100}{\watt} transmitter through \SI{1.5}{\decibel} of feed line into a
 \(6\,\mathrm{dBd}\) beam gives
 \(\mathrm{ERP}=\SI{282}{\watt}\) and \(\mathrm{EIRP}=\SI{462}{\watt}\): the same
-station, described twice. Note also that neither is efficiency---
-\cref{sec:antennaeff}'s \(\eta\) is already buried inside the gain figure, since a
-lossy antenna concentrates less of what reaches it.
+station, described twice. Note also that neither is efficiency: the \(\eta\) of
+\cref{sec:antennaeff} below is folded into the gain figure, since a lossy antenna
+concentrates less of what reaches it.
 
 \subsection{Putting Numbers On It}
 Take a dipole resonant in the \SI{20}{\meter} band at
 \(f_0=\SI{14.1}{\mega\hertz}\), with radiation resistance
-\(R_{\text{rad}}=\SI{35}{\ohm}\) and characteristic reactance
+\(R_{\text{rad}}=\SI{35}{\ohm}\)---about half the \SI{73}{\ohm} of a dipole in
+free space, which is what a real one at ordinary height presents, because the ground
+image of \cref{sec:groundimage} couples back into it and pulls the feed resistance
+down---and characteristic reactance
 \(\omega_0L=1/(\omega_0C)=\SI{200}{\ohm}\). Then
 \[
 L=\frac{\SI{200}{\ohm}}{\omega_0}\approx\SI{2.26}{\micro\henry},
@@ -905,6 +910,77 @@ whip needs retuning across a band a dipole covers in one go, and why its efficie
 suffers (more of the loss now sits in the coil's resistance than in radiation). One
 formula from \cref{ch:rlc}, two practical consequences.
 \end{physicalbox}
+
+\subsection{From the Model to the Chart}
+Normalizing by the system impedance, \(z(\omega)=Z(\omega)/Z_0\), the reflection
+coefficient is the same M\"obius map as before,
+\[
+\Gamma(\omega)=\frac{z(\omega)-1}{z(\omega)+1}.
+\]
+Sweeping frequency traces a curve on the Smith chart (\cref{fig:smith-antenna}).
+At resonance the point crosses the real axis at
+\(z=R_{\text{rad}}/Z_0\); if \(R_{\text{rad}}\ne Z_0\) it lands left of center
+(here \(35/50=0.7\)), a residual mismatch a matching network would move to the
+center. Off resonance the point swings up (inductive) or down (capacitive),
+tracing the arc a NanoVNA draws as it sweeps the band. Reading the chart is
+reading the model: distance from center is \(|\Gamma|\) (hence SWR), the crossing
+of the real axis marks \(\omega_0\), and which half of the chart the arc sits in
+tells you whether to add series capacitance or inductance to tune it.
+
+\begin{controlsbox}
+\textbf{One pole pair, three pictures.} These are worth lining up, because they are
+the same series-RLC model drawn in three coordinate systems.
+\begin{itemize}
+\item In \cref{ch:rlc} the impedance locus \(Z(f)=R+\jj X(f)\) was a \emph{vertical
+straight line} at \(\Re\{Z\}=R\) (\cref{fig:rlc-phasor}), because \(R\) is fixed and
+only the reactance sweeps.
+\item In \cref{ch:rlcpar} the dual circuit's locus was a \emph{circle through the
+origin} (\cref{fig:rlcpar-worked}), because taking the reciprocal of a straight line
+that misses the origin produces a circle that passes through it.
+\item Here the Smith chart applies \(\Gamma=(z-1)/(z+1)\), and that map likewise
+sends straight lines to circles---which is why the antenna sweep in
+\cref{fig:smith-antenna} is an \emph{arc}.
+\end{itemize}
+Nothing physical differs among the three; only the coordinates do. It is the same
+point \cref{ch:fourviews} made about time, state space, and frequency, now made about
+three ways of plotting one impedance.
+\end{controlsbox}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.66\textwidth]{smith_chart_antenna}
+\caption{Reflection-coefficient locus \(\Gamma(f)\) of the idealized series-RLC
+antenna (\(R_{\text{rad}}=\SI{35}{\ohm}\), \(f_0=\SI{14.1}{\mega\hertz}\)) on a
+hand-built Smith chart. The sweep crosses the real axis at resonance and swings
+inductive (upper half) above \(f_0\), capacitive (lower half) below---the same
+picture a NanoVNA shows for a real antenna.}
+\label{fig:smith-antenna}
+\end{figure}
+
+\begin{exambox}
+Almost every transmission-line question is one of four, and each has a single
+governing formula. \emph{How bad is the mismatch?}
+\(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\), then
+\(\mathrm{SWR}=(1+|\Gamma|)/(1-|\Gamma|)\); for a purely resistive load this
+shortcuts to the larger of \(Z_L/Z_0\) and \(Z_0/Z_L\). \emph{How long is the line
+electrically?} \(\lambda=VF\,c/f\)---and use the real line's \(VF\), never
+free-space wavelength. \emph{What does the line do to the impedance?} A quarter
+wave inverts it about \(Z_0^2\), a half wave repeats it, a matched line leaves it
+alone. \emph{What does an unterminated piece do?} It is a pure reactance: a shorted
+stub under \(\lambda/4\) is inductive, an open stub under \(\lambda/4\) is
+capacitive, and the behavior inverts every quarter wave.
+
+Two traps. A perfect match is about \(Z_L=Z_0\), so no line length can fix a
+mismatch---it only relocates it. And reflected \emph{power} is \(|\Gamma|^2\) while
+return loss is \(-20\log_{10}|\Gamma|\), so watch whether a question is asking about
+amplitude or power.
+\end{exambox}
+
+
+\section{What the Antenna Model Explains}
+The same one-port model, pressed further, accounts for efficiency, feed position,
+arrays, and the effect of ground---each by reusing a result this book already owns
+rather than by introducing antenna theory of its own.
 
 \subsection{Efficiency: the Resistance That Does Not Radiate}
 \label{sec:antennaeff}
@@ -1230,6 +1306,12 @@ buying pattern and bandwidth with efficiency}, which is the same currency
 \cref{sec:antennaeff} was spending.
 \end{itemize}
 
+
+\section{Matching an Antenna to a Line}
+Finally, the hardware. Every scheme below is \cref{sec:lnetwork}'s network or
+\cref{sec:stubs}'s stub in antenna clothing, and the last one is a power divider
+built from the same quarter-wave sections.
+
 \subsection{The Named Antenna Matches}
 \label{sec:antennamatches}
 Antenna books present four matching schemes under proper names---hairpin (or beta),
@@ -1373,71 +1455,6 @@ does not mention and the part the resistor is actually there for.
 pocket-sized vector network analyzer (VNA)---connects to.}
 \label{fig:antenna-model}
 \end{figure}
-
-\subsection{From the Model to the Chart}
-Normalizing by the system impedance, \(z(\omega)=Z(\omega)/Z_0\), the reflection
-coefficient is the same M\"obius map as before,
-\[
-\Gamma(\omega)=\frac{z(\omega)-1}{z(\omega)+1}.
-\]
-Sweeping frequency traces a curve on the Smith chart (\cref{fig:smith-antenna}).
-At resonance the point crosses the real axis at
-\(z=R_{\text{rad}}/Z_0\); if \(R_{\text{rad}}\ne Z_0\) it lands left of center
-(here \(35/50=0.7\)), a residual mismatch a matching network would move to the
-center. Off resonance the point swings up (inductive) or down (capacitive),
-tracing the arc a NanoVNA draws as it sweeps the band. Reading the chart is
-reading the model: distance from center is \(|\Gamma|\) (hence SWR), the crossing
-of the real axis marks \(\omega_0\), and which half of the chart the arc sits in
-tells you whether to add series capacitance or inductance to tune it.
-
-\begin{controlsbox}
-\textbf{One pole pair, three pictures.} These are worth lining up, because they are
-the same series-RLC model drawn in three coordinate systems.
-\begin{itemize}
-\item In \cref{ch:rlc} the impedance locus \(Z(f)=R+\jj X(f)\) was a \emph{vertical
-straight line} at \(\Re\{Z\}=R\) (\cref{fig:rlc-phasor}), because \(R\) is fixed and
-only the reactance sweeps.
-\item In \cref{ch:rlcpar} the dual circuit's locus was a \emph{circle through the
-origin} (\cref{fig:rlcpar-worked}), because taking the reciprocal of a straight line
-that misses the origin produces a circle that passes through it.
-\item Here the Smith chart applies \(\Gamma=(z-1)/(z+1)\), and that map likewise
-sends straight lines to circles---which is why the antenna sweep in
-\cref{fig:smith-antenna} is an \emph{arc}.
-\end{itemize}
-Nothing physical differs among the three; only the coordinates do. It is the same
-point \cref{ch:fourviews} made about time, state space, and frequency, now made about
-three ways of plotting one impedance.
-\end{controlsbox}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.66\textwidth]{smith_chart_antenna}
-\caption{Reflection-coefficient locus \(\Gamma(f)\) of the idealized series-RLC
-antenna (\(R_{\text{rad}}=\SI{35}{\ohm}\), \(f_0=\SI{14.1}{\mega\hertz}\)) on a
-hand-built Smith chart. The sweep crosses the real axis at resonance and swings
-inductive (upper half) above \(f_0\), capacitive (lower half) below---the same
-picture a NanoVNA shows for a real antenna.}
-\label{fig:smith-antenna}
-\end{figure}
-
-\begin{exambox}
-Almost every transmission-line question is one of four, and each has a single
-governing formula. \emph{How bad is the mismatch?}
-\(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\), then
-\(\mathrm{SWR}=(1+|\Gamma|)/(1-|\Gamma|)\); for a purely resistive load this
-shortcuts to the larger of \(Z_L/Z_0\) and \(Z_0/Z_L\). \emph{How long is the line
-electrically?} \(\lambda=VF\,c/f\)---and use the real line's \(VF\), never
-free-space wavelength. \emph{What does the line do to the impedance?} A quarter
-wave inverts it about \(Z_0^2\), a half wave repeats it, a matched line leaves it
-alone. \emph{What does an unterminated piece do?} It is a pure reactance: a shorted
-stub under \(\lambda/4\) is inductive, an open stub under \(\lambda/4\) is
-capacitive, and the behavior inverts every quarter wave.
-
-Two traps. A perfect match is about \(Z_L=Z_0\), so no line length can fix a
-mismatch---it only relocates it. And reflected \emph{power} is \(|\Gamma|^2\) while
-return loss is \(-20\log_{10}|\Gamma|\), so watch whether a question is asking about
-amplitude or power.
-\end{exambox}
 
 \section{Worked Example}
 A \(\SI{100}{\ohm}\) load terminates a \(\SI{50}{\ohm}\) line:
