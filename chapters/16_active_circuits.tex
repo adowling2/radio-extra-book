@@ -14,6 +14,7 @@ those results, this chapter puts them to work on real devices, so it is worth ha
 \cref{ch:feedback} fresh in mind.
 
 \section{Amplifier Gain and Classes}
+\label{sec:classes}
 Voltage gain is \(A_v=V_o/V_i\); in decibels \(A_{v,\dB}=20\log_{10}|A_v|\). Power
 gain is \(G_{\dB}=10\log_{10}(P_o/P_i)\).
 
@@ -64,6 +65,51 @@ statement: the loop gain is large. The inverting configuration
 (\cref{fig:opamp-inv}) makes this concrete: with the non-inverting input grounded
 and the inverting input held at a virtual ground by feedback, the input current
 \(V_i/R_{in}\) must flow on through \(R_f\), giving \(V_o=-R_f\,(V_i/R_{in})\).
+
+\subsection{Where \texorpdfstring{\(\beta\)}{beta} Is Hiding}
+\label{sec:beta-resistors}
+\Cref{ch:feedback} worked entirely with an abstract feedback fraction \(\beta\), and
+it is worth connecting that symbol to actual components before going further---because
+every result in that chapter then becomes an op-amp result.
+
+Look at the non-inverting amplifier. The output drives the divider \(R_f\)--\(R_g\),
+and the voltage fed back to the inverting input is what that divider delivers:
+\[
+v_-=V_o\,\frac{R_g}{R_f+R_g}
+\qquad\Longrightarrow\qquad
+\boxed{\;\beta=\frac{R_g}{R_f+R_g}\;}
+\]
+So \(\beta\) is nothing more exotic than \cref{ch:resistive}'s voltage divider,
+running backwards from output to input. The large-loop-gain limit
+\(A_{\mathrm{cl}}\to1/\beta\) of \cref{ch:feedback} then reads
+\[
+\frac{1}{\beta}=\frac{R_f+R_g}{R_g}=1+\frac{R_f}{R_g},
+\]
+which is exactly the non-inverting gain formula above. The textbook result and the
+control-theory result are the same statement.
+
+Keeping \(A\) finite shows what the ideal rules cost. Substituting into
+\(A_{\mathrm{cl}}=A/(1+A\beta)\) and factoring out \(1/\beta\),
+\[
+A_{\mathrm{cl}}=\frac{1}{\beta}\cdot\frac{A\beta}{1+A\beta}
+=\underbrace{\Bigl(1+\frac{R_f}{R_g}\Bigr)}_{\text{ideal}}
+\cdot\underbrace{\frac{1}{1+1/L}}_{\text{error}},
+\qquad L=A\beta ,
+\]
+so the fractional gain error is about \(1/L\)---\cref{ch:feedback}'s sensitivity
+result, in the form a designer uses. With \(A=10^5\) and a gain of \(100\)
+(\(\beta=10^{-2}\), so \(L=1000\)) the error is \(0.1\%\), which is why the ideal
+formula is safe.
+
+The same substitution quantifies the virtual ground. The op-amp's differential input
+voltage is not zero but
+\[
+v_+-v_-=\frac{V_o}{A},
+\]
+so for \(V_o=\SI{10}{\volt}\) and \(A=10^5\) the two inputs differ by
+\SI{100}{\micro\volt}. ``The inputs are at the same voltage'' is not an axiom---it is
+a consequence of \(A\) being enormous, and it degrades exactly as \(A\) falls with
+frequency.
 
 \begin{figure}[htbp]
 \centering
@@ -151,12 +197,46 @@ bandwidth: doubling one halves the other.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{opamp_gbw_bode}
-\caption{Gain--bandwidth product of a single-pole op-amp. Each closed-loop gain
-(set by \(1/\beta\)) is flat until it meets the open-loop skirt, then rolls off
-along it, so every closed-loop corner lands on the same unity-gain frequency
-\(f_T=A_0 f_a\). Trading gain for bandwidth slides along one fixed diagonal.}
+\caption{Gain--bandwidth product of a single-pole op-amp with
+\(A_0=10^5\) (\SI{100}{\decibel}) and \(f_a=\SI{10}{\hertz}\), so
+\(f_T=\SI{1}{\mega\hertz}\). Each closed-loop gain (set by \(1/\beta\)) is flat until
+it meets the open-loop skirt, then rolls off along it, so every closed-loop corner
+lands on the same unity-gain frequency \(f_T=A_0f_a\). Trading gain for bandwidth
+slides along one fixed diagonal.}
 \label{fig:opamp-gbw}
 \end{figure}
+
+\begin{workedbox}[: reading a real part's limits]
+The op-amp plotted in \cref{fig:opamp-gbw} is a common one: \(A_0=10^5\)
+(\SI{100}{\decibel}) with an open-loop corner at \(f_a=\SI{10}{\hertz}\), so
+\[
+f_T=A_0f_a=(10^5)(\SI{10}{\hertz})=\SI{1}{\mega\hertz}.
+\]
+Build a non-inverting amplifier with a gain of \(100\). From
+\cref{sec:beta-resistors}, that needs \(1+R_f/R_g=100\)---say
+\(R_f=\SI{99}{\kilo\ohm}\) and \(R_g=\SI{1}{\kilo\ohm}\), giving
+\(\beta=1/100\). Then:
+\[
+L(0)=A_0\beta=1000,
+\qquad
+A_{\mathrm{cl}}(0)=\frac{10^5}{1+1000}=99.9,
+\qquad
+f_c=f_a(1+A_0\beta)=\SI{10.0}{\kilo\hertz}.
+\]
+Three things to read off. The gain is \(99.9\) rather than \(100\)---the \(0.1\%\)
+error predicted by \(1/L\). The bandwidth is \SI{10}{\kilo\hertz}, not
+\SI{1}{\mega\hertz}: gain \(\times\) bandwidth returns \(f_T\), as it must. And the
+closed-loop pole has moved from \SI{10}{\hertz} out to \SI{10}{\kilo\hertz}, a factor
+of \(1001\) to the left---\cref{ch:feedback}'s first-order result with real numbers.
+\end{workedbox}
+
+\begin{exambox}
+This is the practical shape of gain--bandwidth questions. An op-amp with
+\(f_T=\SI{1}{\mega\hertz}\) configured for a gain of \(100\) gives about
+\SI{10}{\kilo\hertz} of bandwidth---fine for audio, useless at RF. A stage needing
+both high gain and wide bandwidth needs either a faster part or two cascaded stages of
+modest gain (whose gains multiply while each keeps its own wider bandwidth).
+\end{exambox}
 
 \begin{exambox}
 Gain--bandwidth questions are the practical face of this: an op-amp with
@@ -184,18 +264,39 @@ overshoot, a peaked response), and zero margin puts them on it. An op-amp datash
 phase-margin figure is that number for the part's own internal loop.
 
 The same story reads on the s-plane as a root locus (\cref{fig:opamp-rootlocus}):
-as loop gain rises, the closed-loop poles of a multi-pole amplifier migrate, and
-with three poles two of them curve toward and cross the \(\jj\omega\) axis---the
-moment small margins become ringing and then sustained oscillation.
+as loop gain rises, the closed-loop poles of a multi-pole amplifier migrate, and with
+three poles two of them curve toward and cross the \(\jj\omega\) axis---the moment
+small margins become ringing and then sustained oscillation.
+
+\begin{controlsbox}
+\textbf{One amplifier, three figures.} \Cref{fig:opamp-rootlocus} is deliberately the
+\emph{same} three-pole loop \(L(s)=K/(1+s/\omega_0)^3\) whose Bode margins appear in
+\cref{fig:fb-margins} and whose oscillation condition appears in
+\cref{fig:oscillator-loopgain}. Follow one amplifier across the three:
+\begin{itemize}
+\item At \(K=3\), \cref{fig:fb-margins} shows healthy gain and phase margins, and the
+locus has its poles well inside the left half-plane.
+\item Raising \(K\) walks the poles right along the locus, shrinking both margins.
+\item At \(K=8\) the poles reach the \(\jj\omega\) axis at
+\(\omega=\sqrt3\,\omega_0\); \cref{fig:oscillator-loopgain} shows the margins hitting
+exactly zero, which is \(L=-1\).
+\item Beyond \(K=8\) the poles are in the right half-plane and the amplifier
+oscillates whether you wanted it to or not.
+\end{itemize}
+Margins and root locus are not two topics---they are two readings of this one
+parameter sweep, which is the claim \cref{ch:feedback} opened with.
+\end{controlsbox}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\textwidth]{opamp_rootlocus}
-\caption{Root locus of a three-pole amplifier as loop gain \(K\) increases. Two
-closed-loop poles leave the real axis and cross into the right half-plane at
-\(K=60\): beyond that the amplifier oscillates. A single-pole amplifier (one
-branch on the real axis) can never do this---instability needs the extra phase
-lag of additional poles.}
+\caption{Root locus of the three-pole amplifier \(L(s)=K/(1+s/\omega_0)^3\) as loop
+gain \(K\) increases---the same loop whose Bode margins appear in
+\cref{fig:fb-margins} and whose oscillation condition appears in
+\cref{fig:oscillator-loopgain}. Two closed-loop poles leave the real axis and reach
+the \(\jj\omega\) axis at \(K=8\), \(\omega=\sqrt3\,\omega_0\); beyond that the
+amplifier oscillates. A single-pole amplifier (one branch on the real axis) can never
+do this---instability needs the extra phase lag of additional poles.}
 \label{fig:opamp-rootlocus}
 \end{figure}
 
@@ -261,10 +362,56 @@ oscillators are quieter.
 \section{Active Filters and Their Limits}
 Op-amps can implement active RC filters that synthesize the second-order pole
 pairs of \cref{ch:filters} without inductors, by using feedback to create complex
-poles from resistors and capacitors. The Sallen--Key low-pass
-(\cref{fig:sallenkey}) is the classic example: two RC stages around a unity-gain
-buffer place a complex pole pair whose \(\wzero=1/\sqrt{R_1R_2C_1C_2}\) and whose
-\(Q\) is set by the component ratios---no inductor required.
+poles from resistors and capacitors. That claim deserves scrutiny: two RC stages in
+cascade give two \emph{real} poles (\cref{ch:rc}), and no arrangement of resistors and
+capacitors alone can produce a complex pair. Feedback is what does it.
+
+The Sallen--Key low-pass (\cref{fig:sallenkey}) is the classic example. Writing KCL at
+the two RC nodes with the buffer enforcing \(v_-=V_o\)---so that \(C_2\) feeds the
+output back to the \emph{first} node rather than to ground---and eliminating the middle
+node gives
+\[
+G(s)=\frac{\wzero^2}{s^2+\dfrac{\wzero}{Q}s+\wzero^2},
+\qquad
+\wzero=\frac{1}{\sqrt{R_1R_2C_1C_2}},
+\qquad
+\frac{1}{Q}=\sqrt{\frac{C_2}{C_1}}
+\left(\sqrt{\frac{R_1}{R_2}}+\sqrt{\frac{R_2}{R_1}}\right).
+\]
+This is precisely the standard second-order form of \cref{ch:linsys}---the same one the
+LC circuit of \cref{ch:rlc} produced---so everything about \(\wzero\), \(\zeta\), and
+resonant peaking transfers unchanged. What is new is the \emph{knob}: with equal
+resistors the bracket becomes \(2\), leaving
+\[
+Q=\frac{1}{2}\sqrt{\frac{C_1}{C_2}} ,
+\]
+so \textbf{the capacitor ratio sets the damping}. That is the whole trick. In an LC
+filter \(Q\) is set by resistance (\cref{sec:lc-lowpass}); here it is set by a ratio of
+two capacitors, and the feedback path through \(C_2\) is what makes the pole pair
+complex. No inductor appears anywhere.
+
+\begin{workedbox}[: a Butterworth audio section]
+Design a second-order Butterworth low-pass at \(f_0=\SI{3}{\kilo\hertz}\).
+Butterworth means \(Q=1/\sqrt2\approx0.707\) (\cref{ch:filters}), so with equal
+resistors,
+\[
+Q=\frac{1}{2}\sqrt{\frac{C_1}{C_2}}=\frac{1}{\sqrt2}
+\qquad\Longrightarrow\qquad
+C_1=2\,C_2 .
+\]
+Choosing \(R_1=R_2=\SI{10}{\kilo\ohm}\) and imposing
+\(\wzero=1/(R\sqrt{C_1C_2})=2\pi(\SI{3}{\kilo\hertz})\) gives
+\[
+C_2\approx\SI{3.75}{\nano\farad},
+\qquad
+C_1\approx\SI{7.5}{\nano\farad}.
+\]
+Two resistors, two capacitors, one op-amp---and a maximally flat second-order response
+that would otherwise need an inductor. Check the limits, though: at
+\(f_0=\SI{3}{\kilo\hertz}\) an op-amp with \(f_T=\SI{1}{\mega\hertz}\) still has a loop
+gain of roughly \(300\), so the ideal analysis holds comfortably. Push the same
+topology to \SI{300}{\kilo\hertz} and it would not.
+\end{workedbox}
 
 \begin{figure}[htbp]
 \centering
@@ -290,6 +437,69 @@ The catch is that the same finite gain--bandwidth product limits them: near the
 amplifier's own gain-crossover the ideal-op-amp assumption fails, so an active
 filter that behaves at audio may be useless at RF, where LC or crystal filters
 take over.
+
+\section{Mixers: Where Linearity Ends}
+\label{sec:mixers}
+Every analytical tool in this book---transfer functions, poles, Bode plots, root
+loci---rests on one assumption stated back in \cref{ch:linsys}: the system is
+\emph{linear}. A mixer is the one circuit in radio built to violate it deliberately,
+and saying so plainly is worth more than papering over it.
+
+A linear system obeys superposition: it can change a sinusoid's amplitude and phase,
+but it can never change its \emph{frequency}. That is precisely why \(G(\jj\omega)\)
+is meaningful---one input frequency in, the same frequency out. A mixer must produce
+frequencies that were not present at its input, so no transfer function can describe
+it. What it does instead is \emph{multiply}:
+\[
+v_{\text{out}}\propto
+\underbrace{\cos(\omega_{\text{RF}}t)}_{\text{signal}}\times
+\underbrace{\cos(\omega_{\text{LO}}t)}_{\text{local oscillator}}
+=\tfrac12\cos\bigl[(\omega_{\text{LO}}-\omega_{\text{RF}})t\bigr]
++\tfrac12\cos\bigl[(\omega_{\text{LO}}+\omega_{\text{RF}})t\bigr],
+\]
+using the product-to-sum identity. Two inputs, and the output contains their
+\textbf{difference} and \textbf{sum} frequencies---neither of which was there before.
+This is the whole basis of the superheterodyne receiver: multiply the incoming signal
+by a local oscillator, keep the difference, and you have translated the signal to a
+fixed intermediate frequency where the sharp filters of \cref{ch:filters} and the
+high-gain amplifiers of this chapter can do their work at one frequency forever.
+
+Two consequences follow immediately from the algebra.
+
+\emph{Image response.} The difference term depends only on
+\(|\omega_{\text{LO}}-\omega_{\text{RF}}|\), so \emph{two} input frequencies---one
+above the local oscillator and one below, equally spaced---produce the same
+intermediate frequency. The unwanted one is the \textbf{image}, and no amount of
+filtering \emph{after} the mixer can separate it from the wanted signal, because by
+then they are identical. It must be rejected before mixing, which is what the front-end
+filter is for.
+
+\emph{Intermodulation.} Real mixers and overdriven amplifiers do not multiply cleanly;
+their nonlinearity contains higher-order terms, which generate combinations
+\(m f_1\pm n f_2\) of any two signals present. The third-order products
+\(2f_1-f_2\) and \(2f_2-f_1\) are the troublesome ones, because for two nearby
+signals they land \emph{nearby too}---inside the passband, where no filter can remove
+them. That is why receiver front ends are specified for intermodulation
+performance, and why an amplifier driven into nonlinearity produces spurious signals
+rather than merely a distorted one.
+
+\begin{physicalbox}
+\textbf{The same nonlinearity, wanted and unwanted.} Class C amplification
+(\cref{sec:classes}) and frequency multiplication rely on exactly the mechanism that
+makes intermodulation a problem: a nonlinear device generating harmonics and mixing
+products. The difference is only whether a tuned circuit afterwards keeps the product
+you wanted. A high-\(Q\) tank (\cref{ch:rlcpar}) keeps one and discards the rest,
+which is why Class C works at all---the nonlinearity makes a mess, and a parallel
+resonator cleans it up.
+\end{physicalbox}
+
+\begin{exambox}
+When a question involves two frequencies producing a third, stop looking for a
+transfer function---the circuit is nonlinear and the answer is arithmetic on
+frequencies: sums, differences, and \(mf_1\pm nf_2\). When a question involves one
+frequency in and the same frequency out with altered amplitude or phase, the circuit
+is linear and every tool in Part~II applies.
+\end{exambox}
 
 \section{Power Supplies}
 Rectifiers, filter capacitors, bleeder resistors, regulators, and switching
