@@ -1,48 +1,275 @@
 \chapter{Measurement and Troubleshooting}
 \label{ch:measurement}
+This chapter is where the book's models meet a bench, and it introduces almost no new
+theory. Every instrument here is a circuit built from parts already analyzed: a
+voltmeter is a resistance you add to a Th\'evenin source (\cref{ch:resistive}), a
+scope probe is a divider with a pole and a zero (\cref{ch:rc,ch:splane}), a probe's
+ground lead is a series RLC resonator (\cref{ch:rlc}), and an antenna analyzer traces
+the Smith locus of \cref{ch:lines}. The reason measurement deserves its own chapter is
+that these added circuits are usually \emph{invisible on the schematic}, so their
+effects get blamed on the circuit under test.
+
 \section{Why Measurement Is a Circuit Problem}
 Meters, probes, oscilloscopes, antenna analyzers, and SWR bridges are themselves
-circuits. Connecting a measurement instrument changes the circuit unless the
-instrument impedance is high, low, or matched in the right way for the
-measurement.
+circuits. Connecting one changes the circuit unless its impedance is high, low, or
+matched in the right way for the measurement---and ``high'' or ``low'' is never
+absolute, only relative to the impedance of the node you touch. That is the single
+idea this chapter applies four times.
 
 \section{Voltmeter and Ammeter Loading}
-A voltmeter should usually have high input impedance so it draws little current.
-An ammeter should have low series resistance so it introduces little voltage
-drop. At RF, even a short lead can add inductance or capacitance.
+A voltmeter with input resistance \(R_{\mathrm{in}}\) placed across a node is simply
+a load on that node's Th\'evenin equivalent (\cref{fig:thevenin} in
+\cref{ch:resistive}). The measured voltage is therefore what the resulting divider
+delivers:
+\[
+\frac{V_{\text{meas}}}{V_{\text{true}}}
+=\frac{R_{\mathrm{in}}}{R_{\mathrm{in}}+R_{Th}} .
+\]
+Nothing about this is specific to meters---it is \cref{ch:resistive}'s voltage
+divider with the instrument playing the role of the lower resistor. The reading is
+always \emph{low}, and the error is negligible only when
+\(R_{\mathrm{in}}\gg R_{Th}\).
 
-\section{Oscilloscope and Probe Ideas}
-A scope probe has resistance and capacitance. A compensated probe is adjusted so
-the divider ratio is approximately independent of frequency over the intended
-range. Ground-lead inductance can distort fast or RF measurements.
+\begin{workedbox}[: how much does the meter disturb?]
+Take the divider of \cref{ch:resistive}, whose Th\'evenin resistance was
+\(R_{Th}\approx\SI{688}{\ohm}\). A \SI{10}{\mega\ohm} digital multimeter reads
+\[
+\frac{10\times10^6}{10\times10^6+688}=99.99\%
+\]
+of the true value---invisible. Even an old analog meter rated
+\(\SI{20}{\kilo\ohm\per\volt}\), which on its \SI{10}{\volt} range is only
+\SI{200}{\kilo\ohm}, reads \(99.7\%\). Both are fine here.
+
+Now move to a genuinely high-impedance node---a bias network with
+\(R_{Th}=\SI{1}{\mega\ohm}\), the sort of thing found at a FET gate or a tube grid:
+\[
+\text{\SI{10}{\mega\ohm} DMM:}\quad \frac{10}{10+1}=90.9\%
+\;\;(\SI{9}{\percent}\text{ low}),
+\qquad
+\text{\SI{200}{\kilo\ohm} analog:}\quad \frac{0.2}{0.2+1}=16.7\%
+\;\;(\SI{83}{\percent}\text{ low}).
+\]
+The analog meter does not measure that node at all; it replaces it. And notice the
+digital meter is \emph{also} wrong by \SI{9}{\percent}---enough to condemn a working
+circuit.
+\end{workedbox}
+
+An ammeter is the exact dual. It goes \emph{in series}, so its shunt resistance
+\(R_{\text{shunt}}\) adds to the loop and reduces the very current it reports:
+\[
+\frac{I_{\text{meas}}}{I_{\text{true}}}
+=\frac{R_{\text{loop}}}{R_{\text{loop}}+R_{\text{shunt}}} ,
+\]
+which again reads low, and is negligible only when
+\(R_{\text{shunt}}\ll R_{\text{loop}}\). A \SI{5}{\ohm} shunt inserted into a
+\SI{50}{\ohm} loop costs \SI{9}{\percent} of the current.
+
+\begin{controlsbox}
+\textbf{One rule, stated twice.} A voltmeter must be a much \emph{worse} path than
+the node it measures; an ammeter must be a much \emph{better} path than the loop it
+measures. Both are the maximum-power-transfer bookkeeping of \cref{ch:resistive} run
+in reverse: matching maximizes the power an instrument \emph{takes}, which is
+precisely what a measurement must avoid.
+\end{controlsbox}
+
+At RF the same logic applies with impedance in place of resistance, and the numbers
+get worse: a few centimetres of lead is an inductance, and a probe's tip capacitance
+loads a tuned circuit enough to shift its resonance. Touching a high-\(Q\) tank with
+a \SI{10}{\pico\farad} probe detunes it---the measurement moves the pole you were
+trying to observe.
+
+\section{The Oscilloscope Probe: Pole-Zero Cancellation on the Bench}
+\label{sec:probe}
+A \(10\!:\!1\) scope probe is the neatest application of \cref{ch:splane} in the whole
+book, so it is worth deriving rather than asserting.
+
+The probe contributes a series resistor \(R_1\) with an adjustable capacitor \(C_1\)
+across it; the scope input contributes \(R_2\) with its own capacitance \(C_2\)
+(including the cable). The result (\cref{fig:probe-schematic}) is a divider whose
+two halves are each a parallel RC:
+\[
+Z_1=\frac{R_1}{1+sR_1C_1},
+\qquad
+Z_2=\frac{R_2}{1+sR_2C_2}.
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+% probe arm: R1 with C1 across it
+\draw (0,0) node[left]{\(v_{\mathrm{in}}\)} to[short,o-] (0.6,0);
+\draw (0.6,0) to[R,l=\(R_1\)] (3.4,0) coordinate(mid);
+\draw (0.6,0) -- (0.6,1.3) to[C,l=\(C_1\)] (3.4,1.3) -- (mid);
+% scope input: R2 || C2 to ground
+\draw (mid) to[short,-o] (4.6,0) node[right]{\(v_o\)};
+\draw (mid) -- (3.4,-0.5);
+\draw (2.6,-0.5) to[R,l_=\(R_2\)] (2.6,-2.3);
+\draw (4.4,-0.5) to[C,l=\(C_2\)] (4.4,-2.3);
+\draw (2.6,-0.5) -- (4.4,-0.5);
+\draw (2.6,-2.3) -- (4.4,-2.3);
+\node[ground] at (3.5,-2.3){};
+\node[GuideBlue] at (0.35,0.42) {\small in};
+\node[GuideBlue] at (4.75,0.42) {\small out};
+\node[align=right,font=\small] at (1.05,-1.4) {scope\\input};
+\end{circuitikz}
+\caption{A compensated \(10\!:\!1\) oscilloscope probe. The input is the probe tip
+(left) and the output is what the scope actually digitizes (right). The probe supplies
+\(R_1\) and the adjustable \(C_1\); the scope and cable supply \(R_2\) and \(C_2\).}
+\label{fig:probe-schematic}
+\end{figure}
+
+Forming the divider \(H=Z_2/(Z_1+Z_2)\) and clearing denominators,
+\[
+H(s)=\frac{R_2(1+sR_1C_1)}{R_1(1+sR_2C_2)+R_2(1+sR_1C_1)}
+=\underbrace{\frac{R_2}{R_1+R_2}}_{\text{DC divider}}\cdot
+\frac{1+sR_1C_1}{1+s\,R_{\parallel}(C_1+C_2)},
+\qquad
+R_{\parallel}=\frac{R_1R_2}{R_1+R_2}.
+\]
+Read off the structure: a DC gain of \(R_2/(R_1+R_2)\), one \textbf{zero} at
+\(s=-1/(R_1C_1)\), and one \textbf{pole} at \(s=-1/[R_{\parallel}(C_1+C_2)]\). A
+frequency-independent divider requires the zero and pole to \emph{cancel}, which
+happens when their time constants match:
+\[
+R_1C_1=R_{\parallel}(C_1+C_2)
+\qquad\Longleftrightarrow\qquad
+\boxed{\;R_1C_1=R_2C_2\;}
+\]
+(the middle step is one line of algebra). When that holds, the numerator and
+denominator are identical and \(H(s)=R_2/(R_1+R_2)\) exactly---a pure \(10\!:\!1\)
+attenuator at every frequency. \emph{Adjusting the trimmer on a probe is placing a
+zero on top of a pole.}
+
+\begin{workedbox}[: trimming a probe]
+A typical probe has \(R_1=\SI{9}{\mega\ohm}\) into a scope with
+\(R_2=\SI{1}{\mega\ohm}\), giving the \(1/10\) DC ratio. If the scope plus cable
+present \(C_2=\SI{15}{\pico\farad}\), compensation needs
+\[
+C_1=\frac{R_2C_2}{R_1}=\frac{15}{9}\approx\SI{1.7}{\pico\farad},
+\]
+and both time constants then equal \(\SI{15}{\micro\second}\). That is what the
+little screw sets.
+\end{workedbox}
+
+The classic square-wave test is a direct reading of where the zero sits relative to
+the pole (\cref{fig:probe-comp}). For a step input the response of
+\(K(1+\tau_zs)/(1+\tau_ps)\) starts at \(K\tau_z/\tau_p\) and relaxes to \(K\):
+\begin{description}
+\item[\(\tau_z<\tau_p\) (\(C_1\) too small)] the trace starts low and creeps up---the
+familiar \emph{rounded} leading edge. The zero is left of the pole, so it cannot
+cancel the pole's lag.
+\item[\(\tau_z=\tau_p\)] flat. Zero on pole, no dynamics at all.
+\item[\(\tau_z>\tau_p\) (\(C_1\) too large)] the trace overshoots and decays---a
+\emph{peaked} edge, because the zero now dominates at high frequency.
+\end{description}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{probe_compensation}
+\caption{Probe compensation as pole-zero cancellation, for
+\(R_1=\SI{9}{\mega\ohm}\), \(R_2=\SI{1}{\mega\ohm}\), \(C_2=\SI{15}{\pico\farad}\).
+\emph{Left:} step response for three trimmer settings---rounded, flat, and peaked.
+\emph{Right:} the same three cases as pole-zero plots (the three rows are offset
+vertically for clarity; all the poles and zeros are real and lie on the \(\sigma\)
+axis). Compensation is achieved when the zero lands exactly on the pole, which is the
+condition \(R_1C_1=R_2C_2\).}
+\label{fig:probe-comp}
+\end{figure}
+
+\begin{exambox}
+The probe is worth remembering as the concrete answer to ``what does a zero
+\emph{do}?'' A pole alone rolls the response off; a zero placed on top of it cancels
+that roll-off exactly. The same cancellation, deliberately mistuned, is how
+oscilloscope engineers build peaking networks---and the same idea, applied to a
+transfer function instead of a divider, is what \cref{ch:filters} calls placing a
+notch.
+\end{exambox}
+
+\section{Ground-Lead Inductance: an Accidental Resonator}
+The other half of probe technique is the ground lead, and it is a pure application of
+\cref{ch:rlc}. A wire has roughly \SI{20}{\nano\henry} per inch of inductance. Clip a
+six-inch ground lead onto a circuit and you have added \(L\approx\SI{120}{\nano\henry}\)
+in series with the probe's own tip capacitance, \(C\approx\SI{10}{\pico\farad}\)---a
+series LC loop with almost no resistance to damp it. Its resonance is
+\cref{ch:rlc}'s formula, unchanged:
+\[
+f_0=\frac{1}{2\pi\sqrt{LC}}
+=\frac{1}{2\pi\sqrt{(120\times10^{-9})(10\times10^{-12})}}
+\approx\SI{145}{\mega\hertz}.
+\]
+
+\begin{physicalbox}
+\textbf{The overshoot is yours, not the circuit's.} Because that loop has very little
+resistance, its \(Q\) is high---the pole pair sits close to the \(\jj\omega\) axis---so
+any fast edge shock-excites it and it \emph{rings} at about \SI{145}{\mega\hertz}. A
+scope shows overshoot and ringing on a signal that may have had none. The cure follows
+straight from \(f_0=1/(2\pi\sqrt{LC})\): shorten the ground path. A one-inch spring
+tip cuts \(L\) to \SI{20}{\nano\henry} and pushes the resonance to about
+\SI{356}{\mega\hertz}, out of the band of interest. You are not damping the resonance,
+you are moving its poles up in frequency until they no longer matter.
+\end{physicalbox}
 
 \section{SWR Bridge and Antenna Analyzer}
-An SWR bridge estimates forward and reflected wave components on a transmission
-line. An antenna analyzer can measure impedance and SWR versus frequency, making
-it useful for finding resonance and matching conditions.
+An SWR bridge separates the forward and reflected waves of \cref{ch:lines} and reports
+their ratio as SWR. An antenna analyzer goes further and sweeps frequency, reporting
+impedance and SWR across a band---which means its display \emph{is} the Smith locus of
+\cref{fig:smith-antenna}. Everything the analyzer tells you was derived in
+\cref{ch:lines,ch:rlc}: the frequency where the trace crosses the real axis is
+\(\omega_0=1/\sqrt{LC}\) for the antenna's series-RLC model, the distance from center
+is \(|\Gamma|\), and the width of the low-SWR region is \(BW\approx f_0/Q\).
+
+\begin{mistakebox}
+\textbf{SWR measured at the shack is not SWR at the antenna.} A \emph{lossless} line
+rotates \(\Gamma\) on a constant-\(|\Gamma|\) circle (\cref{ch:lines}), so it changes
+the impedance you see but not the SWR. A \emph{lossy} line attenuates the reflected
+wave on its way back, shrinking \(|\Gamma|\) and making the match look better than it
+is. Through \SI{3}{\decibel} of matched-line loss the reflected wave makes a
+\SI{6}{\decibel} round trip, halving \(|\Gamma|\):
+\[
+\text{antenna SWR } 5\!:\!1 \;\;(|\Gamma|=0.67)
+\quad\longrightarrow\quad
+|\Gamma_{\mathrm{in}}|=0.33,
+\quad
+\text{shack SWR } \approx 2\!:\!1 .
+\]
+A comfortable-looking \(2\!:\!1\) at the transmitter can therefore hide a badly
+mismatched antenna---and the power is not saved, it is dissipated in the coax. Measure
+at the antenna feed point when it matters.
+\end{mistakebox}
 
 \section{Decibels in Measurement}
+The decibel definitions of \cref{sec:decibels} apply unchanged, but on a bench they
+usually carry a \emph{reference}, which converts a ratio into an absolute level:
 \[
 P_{\dB}=10\log_{10}\frac{P}{P_{\mathrm{ref}}},
 \qquad
 V_{\dB}=20\log_{10}\frac{V}{V_{\mathrm{ref}}}.
 \]
-Always check the reference. dBW references \(\SI{1}{\watt}\); dBm references
-\(\SI{1}{\milli\watt}\).
+Always check which reference is meant. \textbf{dBW} references \(\SI{1}{\watt}\) and
+\textbf{dBm} references \(\SI{1}{\milli\watt}\), so the two differ by exactly
+\SI{30}{\decibel} (\(\SI{1}{\watt}=\SI{30}{dBm}\)). A bare ``dB'' with no reference
+is a ratio---gain, loss, or return loss---and not a level at all.
 
 \section{Troubleshooting Pattern}
+The chapters of this book supply a checklist, because every one of them rests on
+assumptions that a real circuit can violate:
 \begin{enumerate}
 \item Identify the expected DC operating point.
-\item Check whether the signal path is AC-coupled, DC-coupled, filtered, or
-matched.
-\item Estimate impedance loading before attaching an instrument.
-\item Compare measured gain, attenuation, phase, or SWR against the simple
-model.
-\item If results differ, ask which assumption failed: ideal element, lumped
-model, steady state, no loading, no parasitics, or no nonlinear behavior.
+\item Check whether the signal path is AC-coupled, DC-coupled, filtered, or matched.
+\item Estimate the node's impedance \emph{before} attaching an instrument, and confirm
+your meter or probe is far enough off it (\cref{sec:probe}).
+\item Compare the measured gain, attenuation, phase, or SWR against the simple model.
+\item If they differ, ask which assumption failed, and note that each one belongs to a
+specific chapter: the \emph{ideal element} and \emph{lumped} assumptions of
+\cref{ch:foundations}; the \emph{sinusoidal steady state} of \cref{ch:ac}, which says
+nothing about transients; the \emph{no-loading} assumption this chapter is about; and
+the \emph{linearity} that all of Part~II requires and that a saturating amplifier or a
+mixer (\cref{ch:active}) deliberately breaks.
 \end{enumerate}
 
 \begin{exambox}
-Measurement questions often reward recognizing what the instrument actually
-loads or reports: voltage, current, power, impedance, SWR, frequency, or phase.
+Measurement questions reward recognizing what the instrument actually loads or
+reports: voltage, current, power, impedance, SWR, frequency, or phase. When a
+measurement disagrees with theory, the instrument is a circuit element too---and it is
+usually the one that was left off the schematic.
 \end{exambox}
