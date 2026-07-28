@@ -158,9 +158,13 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **40 done, 17 open.** Nothing has been silently dropped.
+Score: **46 done, 12 open** (58 items). Nothing has been silently dropped.
 
-## ✅ Done (40)
+*Count corrected 2026-07-28:* earlier revisions said 57 items, because Tier C was
+described as fifteen items while sixteen were listed. The enumerated lists below
+are authoritative; the total is 58.
+
+## ✅ Done (46)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -205,13 +209,17 @@ noise bandwidth
 
 **Tier B7 — the named antenna matches (`sec:antennamatches`).** Hairpin, gamma, delta and stub are all `sec:lnetwork`'s L-network with its two reactances built from antenna hardware, and one exam fact becomes a consequence. A Yagi element at 25 Ω needs `Q = √(50/25−1) = 1`, so `|X_series| = 25 Ω` and `|X_shunt| = 50 Ω`. A hairpin is a shorted stub under λ/4, so `jZ₀tan βℓ` is *inductive* and supplies the shunt arm — therefore the series arm **must** be capacitive, and rather than fit a capacitor you cut the element short of resonance. **“The driven element must be capacitive” (E9E05) is the L-network demanding an opposite-type element, not a rule about hairpins.** With 300 Ω rods the hairpin is 9.5°, about 5.5 cm at 144 MHz. Gamma and delta instead *tap up* via `sec:feedpoint` (λ/8 doubles 25 Ω to exactly 50 Ω), and because the tap conductor is a loop it adds inductance the antenna cannot cancel — hence the gamma's series capacitor, whose purpose is exactly E9E04's *cancel unwanted inductive reactance*. The insulated-boom requirement (E9E01) follows from a shunt element needing two floating terminals; the grounded-tower use (E9E09) from the gamma being the unbalanced one. Six pool answers, no new mathematics.
 
+**Tier C, filters (`sec:qlqu`, `sec:ringdown`).** T3.23: in a series-resonant band-pass with coil loss `r` between `R_s` and `R_L`, insertion loss is `20log[(R_s+R_L+r)/(R_s+R_L)]`, and since `Q_L/Q_U = r/(R_s+R_L+r)` exactly, that *is* `IL = −20log(1 − Q_L/Q_U)` — derived inside our own series-RLC rather than quoted. A `physicalbox` gets the duplexer: narrow rejection needs high `Q_L`, but the loss depends on the *ratio*, so `Q_U` must be far higher still — cavities are there because `Q_U` is the denominator, not for power handling. T3.24: `τ = 1/α = Q/(πf₀)`, and substituting A1's exact `BW = f₀/Q` gives **`τ = 1/(πBW)`** — ring-down depends on bandwidth *alone*. A 500 Hz CW filter rings 0.64 ms at 455 kHz or at 7 MHz; against a 60 ms dot at 20 wpm that sets the floor on useful narrowness, with 50 Hz (6.4 ms) audibly smearing keying.
+
+**Tier C, lines and antennas (six items, all Ch 16).** T3.28d: `VF = 1/√ε_r`, which *predicts* the book's own quoted table (PE 2.25 → 0.667 vs 0.66 quoted) instead of merely agreeing with it. T3.28e: at λ/8, `tan = cot = 1` so `|X| = Z₀` for either stub type, and it is the *only* such length below λ/4 since `tan` is monotone there. T3.25: a ground plane's boundary condition is met by an image antenna, so height `h` *is* a two-element array with `d = 2h`; `sec:arrayfactor` then gives `|F| = 2|sin(βh sin ψ)|`, hence a null at the horizon at *any* height and a first lobe at `sin ψ = λ/4h` (30° at λ/2, 14.5° at λ). The vertical's image is *not* inverted — one sign, and that is why verticals are low-angle radiators. It also finally explains B4's *antenna height* answer. T3.26: the folded dipole's transmission-line mode is a shorted λ/4 stub drawing nothing, so the antenna mode carries `2I` for feed current `I`, and `P = (2I)²R_d` against `I²Z` gives `Z = 4R_d ≈ 292 Ω ≈ 300 Ω` — current doubling, squared. T3.28f: ERP and EIRP are `sec:sunits`'s link budget stopped at the antenna, differing only in gain reference, so `EIRP = ERP + 2.15 dB` always. T3.28g: terminating at `Z₀` sets `Γ_L = 0`, and unidirectionality, broad bandwidth and poor efficiency are all that one choice — resonance *is* a standing-wave phenomenon, so no reflection means nothing to be narrow about.
+
 **Tier C, filters (`sec:qlqu`, `sec:ringdown`).** T3.23: in a series-resonant band-pass with coil loss `r` between `R_s` and `R_L`, insertion loss is `20log[(R_s+R_L+r)/(R_s+R_L)]`, and since `Q_L/Q_U = r/(R_s+R_L+r)` exactly, that *is* `IL = −20log(1 − Q_L/Q_U)` — derived inside our own series-RLC rather than quoted. A `physicalbox` gets the duplexer: narrow rejection needs high `Q_L`, but the loss depends on the *ratio*, so `Q_U` must be far higher still — cavities are there because `Q_U` is the denominator, not for power handling. T3.24: `τ = 1/α = Q/(πf₀)`, and substituting A1's exact `BW = f₀/Q` gives **`τ = 1/(πBW)`** — the ring-down depends on bandwidth *alone*, not centre frequency or order. A 500 Hz CW filter rings 0.64 ms at 455 kHz or at 7 MHz; against a 60 ms dot at 20 wpm that sets the floor on useful narrowness, with 50 Hz (6.4 ms) audibly smearing keying.
 
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (17), ranked
+## ⬜ Open (12), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
@@ -219,18 +227,15 @@ its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
 ### Tier C — smaller, still worthwhile
 
-T3.20 τ = `R_Th·C_eq` for multi-element networks (and the honest limit of the
-combine-everything recipe) · T3.23 insertion loss as `Q_L/Q_U`, which is why duplexers
-need cavities · T3.24 ring-down `τ = Q/(πf₀)` bounding how narrow a filter should be ·
-T3.27 thermal runaway as a DC loop with `L_th ≥ 1` · T3.26 folded dipole's 4:1 by
-even/odd mode · T3.25 ground reflection as an image source (needs T2.12 first) ·
-T3.28a comparator hysteresis · T3.28b parasitic suppressor as `R∥sL` · T3.28c
-dip-then-load as resonance-then-transformation · T3.28d `VF = 1/√ε_r` closing our own
-velocity-factor loop · T3.28e the λ/8 stub as the only length where `\|X\| = Z₀` ·
-T3.28f ERP/EIRP as our link budget truncated · T3.28g terminated traveling-wave
-antennas as `Γ_L = 0` · T3.28h Wilkinson divider by even/odd symmetry · T3.28i
-frequency-counter ±1 count plus ppm · the oscilloscope fold-back application of
-`sec:samplingthm` in Ch 20
+**Eight left.** T3.20 `τ = R_Th·C_eq` for multi-element networks (and the honest
+limit of the combine-everything recipe) · T3.27 thermal runaway as a DC loop with
+`L_th ≥ 1` · T3.28a comparator hysteresis · T3.28b parasitic suppressor as `R∥sL` ·
+T3.28c dip-then-load as resonance-then-transformation · T3.28h Wilkinson divider by
+even/odd symmetry · T3.28i frequency-counter ±1 count plus ppm · the oscilloscope
+fold-back application of `sec:samplingthm` in Ch 20
+
+*Done in Round 5:* T3.23 and T3.24 (filters) · T3.25, T3.26, T3.28d, T3.28e,
+T3.28f, T3.28g (lines and antennas). See the Done section above.
 
 ### Tier D — housekeeping, carried since Round 3
 

@@ -52,7 +52,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 203 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 205 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -78,7 +78,7 @@ Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedbac
 `ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 65 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 69 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
@@ -88,7 +88,8 @@ Section labels, all 65 of them: `sec:complexrefresher` `sec:rms` `sec:secondorde
 `sec:samplingismult` `sec:samplingthm` `sec:quantnoise` `sec:decimation` `sec:firiir`
 `sec:noisefloor` `sec:noisefigure` `sec:friis` `sec:powerseries` `sec:compression`
 `sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits` `sec:pll`
-`sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna` `sec:feedbackz` `sec:antennaeff` `sec:feedpoint` `sec:quarterwave` `sec:arrayfactor` `sec:crystal` `sec:antennamatches` `sec:qlqu` `sec:ringdown`.
+`sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna` `sec:feedbackz` `sec:antennaeff` `sec:feedpoint` `sec:quarterwave` `sec:arrayfactor` `sec:crystal` `sec:antennamatches` `sec:qlqu` `sec:ringdown` `sec:reflectionsection` `sec:groundimage`
+`sec:foldeddipole` `sec:travelingwave`.
 
 ### Conventions in force
 
@@ -254,7 +255,7 @@ Round 4 hand-filtered.
 **See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
 the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
 the General-pool check, and the four ARRL chapter audits — against the book as built,
-so nothing can be silently dropped. Current score: **40 done, 17 open**, with the open
+so nothing can be silently dropped. Current score: **46 done, 12 open** (58 items), with the open
 items ranked in four tiers.
 
 The highest-priority open items are **Tier A: things the book asserts itself**, and so
