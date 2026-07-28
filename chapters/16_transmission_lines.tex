@@ -1220,7 +1220,8 @@ which is why it works on anything and why the others exist only as tidier packag
 specific geometries.
 
 \begin{exambox}
-Group E9E names six of these, and every answer is above. The \emph{beta or hairpin}
+Group E9E names six of these, and every answer is above (its seventh, the power
+divider, is \cref{sec:wilkinson}). The \emph{beta or hairpin}
 match is the one needing an insulated driven element, and it needs that element
 \emph{capacitive---electrically shorter than a half wave}. The \emph{gamma} match is
 the one connecting shield to centre and conductor a fraction of a wavelength to one
@@ -1229,6 +1230,49 @@ exists \emph{to cancel unwanted inductive reactance}. The \emph{stub} match is t
 short length of line in parallel at or near the feed point. And E9E06's Q-section is
 \cref{sec:quarterwave} arithmetic: \(\sqrt{50\times100}=\SI{70.7}{\ohm}\), so of the
 choices offered the \SI{75}{\ohm} cable is the one to use.
+\end{exambox}
+
+\subsection{The Wilkinson Divider: Two Modes, Three Requirements}
+\label{sec:wilkinson}
+Splitting power between two antennas sounds easy---join the cables---but a bare
+junction fails all three things a divider must do at once: split equally, present
+\(Z_0\) at the input, and keep the two outputs from talking to each other. The
+Wilkinson divider achieves all three with two quarter-wave sections and one resistor,
+and the reason is a symmetry argument of exactly the kind \cref{sec:pushpull} used.
+
+The circuit: from the input, two \(\lambda/4\) sections of characteristic impedance
+\(Z_0\sqrt2\) run to the two output ports, and a resistor of \(2Z_0\) bridges the
+outputs. For \(Z_0=\SI{50}{\ohm}\) that is \SI{70.7}{\ohm} sections and a
+\SI{100}{\ohm} resistor. Now split any excitation of the two outputs into an
+\emph{even} part (equal and in phase) and an \emph{odd} part (equal and opposite), and
+analyze each.
+
+\emph{Even mode.} Both outputs are at the same potential, so \emph{no current flows in
+the bridging resistor}---it might as well not be there. Each \(\lambda/4\) section is
+then a transformer (\cref{sec:quarterwave}) loaded by \(Z_0\), presenting
+\((Z_0\sqrt2)^2/Z_0=2Z_0\) at the input. Two of those in parallel give \(Z_0\). The
+input is matched, and the power divides equally by symmetry.
+
+\emph{Odd mode.} The two outputs are equal and opposite, so the midpoint of the
+bridging resistor is a \emph{virtual ground}, and so is the input node. Each output
+therefore sees half the resistor, \(Z_0\), in parallel with a \(\lambda/4\) section
+that is \emph{shorted} at the input plane---and a shorted quarter wave looks like an
+open circuit (\cref{sec:stubs}). The open contributes nothing, so the output port sees
+exactly \(Z_0\). That is the isolation: any odd-mode signal injected at one output is
+absorbed in the resistor and never reaches the other output or the input.
+
+So the resistor is invisible to the signal you want and is the only thing the signal
+you do not want can see. \emph{The two modes do not interact, which is why one
+component can satisfy requirements that look contradictory.} Note also what the
+resistor is not doing: in normal operation it dissipates nothing, so it need only be
+rated for the imbalance, not for the through power---until one antenna is damaged, at
+which point it absorbs the difference and tells you so by getting hot.
+
+\begin{exambox}
+E9E asks what a Wilkinson divider is for, and the answer is the three requirements
+above stated together: \emph{to divide power equally between two \SI{50}{\ohm} loads
+while maintaining \SI{50}{\ohm} input impedance}. The isolation is the part the answer
+does not mention and the part the resistor is actually there for.
 \end{exambox}
 
 

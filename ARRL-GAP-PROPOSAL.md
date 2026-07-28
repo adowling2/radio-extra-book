@@ -158,13 +158,13 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **46 done, 12 open** (58 items). Nothing has been silently dropped.
+Score: **50 done, 8 open** (58 items). Nothing has been silently dropped.
 
 *Count corrected 2026-07-28:* earlier revisions said 57 items, because Tier C was
 described as fifteen items while sixteen were listed. The enumerated lists below
 are authoritative; the total is 58.
 
-## ✅ Done (46)
+## ✅ Done (50)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -213,13 +213,15 @@ noise bandwidth
 
 **Tier C, lines and antennas (six items, all Ch 16).** T3.28d: `VF = 1/√ε_r`, which *predicts* the book's own quoted table (PE 2.25 → 0.667 vs 0.66 quoted) instead of merely agreeing with it. T3.28e: at λ/8, `tan = cot = 1` so `|X| = Z₀` for either stub type, and it is the *only* such length below λ/4 since `tan` is monotone there. T3.25: a ground plane's boundary condition is met by an image antenna, so height `h` *is* a two-element array with `d = 2h`; `sec:arrayfactor` then gives `|F| = 2|sin(βh sin ψ)|`, hence a null at the horizon at *any* height and a first lobe at `sin ψ = λ/4h` (30° at λ/2, 14.5° at λ). The vertical's image is *not* inverted — one sign, and that is why verticals are low-angle radiators. It also finally explains B4's *antenna height* answer. T3.26: the folded dipole's transmission-line mode is a shorted λ/4 stub drawing nothing, so the antenna mode carries `2I` for feed current `I`, and `P = (2I)²R_d` against `I²Z` gives `Z = 4R_d ≈ 292 Ω ≈ 300 Ω` — current doubling, squared. T3.28f: ERP and EIRP are `sec:sunits`'s link budget stopped at the antenna, differing only in gain reference, so `EIRP = ERP + 2.15 dB` always. T3.28g: terminating at `Z₀` sets `Γ_L = 0`, and unidirectionality, broad bandwidth and poor efficiency are all that one choice — resonance *is* a standing-wave phenomenon, so no reflection means nothing to be narrow about.
 
+**Tier C, active circuits and the divider (four items).** T3.27: a transistor's current rises with temperature, which raises dissipation, which raises temperature — a closed loop, so `L_th = (∂I_C/∂T)·θ_JA·V_CE` and **thermal runaway is `L = +1` at DC**. The three factors are the three cures: emitter resistor (holds `∂I_C/∂T ≈ 2 mV/K ÷ R_E`), heat sink (`θ_JA`), lower `V_CE` or a switching class. 10 Ω, 5 K/W, 20 V gives `L_th = 0.02`; drop the emitter resistor and the same stage sits at `2` and dies. A `controlsbox` notes this loop *adds*, so it is `1−L` rather than `1+L`, and the emitter resistor works by nesting a negative loop inside the thermal one. T3.28a: the same sign used on purpose — feeding `β` back to the *non-inverting* input puts the thresholds at `±βV_sat`, so `ΔV = 2βV_sat`; 1 k/99 k on ±12 V rails gives ±0.12 V, and the loop gain exceeding unity during the transition is why a Schmitt trigger *snaps*. T3.28b: a parasitic suppressor is `Z = R∥sL`, a high-pass in impedance with its corner at `R/L` — 100 Ω with 0.1 µH corners at 159 MHz, presenting j8.8 Ω at 14 MHz but ~69 Ω at 150 MHz, so it lowers `|L|` below unity only where the parasitic wants to oscillate. T3.28h: the Wilkinson (`sec:wilkinson`) by even/odd symmetry — even mode puts no current in the bridge resistor, so two λ/4 sections of `Z₀√2` loaded by `Z₀` present `2Z₀` each and parallel to `Z₀`; odd mode makes the resistor's midpoint a virtual ground and the λ/4 shorted, hence open, so each output sees exactly `Z₀`. The resistor is invisible to the wanted signal and the only thing the unwanted one sees.
+
 **Tier C, filters (`sec:qlqu`, `sec:ringdown`).** T3.23: in a series-resonant band-pass with coil loss `r` between `R_s` and `R_L`, insertion loss is `20log[(R_s+R_L+r)/(R_s+R_L)]`, and since `Q_L/Q_U = r/(R_s+R_L+r)` exactly, that *is* `IL = −20log(1 − Q_L/Q_U)` — derived inside our own series-RLC rather than quoted. A `physicalbox` gets the duplexer: narrow rejection needs high `Q_L`, but the loss depends on the *ratio*, so `Q_U` must be far higher still — cavities are there because `Q_U` is the denominator, not for power handling. T3.24: `τ = 1/α = Q/(πf₀)`, and substituting A1's exact `BW = f₀/Q` gives **`τ = 1/(πBW)`** — the ring-down depends on bandwidth *alone*, not centre frequency or order. A 500 Hz CW filter rings 0.64 ms at 455 kHz or at 7 MHz; against a 60 ms dot at 20 wpm that sets the floor on useful narrowness, with 50 Hz (6.4 ms) audibly smearing keying.
 
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (12), ranked
+## ⬜ Open (8), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
@@ -227,15 +229,13 @@ its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
 ### Tier C — smaller, still worthwhile
 
-**Eight left.** T3.20 `τ = R_Th·C_eq` for multi-element networks (and the honest
-limit of the combine-everything recipe) · T3.27 thermal runaway as a DC loop with
-`L_th ≥ 1` · T3.28a comparator hysteresis · T3.28b parasitic suppressor as `R∥sL` ·
-T3.28c dip-then-load as resonance-then-transformation · T3.28h Wilkinson divider by
-even/odd symmetry · T3.28i frequency-counter ±1 count plus ppm · the oscilloscope
-fold-back application of `sec:samplingthm` in Ch 20
+**Four left.** T3.20 `τ = R_Th·C_eq` for multi-element networks (and the honest
+limit of the combine-everything recipe) · T3.28c dip-then-load as
+resonance-then-transformation · T3.28i frequency-counter ±1 count plus ppm · the
+oscilloscope fold-back application of `sec:samplingthm` in Ch 20
 
-*Done in Round 5:* T3.23 and T3.24 (filters) · T3.25, T3.26, T3.28d, T3.28e,
-T3.28f, T3.28g (lines and antennas). See the Done section above.
+*Done in Round 5:* T3.23, T3.24 (filters) · T3.25, T3.26, T3.28d, T3.28e, T3.28f,
+T3.28g, T3.28h (lines and antennas) · T3.27, T3.28a, T3.28b (active). See Done above.
 
 ### Tier D — housekeeping, carried since Round 3
 

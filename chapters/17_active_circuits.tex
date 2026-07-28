@@ -592,6 +592,23 @@ Neutralization \emph{removes} the loop by summing it against an equal and opposi
 copy. Choosing a better device shrinks the loop's gain at source. All three are
 statements about the same \(L\), which is why one framework covers an op-amp, a
 regulator, and a neutralized RF power amplifier.
+
+There is a fourth, cruder method worth naming because it is a filter in disguise: a
+\textbf{parasitic suppressor}, a low-value resistor with a few turns of wire in
+parallel with it, fitted in the anode or grid lead. Its impedance is
+\[
+Z=R\parallel s L=\frac{sLR}{R+sL},
+\]
+a first-order high-pass in \emph{impedance}, with its corner at \(\omega=R/L\). Below
+the corner \(|sL|\ll R\) and the inductor shorts the resistor out, so
+\(Z\approx sL\)---a couple of ohms, invisible at the operating frequency. Above it
+\(|sL|\gg R\) and \(Z\to R\), inserting real loss. With \(R=\SI{100}{\ohm}\) and
+\(L=\SI{0.1}{\micro\henry}\) the corner is at \SI{159}{\mega\hertz}, so the network
+presents \(\jj\SI{8.8}{\ohm}\) at \SI{14}{\mega\hertz} but a mostly-resistive
+\SI{69}{\ohm} at \SI{150}{\mega\hertz}. The suppressor does not cancel the loop; it
+\emph{lowers \(|L|\) below unity in the VHF range where the parasitic wants to
+oscillate}, while leaving the HF band the amplifier is for untouched. Frequency-selective
+loss, placed where the trouble is.
 \end{controlsbox}
 
 \section{Oscillators: Poles Placed on the Axis}
@@ -1221,6 +1238,49 @@ dissipative pass element with a duty-cycle-modulated switch and an LC filter; th
 high switching frequency is chosen deliberately, because a higher ripple frequency
 means the same attenuation from far smaller reactive components.
 
+\subsection{Thermal Runaway Is a Loop Too---at DC}
+\label{sec:thermalrunaway}
+The most destructive feedback loop in a transmitter has no wires. A silicon
+transistor's collector current rises with temperature (its \(V_{BE}\) falls by about
+\SI{2}{\milli\volt} per kelvin at fixed current), the current raises the dissipation,
+and the dissipation raises the temperature. That is a closed loop, so
+\cref{ch:feedback}'s criterion applies to it---at zero frequency. Multiply the three
+gains around it:
+\[
+L_{\text{th}}
+=\underbrace{\frac{\partial I_C}{\partial T}}_{\text{device}}
+\cdot\underbrace{\theta_{JA}}_{\text{heat sink}}
+\cdot\underbrace{V_{CE}}_{\text{operating point}}
+\qquad\text{[dimensionless]},
+\]
+where \(\theta_{JA}\) is the junction-to-ambient thermal resistance in kelvin per
+watt. If \(L_{\text{th}}\ge1\) the loop is regenerative and the device destroys
+itself; below \(1\) a temperature excursion decays. \emph{Thermal runaway is
+\(L=+1\) at DC}, the same instability condition as an oscillator with the sign of the
+feedback reversed.
+
+Read the three factors as three independent cures, which is exactly how they are used.
+An \textbf{emitter resistor} attacks the first: it is local negative feedback, and it
+holds \(\partial I_C/\partial T\approx(\SI{2}{\milli\volt\per\kelvin})/R_E\), so
+\SI{10}{\ohm} makes the device term \SI{0.2}{\milli\ampere\per\kelvin} instead of
+tens. A \textbf{heat sink} attacks the second, dropping \(\theta_{JA}\) from perhaps
+\SI{50}{\kelvin\per\watt} to \SI{5}{}. And running at \textbf{lower \(V_{CE}\)}---or
+in a switching class, where \cref{sec:switching} showed \(V_{CE}\) and \(I_C\) are
+never both large---attacks the third. With \(R_E=\SI{10}{\ohm}\),
+\(\theta_{JA}=\SI{5}{\kelvin\per\watt}\) and \(V_{CE}=\SI{20}{\volt}\),
+\(L_{\text{th}}=0.02\); remove the emitter resistor and the same stage runs at
+\(L_{\text{th}}=2\) and fails.
+
+\begin{controlsbox}
+\textbf{Positive feedback, and why the fix is a resistor.} Every other loop in this
+chapter subtracts; this one adds, so instead of \(1+L\) dividing the sensitivity it is
+\(1-L\), which blows up as \(L\to1\) rather than settling. The emitter resistor works
+because it inserts an ordinary \emph{negative} loop inside the thermal one, reducing
+the forward gain the thermal loop has available. Bias stability and thermal stability
+are therefore the same design problem seen at two time scales---microseconds for the
+electrical loop, seconds for the thermal one---and it is the same algebra either way.
+\end{controlsbox}
+
 \begin{exambox}
 Power-supply questions usually reduce to one of three facts. Full-wave rectification
 puts ripple at \emph{twice} the line frequency and half-wave at the line frequency.
@@ -1229,11 +1289,45 @@ ripple. And the bleeder is an RC discharge whose \(\tau=RC\) sets how long the s
 stays lethal after switch-off.
 \end{exambox}
 
+\subsection{Hysteresis: Positive Feedback Used on Purpose}
+\label{sec:hysteresis}
+\Cref{sec:thermalrunaway} was positive feedback as a hazard. Used deliberately, the
+same sign gives a comparator a property it badly needs. A bare comparator driven by a
+slowly moving, slightly noisy signal chatters: near the threshold, noise carries the
+input back and forth across it and the output rattles. The cure is to make the
+threshold move away from the input as soon as it is crossed.
+
+Feed a fraction \(\beta=R_1/(R_1+R_2)\) of the output back to the \emph{non-inverting}
+input, with the signal on the inverting input. The output sits at one of its rails
+\(\pm V_{\text{sat}}\), so the threshold is not zero but
+\[
+V_{\text{th}}=\beta\,V_{\text{out}}=\pm\beta V_{\text{sat}},
+\]
+and the hysteresis width---the gap between the rising and falling thresholds---is
+\[
+\Delta V=2\beta V_{\text{sat}} .
+\]
+With \(\pm\SI{12}{\volt}\) rails, \(R_1=\SI{1}{\kilo\ohm}\) and
+\(R_2=\SI{99}{\kilo\ohm}\), \(\beta=0.01\) and the thresholds sit at
+\(\pm\SI{0.12}{\volt}\): once the input pushes the output high, the input must fall
+\SI{0.24}{\volt} to bring it back. Noise smaller than that cannot cause a second
+transition.
+
+Two things follow from the sign. Because the feedback is positive, the loop gain
+exceeds unity during the transition, so the switching is \emph{regenerative}---the
+output does not creep across, it snaps, and the transition is faster than the
+comparator's own slew limit would suggest. And because \(\Delta V\) is set by a
+resistor ratio and the rail voltage, the noise immunity is a design choice traded
+directly against resolution: every millivolt of hysteresis is a millivolt of input
+change the circuit is deliberately blind to.
+
 \begin{exambox}
 For active-circuit questions, keep three layers separate: small-signal gain,
 power handling, and stability. Feedback questions almost always reduce to one
 idea---\emph{loop gain}: large loop gain buys predictable gain, wide bandwidth,
 and low distortion; too much phase lag at unity loop gain costs stability; and an
 oscillator is the deliberate limiting case with the poles parked on the
-\(\jj\omega\) axis.
+\(\jj\omega\) axis. Positive feedback is the same criterion with the sign flipped, and
+it appears twice: as a fault in \cref{sec:thermalrunaway} and as a feature in
+\cref{sec:hysteresis}.
 \end{exambox}
