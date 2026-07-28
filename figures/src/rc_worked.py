@@ -30,7 +30,7 @@ axm.semilogx(f, 20*np.log10(np.abs(G)), color=GUIDE_BLUE, lw=1.9)
 axm.axvline(fc0, color=GUIDE_AMBER, ls=":", lw=1.1)
 axm.plot(fc0, -3.0103, "o", color=GUIDE_BLUE, ms=5, zorder=6)
 axm.annotate(rf"$f_c={fc0:.0f}$ Hz, $-3$ dB", xy=(fc0, -3.0103),
-             xytext=(1.7e3, -6), color="0.3", fontsize=7.5,
+             xytext=(1.25, -27), color="0.3", fontsize=7.5, ha="left", va="center",
              arrowprops=dict(arrowstyle="->", color="0.4", lw=0.8))
 axm.set_ylabel("Mag. (dB)")
 axm.set_ylim(-45, 8)
@@ -39,7 +39,7 @@ axm.tick_params(labelbottom=False)
 axp.semilogx(f, np.degrees(np.angle(G)), color=GUIDE_GREEN, lw=1.9)
 axp.axvline(fc0, color=GUIDE_AMBER, ls=":", lw=1.1)
 axp.plot(fc0, -45, "o", color=GUIDE_GREEN, ms=5, zorder=6)
-axp.annotate(r"$-45^\circ$", xy=(fc0, -45), xytext=(1.7e3, -32),
+axp.annotate(r"$-45^\circ$", xy=(fc0, -45), xytext=(1.4e3, -26),
              color="0.3", fontsize=7.5,
              arrowprops=dict(arrowstyle="->", color="0.4", lw=0.8))
 axp.set_ylabel("Phase (deg)")
