@@ -86,7 +86,8 @@ too, dropping half the supply before any signal appears---so
 content of ``\SI{50}{\percent} transformer-coupled, \SI{25}{\percent} resistively
 coupled.'' Nothing about the device changed.
 
-Now the current factor. Evaluating the two coefficients:
+Now the current factor, which \cref{fig:conduction-angle} shows alongside the
+waveforms that produce it. Evaluating the two coefficients:
 
 \begin{center}
 \begin{tabular}{@{}lccl@{}}
@@ -115,6 +116,23 @@ the conduction angle drives \(\eta\) toward \SI{100}{\percent}, but \(I_1\) itse
 shrinking, so the \emph{power} goes to zero along with the loss. Class C buys
 efficiency with output power and with linearity, which is why it is confined to
 signals whose amplitude carries no information.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{conduction_angle}
+\caption{Where the efficiency numbers come from. \emph{Left:} the device current for
+three conduction angles, with each one's DC component---what the supply must
+deliver---drawn dashed. Narrowing the conduction angle cuts that DC average faster
+than it cuts the fundamental the tuned load is paid at, and that ratio is the entire
+mechanism. \emph{Right:} the resulting efficiency, with the two exactly-known points
+marked: \(\tfrac12\) at full conduction and \(\pi/4\) at half. The curve climbs toward
+\SI{100}{\percent} as the angle narrows, but \(I_1\) is shrinking with it, so the
+output power vanishes along with the loss---which is the honest statement of the
+linearity-for-efficiency trade. Computed from the truncated-cosine Fourier
+coefficients of \cref{sec:conductionangle} with a tuned load
+(\(V_1/V_{\mathrm{dc}}\to1\)).}
+\label{fig:conduction-angle}
+\end{figure}
 
 \subsection{Why Switching Amplifiers Escape the Table}
 \label{sec:switching}
@@ -712,7 +730,24 @@ f_p=\frac{1}{2\pi\sqrt{L_m\dfrac{C_mC_0}{C_m+C_0}}}
 A crystal is thus a series resonance and a parallel resonance separated by a fraction
 \(C_m/2C_0\)---and since the motional capacitance is femtofarads while the holder
 capacitance is picofarads, that fraction is small. The gap is the crystal's whole
-working range.
+working range, and \cref{fig:crystal-impedance} is a picture of it.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{crystal_impedance}
+\caption{The two resonances of one quartz crystal, and the narrow window between them
+that is its entire working range. \emph{Top:} the impedance magnitude falls to
+\(R=\SI{15}{\ohm}\) at the series resonance and rises into the megohms at the parallel
+one, \SI{15}{\kilo\hertz} (\SI{1499}{ppm}) higher. \emph{Bottom:} the reactance, which
+is inductive \emph{only} inside the shaded band---which is why a Pierce or Colpitts
+oscillator must run there, using the crystal as its tank inductor, and why the
+specified load capacitance \(C_L\) is what chooses the exact frequency inside it.
+Trimming \(C_L\) can move the oscillator only within this window, which is why a
+crystal pulls by tens of parts per million and not by kilohertz. Computed from the
+worked example's \(L_m=\SI{16.9}{\milli\henry}\), \(C_m=\SI{15}{\femto\farad}\),
+\(C_0=\SI{5}{\pico\farad}\), \(R=\SI{15}{\ohm}\).}
+\label{fig:crystal-impedance}
+\end{figure}
 
 \begin{workedbox}[: how far apart, and how high a \(Q\)]
 Take \(C_m=\SI{15}{\femto\farad}\), \(C_0=\SI{5}{\pico\farad}\),

@@ -1041,6 +1041,23 @@ Feeding out of phase swaps the two. And the cardioid case is the pretty one: wit
 \(90^\circ\) feed phase either doubles to a half cycle---complete cancellation on one
 side---or annuls to zero, giving full addition on the other. \emph{One deliberate
 phase and one path length, set to agree in one direction and disagree in the other.}
+\Cref{fig:array-patterns} plots all three.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{array_patterns}
+\caption{The three two-element patterns the pool names, all of them
+\(|F|=2|\cos((\phi+\beta d\cos\theta)/2)|\) evaluated with different \(d\) and
+\(\phi\)---no new physics between the panels, only two substitutions. Feeding in phase
+at half-wave spacing cancels along the axis and adds broadside; reversing the phase
+swaps the two; and quarter-wave spacing with a \(90^\circ\) feed phase cancels
+completely on one side, giving the cardioid. The cardioid panel also carries the two
+measurements E9B asks to read off a pattern---the \(-\SI{3}{\decibel}\) beamwidth and
+the front-to-back null---taken from the same curve rather than a separate diagram. In
+every panel the two elements are the grey squares, lying on the horizontal array
+axis.}
+\label{fig:array-patterns}
+\end{figure}
 
 \begin{physicalbox}
 \textbf{Why direction finding listens for the null.} Near a maximum the cosine is
@@ -1088,7 +1105,8 @@ cancels it there. And the first maximum sits where \(\beta h\sin\psi=\pi/2\), th
 so height alone sets the lobe: \(h=\lambda/4\) puts it straight up, \(h=\lambda/2\)
 at \(30^\circ\), \(h=\lambda\) at \(14.5^\circ\), and \(h=1.5\lambda\) at
 \(9.6^\circ\). Raising a horizontal antenna lowers its lobe---which is the whole
-reason height matters for DX, and it is arithmetic, not folklore.
+reason height matters for DX, and it is arithmetic, not folklore. \Cref{fig:ground-image}
+plots both families.
 
 For a \textbf{vertical} antenna the image is \emph{not} inverted, \(\phi=0\), and the
 same formula returns a \emph{maximum} at the horizon instead. That single sign is why
@@ -1097,6 +1115,23 @@ high to compete. It is also why \cref{sec:feedpoint}'s answer to ``what affects
 feed-point impedance'' was \emph{antenna height}: the image is a second element
 coupled to the first, and moving it changes the impedance as surely as moving a real
 one would.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{ground_image_lobes}
+\caption{Ground as an image antenna, drawn with the array factor of
+\cref{sec:arrayfactor}. \emph{Left:} a horizontal antenna, whose image is inverted, so
+\(|F|=2|\sin(\beta h\sin\psi)|\). Every curve goes to zero at the horizon---the image
+cancels the antenna there at any height---and the first lobe descends as the antenna
+rises, from straight up at \(\lambda/4\) to \(30^\circ\) at \(\lambda/2\) and
+\(14^\circ\) at \(\lambda\), following \(\sin\psi=\lambda/4h\). At \(h=\lambda\) a
+second lobe has appeared. \emph{Right:} a vertical antenna, whose image is \emph{not}
+inverted, so the sine becomes a cosine and the maximum lands \emph{at} the horizon.
+That single sign is the whole reason verticals are chosen for low-angle work. Both
+panels plot elevation angle \(\psi\) upward from the horizon at the right-hand
+edge.}
+\label{fig:ground-image}
+\end{figure}
 
 \subsection{The Folded Dipole's Factor of Four}
 \label{sec:foldeddipole}

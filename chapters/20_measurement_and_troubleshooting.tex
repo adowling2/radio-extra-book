@@ -373,7 +373,25 @@ reflection coefficient: they are one measured complex number, read three ways.
 \emph{Two ports.} The instrument reports \(S_{21}\) as magnitude and phase against
 frequency. \Cref{sec:sparams} identified that as the transfer function of the network
 in its \(Z_0\) environment---so the screen is showing \(G(\jj\omega)\), and the trace
-\emph{is} a Bode plot of the thing on the bench.
+\emph{is} a Bode plot of the thing on the bench. \Cref{fig:s21-bode} is that screen,
+with every feature on it labelled by the section that derived it.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{s21_is_bode}
+\caption{A vector network analyzer's two traces for a band-pass filter, which are a
+Bode plot of \(G(\jj\omega)\) and nothing else. Everything labelled was derived before
+any instrument was mentioned: the in-band level is \cref{sec:filterspecs}'s insertion
+loss, \(-20\log_{10}|S_{21}|\); the \(-\SI{3}{\decibel}\) width is
+\cref{sec:halfpower}'s exact \(f_0/Q_L\); the skirts fall at
+\(\pm\SI{20}{\decibel}\) per decade because there is one pole on each side
+(\cref{sec:cascadeadd}); the phase crosses zero at \(f_0\), where the reactances
+cancel; and the slope of that phase is \cref{sec:groupdelay}'s group delay. The inset
+is the pole pair that produced all of it. Computed for a series \(L\)--\(C\)--\(r\)
+resonator (\SI{10}{\micro\henry}, \SI{20}{\pico\farad}, \SI{6}{\ohm}) between
+\SI{50}{\ohm} terminations, so \(S_{21}=2Z_0/(2Z_0+r+\jj(\omega L-1/\omega C))\).}
+\label{fig:s21-bode}
+\end{figure}
 
 \begin{controlsbox}
 \textbf{This is where the book's two halves shake hands.} Part II built
