@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **38 done, 19 open.** Nothing has been silently dropped.
+Score: **40 done, 17 open.** Nothing has been silently dropped.
 
-## ✅ Done (38)
+## ✅ Done (40)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -205,11 +205,13 @@ noise bandwidth
 
 **Tier B7 — the named antenna matches (`sec:antennamatches`).** Hairpin, gamma, delta and stub are all `sec:lnetwork`'s L-network with its two reactances built from antenna hardware, and one exam fact becomes a consequence. A Yagi element at 25 Ω needs `Q = √(50/25−1) = 1`, so `|X_series| = 25 Ω` and `|X_shunt| = 50 Ω`. A hairpin is a shorted stub under λ/4, so `jZ₀tan βℓ` is *inductive* and supplies the shunt arm — therefore the series arm **must** be capacitive, and rather than fit a capacitor you cut the element short of resonance. **“The driven element must be capacitive” (E9E05) is the L-network demanding an opposite-type element, not a rule about hairpins.** With 300 Ω rods the hairpin is 9.5°, about 5.5 cm at 144 MHz. Gamma and delta instead *tap up* via `sec:feedpoint` (λ/8 doubles 25 Ω to exactly 50 Ω), and because the tap conductor is a loop it adds inductance the antenna cannot cancel — hence the gamma's series capacitor, whose purpose is exactly E9E04's *cancel unwanted inductive reactance*. The insulated-boom requirement (E9E01) follows from a shunt element needing two floating terminals; the grounded-tower use (E9E09) from the gamma being the unbalanced one. Six pool answers, no new mathematics.
 
+**Tier C, filters (`sec:qlqu`, `sec:ringdown`).** T3.23: in a series-resonant band-pass with coil loss `r` between `R_s` and `R_L`, insertion loss is `20log[(R_s+R_L+r)/(R_s+R_L)]`, and since `Q_L/Q_U = r/(R_s+R_L+r)` exactly, that *is* `IL = −20log(1 − Q_L/Q_U)` — derived inside our own series-RLC rather than quoted. A `physicalbox` gets the duplexer: narrow rejection needs high `Q_L`, but the loss depends on the *ratio*, so `Q_U` must be far higher still — cavities are there because `Q_U` is the denominator, not for power handling. T3.24: `τ = 1/α = Q/(πf₀)`, and substituting A1's exact `BW = f₀/Q` gives **`τ = 1/(πBW)`** — the ring-down depends on bandwidth *alone*, not centre frequency or order. A 500 Hz CW filter rings 0.64 ms at 455 kHz or at 7 MHz; against a 60 ms dot at 20 wpm that sets the floor on useful narrowness, with 50 Hz (6.4 ms) audibly smearing keying.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (19), ranked
+## ⬜ Open (17), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 

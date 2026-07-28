@@ -225,6 +225,78 @@ through it, by stray capacitance or shared ground impedance
 (\cref{sec:groundloops}); adding poles past that point buys nothing, which is why
 crystal filters are physically shielded compartment by compartment.
 
+\subsection{Insertion Loss Is a Ratio of Two Q's}
+\label{sec:qlqu}
+That first remark can be made quantitative, and it explains a piece of station
+hardware. Take the simplest band-pass: a series-resonant \(L\)--\(C\) with the coil's
+loss \(r\), fed from \(R_s\) and driving \(R_L\), all in series. At resonance the
+reactances cancel and the current is \(V/(R_s+R_L+r)\). Insertion loss is what
+inserting the filter cost, i.e.\ the same circuit with \(r\) removed:
+\[
+\mathrm{IL}=20\log_{10}\frac{R_s+R_L+r}{R_s+R_L} .
+\]
+Now name the two \(Q\)'s. The resonator's own \emph{unloaded} \(Q\) counts only its
+internal loss, \(Q_U=\omega_0L/r\), while the \emph{loaded} \(Q\) counts everything
+the current flows through, \(Q_L=\omega_0L/(R_s+R_L+r)\). Their ratio is therefore
+just the resistance fraction, \(Q_L/Q_U=r/(R_s+R_L+r)\), so
+\(1-Q_L/Q_U=(R_s+R_L)/(R_s+R_L+r)\) and
+\[
+\boxed{\;\mathrm{IL}=-20\log_{10}\left(1-\frac{Q_L}{Q_U}\right)\;}
+\]
+Read it as a warning about ratios, not about resistances. Loss is negligible while
+\(Q_L\ll Q_U\)---you are loading the resonator far more heavily than its own losses
+do---and it runs away as \(Q_L\) approaches \(Q_U\). A filter costs
+\SI{0.4}{\decibel} at \(Q_L/Q_U=1/20\) but \SI{3.5}{\decibel} at \(1/3\).
+
+\begin{physicalbox}
+\textbf{Why a duplexer needs cavities.} A repeater duplexer must pass one frequency
+and reject another a few hundred kilohertz away, while carrying transmitter power
+through the pass path. Narrow rejection demands a high \emph{loaded} \(Q\). But the
+formula says the insertion loss depends on \(Q_L/Q_U\), so a high \(Q_L\) is only
+affordable if \(Q_U\) is enormously higher still---and a wound coil's \(Q\) of a few
+hundred cannot supply that. A quarter-wave cavity resonator reaches \(Q_U\) in the
+thousands, which is the only way to buy the selectivity at a fraction of a decibel.
+The cavities are not there for power handling; they are there because \(Q_U\) is the
+denominator.
+\end{physicalbox}
+
+\subsection{How Narrow Is Too Narrow: Ring-Down}
+\label{sec:ringdown}
+A high-\(Q\) filter stores energy, and stored energy takes time to leave. The
+envelope of a resonator's decay falls as \(\ee^{-\alpha t}\) with
+\(\alpha=\omega_0/2Q\) (\cref{ch:rlc}), so its time constant is
+\[
+\tau=\frac{1}{\alpha}=\frac{2Q}{\omega_0}=\frac{Q}{\pi f_0}.
+\]
+Two ways of reading that, and the second is the useful one. First, \(\tau f_0=Q/\pi\):
+a resonator always rings for about \(Q/\pi\) cycles, whatever its frequency. Second,
+substitute \cref{sec:halfpower}'s exact \(BW=f_0/Q\):
+\[
+\boxed{\;\tau=\frac{1}{\pi\,BW}\;}
+\]
+\emph{The ring-down depends only on the bandwidth}---not on the centre frequency, not
+on the order, not on how the filter is built. A \SI{500}{\hertz} CW filter rings for
+\SI{0.64}{\milli\second} whether it is at \SI{455}{\kilo\hertz} or
+\SI{7}{\mega\hertz}.
+
+That sets a floor on useful narrowness. At \SI{20}{} words per minute a Morse dot is
+about \SI{60}{\milli\second}, so a \SI{500}{\hertz} filter (\SI{0.6}{\milli\second})
+is invisible, a \SI{100}{\hertz} filter (\SI{3.2}{\milli\second}) is starting to
+soften the edges, and a \SI{50}{\hertz} filter (\SI{6.4}{\milli\second}) audibly rings
+each keying transition into the next. Narrower is not automatically better: the
+bandwidth that best rejects the neighbouring signal may be one that smears the signal
+you want, and \(\tau=1/\pi BW\) is where that trade is decided.
+
+\begin{controlsbox}
+This is the time-domain half of a frequency-domain specification, and it is the same
+duality \cref{ch:fourviews} built a chapter around. ``Narrow'' and ``slow'' are one
+property of one pole pair: pushing the poles toward the \(\jj\omega\) axis narrows the
+passband and lengthens the ringing by the same factor, because both are
+\(1/\alpha\). A filter designer who thinks only in hertz has half the picture, which
+is why \cref{sec:groupdelay}'s group delay matters for data modes for exactly the
+same reason.
+\end{controlsbox}
+
 \begin{exambox}
 Shape factor and order both describe skirt steepness, and a question may give you
 either. Order is the theoretical statement---\(n\) poles give
