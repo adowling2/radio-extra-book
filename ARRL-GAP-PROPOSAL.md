@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **33 done, 24 open.** Nothing has been silently dropped.
+Score: **34 done, 23 open.** Nothing has been silently dropped.
 
-## ✅ Done (33)
+## ✅ Done (34)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -195,24 +195,20 @@ noise bandwidth
 
 **Tier B2 — feedback sets impedance (`sec:feedbackz`).** Two test-source derivations retire the op-amp ideals as axioms. Ground the input, drive the output: the loop returns `βV_t`, so the internal source opposes with `−AβV_t` and `Z_out = R_o/(1+L)`. Drive the non-inverting input: the loop squeezes `v_d` to `V_t/(1+L)`, and a resistor with no voltage across it draws no current, so `Z_in = R_id(1+L)`. The ideals are the `L→∞` limit of two ordinary circuit results — 1 MΩ and 75 Ω inside a loop of `L = 10⁵` become 100 GΩ and 750 µΩ. A `controlsbox` collects the payoff: **one factor, five consequences** — `1+L` divides gain, fractional error, distortion and output impedance, and multiplies bandwidth and input impedance, which is also why stability is unavoidable, since `1+L = 0` is where the loop oscillates. A `mistakebox` adds the nuance the usual telling omits: feedback does not always *raise* input impedance — the inverting topology compares currents at a node, so the source sees only `R_in` and `R_id` is irrelevant. That is a property of the topology, not the chip. The `physicalbox` that used to attach all three ideals to the dependent source now attaches only the large-`A` one.
 
+**Tier B3 — antenna efficiency (`sec:antennaeff`).** The book had `R_rad` and no loss resistance anywhere. Splitting `R = R_rad + R_loss` and noting both carry the same series current makes `η = R_rad/(R_rad+R_loss)` Ch 8's divider applied to power. The counterintuitive payoff is now a `mistakebox` with numbers: for a 15 Ω short antenna, adding 35 Ω of loss takes efficiency to 30 % (−5.2 dB) while the SWR at resonance walks from 3.3:1 to a *perfect* 1.0:1 — because at resonance SWR is just `Z₀/R`. The bandwidth improves too, and exactly, since `Q = ω₀L/R` falls and A1 made `BW = f₀/Q` an equality. A dummy load is the limiting case: flawless 1:1, radiating nothing. Pool E9A09/E9A10, verified.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (24), ranked
+## ⬜ Open (23), ranked
 
-### Tier A — the book asserts these itself, so they are defects by our own convention
-
-| # | Item | Why it ranks here |
-|---|---|---|
+### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
 ### Tier B — best remaining thesis bridges
 
 | # | Item | Why |
 |---|---|---|
-| T2.15 | **S-parameters; `S₂₁` *is* `G(jω)`** | The strongest bridge left. Ch 16 already splits `V` and `I` into forward/reverse waves, so `S₁₁ = Γ` follows identically — and `S₂₁` is the transfer function of Chs 3–4 measured in a matched system, which makes **a VNA sweep literally a Bode plot**. Also E4B03/04/05/07/11. |
-| T2.7 | **Feedback sets impedance, not just gain** | We use `1/(1+L)` for gain sensitivity only. Extending it to driving-point impedance turns the op-amp's "ideal" infinite input and zero output impedance from axioms into the `L→∞` limit, and shows a regulator's load regulation and output impedance are the same number. |
-| T2.14 | **Antenna efficiency** | The book has `R_rad` but **no loss resistance and no efficiency anywhere**. `η = R_rad/(R_rad+R_loss)` is Ch 8's divider applied to power — and the payoff is counterintuitive: adding loss *widens* SWR bandwidth while *lowering* efficiency, so a lossy short antenna can look **better** on an SWR meter. |
 | T2.13 | **Feed-point impedance vs feed position** | `R(z) = R_center/cos²βz` generates the whole ARRL section — 73 Ω at centre, ~146 Ω at λ/8 (explaining the OCFD's 4:1), `R→∞` at the end (explaining why an end-fed half wave needs the λ/4 inversion we derive). |
 | T2.12 | **Two-element array factor** | `\|F\| = 2\|cos((φ+βd cosθ)/2)\|` — pure phasor addition. Turns a memorized table of four patterns into four substitutions, and gives the DF sense antenna free. |
 | T2.11 | **Crystal as two resonances** | `R–L_m–C_m` parallel `C₀` gives an impedance zero and pole a few hundred ppm apart — which *is* the pulling range, sets lattice-filter bandwidth, and explains why `C_L` must be specified. E6D02, E7H12. |

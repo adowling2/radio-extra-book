@@ -810,6 +810,71 @@ suffers (more of the loss now sits in the coil's resistance than in radiation). 
 formula from \cref{ch:rlc}, two practical consequences.
 \end{physicalbox}
 
+\subsection{Efficiency: the Resistance That Does Not Radiate}
+\label{sec:antennaeff}
+The model so far has one resistance, and it has been quietly doing two jobs. Split
+them. An antenna's feed-point resistance is
+\[
+R=R_{\text{rad}}+R_{\text{loss}},
+\]
+where \(R_{\text{rad}}\) accounts for power that leaves as radiation and
+\(R_{\text{loss}}\) for power that becomes heat---conductor resistance including the
+skin effect of \cref{sec:selfresonance}, a loading coil's own loss, dielectric loss in
+nearby insulators, and, for a ground-mounted vertical, the resistance of the return
+currents flowing through soil. Both resistances carry the \emph{same} current, because
+they are in series, so the power splits in proportion to them---\cref{ch:resistive}'s
+divider, applied to power instead of voltage:
+\[
+\boxed{\;\eta=\frac{P_{\text{radiated}}}{P_{\text{input}}}
+=\frac{I^2R_{\text{rad}}}{I^2\left(R_{\text{rad}}+R_{\text{loss}}\right)}
+=\frac{R_{\text{rad}}}{R_{\text{rad}}+R_{\text{loss}}}\;}
+\]
+Nothing here is new physics; it is a divider. But it explains the two facts that
+matter about small antennas. A full-size dipole has \(R_{\text{rad}}\approx\SI{73}{\ohm}\)
+against a fraction of an ohm of loss, so \(\eta\) is above \SI{95}{\percent} and the
+distinction hardly matters. Shorten the antenna and \(R_{\text{rad}}\) falls
+roughly as the square of its length while \(R_{\text{loss}}\) does not, so the ratio
+collapses. That is also why a ground radial system helps a quarter-wave vertical: the
+radials do not change \(R_{\text{rad}}\), they shrink the \(R_{\text{loss}}\)
+that soil return currents contribute.
+
+\begin{mistakebox}
+\textbf{Loss makes an antenna look \emph{better} on an SWR meter.} This is the
+counterintuitive one, and both halves of it follow from formulas already derived. Take
+a short antenna with \(R_{\text{rad}}=\SI{15}{\ohm}\) in a \SI{50}{\ohm} system and
+add loss:
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\(R_{\text{loss}}\) & \(R\) total & \(\eta\) & Signal lost & SWR at \(f_0\) \\
+\midrule
+\SI{0}{\ohm}  & \SI{15}{\ohm} & \SI{100}{\percent} & \SI{0}{\decibel}    & \(3.3{:}1\) \\
+\SI{10}{\ohm} & \SI{25}{\ohm} & \SI{60}{\percent}  & \SI{-2.2}{\decibel} & \(2.0{:}1\) \\
+\SI{35}{\ohm} & \SI{50}{\ohm} & \SI{30}{\percent}  & \SI{-5.2}{\decibel} & \(1.0{:}1\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At resonance the reactances cancel and the SWR is just \(Z_0/R\) or \(R/Z_0\), so
+piling on loss walks \(R\) toward \SI{50}{\ohm} and the match toward perfection. The
+bandwidth improves too, and exactly: \(Q=\omega_0L/R\) falls as \(R\) rises, and
+\cref{sec:halfpower} made \(BW=f_0/Q\) an equality, so the usable window widens in
+direct proportion to the loss added. A dummy load is the limiting case---a flawless
+\(1{:}1\) across every band, radiating nothing. \emph{An SWR meter measures how
+comfortable the transmitter is, not how much signal leaves.} That is the whole reason
+\(\eta\) has to be a separate number, and why it cannot be measured from the shack.
+\end{mistakebox}
+
+\begin{exambox}
+E9A asks for efficiency as \emph{radiation resistance divided by total resistance},
+which is the boxed formula, and separately asks what improves a ground-mounted
+vertical: \emph{a ground radial system}, because it attacks \(R_{\text{loss}}\).
+Watch the distractor that defines efficiency as ERP over transmitter output---that is
+a different ratio, and it folds in feed-line loss and antenna gain rather than the
+feed-point split.
+\end{exambox}
+
 \begin{figure}[htbp]
 \centering
 \begin{circuitikz}[scale=1]
