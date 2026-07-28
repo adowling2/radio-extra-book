@@ -55,6 +55,11 @@ circuits, Part IV is what they explain.
 - **23 chapters + 3 appendices, five parts, 216 pages, 35 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
+**Pool sources are now the official NCVEC releases** (`references/`), and the
+HamExam-derived extracts were verified against them: 599 Extra and 423 General
+questions, **identical ID sets and zero answer-letter mismatches**. The NCVEC PDFs also
+carry the eight exam diagrams, which the extracts cannot reproduce.
+
 - **⚠️ Round 5 is committed but NOT pushed** — `main` is 22 commits ahead of
   `origin/main` as of the end of the session. Everything is verified and the tree is
   clean; it just needs `git push`. (Check this yourself rather than trusting the line:

@@ -671,36 +671,84 @@ constant-\(|\Gamma|\) (constant-SWR) circle. For this book the point is
 conceptual---the chart is not a new law of circuits but a coordinate transform
 that makes the input-impedance formula something you can read off by eye.
 
-\Cref{fig:smith-basic} shows the geometry stripped to its essentials. Three
-features carry the pool's vocabulary: the horizontal line through the middle is the
-\textbf{resistance axis} (where \(z\) is purely real), the circles tangent to its
-right-hand end are \textbf{constant-resistance circles}, the arcs crossing them are
-\textbf{constant-reactance arcs}, and the center---\(z=1\), \(\Gamma=0\)---is the
-\textbf{prime center}, the perfect match. Real charts add
-\textbf{wavelength scales} around the rim, since a rotation of \(180^\circ\)
-corresponds to moving a quarter wavelength along the line (the same
-\(\beta\ell=\pi/2\) that inverts an impedance).
+\Cref{fig:smith-labelled} is the chart with every feature the exam names labelled, and
+the vocabulary is worth learning deliberately because two of the names are
+counter-intuitive.
+
+Start with the \emph{two} families, which are all the chart is: circles of constant
+\textbf{resistance} and arcs of constant \textbf{reactance}. Nothing else is plotted.
+The resistance circles are all tangent to the right-hand point, where \(z\to\infty\);
+the reactance arcs all terminate on the outer circle.
+
+Now the two names that trip people. The horizontal line through the middle is the
+\textbf{resistance axis}---and it is the \emph{only straight line on the chart}, which
+is how a question can ask for it without naming it. But the large outer circle is
+called the \textbf{reactance axis}, because that is where the reactance arcs
+terminate---an ``axis'' that is a circle, which is exactly the sort of thing worth
+seeing once on a labelled diagram rather than meeting first in a question. The center
+is the \textbf{prime center}: \(z=1\), \(\Gamma=0\), the perfect match.
+
+\emph{Normalizing} the chart is the operation that makes it usable in any system. The
+chart is drawn once in normalized coordinates \(z=Z/Z_0\), so to work in a
+\SI{50}{\ohm} system you declare the prime center to \emph{be} \SI{50}{\ohm}---you
+reassign the prime center's impedance value---and every number you read off is then a
+multiple of it. Change to \SI{75}{\ohm} and not one line moves; only the label on the
+center does.
+
+Two additions turn the chart from a picture into a tool. \textbf{Wavelength scales}
+around the rim are calibrated in fractions of a \emph{transmission-line} wavelength,
+not an antenna's, because what the rotation tracks is distance along the line: one full
+turn is \(\lambda/2\), so a half turn is the \(\beta\ell=\pi/2\) that inverts an
+impedance. And a third family of \textbf{constant-SWR circles}---concentric about the
+prime center, since \(|\Gamma|\) and SWR determine each other---is what gets drawn on
+top when the chart is used to design a matching network.
+
+\subsection{What the Chart Is Actually For}
+\label{sec:smithuse}
+The chart's characteristic job is the one this chapter has already done twice
+algebraically: \emph{find the length and position of a matching stub}. The recipe is
+the rotation. Moving from the load toward the generator rotates the point clockwise on
+its constant-SWR circle, so you rotate until the point lands on the circle where the
+normalized \emph{resistance} is \(1\)---the distance rotated is where the stub goes,
+read off the wavelength scale. Whatever reactance remains at that point is what the
+stub must cancel, and \cref{sec:stubs}'s \(\jj Z_0\tan\beta\ell\) converts that
+reactance into a stub length. Two readings off the chart, and the answer is the same
+pair of numbers \cref{sec:antennamatches}'s stub match arrives at by algebra.
+
+That is the honest summary of what a Smith chart is: not a new law, and not a
+calculating aid anyone needs now that \(Z_{\mathrm{in}}(\ell)\) can be evaluated on a
+phone, but a \emph{picture} in which the algebra's structure is visible---rotation for
+distance, circles for constant SWR, one point for a match.
+
+\begin{exambox}
+Group E9G is eleven questions of vocabulary and use, and every answer is in
+\cref{fig:smith-labelled} or the two paragraphs above it. What it \emph{calculates}:
+impedance along transmission lines, and impedance and SWR values. Its \emph{coordinate
+system}: resistance circles and reactance arcs---the two families, and the arcs are the
+points of constant \emph{reactance}. Its \emph{common use}: determining the length and
+position of a matching stub. The \emph{only straight line}: the resistance axis. The
+\emph{large outer circle on which the reactance arcs terminate}: the reactance axis.
+\emph{Normalizing}: reassigning the prime center's impedance value. The \emph{third
+family added when designing matching networks}: constant-SWR circles. And the
+\emph{wavelength scales}: fractions of a transmission-line electrical wavelength---the
+distractors offer antenna wavelength and frequency, and the scale tracks distance along
+the \emph{line}.
+\end{exambox}
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=2.0]
-\draw[thick] (0,0) circle (1);
-\draw[GuideBlue,thick] (-1,0)--(1,0);
-\draw[GuideLine] (0.333,0) circle (0.667);
-\draw[GuideLine] (0.6,0) circle (0.4);
-\draw[GuideGreen] (1,0) arc (0:180:0.5);
-\draw[GuideGreen] (1,0) arc (0:-180:0.5);
-\fill (0,0) circle (0.02);
-\node[below left] at (-0.02,-0.03) {\small match};
-\node[below] at (0,-1.12){normalized impedance plane mapped to \(\Gamma\)};
-\end{tikzpicture}
-\caption{Simplified Smith-chart geometry, showing two constant-resistance circles
-(normalized \(r=0.5\) and \(r=1.5\), both tangent to the right-hand edge) and one pair
-of constant-reactance arcs (\(x=\pm1\)). The center is the perfect match
-(\(z=1\), \(\Gamma=0\)); moving along a line rotates a point about that center on a
-constant-SWR circle.}
-\label{fig:smith-basic}
+\includegraphics[width=0.92\textwidth]{smith_chart_labelled}
+\caption{A Smith chart with every feature the exam names labelled. It is not traced:
+each curve is computed from \(\Gamma=(z-1)/(z+1)\), the constant-resistance circles
+having centre \(r/(1+r)\) and radius \(1/(1+r)\) and the constant-reactance arcs centre
+\((1,1/x)\) and radius \(|1/x|\). Note the two names worth learning: the
+\emph{resistance} axis is the horizontal line---the only straight line on the
+chart---while the \emph{reactance} axis is the outer \emph{circle}, where every arc
+terminates. The orientation, with \(z\to\infty\) at the right, is the conventional one
+the question pool adopted in its 2024 errata.}
+\label{fig:smith-labelled}
 \end{figure}
+
 
 \section{An Idealized Antenna on the Smith Chart}
 The most useful way to connect the chart to the math is to put a real device on
@@ -1248,7 +1296,8 @@ the roles of the two elements exchanged.
 
 \textbf{Stub match: the general case.} A shorted or open stub placed in parallel at or
 near the feed point, its length and position both adjustable, is simply
-\cref{sec:stubs} used as a two-degree-of-freedom matching network---the position
+\cref{sec:stubs} used as a two-degree-of-freedom matching network (and
+\cref{sec:smithuse} is how the chart finds those two numbers by eye)---the position
 choosing what impedance the line presents at that plane, the stub length supplying the
 susceptance that cancels its imaginary part. It needs no antenna modification at all,
 which is why it works on anything and why the others exist only as tidier packages for
