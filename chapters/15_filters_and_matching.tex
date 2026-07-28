@@ -246,10 +246,23 @@ Both halves are already familiar: the reactance to be cancelled is the \(X\) of
 maximizes power transfer and keeps transmission-line reflections controlled.
 
 \subsection{The L-Network}
+\label{sec:lnetwork}
 The simplest matching network uses two reactances. To match two real resistances
 \(R_{\text{hi}}>R_{\text{lo}}\), place a series reactance on the low-resistance
-side and a shunt reactance on the high-resistance side. The network operating
-\(Q\) is set by the resistance ratio:
+side and a shunt reactance on the high-resistance side. That is the whole design, and
+it needs no new theory: it is \cref{sec:seriesparallel}'s series-to-parallel
+transformation run backwards, once.
+
+Hang \(X_{\text{series}}\) on \(R_{\text{lo}}\). The pair is a series branch with
+\(Q=X_{\text{series}}/R_{\text{lo}}\), so by that section it is \emph{identical}, at
+this one frequency, to a parallel combination of
+\[
+R_p=\left(1+Q^2\right)R_{\text{lo}}
+\qquad\text{and}\qquad
+X_p=\left(1+\frac{1}{Q^2}\right)X_{\text{series}} .
+\]
+Now demand that the transformed resistance be the one you wanted,
+\(R_p=R_{\text{hi}}\). That single equation fixes \(Q\), and with it everything else:
 \[
 Q=\sqrt{\frac{R_{\text{hi}}}{R_{\text{lo}}}-1},
 \qquad
@@ -257,12 +270,24 @@ X_{\text{series}}=Q\,R_{\text{lo}},
 \qquad
 X_{\text{shunt}}=\frac{R_{\text{hi}}}{Q}.
 \]
-Note that this \(Q\) is a \emph{network} \(Q\) set by the resistance ratio, not a
-resonator \(Q\) set by loss---the distinction \cref{ch:rlc} warned about. The two
-reactances are of opposite type (one inductor, one capacitor); choosing
-which is the inductor sets whether the network is low-pass or high-pass
-(\cref{fig:lnetwork}). An L-network has no free parameter left over, so its
-bandwidth is fixed once the resistances are chosen.
+The third follows from the second: substituting \(X_{\text{series}}=QR_{\text{lo}}\)
+into \(X_p\) gives
+\(X_p=R_{\text{lo}}(Q+1/Q)=R_{\text{lo}}(1+Q^2)/Q=R_{\text{hi}}/Q\). So the
+transformation leaves behind a shunt reactance of exactly \(R_{\text{hi}}/Q\), and
+the shunt element's only job is to cancel it---which is why the two reactances must
+be of opposite type (one inductor, one capacitor). What remains is \(R_{\text{hi}}\),
+purely real. \emph{An L-network is one series-to-parallel transformation plus a
+cancellation}, and there is nothing else in it.
+
+Two consequences. Choosing which element is the inductor sets whether the network is
+low-pass or high-pass (\cref{fig:lnetwork}). And an L-network has no free parameter
+left over---\(Q\) was determined by the resistance ratio alone---so its bandwidth is
+fixed once the resistances are chosen, a restatement of
+\cref{sec:seriesparallel}'s warning that the equivalence holds at one frequency.
+This \(Q\) is the branch \(Q\) of the network's own series arm, the same
+\(X/R\) ratio as everywhere else in the book; what makes it a \emph{network} \(Q\)
+rather than a resonator's is that the \(R\) is a termination you chose, not a loss you
+are stuck with.
 
 \begin{figure}[htbp]
 \centering

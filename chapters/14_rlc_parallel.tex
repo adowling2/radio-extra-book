@@ -154,7 +154,8 @@ lost per cycle---which is the definition \(Q\) actually encodes:
 Q=2\pi\,\frac{\text{energy stored}}{\text{energy lost per cycle}} .
 \]
 Read that way there is only one \(Q\), and the two formulas are what it becomes in
-two topologies.
+two topologies. The next section makes that literal: there is a transformation
+carrying either picture into the other, and \(Q\) is exactly what it leaves alone.
 
 \begin{mistakebox}
 Do not carry a \(Q\) formula across topologies. Ask first whether the loss is in
@@ -198,6 +199,76 @@ every step goes through with \(Y\) for \(Z\): a current source drives the tank, 
 voltage across it is the response, half power is \(|Y|^2=2G^2\), and the same two
 conclusions follow---the width is exactly \(\omega_0/Q_p\) and the band edges satisfy
 \(f_0=\sqrt{f_1f_2}\).
+
+\section{Series and Parallel Are One Impedance}
+\label{sec:seriesparallel}
+Nothing forces a branch to be drawn one way. At any single frequency a series
+\(R_s+\jj X_s\) and a parallel \(R_p\parallel\jj X_p\) are the same two-terminal
+impedance provided their admittances agree, so just invert and match parts:
+\[
+Y=\frac{1}{R_s+\jj X_s}=\frac{R_s-\jj X_s}{R_s^2+X_s^2}
+\;\equiv\;\frac{1}{R_p}-\frac{\jj}{X_p} .
+\]
+Reading off the real and imaginary parts, and writing \(Q\equiv X_s/R_s\) for the
+branch's own reactance-to-resistance ratio,
+\[
+R_p=\frac{R_s^2+X_s^2}{R_s}=\left(1+Q^2\right)R_s,
+\qquad
+X_p=\frac{R_s^2+X_s^2}{X_s}=\left(1+\frac{1}{Q^2}\right)X_s .
+\]
+Both are exact---one frequency, no approximation---and dividing them gives the fact
+that matters most:
+\[
+\frac{R_p}{X_p}=Q=\frac{X_s}{R_s}.
+\]
+\(Q\) is what the transformation \emph{preserves}. That is the literal version of the
+previous section's claim that there is only one \(Q\): \(\omega_0L/R\) and
+\(R/(\omega_0L)\) are the ratio and its reciprocal because one is read off the series
+picture and the other off the parallel picture of a single branch, and this map
+carries either into the other without touching \(Q\).
+
+For \(Q\gg1\) the two results simplify to \(R_p\approx Q^2R_s\) and
+\(X_p\approx X_s\): the reactance barely moves, while the resistance is multiplied by
+\(Q^2\). Three things the book has so far asserted follow.
+
+\textbf{A real tank's peak impedance is \(Q^2\) times its loss, not equal to it.}
+The ideal parallel circuit above puts \(R\) as a shunt, but a real tank's loss is the
+coil's series resistance \(r\), with \(Q=\omega_0L/r\). Transform that branch: the
+lossy coil becomes \((1+Q^2)r\) in parallel with a reactance \(\approx\omega_0L\),
+which is what the capacitor cancels at resonance. So the peak impedance is
+\[
+Z_{\max}=(1+Q^2)\,r\approx Q^2r=\frac{(\omega_0L)^2}{r}=\frac{L}{Cr},
+\]
+the last form using \(\omega_0^2=1/LC\). A coil with half an ohm of loss and
+\(Q=200\) therefore presents about \SI{20}{\kilo\ohm}, not half an ohm---which is
+where \cref{ch:crossproblems}'s oscillator tank gets its \SI{19.6}{\kilo\ohm}.
+
+\textbf{Solving \(R_{\text{hi}}=R_{\text{lo}}(1+Q^2)\) \emph{is} the L-network.}
+A matching network needs three formulas---an operating \(Q\) and two element
+reactances---and \cref{sec:lnetwork} obtains all three from this one identity, run
+backwards: choose the \(Q\) that makes \((1+Q^2)R_{\text{lo}}\) come out equal to the
+resistance you want, and the rest is bookkeeping.
+
+\begin{controlsbox}
+\textbf{A change of coordinates, not a new circuit.} This is the same move the
+state-space chapters make: one object, two representations, related by an invertible
+map, with an invariant that survives the change. There the invariant was the
+eigenvalues---\cref{ch:rlc} showed the poles are the eigenvalues no matter which
+description you start from. Here it is \(Q\). And the transformation is invertible:
+solving for the series form gives
+\(R_s=R_p/(1+Q^2)\) and \(X_s=X_p/(1+Q^{-2})\), so neither picture is the
+privileged one. Pick whichever makes the next step easier---series when elements
+share a current, parallel when they share a voltage.
+\end{controlsbox}
+
+\begin{mistakebox}
+\textbf{The transformation holds at one frequency only.} \(R_p\) and \(X_p\) were
+matched to \(R_s\) and \(X_s\) at a single \(\omega\), and \(Q\) is itself
+frequency-dependent, so the equivalent parallel pair is not a fixed pair of
+components valid across a band. This is exactly why an L-network's bandwidth is
+fixed once the resistance ratio is: the match is a one-frequency identity, and
+detuning breaks it.
+\end{mistakebox}
 
 \section{Root Locus and Energy Balance}
 Both of these carry over from \cref{ch:rlc} by duality, so they need only a sentence

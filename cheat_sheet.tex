@@ -127,10 +127,17 @@ BW=\frac{f_0}{Q}
 f_0=\sqrt{f_1f_2},\quad
 \frac{f_1+f_2}{2}=f_0\sqrt{1+\tfrac{1}{4Q^2}}
 \]
+\[
+R_p=(1+Q^2)R_s,\quad X_p=\left(1+\tfrac{1}{Q^2}\right)X_s
+\]
 Series resonance: minimum impedance and maximum current. Parallel resonance:
 high input impedance in the ideal case. \(BW=f_0/Q\) is exact; the half-power edges
-straddle \(f_0\) geometrically, so \(f_0\) is below their midpoint by \(1/8Q^2\).
+straddle \(f_0\) geometrically. A real tank of coil loss \(r\) peaks at
+\(Z_{\max}\approx L/(Cr)\).
 
+% Keep this section whole: page 1's right column ends just after the heading
+% otherwise, splitting the section across the page break.
+\newpage
 \section*{Poles and Feedback}
 \[
 s^2+2\zeta\omega_0 s+\omega_0^2,\quad
@@ -148,8 +155,9 @@ A_{\mathrm{cl}}=\frac{A}{1+A\beta},\quad L=A\beta,\quad
 \]
 Oscillation (Barkhausen): \(L=-1\) (\(|L|=1\), \(\angle L=-180^\circ\)). PLL:
 \(L=K_dK_vF(s)/s\), \(f_{\mathrm{out}}=Nf_{\mathrm{ref}}\), reference noise
-\(+20\log_{10}N\). L-match:
-\(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\).
+\(+20\log_{10}N\). L-match: \(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\), i.e.\ solve
+\(R_{\text{hi}}=R_{\text{lo}}(1+Q^2)\); then \(X_{\text{series}}=QR_{\text{lo}}\) and
+the shunt cancels \(R_{\text{hi}}/Q\).
 
 \section*{Bode and dB}
 \[

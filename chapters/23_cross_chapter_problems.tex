@@ -64,13 +64,17 @@ unloaded \(Q\) of \(200\). (a) What impedance does the tank present at resonance
 bandwidth, and why does it matter for phase noise?
 
 \subsection*{Solution}
-(a) For the parallel circuit \(Q_p=R_p/(\omega_0L)\) (\cref{ch:rlcpar}), so the
-equivalent shunt loss resistance is
+(a) The loss is physically the coil's series resistance
+\(r=\omega_0L/Q=98.1/200\approx\SI{0.49}{\ohm}\), so getting a shunt resistance out of
+it is the series-to-parallel transformation of \cref{sec:seriesparallel}:
 \[
-R_p=Q_p\,\omega_0L=(200)(98.1)\approx\SI{19.6}{\kilo\ohm},
+R_p=(1+Q^2)\,r\approx Q^2r=Q_p\,\omega_0L=(200)(98.1)\approx\SI{19.6}{\kilo\ohm},
 \]
 and that is the (purely resistive) impedance at resonance---a \emph{maximum}, the
-mirror of the series trap above.
+mirror of the series trap above. Note how large the leverage is: half an ohm of coil
+loss becomes twenty kilohms of tank impedance, because the transformation multiplies
+by \(Q^2\). The \(\approx\) costs \SI{25}{ppm} at \(Q=200\); at low \(Q\) use
+\((1+Q^2)\).
 
 (b) The load appears in parallel with \(R_p\) (\cref{ch:resistive}):
 \[
