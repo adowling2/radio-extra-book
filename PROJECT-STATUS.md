@@ -55,8 +55,10 @@ circuits, Part IV is what they explain.
 - **23 chapters + 3 appendices, five parts, 216 pages, 35 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
-- **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
-  version of this file claimed 19 unpushed commits; that was simply wrong.)
+- **⚠️ Round 5 is committed but NOT pushed** — `main` is 22 commits ahead of
+  `origin/main` as of the end of the session. Everything is verified and the tree is
+  clean; it just needs `git push`. (Check this yourself rather than trusting the line:
+  `git status -sb`.)
 - Build with `make book`; regenerate figures with `make figures` (or run individual
   scripts in `figures/src/`); `make all` also builds the standalone study-guide card.
 
@@ -301,8 +303,11 @@ exam-relevance claim sourced from the manual as suspect.
    three, on the book's own running values, every answer cross-referenced.
 5. ✅ **Antenna patterns and gain — done.** `sec:arrayfactor` derives the two-element
    pattern, `sec:groundimage` gets the ground reflection as an image, ERP/EIRP landed
-   with the gain references, and `fig:array-patterns` now carries beamwidth and
-   front-to-back read off a computed cardioid — the last clearly in-scope pool gap.
+   with the gain references, and `fig:array-patterns` shows beamwidth and
+   front-to-back being read off a computed cardioid. **Caveat on an overstatement I
+   made:** E9B01–03 ask for those quantities off *the pool's own* Figure E9-1, which
+   the book does not reproduce, so the figure teaches the skill but does not "close
+   E9B". See the two open questions in §4D.
 6. ✅ **S-parameters and the VNA (E4B) — done** (`sec:sparams`, `sec:vna`).
 
 ### C. Smaller cleanups still outstanding
@@ -325,7 +330,8 @@ exam-relevance claim sourced from the manual as suspect.
     section that derived it, with the pole pair inset. The "two halves shake hands"
     figure.
   - `array_patterns` — the three named two-element patterns as three substitutions in
-    one formula, with beamwidth and front-to-back marked. Closes E9B.
+    one formula, with beamwidth and front-to-back marked — the skill E9B01–03 need,
+    though not those questions themselves (they read the pool's own figure).
   - `ground_image_lobes` — the ground reflection as an image antenna, showing the lobe
     descending as height rises, and the one sign separating horizontal from vertical.
   - `crystal_impedance` — the crystal's two resonances with the inductive window shaded.
@@ -336,6 +342,26 @@ exam-relevance claim sourced from the manual as suspect.
   stale, inherited from Round 4's list without checking.
 
 ### D. Still awaiting Alex's judgment
+
+Two of these are new in Round 5 and were created by work I did, so they need a ruling
+before the next round builds on them:
+
+- **Did Round 5 cross a scope line?** `ARRL-GAP-PROPOSAL.md`'s *What I rejected*
+  explicitly excluded radiation-pattern geometry, naming beamwidth and front-to-back.
+  `fig:array-patterns` now annotates both, on a pattern the book computes from its own
+  array factor. Defensible — the objection was to memorized geometry, not to a plotted
+  consequence of a derivation we own — but it is a change to a recorded decision.
+  Endorse it or cut the two annotations; the figure stands without them.
+- **The exam-coverage figure needs re-measuring.** README and §3 still say "roughly 12
+  of 50 groups well, 13 partially." That predates Round 5, which added S-parameters
+  (E4B), the crystal (E6D), switching amplifiers (E7B), arrays (E9C), the named matches
+  (E9E), antenna efficiency and feed-point (E9A) and more. The real figure is now
+  higher, but I did not guess at it: a defensible number needs a group-by-group audit
+  against `references/`, which is a piece of work in itself. **Do not quote 12 as
+  current.**
+
+Carried from earlier rounds:
+
 
 - **Preface personal paragraph** — names the University of Notre Dame and says the
   book was drafted with ChatGPT and developed with Claude Code. Tune the candor.

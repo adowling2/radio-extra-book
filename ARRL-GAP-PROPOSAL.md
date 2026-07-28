@@ -1,9 +1,15 @@
 # ARRL Manual Audit — What They Assert, What We Could Derive
 
-**Round 4 deliverable.** Produced 2026-07-28 by auditing ARRL *Extra Class License
-Manual* chapters 4, 6, 7 and 9 against `chapters/*.tex`. The proposal is below;
-**the LEDGER at the end of this file records what has since been built and what is
-still open** — read that first if you are picking this up cold.
+**Round 4 deliverable, now an archive.** Produced 2026-07-28 by auditing ARRL *Extra
+Class License Manual* chapters 4, 6, 7 and 9 against `chapters/*.tex`.
+
+> ### ⚠️ Everything above the LEDGER is a Round-4 snapshot and is superseded.
+> Round 5 built all of it. In particular, the "Needs your decision" section below still
+> says Sampling and DSP is *"not authorized, not started"* — it was authorized and is
+> now `ch:dsp`. **The LEDGER at the end of this file is the only current record**;
+> read that and ignore the ranking, the decisions and the status notes above it.
+> The one part of the front matter still worth reading is *What I rejected*, which
+> records scope boundaries — and see the note appended to it.
 
 Per-chapter working notes with full reasoning live in the session scratchpad as
 `arrl_ch{4,6,7,9}_gaps.md`.
@@ -142,6 +148,17 @@ grounding and lightning practice; operating and troubleshooting practice
 metrology vocabulary with nothing to derive. Circulators and isolators were rejected
 for a specific reason worth remembering: none of our existing tools produce
 nonreciprocal behaviour, so it would need genuinely new machinery.
+
+> **⚠️ Round 5 partially crossed one of these lines, and it needs Alex's ruling.**
+> Radiation-pattern geometry was rejected above, *beamwidth and F/B named explicitly*.
+> But Round 5 derived the two-element array factor (`sec:arrayfactor`) and the ground
+> image (`sec:groundimage`), after which a pattern is something the book *computes*
+> rather than a diagram it would have to trace — so `fig:array-patterns` now marks a
+> beamwidth and a front-to-back null on a cardioid it generated. That is a defensible
+> reading of the boundary (the objection was to memorized geometry, not to a plotted
+> consequence of our own formula), but it is a change to a recorded decision, not an
+> application of it. Either endorse the narrower reading or cut the two annotations;
+> the figure works without them.
 
 ---
 

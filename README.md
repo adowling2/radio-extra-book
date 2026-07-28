@@ -96,8 +96,10 @@ means the toolchain is wrong, not the book.
 ## Scope
 
 This book covers the **circuit-theory** portion of the Extra syllabus. Measured
-against the current pool it reaches roughly 12 of the 50 exam groups well and a
-further 13 partially; passing requires 37 of 50. It deliberately omits rules and regulations, operating
+against the pool it reached roughly 12 of the 50 exam groups well and a further 13
+partially, out of the 37 of 50 needed to pass. **That measurement predates Round 5 and
+is now stale-low** — see PROJECT-STATUS §4D; it needs re-measuring rather than
+guessing. It deliberately omits rules and regulations, operating
 practice, propagation, safety, digital protocols, and device physics. The preface
 states this explicitly — see `PROJECT-STATUS.md` §3 for the group-by-group map.
 
