@@ -224,8 +224,8 @@ L(\jj\omega)=-1
 \qquad\Longleftrightarrow\qquad
 \text{the curve passes through } -1 .
 \]
-Now read the margins off geometrically. The unit circle is where \(|L|=1\), and
-the negative real axis is where \(\angle L=-180^\circ\):
+Now read the margins off geometrically (\cref{fig:nyquist}). The unit circle is
+where \(|L|=1\), and the negative real axis is where \(\angle L=-180^\circ\):
 \begin{description}
 \item[Gain margin] where the curve crosses the negative real axis, how far short
 of \(-1\) it stops. If it crosses at \(-0.5\), the gain can double before
@@ -237,6 +237,21 @@ So the two margins are the radial and angular components of one clearance, and a
 loop is comfortable exactly when its curve gives \(-1\) a wide berth. That is
 also why neither margin alone is sufficient: a curve can pass close to \(-1\)
 diagonally while both margins, measured along their own axes, look acceptable.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.86\textwidth]{nyquist_margins}
+\caption{Nyquist plot of the three-pole loop \(L(s)=K/(1+s/\omega_0)^3\) at
+\(K=3\)---the same loop, at the same gain, whose Bode margins appear in
+\cref{fig:fb-margins}. Both margins are clearances from the single point
+\(-1\): the \emph{gain} margin is radial (the locus crosses the negative real
+axis at \(-K/8=-0.375\), so the gain could rise \(2.67\times\), or
+\SI{8.5}{\decibel}, before reaching \(-1\)), and the \emph{phase} margin is
+angular (\(42^\circ\) of arc remain from the unit-circle crossing round to
+\(-180^\circ\)). Raising \(K\) scales the whole curve outward until it passes
+through \(-1\) at \(K=8\).}
+\label{fig:nyquist}
+\end{figure}
 
 Nothing beyond this is needed here. (The full Nyquist \emph{criterion} counts how
 many times the curve encircles \(-1\) and relates that to right-half-plane poles,

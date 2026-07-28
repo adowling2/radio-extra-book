@@ -310,7 +310,8 @@ Hence coax attenuation goes as \(\sqrt f\) where conductor loss dominates---the
 entire HF and VHF range for ordinary cable---and crosses over to a steeper,
 proportional-to-\(f\) behavior at microwave frequencies, where the dielectric term
 takes over. That is the whole explanation of the shape of a manufacturer's
-attenuation-versus-frequency curve.
+attenuation-versus-frequency curve, and \cref{fig:line-attenuation} separates the
+two contributions.
 \end{physicalbox}
 
 \subsection{Attenuation in Decibels}
@@ -338,6 +339,22 @@ Open-wire / ladder & \(\approx\SI{0.1}{\decibel}\) & \(\approx\SI{0.4}{\decibel}
 \bottomrule
 \end{tabularx}
 \end{center}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{line_attenuation}
+\caption{Feed-line attenuation. \emph{Left:} the two terms of
+\(\alpha\approx R'/(2Z_0)+G'Z_0/2\) plotted separately for RG-58. On log--log
+axes their different physics shows as different \emph{slopes}---the conductor
+term rises as \(\sqrt f\) (slope \(\tfrac12\)) because of skin effect, the
+dielectric term as \(f\) (slope \(1\)). Across the shaded amateur range the
+conductor term is essentially the whole loss; the dielectric term is steeper and
+takes over far above it. \emph{Right:} the same two-term model for both cables,
+with the four representative values from the table marked. Computed from
+\(\text{loss}=k_c\sqrt{f}+k_df\) with \((k_c,k_d)\) fitted to those values;
+illustrative, not a substitute for a data sheet.}
+\label{fig:line-attenuation}
+\end{figure}
 
 \begin{workedbox}[: does the \(\sqrt f\) law hold?]
 Test the physics against the table. Between \SI{14}{\mega\hertz} and
