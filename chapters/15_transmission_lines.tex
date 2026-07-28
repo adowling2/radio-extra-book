@@ -1,5 +1,13 @@
 \chapter{Transmission Lines, Reflection, and SWR}
 \label{ch:lines}
+Every circuit so far has been \emph{lumped}: a finite set of components, a finite
+state vector, and the assumption from \cref{ch:foundations} that the circuit is
+small compared with a wavelength. A feed line breaks that assumption, and this
+chapter is what replaces it. The reward is that almost nothing new is needed---the
+line turns out to be built from the same \(L\) and \(C\) element laws, obeys the
+same KVL and KCL, and produces the same resonances as \cref{ch:rlc,ch:rlcpar}, only
+distributed along a length instead of concentrated in two parts.
+
 \section{Why Lines Matter}
 Transmission lines are distributed systems. When a feed line is a significant
 fraction of a wavelength, voltage and current vary along the line and a lumped
@@ -24,29 +32,76 @@ gives the \emph{telegrapher's equations},
 \qquad
 \frac{\partial i}{\partial x}=-C'\frac{\partial v}{\partial t}.
 \]
-Differentiating one and substituting the other eliminates \(i\) and yields the
-\emph{wave equation}:
+These are the \emph{same} two element laws used throughout Part~III---the inductor's
+\(v=L\,\dd i/\dd t\) and the capacitor's \(i=C\,\dd v/\dd t\)---applied to a slice
+rather than to a discrete part. And notice their structure: a coupled pair of
+first-order equations, one per energy store, exactly as in \cref{ch:rlc}. The only
+difference is that the derivatives on the left are with respect to \emph{position}
+instead of time, because the ``next'' store is the neighboring slice rather than a
+separate component.
+
+\subsection{From the Coupled Pair to the Wave Equation}
+The series RLC chapter reduced its coupled pair to one second-order equation by
+differentiating and substituting (\cref{ch:rlc}). Do the same here. Differentiate
+the first telegrapher's equation with respect to \(x\):
 \[
-\frac{\partial^2 v}{\partial x^2}=L'C'\,\frac{\partial^2 v}{\partial t^2}.
+\frac{\partial^2 v}{\partial x^2}
+=-L'\frac{\partial}{\partial x}\frac{\partial i}{\partial t}
+=-L'\frac{\partial}{\partial t}\frac{\partial i}{\partial x},
 \]
-Its solutions are waves traveling in \(\pm x\) at phase velocity
+swapping the order of the two derivatives. Now substitute the second telegrapher's
+equation, \(\partial i/\partial x=-C'\,\partial v/\partial t\):
+\[
+\frac{\partial^2 v}{\partial x^2}
+=-L'\frac{\partial}{\partial t}\Bigl(-C'\frac{\partial v}{\partial t}\Bigr)
+\qquad\Longrightarrow\qquad
+\boxed{\;\frac{\partial^2 v}{\partial x^2}=L'C'\,\frac{\partial^2 v}{\partial t^2}.\;}
+\]
+This is the \emph{wave equation}. It is the distributed analogue of the boxed
+second-order ODE of \cref{ch:rlc}, reached by the identical manoeuvre.
+
+Any function of the combination \(t\mp x/v_p\) satisfies it, provided
 \[
 v_p=\frac{1}{\sqrt{L'C'}},
 \]
-and the ratio of voltage to current in a single traveling wave is the
-characteristic impedance
+which is quickest to check by substitution: for \(v=f(t-x/v_p)\), each
+\(\partial/\partial x\) contributes a factor \(-1/v_p\) and each
+\(\partial/\partial t\) a factor \(1\), so the equation reduces to
+\(f''/v_p^2=L'C'f''\). Solutions are therefore \emph{traveling waves}, moving in
+\(+x\) or \(-x\) at speed \(v_p\) without changing shape.
+
+\subsection{Where \texorpdfstring{\(Z_0\)}{Z0} Comes From}
+The characteristic impedance is not a separate assumption; it follows from the same
+substitution. Take a single forward wave \(v=f(t-x/v_p)\) and put it into the first
+telegrapher's equation:
 \[
-Z_0=\sqrt{\frac{L'}{C'}}.
+\underbrace{-\frac{1}{v_p}f'}_{\partial v/\partial x}
+=-L'\frac{\partial i}{\partial t}
+\qquad\Longrightarrow\qquad
+\frac{\partial i}{\partial t}=\frac{f'}{L'v_p}
+\qquad\Longrightarrow\qquad
+i=\frac{f}{L'v_p},
+\]
+integrating in time. The ratio of voltage to current in that wave is therefore a
+constant, independent of shape and of frequency:
+\[
+\frac{v}{i}=L'v_p=\frac{L'}{\sqrt{L'C'}}
+=\boxed{\;Z_0=\sqrt{\frac{L'}{C'}}\;}
 \]
 So \(Z_0\) and the velocity factor are not empirical constants---they fall out of
-the per-unit-length geometry of the line.
+the per-unit-length geometry of the line. Note also what \(Z_0\) is \emph{not}: it
+dissipates nothing. It is a ratio maintained by a wave in flight, which is why a
+resistor equal to \(Z_0\) can absorb a wave perfectly (it presents the same ratio
+the wave already has) while the lossless line itself consumes no power.
 
 \section{Wavelength and Velocity Factor}
+The \textbf{velocity factor} \(VF=v_p/c\) is the ratio of the wave's speed in the
+line to the speed of light in vacuum---a dimensionless number less than one. With it,
+the wavelength \emph{on the line} at frequency \(f\) is
 \[
 \lambda=\frac{v_p}{f}=\frac{VF\,c}{f}.
 \]
-Velocity factor \(VF=v_p/c\) is the ratio of wave speed in the line to the speed
-of light. Because \(v_p=1/\sqrt{L'C'}\) and a dielectric raises \(C'\), a line
+Because \(v_p=1/\sqrt{L'C'}\) and a dielectric raises \(C'\), a line
 with dielectric has \(VF<1\); its physical length is shorter than the free-space
 electrical length. Typical values span the dielectric fill: solid-polyethylene
 coax (RG-8, RG-58) runs \(VF\approx0.66\); foam-dielectric coax
@@ -64,27 +119,89 @@ looks infinitely long---no reflection---because the load absorbs the traveling
 wave exactly as more line would.
 
 \section{Reflection Coefficient}
-At the load,
+A wave traveling toward a load carries a fixed voltage-to-current ratio \(Z_0\). The
+load demands its own ratio, \(Z_L\). If the two disagree, one wave cannot satisfy
+both---so a second, backward-traveling wave appears, sized precisely to reconcile
+them. That is all a reflection is, and the reconciliation is a two-line calculation.
+
+Write the total voltage and current at the load as the sum of a forward wave
+\(V^{+}\) and a backward wave \(V^{-}\). Voltages add; currents \emph{subtract},
+because the backward wave carries its power the other way, so its current reverses
+sign relative to its voltage:
 \[
-\Gamma=\frac{Z_L-Z_0}{Z_L+Z_0}.
+V=V^{+}+V^{-},
+\qquad
+I=\frac{V^{+}}{Z_0}-\frac{V^{-}}{Z_0}.
 \]
-If \(Z_L=Z_0\), then \(\Gamma=0\) and there is no reflection. If the load is open
-or shorted, \(|\Gamma|=1\) in the lossless idealization: all the incident wave
-returns.
+The load imposes one boundary condition, \(V/I=Z_L\):
+\[
+Z_L=Z_0\,\frac{V^{+}+V^{-}}{V^{+}-V^{-}} .
+\]
+Solving for the ratio of reflected to incident amplitude defines the
+\textbf{reflection coefficient} \(\Gamma=V^{-}/V^{+}\):
+\[
+Z_L\bigl(V^{+}-V^{-}\bigr)=Z_0\bigl(V^{+}+V^{-}\bigr)
+\;\Rightarrow\;
+V^{-}(Z_L+Z_0)=V^{+}(Z_L-Z_0)
+\;\Rightarrow\;
+\boxed{\;\Gamma=\frac{V^{-}}{V^{+}}=\frac{Z_L-Z_0}{Z_L+Z_0}.\;}
+\]
+Every limiting case now follows by inspection rather than by memory. If
+\(Z_L=Z_0\) the numerator vanishes, \(\Gamma=0\): the load already presents the
+ratio the wave carries, so nothing reflects. If the line is \emph{shorted}
+(\(Z_L=0\)) then \(\Gamma=-1\)---full reflection with the voltage inverted, since the
+short forces \(V=0\). If it is \emph{open} (\(Z_L\to\infty\)) then \(\Gamma=+1\):
+full reflection in phase, since the open forces \(I=0\). Both extremes give
+\(|\Gamma|=1\), as they must---a lossless termination that absorbs nothing has to
+return everything.
+
+\begin{controlsbox}
+This is the same conjugate-of-a-mismatch bookkeeping as \cref{ch:resistive}'s
+maximum-power-transfer condition, seen dynamically. There, a source delivered the
+most power when the load matched it; here, a wave transfers all of its power when the
+load matches \(Z_0\). ``Matched'' means the same thing in both places: the load is
+presenting the ratio the source side is built to work into.
+\end{controlsbox}
 
 \section{Standing Waves, SWR, and Return Loss}
-Incident and reflected waves superpose into a stationary interference pattern---a
-standing wave---whose voltage maxima and minima are fixed in position. Their ratio
-is the standing-wave ratio,
+Incident and reflected waves overlap everywhere along the line, and because they
+travel in opposite directions their relative phase depends on position. At distance
+\(x\) back from the load the backward wave has made a round trip of \(2x\), so
 \[
-\mathrm{SWR}=\frac{V_{\max}}{V_{\min}}=\frac{1+|\Gamma|}{1-|\Gamma|}.
+|V(x)|=\bigl|V^{+}\bigr|\,\bigl|1+\Gamma\,\ee^{-\jj 2\beta x}\bigr| ,
 \]
-SWR equals 1 for a perfect match and rises with mismatch. Return loss expresses
-the same mismatch in decibels,
+where \(\beta=2\pi/\lambda\) counts radians per unit length. The bracket sweeps
+around a circle as \(x\) grows: where the two waves arrive in phase the magnitudes
+\emph{add}, and where they arrive out of phase they \emph{subtract}. The pattern is
+therefore stationary in space---a \textbf{standing wave}---with
 \[
-RL=-20\log_{10}|\Gamma|,
+V_{\max}=|V^{+}|\bigl(1+|\Gamma|\bigr),
+\qquad
+V_{\min}=|V^{+}|\bigl(1-|\Gamma|\bigr),
 \]
-with higher return loss meaning a smaller reflection.
+one quarter wavelength apart. Their ratio is the \textbf{standing-wave ratio},
+and \(|V^{+}|\) cancels:
+\[
+\boxed{\;\mathrm{SWR}=\frac{V_{\max}}{V_{\min}}
+=\frac{1+|\Gamma|}{1-|\Gamma|}\;}
+\]
+SWR equals 1 for a perfect match (\(\Gamma=0\) leaves no pattern at all) and rises
+with mismatch, becoming infinite for a short or open. \textbf{Return loss} (RL)
+expresses the same mismatch in the decibels of \cref{sec:decibels},
+\[
+\mathrm{RL}=-20\log_{10}|\Gamma| ,
+\]
+with higher return loss meaning a \emph{smaller} reflection. Because \(\Gamma\) is
+an amplitude ratio it takes the \(20\log\) form; the reflected \emph{power}
+fraction is \(|\Gamma|^2\).
+
+\begin{mistakebox}
+The symbol \(\mathrm{RL}\) for return loss has nothing to do with the RL circuits of
+\cref{ch:rl}; the collision is unfortunate but standard. Likewise the phase constant
+\(\beta\) in this chapter is unrelated to the feedback fraction \(\beta\) of
+\cref{ch:feedback}---both notations are entrenched in their own fields, and only
+context distinguishes them.
+\end{mistakebox}
 
 \section{Input Impedance Along the Line}
 Because the reflected wave changes phase as it travels, the impedance seen
@@ -107,14 +224,80 @@ repeats the load impedance.
 \item[Matched (\(Z_L=Z_0\))] \(Z_{\mathrm{in}}=Z_0\) for any length: nothing to
 rotate.
 \end{description}
-A shorted or open stub (\(Z_L=0\) or \(\infty\)) makes \(Z_{\mathrm{in}}\) a pure
-reactance set by length---the basis of stub matching and line-section reactances.
+\section{Stubs: Line Sections as Reactances---and as Resonators}
+\label{sec:stubs}
+A \textbf{stub} is a short piece of line, left deliberately unterminated, used as a
+circuit element rather than as a signal path. Its two useful cases are the extremes
+of the formula above.
+
+Setting \(Z_L=0\) (a \emph{shorted} stub) makes the numerator \(\jj Z_0\tan\beta\ell\)
+and the denominator \(Z_0\), so
+\[
+Z_{\mathrm{in}}^{\text{short}}=\jj Z_0\tan\beta\ell ,
+\]
+and letting \(Z_L\to\infty\) (an \emph{open} stub) leaves the reciprocal behavior,
+\[
+Z_{\mathrm{in}}^{\text{open}}=-\jj Z_0\cot\beta\ell .
+\]
+Both are \emph{purely reactive}: a lossless stub cannot dissipate, so it can only
+store. This makes a length of line a substitute for a capacitor or an inductor---
+often a better one at VHF and above, where a real coil's parasitics dominate.
+
+Reading the tangent tells you which. A shorted stub shorter than \(\lambda/4\) has
+\(\tan\beta\ell>0\) and so looks \textbf{inductive}; an open stub shorter than
+\(\lambda/4\) looks \textbf{capacitive}. Each behavior inverts every quarter
+wavelength thereafter.
+
+\begin{physicalbox}
+\textbf{A stub is the two resonators of \cref{ch:rlc,ch:rlcpar} in disguise.}
+Watch what happens at the special lengths:
+\begin{itemize}
+\item A \textbf{quarter-wave shorted} stub has \(\beta\ell=\pi/2\), where
+\(\tan\to\infty\), so \(Z_{\mathrm{in}}\to\infty\). A short at the far end appears
+as an \emph{open} at the near end---exactly what the parallel tank of
+\cref{ch:rlcpar} does at \(\omega_0\). Near that frequency the stub \emph{is} a
+parallel resonator.
+\item A \textbf{half-wave shorted} stub has \(\beta\ell=\pi\), where \(\tan=0\), so
+\(Z_{\mathrm{in}}=0\): a low impedance, which is what the series resonator of
+\cref{ch:rlc} presents at \(\omega_0\).
+\end{itemize}
+And because \(\tan\beta\ell\) blows up not once but at every
+\(\beta\ell=\pi/2+n\pi\), a single piece of line is an \emph{infinite ladder} of
+alternating parallel and series resonances, spaced every quarter wavelength in
+electrical length---equivalently, every odd and even multiple of a base frequency.
+That is the concrete meaning of the ``infinite set of natural modes'' promised in
+this chapter's opening: a lumped RLC circuit has one pole pair, while a line has
+infinitely many, and the tangent is how they show up in a closed-form expression.
+
+This is also why a stub makes a trap. \Cref{ch:filters} built notches from lumped
+LC branches; a quarter-wave shorted stub bridged across a feed line does the same
+job with no components at all, presenting an open at the design frequency and a low
+impedance at its even harmonics.
+\end{physicalbox}
 
 \section{Quarter-Wave and Half-Wave Transformers}
-From the limits above, a quarter-wave section of impedance
-\(Z_t=\sqrt{Z_0Z_L}\) matches a real load \(Z_L\) to a real line \(Z_0\), and a
-half-wave section repeats the load. Both assume a lossless line and hold only near
-the design frequency, since \(\beta\ell\) is frequency dependent.
+The quarter-wave limit is worth carrying one step further, because it is the
+transformer formula the exam asks for. At \(\beta\ell=\pi/2\) the line inverts the
+load about \(Z_0^2\),
+\[
+Z_{\mathrm{in}}=\frac{Z_0^2}{Z_L}.
+\]
+We want that input impedance to equal the system impedance we are feeding. Call the
+\emph{section's} own characteristic impedance \(Z_t\) (it differs from the main
+line's, which is the whole point) and require \(Z_{\mathrm{in}}=Z_0\):
+\[
+\frac{Z_t^2}{Z_L}=Z_0
+\qquad\Longrightarrow\qquad
+\boxed{\;Z_t=\sqrt{Z_0Z_L}\;}
+\]
+so the matching section's impedance is the \emph{geometric mean} of the two
+resistances it joins. A half-wave section, by contrast, repeats the load
+(\(\tan=0\)) and transforms nothing---useful for relocating a load electrically
+without changing it.
+
+Both results assume a lossless line and hold only near the design frequency, since
+\(\beta\ell\) is frequency dependent---a narrowband match, as
+\cref{fig:line-worked} makes quantitative.
 
 \section{Smith Chart Interpretation}
 A Smith chart is a graphical map of normalized complex impedance and reflection
@@ -136,12 +319,16 @@ that makes the input-impedance formula something you can read off by eye.
 \draw[GuideLine] (0.6,0) circle (0.4);
 \draw[GuideGreen] (1,0) arc (0:180:0.5);
 \draw[GuideGreen] (1,0) arc (0:-180:0.5);
-\fill (0,0) circle (0.015) node[below left]{match};
+\fill (0,0) circle (0.02);
+\node[below left] at (-0.02,-0.03) {\small match};
 \node[below] at (0,-1.12){normalized impedance plane mapped to \(\Gamma\)};
 \end{tikzpicture}
-\caption{Simplified Smith-chart geometry: constant-resistance circles and
-reactance arcs. Moving along the line rotates a point about the center on a
+\caption{Simplified Smith-chart geometry, showing two constant-resistance circles
+(normalized \(r=0.5\) and \(r=1.5\), both tangent to the right-hand edge) and one pair
+of constant-reactance arcs (\(x=\pm1\)). The center is the perfect match
+(\(z=1\), \(\Gamma=0\)); moving along a line rotates a point about that center on a
 constant-SWR circle.}
+\label{fig:smith-basic}
 \end{figure}
 
 \section{An Idealized Antenna on the Smith Chart}
@@ -156,16 +343,59 @@ Near resonance, a center-fed dipole looks electrically like a \textbf{series RLC
 one-port (\cref{fig:antenna-model}): a \emph{radiation resistance} \(R_{\text{rad}}\)
 in series with an inductance and capacitance that together set the resonance. The
 radiation resistance is not a lossy resistor---it represents power that leaves as
-radiation---but electrically it behaves like one. The one-port impedance is the
-series-RLC impedance of \cref{ch:ac},
+radiation---but electrically it behaves like one. That means the whole of
+\cref{ch:rlc} applies directly: the impedance is that chapter's series-RLC impedance,
 \[
 Z(\omega)=R_{\text{rad}}+\jj\left(\omega L-\frac{1}{\omega C}\right),
 \qquad
-\omega_0=\frac{1}{\sqrt{LC}} .
+\omega_0=\frac{1}{\sqrt{LC}} ,
 \]
+its quality factor is that chapter's \(Q_s=\omega_0L/R\), and its half-power
+bandwidth is \(BW\approx f_0/Q\).
+
 Below \(\omega_0\) the antenna looks capacitive (\(X<0\), the ``too short''
 regime); above it, inductive (\(X>0\), ``too long''); at \(\omega_0\) the
-reactance vanishes and \(Z=R_{\text{rad}}\) is purely real.
+reactance vanishes and \(Z=R_{\text{rad}}\) is purely real. A half-wave dipole is
+``resonant'' precisely because it is the length at which those two cancel.
+
+\subsection{Putting Numbers On It}
+Take a dipole resonant in the \SI{20}{\meter} band at
+\(f_0=\SI{14.1}{\mega\hertz}\), with radiation resistance
+\(R_{\text{rad}}=\SI{35}{\ohm}\) and characteristic reactance
+\(\omega_0L=1/(\omega_0C)=\SI{200}{\ohm}\). Then
+\[
+L=\frac{\SI{200}{\ohm}}{\omega_0}\approx\SI{2.26}{\micro\henry},
+\qquad
+C=\frac{1}{\omega_0\,(\SI{200}{\ohm})}\approx\SI{56}{\pico\farad},
+\]
+and---reusing \cref{ch:rlc}'s formulas unchanged---
+\[
+Q=\frac{\omega_0L}{R_{\text{rad}}}=\frac{200}{35}\approx5.7,
+\qquad
+BW\approx\frac{f_0}{Q}=\frac{\SI{14.1}{\mega\hertz}}{5.7}\approx\SI{2.5}{\mega\hertz}.
+\]
+That last number is the practical payoff of the whole model, and it answers a
+question nothing earlier in this chapter could: \emph{what sets an antenna's usable
+bandwidth?} Its \(Q\), exactly as for any other resonator. A \(Q\) near \(6\) is very
+low by resonator standards---the pole pair sits far from the \(\jj\omega\) axis and
+the resonance is broad---which is why a full-size dipole covers a whole amateur band.
+Checking the band edges with \(\Gamma=(Z-Z_0)/(Z+Z_0)\) confirms it: at
+\SI{14.0}{\mega\hertz}, \(Z\approx35-\jj2.8\ \si{\ohm}\) and
+\(\mathrm{SWR}\approx1.4\); at \SI{14.35}{\mega\hertz},
+\(Z\approx35+\jj7.0\ \si{\ohm}\) and \(\mathrm{SWR}\approx1.5\). The residual
+\(\mathrm{SWR}\approx1.4\) even at resonance is not a reactance problem at all---it is
+simply that \(35\,\si{\ohm}\ne50\,\si{\ohm}\), which is what a matching network from
+\cref{ch:filters} would fix.
+
+\begin{physicalbox}
+\textbf{Why a short loaded whip is narrowband.} Shorten the antenna and
+\(R_{\text{rad}}\) collapses, while the loading coil needed to cancel the now-large
+capacitive reactance pushes \(\omega_0L\) \emph{up}. Both changes drive
+\(Q=\omega_0L/R_{\text{rad}}\) upward, so \(BW=f_0/Q\) shrinks---which is why a mobile
+whip needs retuning across a band a dipole covers in one go, and why its efficiency
+suffers (more of the loss now sits in the coil's resistance than in radiation). One
+formula from \cref{ch:rlc}, two practical consequences.
+\end{physicalbox}
 
 \begin{figure}[htbp]
 \centering
@@ -197,6 +427,25 @@ reading the model: distance from center is \(|\Gamma|\) (hence SWR), the crossin
 of the real axis marks \(\omega_0\), and which half of the chart the arc sits in
 tells you whether to add series capacitance or inductance to tune it.
 
+\begin{controlsbox}
+\textbf{One pole pair, three pictures.} These are worth lining up, because they are
+the same series-RLC model drawn in three coordinate systems.
+\begin{itemize}
+\item In \cref{ch:rlc} the impedance locus \(Z(f)=R+\jj X(f)\) was a \emph{vertical
+straight line} at \(\Re\{Z\}=R\) (\cref{fig:rlc-phasor}), because \(R\) is fixed and
+only the reactance sweeps.
+\item In \cref{ch:rlcpar} the dual circuit's locus was a \emph{circle through the
+origin} (\cref{fig:rlcpar-worked}), because taking the reciprocal of a straight line
+that misses the origin produces a circle that passes through it.
+\item Here the Smith chart applies \(\Gamma=(z-1)/(z+1)\), and that map likewise
+sends straight lines to circles---which is why the antenna sweep in
+\cref{fig:smith-antenna} is an \emph{arc}.
+\end{itemize}
+Nothing physical differs among the three; only the coordinates do. It is the same
+point \cref{ch:fourviews} made about time, state space, and frequency, now made about
+three ways of plotting one impedance.
+\end{controlsbox}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.66\textwidth]{smith_chart_antenna}
@@ -220,3 +469,37 @@ RL=-20\log_{10}(1/3)\approx \SI{9.54}{\decibel}.
 A quarter-wave section would need
 \(Z_t=\sqrt{(50)(100)}=\SI{70.7}{\ohm}\) to remove the mismatch, giving
 \(Z_{\mathrm{in}}=Z_t^2/Z_L=70.7^2/100=\SI{50}{\ohm}\).
+
+\Cref{fig:line-worked} shows both halves of this example, and each panel makes a point
+the algebra alone leaves abstract.
+
+The left panel is the standing wave on the \emph{unmatched} line. Since
+\(\Gamma=+1/3\) is real and positive, the reflected wave arrives in phase with the
+incident one right at the load, so \(x=0\) is a voltage \emph{maximum} of
+\(1+|\Gamma|=1.33\); a quarter wavelength back the round trip has added
+\(180^\circ\) and the waves subtract, giving the minimum \(1-|\Gamma|=0.67\). Their
+ratio is the SWR of \(2\) computed above---so ``SWR${}=2$'' means literally that a
+voltmeter slid along this line would read twice as much in some places as in others.
+Note the spacing: maxima repeat every \emph{half} wavelength, and a maximum is a
+\emph{quarter} wavelength from the neighboring minimum.
+
+The right panel sweeps frequency with the quarter-wave section in place. The match is
+exact only at \(f_0\), where the section is precisely \(\lambda/4\); away from it
+\(\beta\ell\) is no longer \(\pi/2\), the impedance inversion is imperfect, and SWR
+climbs. This is what ``narrowband'' means quantitatively, and it is the reason a
+quarter-wave transformer is a single-band device while the lumped L-network of
+\cref{ch:filters}---which can be retuned---is not.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{line_worked}
+\caption{The worked example. \emph{Left:} voltage standing-wave envelope
+\(|V(x)|=|V^{+}||1+\Gamma\ee^{-\jj2\beta x}|\) on the unmatched line, whose
+maximum-to-minimum ratio is the SWR of \(2\); maxima recur every \(\lambda/2\) and
+sit \(\lambda/4\) from the minima. \emph{Right:} SWR versus frequency once the
+\(\SI{70.7}{\ohm}\) quarter-wave section is inserted (designed for
+\(f_0=\SI{14.1}{\mega\hertz}\)). The match is perfect only at \(f_0\) and degrades
+either side of it, since the section's electrical length is proportional to
+frequency.}
+\label{fig:line-worked}
+\end{figure}
