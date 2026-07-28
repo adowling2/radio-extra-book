@@ -44,7 +44,7 @@ references and 0 overfull boxes above 20 pt**.
 - `preamble.tex` — style, geometry, and the eight colour-coded callout boxes
 - `macros.tex` — the few pervasive notation macros (deliberately short)
 - `frontmatter/` — title, preface (including the scope statement), how-to-use, notation
-- `chapters/` — 21 chapters, filenames numbered to match chapter numbers
+- `chapters/` — 23 chapters, filenames numbered to match chapter numbers
 - `appendices/` — formula index (with a "Derived in" column), units, glossary
 - `figures/src/*.py` — figure sources; generated PDFs are committed to `figures/`
 - `cheat_sheet.tex` — standalone two-column card
@@ -69,8 +69,8 @@ references and 0 overfull boxes above 20 pt**.
 ## Scope
 
 This book covers the **circuit-theory** portion of the Extra syllabus. Measured
-against the current pool it reaches 8 of the 50 exam groups well and 13 partially;
-passing requires 37 of 50. It deliberately omits rules and regulations, operating
+against the current pool it reaches roughly 12 of the 50 exam groups well and a
+further 13 partially; passing requires 37 of 50. It deliberately omits rules and regulations, operating
 practice, propagation, safety, digital protocols, and device physics. The preface
 states this explicitly — see `PROJECT-STATUS.md` §3 for the group-by-group map.
 

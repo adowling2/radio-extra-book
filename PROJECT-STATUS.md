@@ -27,7 +27,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **21 chapters + 3 appendices, five parts, 159 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 178 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -42,24 +42,27 @@ circuits, Part IV is what they explain.
 | **I — Exam-Ready Reference** | 1 Study Guide |
 | **II — Mathematical and Control-Theory Foundations** | 2 Complex Numbers & Phasors · 3 Modeling LTI Systems · 4 Frequency Response, Bode, s-Plane · 5 Feedback · 6 Higher-Order Systems |
 | **III — Circuit Models** | 7 Circuit Modeling · 8 Series & Parallel Networks · 9 AC Steady State · 10 One Circuit, Four Views · 11 RC · 12 RL · 13 Series RLC · 14 Parallel RLC |
-| **IV — Applying the Circuit Models** | 15 Filters, Matching, Transformers · 16 Transmission Lines · 17 Active Circuits · 18 Measurement |
-| **V — Practice and Study** | 19 Worked Examples & Exam Map · 20 Anchored Practice · 21 Cross-Chapter Problems |
+| **IV — Applying the Circuit Models** | 15 Filters, Matching, Transformers · 16 Transmission Lines · 17 Active Circuits · 18 Sampling & DSP · 19 Noise, Sensitivity & Dynamic Range · 20 Measurement |
+| **V — Practice and Study** | 21 Worked Examples & Exam Map · 22 Anchored Practice · 23 Cross-Chapter Problems |
 | **Appendices** | A Formula Index · B Units & Prefixes · C Glossary |
 
 Labels are stable across renumbering — **always `\cref`, never hard-code a number.**
 Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedback`
 `ch:highorder` `ch:foundations` `ch:resistive` `ch:ac` `ch:fourviews` `ch:rc` `ch:rl`
 `ch:rlc` `ch:rlcpar` `ch:filters` `ch:lines` `ch:active` `ch:measurement`
-`ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
+`ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 30 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 46 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
 `sec:lc-lowpass` `sec:filterspecs` `sec:lineloss` `sec:stubs` `sec:antennalength`
 `sec:classes` `sec:beta-resistors` `sec:gbw` `sec:neutralization` `sec:mixers`
-`sec:probe` `sec:groundloops` `sec:instpower`.
+`sec:probe` `sec:groundloops` `sec:instpower` `sec:fourier` `sec:parseval`
+`sec:samplingismult` `sec:samplingthm` `sec:quantnoise` `sec:decimation` `sec:firiir`
+`sec:noisefloor` `sec:noisefigure` `sec:friis` `sec:powerseries` `sec:compression`
+`sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits`.
 
 ### Conventions in force
 
@@ -85,7 +88,7 @@ Section labels, all 30 of them: `sec:complexrefresher` `sec:rms` `sec:secondorde
 No markup file this round. The work came from two audits: a front-to-back
 read-through of the whole book, and a coverage check against the **General
 (Element 3)** pool — 423 questions, of which 236 are circuit/electronics questions,
-distilled to a 157-concept checklist. Four commits, all pushed.
+distilled to a 157-concept checklist. Ten commits, all pushed.
 
 ### 2a. Ch 6 was an orphan (the biggest finding)
 
@@ -117,7 +120,7 @@ the `−20n` dB/decade row, which had been credited to `ch:filters`.
   `fig:smith-basic`, `fig:feedback-loop`) were never referenced; the `fig:smith-basic`
   reference now also carries the pool's Smith-chart vocabulary (resistance axis, prime
   center, wavelength scales), closing the old §4B.8 item.
-- **Glossary.** Four alphabetization errors fixed; **30 → 47 entries**.
+- **Glossary.** Four alphabetization errors fixed; **30 → 62 entries**.
 - **Callout coverage.** Every teaching chapter (2–18) now has an `exambox` except the
   two-page hinge Ch 10, and Chs 11–14 each now have a `workedbox` — they had none.
 
@@ -139,9 +142,44 @@ the `−20n` dB/decade row, which had been credited to `ch:filters`.
 | S units, link budgets | Ch 18 §Decibels in Measurement |
 | Reactive power described only as "sloshing" | new `sec:instpower` in Ch 9 — derives the `2\omega` term, so the metaphor becomes an equation and the power factor falls out (from the ARRL Ch 4 audit) |
 
+### 2e. Two new chapters (after Alex reviewed the ARRL audit)
+
+Alex authorized both the Tier 1 noise chapter and the sampling/DSP topic that had
+been flagged as an open scope question.
+
+**Ch 18 Sampling and DSP.** Thesis: sampling *is* multiplication, so `sec:mixers`
+did the hard part. An impulse train is periodic, so it is a sum of *all* harmonics of
+`f_s`; multiplying by that comb replicates the spectrum at every multiple of `f_s`,
+and everything else follows — the sampling theorem as a non-overlap condition,
+aliasing as folding, and the fact that two frequencies give *identical* sample
+sequences so no processing can separate them. Then quantization
+(`SNR = 6.02N + 1.76`, the same 6 dB as an S unit), oversampling processing gain,
+decimation vs interpolation, the zero-order hold's sinc droop, and DDS.
+`sec:firiir` **proves Ch 15's asserted linear-phase claim** from coefficient
+symmetry.
+
+**Ch 19 Noise, Sensitivity, and Dynamic Range.** Johnson–Nyquist plus *our own*
+maximum-power-transfer result gives `kTB` (the resistance cancels) and −174 dBm/Hz.
+Noise figure makes the usual dB addition a theorem; Friis gives the
+first-stage-dominates and preamp-at-the-mast results. `sec:powerseries` is the
+spine: one power series yields the 2 and 3 dB/dB slopes, gain compression, IIP3, and
+`IIP3 = P₁dB + 9.6 dB` free — then `DR3 = ⅔(IIP3 − MDS)` with the 2/3 as slope-3
+geometry. `sec:phasenoise` derives the `1/Q_L²` skirt (doubling loaded Q buys 6 dB),
+and `sec:noisebw` closes the chapter's own `10 log B` assumption.
+
+**Supporting:** new `sec:fourier` in Ch 3 finally states *why* analyzing one sinusoid
+at a time is legitimate — `G` at the harmonics is the whole answer, the licence for
+Part II's entire method, previously unstated — and gets the square wave's odd
+harmonics from half-wave symmetry. New `sec:parseval` in Ch 2 adds Parseval and the
+1.111 form factor, so "use a true-RMS meter" becomes "an averaging meter reads a
+square wave 11 % high."
+
+The preface no longer lists receiver metrics and DSP as acknowledged thin areas,
+because they no longer are.
+
 ### 2d. Verification
 
-44 new numeric results re-derived independently in Python — **all pass**. Every new
+82 new numeric results re-derived independently in Python — **all pass**. Every new
 page rendered at 95 dpi and visually inspected. Cheat sheet gained RMS/PEP/line-loss
 rows (and its new section was moved to avoid straddling a column break). No figures
 were added or changed, so no figure regeneration was needed.
@@ -152,11 +190,14 @@ were added or changed, so no figure regeneration was needed.
 
 ### Extra (Element 4) — the book's actual target
 
-Against the 2024–2028 pool: **8 groups covered well** (E5A, E5B, E5C, E7C, E7G, E9E,
-E9F, E9G), **13 partial**, **29 absent** — so roughly 21 of 50 generously, ~15
-strictly, against **37/50 to pass**. Round 4 improved E4B, E5D, E7B, E7E, E9A and
-E9G but did not change the headline: this book alone is not sufficient, and the
-preface says so.
+Against the 2024–2028 pool, Round 4 moved the needle materially. Previously **8
+groups covered well**, 13 partial, 29 absent. The two new chapters add **E4C and E4D**
+(receiver performance and dynamic range) and **E7F and E8A** (SDR/DSP and
+Fourier/RMS/conversion) as genuinely covered, and Round 4's smaller additions
+improved E4B, E5D, E7B, E7E, E9A and E9G. That is roughly **12 groups covered well**
+now, against **37/50 to pass** — so the headline is unchanged and the preface still
+says so honestly, but the circuit-theory portion of the syllabus is close to
+exhausted. What remains absent is overwhelmingly the by-design list.
 
 ### General (Element 3) — checked in Round 4
 
@@ -182,7 +223,9 @@ on any count. Full inventory: see the scratchpad file
 
 ### A. Decide on the ARRL audit findings
 
-**Done, and waiting on you: see [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md).**
+**See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md). Tier 1 is now DONE** — Alex
+authorized the noise chapter and the DSP topic, both of which shipped (§2e). The
+remaining Tier 2 and Tier 3 items are still open and still worth reading.
 
 Alex's standing request was to review ARRL Extra manual Chs 4, 6, 7 and 9 for content
 that is missing from the book but within its scope and spirit — framed as "they
@@ -206,18 +249,12 @@ exam-relevance claim sourced from the manual as suspect.
 
 ### B. Content gaps still open
 
-1. **Sampling and DSP (E7F, E8A, plus General G7C).** `sec:nyquist`'s mistakebox now
-   states the sampling theorem in one sentence, which is a foothold and not coverage.
-   A real treatment — Nyquist rate, aliasing as spectral folding, ≈6 dB/bit,
-   decimation, FIR/IIR — pairs naturally with `sec:groupdelay`. **Alex has not
-   authorized this**; it was deliberately left out of Round 4's scope.
-2. **Receiver noise and dynamic range (E4C/E4D).** Still the most defensible
-   addition: `sec:mixers` now derives image response *and* third-order products *and*
-   the two-tone test, so only the **metrics** are missing — `kTB`, the −174 dBm/Hz
-   floor, noise figure, cascaded NF (Friis), MDS, 1 dB compression, IP3 and its 3:1
-   slope, blocking/IMD dynamic range. All arithmetic on machinery that now exists.
+1. ✅ **Sampling and DSP — done** (`ch:dsp`). Authorized and written.
+2. ✅ **Receiver noise and dynamic range — done** (`ch:noise`). Authorized and written.
 3. **Phase-locked loops (E7H).** A control loop in radio clothing — the strongest
-   thematic fit of anything missing. Chs 5, 6 and `sec:nyquist` supply every tool.
+   thematic fit of anything still missing. Chs 5, 6 and `sec:nyquist` supply every
+   tool, and `sec:phasenoise` now supplies the noise half — a PLL section would slot
+   straight in after Ch 17's oscillators. **This is now the top content gap.**
 4. **Rebuild Ch 19 (Worked Examples).** Unchanged and still the weakest chapter: four
    examples with zero cross-references, zero poles, and component values unrelated to
    the book's running examples — a direct contradiction of the thesis, in the chapter
@@ -248,8 +285,9 @@ exam-relevance claim sourced from the manual as suspect.
   book was drafted with ChatGPT and developed with Claude Code. Tune the candor.
 - **Notation carets (S7 / C-p4 from Round 2)** — the ω/f caret markup was ambiguous;
   notation left as-is.
-- **Whether to open the sampling/DSP topic** (B1) — it is the one place where the
-  preface's declared scope and the exam's demands genuinely conflict.
+- **Whether to get the 13th-edition ARRL manual.** The copy in `references/` is keyed
+  to the 2020–2024 pool, which already produced one wrong finding in the audit
+  (see `ARRL-GAP-PROPOSAL.md`).
 
 ---
 
