@@ -26,95 +26,30 @@ Band-stop (notch) & Rejects a band of frequencies; passes outside it. \\
 \end{tabularx}
 \end{center}
 
-\section{A Filter from First Principles}
-Rather than take filter formulas on faith, let us build one the way a
-first-principles modeler would---from the physical circuit (\cref{ch:fourviews})
-up through the four views of \cref{ch:linsys}: differential equation \(\to\)
-state-space \(\to\) transfer function \(\to\) frequency response.
-
-\subsection{First Order: the RC Low-Pass}
-The RC low-pass (\cref{fig:rc-lp}) is the first-order system of \cref{ch:rc} doing
-a filtering job. KVL and the capacitor law give the model in one line each:
+\section{Where Filter Behavior Comes From}
+Two circuits already developed from first principles are the whole foundation of
+this chapter, so we recall the results rather than re-deriving them:
+\begin{description}
+\item[First order --- the RC low-pass (\cref{ch:rc}).] One energy store, one pole
+at \(s=-1/RC\), giving \(G(s)=1/(1+RCs)\): flat to the corner
+\(\omega_c=1/RC\), then \(-\SI{20}{\decibel}\) per decade. Taken across the
+resistor instead, the same circuit is a high-pass.
+\item[Second order --- the LC low-pass (\cref{sec:lc-lowpass} in
+\cref{ch:rlc}).] Two energy stores, a pole pair, giving
 \[
-v_{\mathrm{in}}=R\,i+v_o,\quad i=C\frac{\dd v_o}{\dd t}
-\;\Rightarrow\;
-\underbrace{RC\frac{\dd v_o}{\dd t}+v_o=v_{\mathrm{in}}}_{\text{ODE}}
-\;\Rightarrow\;
-\underbrace{\dot{x}=-\tfrac{1}{RC}x+\tfrac{1}{RC}v_{\mathrm{in}}}_{\text{state-space, }x=v_o}
-\;\Rightarrow\;
-\underbrace{G(s)=\frac{1}{1+RCs}}_{\text{transfer function}} .
-\]
-One energy store gives one pole, at \(s=-1/RC\); the frequency response is flat to
-the corner \(\omega_c=1/RC\) and then falls at \(-\SI{20}{\decibel}\) per decade.
-
-\begin{figure}[htbp]
-\centering
-\begin{circuitikz}
-\draw (0,0) node[left]{in} to[R,l=\(R\)] (3,0)
-      to[C,l=\(C\)] (3,-2) node[ground]{};
-\draw (3,0) to[short,-o] (4,0) node[right]{out};
-\end{circuitikz}
-\caption{First-order RC low-pass filter.}
-\label{fig:rc-lp}
-\end{figure}
-
-\subsection{Second Order: the LC Low-Pass}
-Add an inductor and you add an energy store---hence a second pole and the
-possibility of resonance. The series \(R\)--\(L\)--\(C\) low-pass
-(\cref{fig:lc-section}), which is the RLC circuit of \cref{ch:rlc} used as a
-filter, develops the same way. KVL around the loop and the capacitor law for the
-output node give
-\[
-v_{\mathrm{in}}=R\,i+L\frac{\dd i}{\dd t}+v_o,
+G(s)=\frac{\omega_0^2}{s^2+\dfrac{\omega_0}{Q}s+\omega_0^2},
 \qquad
-i=C\frac{\dd v_o}{\dd t},
-\]
-and eliminating \(i\) yields the second-order ODE
-\[
-LC\frac{\dd^2 v_o}{\dd t^2}+RC\frac{\dd v_o}{\dd t}+v_o=v_{\mathrm{in}}.
-\]
-With states \(x_1=v_o\;(=v_C)\) and \(x_2=i\;(=i_L)\)---one per energy store---the
-state-space model is
-\[
-\dot{x}_1=\frac{1}{C}x_2,
+\omega_0=\frac{1}{\sqrt{LC}},
 \qquad
-\dot{x}_2=-\frac{1}{L}x_1-\frac{R}{L}x_2+\frac{1}{L}v_{\mathrm{in}},
+Q=\frac{1}{R}\sqrt{\frac{L}{C}},
 \]
-and the Laplace transform gives the transfer function
-\[
-G(s)=\frac{1}{LC\,s^2+RC\,s+1}
-=\frac{\wzero^2}{s^2+\dfrac{\wzero}{Q}\,s+\wzero^2},
-\qquad
-\wzero=\frac{1}{\sqrt{LC}},
-\qquad
-Q=\frac{1}{R}\sqrt{\frac{L}{C}} .
-\]
-This is exactly the standard second-order form of \cref{ch:linsys} (recall
-\(\wzero/Q=2\zeta\wzero\)), so its frequency response is a low-pass that falls at
-\(-\SI{40}{\decibel}\) per decade (two poles) with a resonant peak of height
-\(\sim Q\) near \(\wzero\) when \(Q>1/\sqrt2\), as in \cref{ch:splane}.
-
-\begin{figure}[htbp]
-\centering
-\begin{circuitikz}
-\draw (0,0) node[left]{in} to[L,l=\(L\)] (3,0)
-      to[C,l=\(C\)] (3,-2) node[ground]{};
-\draw (3,0) to[short,-o] (4,0) node[right]{out};
-\end{circuitikz}
-\caption{A passive second-order (LC) low-pass section: series inductor, shunt
-capacitor, output across \(C\). Series loss and the source/load resistance supply
-the damping \(R\) in the model above.}
-\label{fig:lc-section}
-\end{figure}
-
-\begin{controlsbox}
-\textbf{The two design knobs fall right out.} From the first-principles model,
-\(\wzero=1/\sqrt{LC}\) sets the cutoff frequency and \(Q=(1/R)\sqrt{L/C}\) sets
-the peaking (how close the pole pair sits to the \(\jj\omega\) axis). Scaling
-\(L\) and \(C\) together slides the whole response in frequency; changing the
-resistance (loss, or the source/load termination) changes only the damping. Every
-filter design is some version of choosing these two, times the number of poles.
-\end{controlsbox}
+which falls at \(-\SI{40}{\decibel}\) per decade and peaks by \(\approx Q\) near
+\(\omega_0\) when \(Q>1/\sqrt2\).
+\end{description}
+Those two supply everything a filter designer needs: a \emph{corner frequency}
+set by the reactance values, a \emph{roll-off rate} set by the number of poles,
+and---for second order and above---a \emph{peaking} set by the damping. The rest
+of this chapter is about choosing them deliberately.
 
 \section{Order, Energy Stores, and Roll-Off}
 The pattern generalizes. Each independent energy-storage element (an \(L\) or a

@@ -1,16 +1,19 @@
-\chapter{RLC Circuits: Resonance, Damping, and Q}
+\chapter{Series RLC Circuits: Resonance, Damping, and Q}
 \label{ch:rlc}
-The RLC circuit is central to tuned receivers, oscillators, matching networks,
-traps, crystal filters, and every selective RF stage. With two energy stores---a
-capacitor and an inductor---it is the electrical embodiment of the
+The series RLC circuit is central to tuned receivers, oscillators, matching
+networks, traps, crystal filters, and every selective RF stage. With two energy
+stores---a capacitor and an inductor---it is the electrical embodiment of the
 \emph{second-order system} of \cref{ch:linsys}, and everything that chapter said
 about \(\omega_0\), \(\zeta\), damping regimes, pole geometry, and resonant peaks
-applies here directly.
+applies here directly. Its dual, the parallel RLC circuit, follows in
+\cref{ch:rlcpar}.
 
 \section{The Circuit}
 A source drives \(R\), \(L\), and \(C\) in series (\cref{fig:rlc-schematic}). Two
 independent states carry the stored energy: the capacitor voltage \(v_C\) and the
-inductor current \(i\).
+inductor current \(i\). We take the output across the capacitor,
+\(v_o=v_C\), which is the low-pass response; taking it across \(R\) gives a
+band-pass and across \(L\) a high-pass, all from the same circuit.
 
 \begin{figure}[htbp]
 \centering
@@ -19,29 +22,68 @@ inductor current \(i\).
       to[R,l=\(R\)] (2,2)
       to[L,l=\(L\),i>=\(i(t)\)] (4,2)
       to[C,l=\(C\),v=\(v_C\)] (4,0) -- (0,0);
+\draw (4,2) to[short,-o] (5.1,2) node[right]{\(+\)};
+\draw (4,0) to[short,-o] (5.1,0) node[right]{\(-\)};
+\node at (5.5,1) {\(v_o\)};
 \end{circuitikz}
-\caption{Series RLC circuit. The two states are the capacitor voltage \(v_C\) and
-the inductor current \(i\), so the system is second order.}
+\caption{Series RLC circuit, with the output taken across the capacitor
+(\(v_o=v_C\)). The two states are the capacitor voltage \(v_C\) and the inductor
+current \(i\), so the system is second order.}
 \label{fig:rlc-schematic}
 \end{figure}
 
 \section{From Schematic to Differential Equation}
-KVL gives \(u=Ri+L\,\dd i/\dd t+v_C\) with \(i=C\,\dd v_C/\dd t\). Eliminating
-\(i\) yields a second-order equation in the capacitor voltage:
+Start from the physics, one relation per element. KVL around the single loop says
+the source equals the sum of the three element voltages, and the capacitor law
+relates its current to its rate of voltage change:
 \[
+u(t)=R\,i+L\frac{\dd i}{\dd t}+v_C,
+\qquad
+i=C\frac{\dd v_C}{\dd t}.
+\]
+Written in the two state variables, this is a \emph{coupled system of two
+first-order differential equations}---one per energy store:
+\[
+\underbrace{\frac{\dd v_C}{\dd t}=\frac{1}{C}\,i}_{\text{capacitor law}},
+\qquad
+\underbrace{\frac{\dd i}{\dd t}=\frac{1}{L}\bigl(u-R\,i-v_C\bigr)}_{\text{KVL}} .
+\]
+This pair is the most faithful statement of the circuit: two stores, two states,
+two equations. To reach the familiar single second-order equation, substitute.
+Differentiate the first equation, \(\dd^2v_C/\dd t^2=(1/C)\,\dd i/\dd t\), insert
+the second, and replace \(i=C\,\dd v_C/\dd t\):
+\[
+\frac{\dd^2 v_C}{\dd t^2}
+=\frac{1}{LC}\Bigl(u-RC\frac{\dd v_C}{\dd t}-v_C\Bigr)
+\qquad\Longrightarrow\qquad
 \boxed{\,LC\frac{\dd^2 v_C}{\dd t^2}+RC\frac{\dd v_C}{\dd t}+v_C=u(t).\,}
 \]
+The two views are equivalent; the coupled pair generalizes better, while the single
+second-order equation matches the standard form of \cref{ch:linsys} directly.
 
 \section{State-Space Form}
-Using \(x_1=v_C\) and \(x_2=i\),
+The coupled pair above \emph{is} the state-space model; writing it in matrix form
+with \(x_1=v_C\) and \(x_2=i\),
 \[
 \dot{\state}=
-\mat{0 & 1/C\\ -1/L & -R/L}\state
-+\mat{0\\ 1/L}u,
+\underbrace{\mat{0 & 1/C\\ -1/L & -R/L}}_{A}\state
++\underbrace{\mat{0\\ 1/L}}_{B}u,
 \qquad
-y=v_C=\mat{1 & 0}\state .
+y=v_o=v_C=\underbrace{\mat{1 & 0}}_{C_{\text{out}}}\state .
 \]
-Two states, two poles---the eigenvalues of the state matrix.
+Two states, two poles---the eigenvalues of \(A\). Computing them explicitly,
+\[
+\det(sI-A)
+=\det\!\mat{s & -1/C\\ 1/L & s+R/L}
+=s\Bigl(s+\frac{R}{L}\Bigr)+\frac{1}{LC}
+=s^2+\frac{R}{L}s+\frac{1}{LC},
+\]
+so the eigenvalues are
+\[
+s_{1,2}=-\frac{R}{2L}\pm\sqrt{\left(\frac{R}{2L}\right)^{\!2}-\frac{1}{LC}} .
+\]
+Keep these two numbers in view: the next section reaches them again by a completely
+different route.
 
 \section{Matching the Generic Second-Order System}
 Divide the ODE by \(LC\) to reach the standard form
@@ -56,7 +98,25 @@ identifications
 \qquad
 Q=\frac{1}{2\zeta}=\frac{\omega_0 L}{R}.
 \]
-The poles are \(s=-\alpha\pm\jj\omega_d\) with \(\omega_d=\sqrt{\omega_0^2-\alpha^2}\).
+The poles follow from the standard form as
+\(s=-\zeta\omega_0\pm\jj\omega_0\sqrt{1-\zeta^2}=-\alpha\pm\jj\omega_d\) with
+\(\omega_d=\sqrt{\omega_0^2-\alpha^2}\).
+
+\begin{physicalbox}
+\textbf{The poles are the eigenvalues.} These must be the same two numbers found
+from \(\det(sI-A)=0\) above, and they are. Substituting
+\(\alpha=R/2L\) and \(\omega_0^2=1/LC\) into the eigenvalue expression,
+\[
+s_{1,2}=-\frac{R}{2L}\pm\sqrt{\left(\frac{R}{2L}\right)^{2}-\frac{1}{LC}}
+=-\alpha\pm\sqrt{\alpha^2-\omega_0^2}
+=-\alpha\pm\jj\sqrt{\omega_0^2-\alpha^2}
+=-\alpha\pm\jj\omega_d,
+\]
+where the last step assumes the underdamped case \(\alpha<\omega_0\) (which is what
+makes the square root imaginary). Eigenvalues of the state matrix, roots of the
+characteristic polynomial, and poles of the transfer function are three names for
+one pair of numbers---exactly as \cref{ch:linsys} promised.
+\end{physicalbox}
 Now the second-order results of \cref{ch:linsys} transfer wholesale: the step
 responses of \cref{fig:step2} (over/critical/under-damped), the pole geometry of
 \cref{fig:poles2} (on the \(\omega_0\) circle, \(\cos\theta=\zeta\)), and the
@@ -72,25 +132,18 @@ At \(\omega=\omega_0\) the reactances cancel, \(Z=R\) is purely resistive, and t
 current is maximum for a fixed applied voltage. The reactive voltages across \(L\)
 and \(C\) individually can then exceed the source voltage by a factor of \(Q\).
 
-\section{Parallel Resonance}
-The dual network---\(L\) and \(C\) in parallel---has admittance
-\[
-Y=\jj\omega C+\frac{1}{\jj\omega L}=\jj\left(\omega C-\frac{1}{\omega L}\right).
-\]
-At resonance the branch admittances cancel, so the input impedance is high
-(infinite in the lossless ideal); real losses keep it finite. Series resonance is
-a low-impedance notch in \(Z\); parallel resonance is a high-impedance peak.
-
 \section{Q and Bandwidth}
-The quality factor measures sharpness. For the series circuit
-\(Q_s=\omega_0 L/R=1/(\omega_0 RC)\); for the parallel circuit the loss resistance
-appears in parallel, so \(Q\) inverts to \(Q_p=R/(\omega_0 L)=\omega_0 RC\). In
-both cases the half-power bandwidth is
+The quality factor measures sharpness. For the series circuit,
+\[
+Q_s=\frac{\omega_0 L}{R}=\frac{1}{\omega_0 RC},
+\]
+and the half-power bandwidth is
 \[
 BW\approx\frac{f_0}{Q},
 \]
-and on the Bode magnitude (\cref{fig:bode2}) higher \(Q\) means a taller, narrower
-peak---poles pressed against the \(\jj\omega\) axis.
+so on the Bode magnitude (\cref{fig:bode2}) higher \(Q\) means a taller, narrower
+peak---poles pressed against the \(\jj\omega\) axis. \Cref{ch:rlcpar} shows that
+the parallel circuit's \(Q\) is the \emph{reciprocal} combination, and why.
 
 \begin{mistakebox}
 Do not treat one topology's \(Q\) formula as universal, and keep the three
@@ -140,6 +193,37 @@ fixed: from \(\pm\jj\wzero\) on the axis (undamped), along the circle of radius
 splitting along the real axis (overdamped). Here \(\cos\theta=\zeta\).}
 \label{fig:rlc-rootlocus}
 \end{figure}
+
+\section{The Same Circuit as a Second-Order Filter}
+\label{sec:lc-lowpass}
+Nothing new is needed to use this circuit as a filter---the transfer function is
+already in hand. Laplace-transforming the boxed ODE (zero initial conditions),
+\[
+\bigl(LC\,s^2+RC\,s+1\bigr)V_o(s)=U(s)
+\qquad\Longrightarrow\qquad
+G(s)=\frac{V_o}{U}=\frac{1}{LC\,s^2+RC\,s+1}
+=\frac{\omega_0^2}{s^2+\dfrac{\omega_0}{Q}\,s+\omega_0^2},
+\]
+using \(\omega_0/Q=2\zeta\omega_0=R/L\). This is exactly the standard second-order
+low-pass of \cref{ch:linsys}: flat at low frequency, a resonant peak of height
+\(\approx Q\) near \(\omega_0\) when \(Q>1/\sqrt2\), then falling at
+\(-\SI{40}{\decibel}\) per decade because there are two poles.
+
+In practice the series \(R\) is rarely a deliberate resistor. It is the coil's loss
+plus the source and load resistance the section works between---which is why the
+\emph{same} \(L\) and \(C\) give a peaky response when lightly loaded and a smooth
+one when properly terminated.
+
+\begin{controlsbox}
+\textbf{The two design knobs fall right out.} From the first-principles model,
+\(\omega_0=1/\sqrt{LC}\) sets the cutoff frequency and
+\(Q=(1/R)\sqrt{L/C}\) sets the peaking---how close the pole pair sits to the
+\(\jj\omega\) axis. Scaling \(L\) and \(C\) together slides the whole response
+along the frequency axis without changing its shape; changing the resistance
+(loss, or the source/load termination) changes only the damping. Every passive
+filter design is some version of choosing these two, times the number of poles
+(\cref{ch:filters}).
+\end{controlsbox}
 
 \section{Energy Balance}
 With \(\mathcal{H}=\tfrac12 Cv_C^2+\tfrac12 Li^2\), the series energy balance is

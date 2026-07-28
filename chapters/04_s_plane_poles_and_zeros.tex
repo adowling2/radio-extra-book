@@ -8,6 +8,56 @@ behavior lives in the complex plane (poles, zeros, and the root locus). These ar
 the two classical design tools---Bode and root locus---and both are just the
 transfer function \(G(s)\) read in a particular way.
 
+\section{Decibels: Power, Amplitude, and Roll-Off}
+\label{sec:decibels}
+Before any plot, we need its vertical axis. A \textbf{decibel} is a logarithmic
+measure of a \emph{ratio}, never of an absolute quantity. It is defined on
+\emph{power}:
+\[
+\text{ratio in dB}=10\log_{10}\frac{P_2}{P_1}.
+\]
+The factor of \(10\) is the whole definition; everything else follows. Because
+power in a fixed resistance goes as the square of amplitude, \(P\propto V^2\), an
+amplitude ratio picks up a factor of two from the logarithm of a square:
+\[
+10\log_{10}\frac{P_2}{P_1}
+=10\log_{10}\left(\frac{V_2}{V_1}\right)^{\!2}
+=20\log_{10}\frac{V_2}{V_1}.
+\]
+So \(10\log\) for power and \(20\log\) for voltage or current---not two conventions
+but one, applied to quantities that differ by a square. The \(20\log\) form is
+valid only when the two amplitudes are measured across the \emph{same} impedance;
+otherwise return to power.
+
+\begin{workedbox}[: the \(-3\,\mathrm{dB}\) point]
+The single most-quoted number in filtering is the \emph{half-power} point. Setting
+\(P_2/P_1=\tfrac12\),
+\[
+10\log_{10}\tfrac12=-3.0103\ldots\approx-\SI{3.01}{\decibel},
+\]
+which is where the ubiquitous ``\(-\SI{3}{\decibel}\)'' comes from. In amplitude
+terms half power means \(V_2/V_1=1/\sqrt2\approx0.707\), and indeed
+\[
+20\log_{10}\frac{1}{\sqrt2}=-\SI{3.01}{\decibel}
+\]
+--- the same number, as it must be. This is why the \(-\SI{3}{\decibel}\)
+frequency, the half-power frequency, and the \(0.707\)-amplitude frequency are
+three names for one point, and why \(-\SI{3}{\decibel}\) is emphatically \emph{not}
+half amplitude (half amplitude is \(-\SI{6}{\decibel}\)).
+\end{workedbox}
+
+Two frequency-ratio words complete the vocabulary. A \textbf{decade} is a
+\(\times10\) frequency ratio; an \textbf{octave} is a \(\times2\) ratio. Since
+\(\log_{10}2\approx0.301\), a slope of \(\SI{20}{\decibel}\) per decade is
+\(20\times0.301\approx\SI{6}{\decibel}\) per octave---the same slope in different
+units.
+
+Finally, \textbf{roll-off} is the term for how fast a response falls once it is
+past its passband, quoted as that slope: ``rolls off at
+\(-\SI{20}{\decibel}\)/decade'' means each tenfold increase in frequency cuts the
+amplitude by a factor of ten. Steeper roll-off means a filter that rejects
+out-of-band signals harder.
+
 \section{What a Bode Plot Shows}
 A Bode plot is a pair of graphs against logarithmic frequency,
 \[
@@ -18,11 +68,10 @@ A Bode plot is a pair of graphs against logarithmic frequency,
 \quad\text{(phase)}.
 \]
 The magnitude curve shows gain or attenuation; the phase curve shows lead or lag.
-Frequency is logarithmic, so equal ratios take equal space: a \emph{decade} is a
-\(\times 10\) ratio and an \emph{octave} is a \(\times 2\) ratio, and
-\(\SI{20}{\decibel}\)/decade \(\approx\SI{6}{\decibel}\)/octave. The frequency
-response is the transfer function of \cref{ch:linsys} evaluated on the imaginary
-axis, \(s=\jj\omega\).
+Frequency is logarithmic, so equal ratios take equal space, using the decade and
+octave of \cref{sec:decibels}. The frequency response is the transfer function of
+\cref{ch:linsys} evaluated on the imaginary axis, \(s=\jj\omega\)---that is, the
+system's steady response to a \emph{sinusoidal input} at frequency \(\omega\).
 
 \section{First-Order Response}
 The first-order low-pass \(G(s)=1/(1+\tau s)\) has
@@ -35,6 +84,45 @@ The magnitude is flat until the \emph{corner frequency} \(\omega_c=1/\tau\), the
 rolls off at \(-\SI{20}{\decibel}\) per decade; the phase slides from \(0^\circ\)
 to \(-90^\circ\), passing \(-45^\circ\) at the corner (\cref{fig:bode1}). The
 corner is the same \(1/\tau\) that set the time constant in \cref{ch:linsys}.
+
+\subsection{Deriving the Asymptotes}
+\label{sec:asymptotes}
+Both straight lines in \cref{fig:bode1} come from taking limits of \(|G|\), and it
+is worth doing once because the same two limits generate every Bode sketch.
+
+\emph{Well below the corner} (\(\omega\tau\ll1\)) the \((\omega\tau)^2\) term is
+negligible, so
+\[
+|G|\approx\frac{1}{\sqrt{1+0}}=1
+\qquad\Longrightarrow\qquad
+20\log_{10}|G|\approx\SI{0}{\decibel},
+\]
+a horizontal line at the DC gain. \emph{Well above the corner}
+(\(\omega\tau\gg1\)) the \(1\) is negligible instead, so
+\[
+|G|\approx\frac{1}{\omega\tau}
+\qquad\Longrightarrow\qquad
+20\log_{10}|G|\approx-20\log_{10}(\omega\tau),
+\]
+which on a logarithmic frequency axis is a straight line falling
+\(\SI{20}{\decibel}\) for every tenfold increase in \(\omega\): the
+\(-\SI{20}{\decibel}\)/decade roll-off. The two asymptotes meet where
+\(1=\omega\tau\), i.e.\ at \(\omega=1/\tau\)---which is what makes \(\omega_c\) the
+``corner.''
+
+\emph{Why the exact curve misses the corner by \(\SI{3}{\decibel}\).} The
+asymptotes each dropped one term; exactly at the corner neither term is negligible,
+because \(\omega\tau=1\) makes them \emph{equal}. There,
+\[
+|G(\jj\omega_c)|=\frac{1}{\sqrt{1+1}}=\frac{1}{\sqrt2},
+\qquad
+20\log_{10}\frac{1}{\sqrt2}=-\SI{3.01}{\decibel},
+\]
+the half-power point of \cref{sec:decibels}. So the \(\SI{3}{\decibel}\) gap
+between the asymptote intersection and the true curve is not an error in the sketch
+--- it is the exact size of the approximation at the one frequency where both terms
+matter equally. The phase behaves the same way: \(-\tan^{-1}(1)=-45^\circ\), exactly
+halfway through its \(0^\circ\to-90^\circ\) travel.
 
 \begin{figure}[htbp]
 \centering
@@ -62,9 +150,24 @@ pole, and peaking up at a lightly damped second-order pair (next section)---but
 the asymptotes get the shape right.
 
 \section{Second-Order Response: the Resonant Peak}
-Sampling \(G(\jj\omega)\) near \(\omega_0\) brings the evaluation point close to
-the pole pair, producing a resonant peak whose height grows with \(Q\)
-(\cref{fig:bode2}). The flattest response with no peak occurs at
+Recall the standard second-order transfer function from \cref{ch:linsys},
+\[
+G(s)=\frac{\omega_0^2}{s^2+2\zeta\omega_0 s+\omega_0^2},
+\qquad
+\text{poles at } s=-\zeta\omega_0\pm\jj\omega_0\sqrt{1-\zeta^2},
+\]
+and evaluate it on the imaginary axis, \(s=\jj\omega\):
+\[
+G(\jj\omega)=\frac{\omega_0^2}{(\omega_0^2-\omega^2)+\jj\,2\zeta\omega_0\omega},
+\qquad
+|G(\jj\omega)|=\frac{\omega_0^2}
+{\sqrt{(\omega_0^2-\omega^2)^2+(2\zeta\omega_0\omega)^2}} .
+\]
+At \(\omega=\omega_0\) the first bracket vanishes and only the damping term
+survives, leaving \(|G|=1/(2\zeta)=Q\): the peak height \emph{is} the quality
+factor. Geometrically, sampling \(G(\jj\omega)\) near \(\omega_0\) brings the
+evaluation point close to the pole pair, producing a resonant peak whose height
+grows with \(Q\) (\cref{fig:bode2}). The flattest response with no peak occurs at
 \(Q=1/\sqrt{2}\approx0.707\) (the Butterworth value); above it the magnitude
 peaks near \(\omega_0\) by a factor of about \(Q\), and the peak sharpens as the
 poles approach the \(\jj\omega\) axis.
@@ -91,13 +194,14 @@ height grows with \(Q\) and its \(-\SI{3}{\decibel}\) width is the bandwidth
 \(BW\approx f_0/Q\).
 \item[Phase] the phase slope near a corner flags how much lead or lag the stage
 adds---the quantity that governs stability once the stage sits inside a feedback
-loop (\cref{ch:linsys}).
+loop (\cref{ch:feedback}).
 \end{description}
 
 \section{The s-Plane: Poles, Zeros, and Stability}
-The Bode plot samples \(G(s)\) on the imaginary axis; the s-plane shows the whole
-picture---where \(G\) blows up (poles) and vanishes (zeros) across the complex
-plane \(s=\sigma+\jj\omega\).
+The Bode plot samples \(G(s)\) only on the imaginary axis---that is, only for
+sinusoidal inputs. The s-plane shows the whole picture: where \(G\) blows up
+(poles) and vanishes (zeros) across the entire complex plane
+\(s=\sigma+\jj\omega\), growth and decay (\(\sigma\)) included.
 
 \begin{controlsbox}
 \textbf{Refresher: poles and zeros.} Write \(G(s)=N(s)/D(s)\). The \emph{poles}

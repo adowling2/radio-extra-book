@@ -1,0 +1,200 @@
+\chapter{Parallel RLC Circuits}
+\label{ch:rlcpar}
+The parallel RLC circuit is the \emph{dual} of the series circuit of
+\cref{ch:rlc}: same two energy stores, same second-order dynamics, same
+\(\omega_0\)---but the roles of voltage and current, impedance and admittance, are
+exchanged. That duality does most of the work, so this chapter is short. It states
+the model, then concentrates on the two things that genuinely differ: the circuit
+looks like a high impedance at resonance instead of a low one, and its quality
+factor is built the other way up.
+
+The parallel form matters in radio because it is the \textbf{tank circuit}---the
+resonator in an oscillator, the tuned load of a Class C amplifier, the trap that
+blocks one frequency. Wherever a circuit needs to present a high impedance at one
+frequency and a low impedance elsewhere, it is a parallel resonator.
+
+\section{The Circuit}
+Drive \(R\), \(L\), and \(C\) in parallel from a current source
+(\cref{fig:rlcpar-schematic}). The dual of ``one loop, one current'' is ``one node,
+one voltage'': all three elements share the node voltage \(v\), which we take as the
+output, \(v_o=v\). The two states are still one per store---the capacitor voltage
+(here the same as \(v\)) and the inductor current \(i_L\).
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) to[I,l=\(u(t)\)] (0,2.4);
+\draw (0,2.4) -- (5.4,2.4);
+\draw (0,0) -- (5.4,0);
+\draw (1.6,2.4) to[R,l=\(R\)] (1.6,0);
+\draw (3.2,2.4) to[L,l=\(L\),i>=\(i_L\)] (3.2,0);
+\draw (4.8,2.4) to[C,l=\(C\)] (4.8,0);
+\draw (5.4,2.4) to[short,-o] (6.3,2.4) node[right]{\(+\)};
+\draw (5.4,0) to[short,-o] (6.3,0) node[right]{\(-\)};
+\node at (6.7,1.2) {\(v_o\)};
+\node[ground] at (2.4,0) {};
+\end{circuitikz}
+\caption{Parallel RLC circuit driven by a current source. Every element shares the
+node voltage, which is the output \(v_o=v\). The states are the capacitor voltage
+\(v\) and the inductor current \(i_L\).}
+\label{fig:rlcpar-schematic}
+\end{figure}
+
+\section{From Schematic to Differential Equation}
+Where the series circuit used KVL around a loop, the parallel circuit uses KCL at
+the node: the source current splits among the three branches,
+\[
+u(t)=\underbrace{\frac{v}{R}}_{\text{resistor}}
++\underbrace{i_L}_{\text{inductor}}
++\underbrace{C\frac{\dd v}{\dd t}}_{\text{capacitor}},
+\qquad
+v=L\frac{\dd i_L}{\dd t}.
+\]
+As before this is a coupled pair of first-order equations, one per store:
+\[
+\frac{\dd v}{\dd t}=\frac{1}{C}\Bigl(u-\frac{v}{R}-i_L\Bigr),
+\qquad
+\frac{\dd i_L}{\dd t}=\frac{1}{L}\,v .
+\]
+Eliminating \(i_L\) (differentiate the first, substitute the second) gives the
+second-order equation in the node voltage:
+\[
+\boxed{\,LC\frac{\dd^2 v}{\dd t^2}+\frac{L}{R}\frac{\dd v}{\dd t}+v
+=L\frac{\dd u}{\dd t}.\,}
+\]
+Compare this with the series result \(LC\ddot v_C+RC\dot v_C+v_C=u\). The
+second-derivative term is identical, so \(\omega_0\) will be identical; only the
+damping term differs, and it differs by having \(R\) in the \emph{denominator}.
+That single swap is the whole story of this chapter.
+
+\section{State-Space Form and the Generic Match}
+With \(x_1=v\) and \(x_2=i_L\),
+\[
+\dot{\state}=
+\mat{-1/(RC) & -1/C\\ 1/L & 0}\state
++\mat{1/C\\ 0}u,
+\qquad
+y=v_o=\mat{1 & 0}\state .
+\]
+The characteristic polynomial is
+\[
+\det(sI-A)=s\Bigl(s+\frac{1}{RC}\Bigr)+\frac{1}{LC}
+=s^2+\frac{1}{RC}s+\frac{1}{LC},
+\]
+so matching the standard form \(s^2+2\zeta\omega_0 s+\omega_0^2\) gives
+\[
+\omega_0=\frac{1}{\sqrt{LC}},
+\qquad
+\alpha=\frac{1}{2RC},
+\qquad
+\zeta=\frac{\alpha}{\omega_0}=\frac{1}{2R}\sqrt{\frac{L}{C}},
+\qquad
+Q_p=\frac{1}{2\zeta}=R\sqrt{\frac{C}{L}}=\frac{R}{\omega_0 L}=\omega_0 RC .
+\]
+The natural frequency is the same \(1/\sqrt{LC}\); the damping is inverted.
+
+\section{Parallel Resonance: a High-Impedance Peak}
+Work in admittances, which is what parallel networks add (\cref{ch:ac}):
+\[
+Y(\jj\omega)=\frac{1}{R}+\jj\omega C+\frac{1}{\jj\omega L}
+=\frac{1}{R}+\jj\left(\omega C-\frac{1}{\omega L}\right).
+\]
+At \(\omega=\omega_0=1/\sqrt{LC}\) the two susceptances cancel exactly---the
+capacitor's \(+\omega C\) against the inductor's \(-1/(\omega L)\)---leaving
+\(Y=1/R\), purely real and \emph{minimum}. Since \(Z=1/Y\), the impedance is
+therefore purely resistive and \emph{maximum}:
+\[
+Z(\jj\omega_0)=R .
+\]
+In the lossless ideal (\(R\to\infty\)) the input impedance becomes infinite: the
+tank is an open circuit at its resonance. Real loss keeps it finite.
+
+This is the exact mirror of the series case, and the contrast is worth stating
+plainly:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.26\textwidth}Y Y@{}}
+\toprule
+At resonance & Series RLC & Parallel RLC \\
+\midrule
+Reactances/susceptances & \(X_L\) cancels \(X_C\) & \(B_C\) cancels \(B_L\) \\
+Impedance \(Z(\jj\omega_0)\) & \(R\) --- a \emph{minimum} & \(R\) --- a \emph{maximum} \\
+Current from the source & maximum & minimum \\
+Behaves like & a short at \(\omega_0\) & an open at \(\omega_0\) \\
+Internal magnification & \(v_L,v_C\) exceed source by \(Q\) & circulating tank current exceeds source by \(Q\) \\
+Quality factor & \(Q_s=\omega_0 L/R\) & \(Q_p=R/(\omega_0 L)\) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{physicalbox}
+\textbf{Why the circulating current is large.} At resonance the source only has to
+replace what \(R\) dissipates, so the current it supplies is small. But \(L\) and
+\(C\) are meanwhile trading a large current back and forth between themselves---
+\(Q\) times the source current---because each one's reactive current is cancelled by
+the other's as far as the source can see. The series circuit does the dual thing
+with voltage: a modest source voltage while \(v_L\) and \(v_C\) individually swing
+\(Q\) times larger, equal and opposite.
+\end{physicalbox}
+
+\section{Why \texorpdfstring{\(Q\)}{Q} Inverts}
+The two quality factors look contradictory until you ask where the loss sits:
+\[
+Q_s=\frac{\omega_0 L}{R}
+\qquad\text{versus}\qquad
+Q_p=\frac{R}{\omega_0 L} .
+\]
+In the series circuit the loss resistance is \emph{in the path} of the resonating
+current, so a \emph{larger} \(R\) dissipates more per cycle and lowers \(Q\). In
+the parallel circuit the loss resistance is a \emph{shunt across} the resonator, so
+a larger \(R\) bleeds off \emph{less} current and \emph{raises} \(Q\). A perfect
+series resonator wants \(R\to0\); a perfect parallel resonator wants
+\(R\to\infty\). Both statements say the same physical thing---minimize the energy
+lost per cycle---which is the definition \(Q\) actually encodes:
+\[
+Q=2\pi\,\frac{\text{energy stored}}{\text{energy lost per cycle}} .
+\]
+Read that way there is only one \(Q\), and the two formulas are what it becomes in
+two topologies.
+
+\begin{mistakebox}
+Do not carry a \(Q\) formula across topologies. Ask first whether the loss is in
+series with the resonating current or in parallel with the resonator; then use the
+matching form. And keep the three \(Q\)'s straight: \emph{loaded} \(Q\) includes
+source and load coupling, \emph{unloaded} \(Q\) is the resonator's own internal
+loss, and \emph{component} \(Q\) is the loss of one inductor or capacitor.
+\end{mistakebox}
+
+The bandwidth statement, however, is topology independent:
+\[
+BW\approx\frac{f_0}{Q},
+\]
+because it is a statement about pole geometry---the distance from the
+\(\jj\omega\) axis---not about wiring (\cref{ch:splane}).
+
+\section{Worked Example}
+Take the same \(L=\SI{10}{\micro\henry}\) and \(C=\SI{220}{\pico\farad}\) as the
+series example of \cref{ch:rlc}, but now in parallel with a loss resistance
+\(R=\SI{18}{\kilo\ohm}\) (a realistic unloaded tank). Then
+\[
+f_0=\frac{1}{2\pi\sqrt{LC}}\approx\SI{3.39}{\mega\hertz}
+\qquad\text{(unchanged---same \(L\) and \(C\))},
+\]
+\[
+\omega_0 L=(2.13\times10^{7})(10\times10^{-6})\approx\SI{213}{\ohm},
+\qquad
+Q_p=\frac{R}{\omega_0 L}=\frac{18000}{213}\approx 84 .
+\]
+The half-power bandwidth is \(BW\approx f_0/Q_p\approx\SI{40}{\kilo\hertz}\), and at
+resonance the tank presents \(Z=\SI{18}{\kilo\ohm}\), purely resistive---a high
+impedance an oscillator or Class C stage can develop signal voltage across. Note
+the contrast with \cref{ch:rlc}: there, \(R=\SI{5}{\ohm}\) in series gave
+\(Q_s\approx43\); here \(R=\SI{18}{\kilo\ohm}\) in parallel gives \(Q_p\approx84\).
+Small series \(R\) and large parallel \(R\) both mean a good resonator.
+
+\begin{exambox}
+Exam questions on resonance almost always hinge on one decision: series or
+parallel? Series resonance means minimum impedance and maximum current; parallel
+resonance means maximum impedance and minimum \emph{source} current with maximum
+\emph{circulating} current. Both share \(f_0=1/(2\pi\sqrt{LC})\), and in both
+\(R\) sets \(Q\) and bandwidth but never \(f_0\).
+\end{exambox}

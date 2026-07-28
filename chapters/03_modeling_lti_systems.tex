@@ -1,13 +1,16 @@
-\chapter{First- and Second-Order Systems: Time and State Space}
+\chapter{Modeling LTI Systems}
 \label{ch:linsys}
-Before analyzing any specific circuit, this chapter reviews the linear-systems
-machinery that the rest of the book uses, in the \emph{time and state-space} view:
-differential equations, state-space models, step responses, damping, and
-feedback. Its companion, \cref{ch:splane}, reads the same systems in the
-\emph{frequency and s-plane} view (Bode plots, poles, zeros, root locus).
-Everything here is generic---the same mathematics whether the system is an RC
-filter, a mechanical suspension, or a chemical reactor---and Part~III then shows
-that each amateur-radio circuit is one of these systems in electrical form.
+Before analyzing any specific circuit, this chapter reviews how a linear system is
+\emph{modeled}: the differential equation, the state-space model, and the transfer
+function, together with the time responses they predict. These are not competing
+descriptions but three ways of writing the same system down, and this chapter's job
+is to build all three and move between them. Its companion, \cref{ch:splane}, then
+\emph{reads} those models in the frequency and complex-plane view (Bode plots,
+poles, zeros, root locus), and \cref{ch:feedback} closes the loop around them.
+Everything here is generic---the same mathematics whether the system is a
+mechanical suspension, a chemical reactor, or an electrical filter---and Part~III
+then shows that each amateur-radio circuit is one of these systems in electrical
+form.
 
 \section{Four Equivalent Views of a Linear System}
 A linear time-invariant (LTI) system can be written four equivalent ways, and moving
@@ -22,6 +25,15 @@ imaginary axis.
 \end{enumerate}
 This chapter builds the first three and the time response; \cref{ch:splane} takes
 up the fourth.
+
+\begin{physicalbox}
+\textbf{Why four?} A model is a choice of coordinates, not a claim about reality.
+The differential equation is closest to the physics, the state-space model exposes
+the internal variables and generalizes to many inputs and outputs, the transfer
+function makes cascading and feedback into algebra, and the frequency response is
+what an instrument actually measures. Fluency is being able to start from whichever
+one you are handed.
+\end{physicalbox}
 
 \begin{controlsbox}
 \textbf{Refresher: how the four views connect.} Taking the Laplace transform of
@@ -44,7 +56,7 @@ Laplace transform. It is defined by the integral
 \]
 which converts a function of time \(f(t)\) into a function of the complex
 frequency \(s=\sigma+\jj\omega\). We rarely evaluate this integral directly;
-instead, three of its properties carry the whole load. With zero initial
+instead, three of its properties are most useful. With zero initial
 conditions, differentiation becomes multiplication by \(s\) and integration
 becomes division:
 \[
@@ -62,34 +74,28 @@ transients and stability, not just steady sinusoids.
 \end{controlsbox}
 
 Applying the derivative rule to a linear ordinary differential equation (ODE)
-turns calculus into algebra. The two
-systems of this chapter transform directly from equation to transfer function:
-\[
-\tau\dot y+y=Ku
-\;\xrightarrow{\;\mathcal L\;}\;
-(\tau s+1)Y=KU
-\;\Rightarrow\;
-G(s)=\frac{K}{\tau s+1},
-\]
-\[
-\ddot y+2\zeta\omega_0\dot y+\omega_0^2 y=\omega_0^2u
-\;\xrightarrow{\;\mathcal L\;}\;
-(s^2+2\zeta\omega_0 s+\omega_0^2)Y=\omega_0^2U
-\;\Rightarrow\;
-G(s)=\frac{\omega_0^2}{s^2+2\zeta\omega_0 s+\omega_0^2}.
-\]
-This ODE-to-transfer-function route is exactly what the modeling chapters of
-Part~III use once they have written a circuit's differential equation from KVL
-and KCL.
+turns calculus into algebra: replace every \(\dd/\dd t\) by \(s\), then solve for
+\(Y/U\). The two sections that follow do exactly this, once for a first-order
+system and once for a second-order one. It is also the route the modeling chapters
+of Part~III use, once they have written a circuit's differential equation from the
+fundamentals of physics.
 
 A transfer function is drawn as a block with an input and an output arrow, and
 larger systems are built by wiring blocks together. Three rules cover almost
-everything (\cref{fig:blocks}): cascaded blocks \emph{multiply}
-(\(G=G_1G_2\)); parallel blocks \emph{add} (\(G=G_1+G_2\)); and a negative
-feedback loop collapses to
+everything, and \cref{fig:blocks} shows all three:
+\begin{description}
+\item[(a) Cascade --- multiply] blocks in series multiply, \(G=G_1G_2\), because
+the first block's output is the second block's input.
+\item[(b) Parallel --- add] blocks driven by the same input whose outputs are
+summed add, \(G=G_1+G_2\).
+\item[(c) Negative feedback --- divide] a loop with forward path \(G\) and feedback
+path \(H\) collapses to
 \[
 G_{\mathrm{cl}}=\frac{G}{1+GH}.
 \]
+\end{description}
+\Cref{ch:feedback} takes the third rule apart in detail; it is the one that
+changes a system's poles rather than just combining them.
 
 \begin{figure}[htbp]
 \centering
@@ -103,8 +109,24 @@ G_{\mathrm{cl}}=\frac{G}{1+GH}.
 \node[block,right=0.7cm of g1] (g2) {\(G_2\)};
 \node[right=0.6cm of g2] (aout) {\(Y\)};
 \draw[->] (ain)--(g1); \draw[->] (g1)--(g2); \draw[->] (g2)--(aout);
-% (b) feedback
-\node (blab) at (-0.4,-1.9) {(b)};
+\node[right=0.15cm of aout,black!60] {\small \(G=G_1G_2\)};
+% (b) parallel
+\node (clab) at (-0.4,-2.0) {(b)};
+\node[right=0.25cm of clab] (cin) {\(U\)};
+\coordinate (csplit) at ($(cin)+(0.55,0)$);
+\node[block] (p1) at ($(cin)+(1.8,0.55)$) {\(G_1\)};
+\node[block] (p2) at ($(cin)+(1.8,-0.55)$) {\(G_2\)};
+\node[draw,circle,inner sep=1.2pt] (psum) at ($(cin)+(3.3,0)$) {\(\Sigma\)};
+\node (cout) at ($(psum)+(0.75,0)$) {\(Y\)};
+\draw (cin)--(csplit);
+\draw[->] (csplit)|-(p1.west);
+\draw[->] (csplit)|-(p2.west);
+\draw[->] (p1.east)-|(psum.north);
+\draw[->] (p2.east)-|(psum.south);
+\draw[->] (psum)--(cout);
+\node[right=0.15cm of cout,black!60] {\small \(G=G_1+G_2\)};
+% (c) feedback
+\node (blab) at (-0.4,-4.0) {(c)};
 \node[right=0.25cm of blab] (bin) {\(U\)};
 \node[draw,circle,inner sep=1.2pt,right=0.5cm of bin] (sum) {\(\Sigma\)};
 \node[block,right=0.8cm of sum] (g) {\(G\)};
@@ -117,10 +139,12 @@ G_{\mathrm{cl}}=\frac{G}{1+GH}.
 \draw[->] (tap)|-(h.east);
 \draw[->] (h.west)-|(sum.south);
 \node at ($(sum)+(-0.02,0.3)$) {\small\(-\)};
+\node[right=0.15cm of bout,black!60] {\small \(G_{\mathrm{cl}}=\dfrac{G}{1+GH}\)};
 \end{tikzpicture}
-\caption{Block-diagram algebra. (a) A cascade multiplies transfer functions,
-\(G=G_1G_2\). (b) A negative-feedback loop with forward path \(G\) and feedback
-\(H\) collapses to \(G_{\mathrm{cl}}=G/(1+GH)\).}
+\caption{Block-diagram algebra, all three rules. (a) A cascade multiplies transfer
+functions. (b) Parallel paths summed at a junction add. (c) A negative-feedback
+loop with forward path \(G\) and feedback \(H\) collapses to
+\(G_{\mathrm{cl}}=G/(1+GH)\).}
 \label{fig:blocks}
 \end{figure}
 
@@ -131,10 +155,21 @@ The canonical first-order system has one state and one time constant \(\tau\):
 \qquad\Longleftrightarrow\qquad
 \dot{x}=-\frac{1}{\tau}x+\frac{K}{\tau}u,\quad y=x .
 \]
-Its single pole is real and negative,
+Taking the Laplace transform of the differential equation (zero initial
+conditions, \(\dd/\dd t\to s\)) turns it into algebra and gives the transfer
+function directly:
 \[
-G(s)=\frac{K}{\tau s+1},
-\qquad
+\tau\dot y+y=Ku
+\;\xrightarrow{\;\mathcal L\;}\;
+\tau s\,Y+Y=KU
+\;\Rightarrow\;
+(\tau s+1)\,Y=KU
+\;\Rightarrow\;
+G(s)=\frac{Y(s)}{U(s)}=\frac{K}{\tau s+1}.
+\]
+Its single pole is where the denominator vanishes, \(\tau s+1=0\); it is real and
+negative,
+\[
 s_{\text{pole}}=-\frac{1}{\tau}.
 \]
 
@@ -148,8 +183,7 @@ thermal mass \(\times\) resistance;
 \item the concentration in one well-stirred tank flushed by fresh feed,
 \(\tau=\) volume\,/\,flow rate;
 \item a body's velocity settling under linear drag, \(\tau=m/c\);
-\item (electrical) a capacitor charging through a resistor, \(\tau=RC\)---one
-example among many, not the definition.
+\item an ideal capacitor charging through a resistor, \(\tau=RC\).
 \end{itemize}
 In each, one time constant \(\tau\) sets how fast the system forgets its initial
 condition.
@@ -175,9 +209,11 @@ time constants are effectively settled.}
 
 \begin{physicalbox}
 A first-order system has a single real pole at \(-1/\tau\), and no imaginary
-part, so it can never overshoot or ring. Its distance from the origin, \(1/\tau\),
-is the decay rate in time and (as \cref{ch:splane} shows) the corner frequency in
-the frequency domain---one number, two readings.
+part, so it can never overshoot or oscillate---and therefore never \emph{rings},
+ringing being the decaying oscillation of an underdamped second-order system
+(\cref{sec:secondorder}). Its distance from the origin, \(1/\tau\), is the decay
+rate in time and (as \cref{ch:splane} shows) the corner frequency in the frequency
+domain---one number, two readings.
 \end{physicalbox}
 
 \subsection{Worked Example}
@@ -187,14 +223,32 @@ at \(-1/\tau=-\SI{500}{\per\second}\); the step response reaches \(63.2\%\) of
 \SI{10}{\milli\second}.
 
 \section{Second-Order Systems}
+\label{sec:secondorder}
 Two independent energy stores give a second-order system, written in
 \emph{standard form} as
 \[
 \ddot{y}+2\zeta\omega_0\,\dot{y}+\omega_0^2\,y=\omega_0^2\,u .
 \]
 The two parameters are the \textbf{undamped natural frequency} \(\omega_0\) and
-the dimensionless \textbf{damping ratio} \(\zeta\). A companion-form state-space
-model uses \(x_1=y\), \(x_2=\dot{y}\):
+the dimensionless \textbf{damping ratio} \(\zeta\). Radio work usually states the
+same information as the \textbf{quality factor}
+\[
+Q=\frac{1}{2\zeta},
+\]
+so a lightly damped, high-\(Q\) resonator and an underdamped control system are
+the same object described in two vocabularies. We will use \(\zeta\) when thinking
+about damping and \(Q\) when thinking about sharpness, but they carry identical
+content.
+
+Applying the Laplace transform as before, with \(\dd^2/\dd t^2\to s^2\),
+\[
+\ddot y+2\zeta\omega_0\dot y+\omega_0^2 y=\omega_0^2u
+\;\xrightarrow{\;\mathcal L\;}\;
+(s^2+2\zeta\omega_0 s+\omega_0^2)\,Y=\omega_0^2\,U
+\;\Rightarrow\;
+G(s)=\frac{\omega_0^2}{s^2+2\zeta\omega_0 s+\omega_0^2}.
+\]
+A companion-form state-space model uses \(x_1=y\), \(x_2=\dot{y}\):
 \[
 \dot{\state}=
 \mat{0 & 1\\ -\omega_0^2 & -2\zeta\omega_0}\state
@@ -222,25 +276,22 @@ signature of a second-order system:
 \item a vehicle suspension (the classic ``does it bounce or settle?'' design);
 \item an underdamped feedback or process-control loop that overshoots its
 setpoint and rings before settling;
-\item (electrical) the LC or RLC resonator of Part~III.
+\item a resonant circuit with an inductor and a capacitor.
 \end{itemize}
 In all of them \(\omega_0\) sets the oscillation rate and \(\zeta\) (equivalently
 \(Q\)) sets how many cycles it rings before dying out.
 \end{physicalbox}
 
-\begin{controlsbox}
-\textbf{Refresher: \(\zeta\), \(Q\), and the damping regimes.} The damping ratio
-\(\zeta\) sorts second-order systems into three behaviors:
+The damping ratio sorts second-order systems into three behaviors, and the pole
+pair above shows why:
 \begin{description}
-\item[\(\zeta>1\) overdamped] two real poles; no oscillation, sluggish approach.
-\item[\(\zeta=1\) critically damped] repeated real pole; fastest approach without
-overshoot.
-\item[\(\zeta<1\) underdamped] complex pole pair; overshoot and ringing.
+\item[\(\zeta>1\) overdamped] the square root is real, giving two real poles: no
+oscillation, sluggish approach.
+\item[\(\zeta=1\) critically damped] the two poles coincide at \(-\omega_0\):
+the fastest approach without overshoot.
+\item[\(\zeta<1\) underdamped] the poles are a complex pair: overshoot and
+ringing, for roughly \(Q\) cycles.
 \end{description}
-Radio work usually states the same information as the \emph{quality factor}
-\(Q=1/(2\zeta)\), so a lightly damped, high-\(Q\) resonator and an underdamped
-control system are the same object.
-\end{controlsbox}
 
 \subsection{Damping You Can See}
 \Cref{fig:step2} shows step responses across the regimes. A heavily damped
@@ -283,48 +334,10 @@ The step overshoot is \(M_p=\exp(-\pi\cdot0.1/\sqrt{1-0.01})\approx0.73\), a
 \cref{fig:step2}. \Cref{ch:splane} shows the matching \(\SI{14}{\decibel}\)
 resonant peak in the frequency domain.
 
-\section{Feedback: From Open Loop to Closed Loop}
-Every system so far has been \emph{open loop}: input in, output out. Wrapping the
-output back and subtracting it from the input closes the loop
-(\cref{fig:blocks}b). Writing the forward-path gain as \(A(s)\) and the feedback
-fraction as \(\beta\), the \textbf{closed-loop} transfer function and the
-\textbf{loop gain} are
-\[
-A_{\mathrm{cl}}(s)=\frac{A(s)}{1+A(s)\beta},
-\qquad
-L(s)=A(s)\beta .
-\]
-
-The single most important consequence is the \textbf{large-loop-gain limit}: when
-\(|L|\gg1\),
-\[
-A_{\mathrm{cl}}\to\frac{1}{\beta}.
-\]
-The closed-loop behavior is then set by the feedback network \(\beta\) alone,
-almost independent of the forward gain \(A\). Feedback also \emph{moves the poles}.
-Closing a loop around a single first-order pole \(A_0/(1+s/\omega_a)\) relocates
-the pole to \(-\omega_a(1+A_0\beta)\): faster response and wider bandwidth, with
-the gain reduced by the same factor---the \emph{gain--bandwidth} trade. A single
-pole can never be pushed unstable by feedback, but with two or more poles the loop
-can drive the poles toward, and across, the \(\jj\omega\) axis, which is how
-feedback systems peak, ring, or oscillate---a motion \cref{ch:splane} makes
-visible with the root locus.
-
-\begin{controlsbox}
-\textbf{Foreshadowing op-amps.} An ideal operational amplifier is a forward path
-with enormous gain, \(A\to\infty\). By the large-loop-gain limit its closed-loop
-gain becomes exactly \(1/\beta\), set by a handful of resistors---which is why the
-inverting gain \(-R_f/R_{in}\) and non-inverting gain \(1+R_f/R_g\) of
-\cref{ch:active} depend only on resistor ratios, not on the amplifier itself. The
-same loop run to its stability boundary is an oscillator. Feedback is the thread
-that ties together op-amps, active filters, oscillators, and voltage regulators in
-Part~III.
-\end{controlsbox}
-
 \begin{exambox}
 The exam never asks for \(\zeta\) or a pole plot. It asks about ringing,
-settling, bandwidth, selectivity, and oscillator stability---all statements about
-the poles. Learn the generic time-domain picture here, read its frequency and
-s-plane face in \cref{ch:splane}, and the RC, RL, and RLC circuits of Part~III
-become three readings of the same system.
+settling, bandwidth, and selectivity---all statements about the poles. Learn the
+generic time-domain picture here, read its frequency and s-plane face in
+\cref{ch:splane}, and the RC, RL, and RLC circuits of Part~III become three
+readings of the same system.
 \end{exambox}

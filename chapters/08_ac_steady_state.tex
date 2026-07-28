@@ -1,0 +1,317 @@
+\chapter{AC Steady State: Impedance, Admittance, and Power}
+\label{ch:ac}
+\Cref{ch:foundations} introduced the components---\(R\), \(L\), \(C\), and
+sources---and \cref{ch:complex} introduced the phasor as the complex number that
+stands in for a steady sinusoid. This chapter puts the two together. In the
+\textbf{AC steady state}---a circuit driven by a sinusoid long enough for
+transients to die out---every voltage and every current is a sinusoid at the
+source frequency, so each can be written as a phasor. The element laws, rewritten
+in phasors, then give the central circuit quantities: impedance, admittance, and
+complex power. This is the phasor machinery of \cref{ch:complex} applied to actual
+circuits.
+
+\section{From Element Laws to Impedance}
+Recall the main ideas of \cref{ch:complex}: for a phasor quantity, \(\dd/\dd t\)
+becomes multiplication by \(\jj\omega\). Apply that to each element law in turn,
+and watch the calculus disappear.
+
+\emph{Resistor.} Ohm's law \(v=Ri\) has no derivative, so it passes through
+unchanged: \(V=R\,I\).
+
+\emph{Capacitor.} The element law is \(i=C\,\dd v/\dd t\). Substituting the phasor
+forms \(v(t)=\sqrt2\,\Re\{V\ee^{\jj\omega t}\}\) and
+\(i(t)=\sqrt2\,\Re\{I\ee^{\jj\omega t}\}\), the derivative brings out a factor
+\(\jj\omega\):
+\[
+I\,\ee^{\jj\omega t}=C\frac{\dd}{\dd t}\bigl(V\ee^{\jj\omega t}\bigr)
+=\jj\omega C\,V\,\ee^{\jj\omega t}
+\quad\Longrightarrow\quad
+I=\jj\omega C\,V .
+\]
+\emph{Inductor.} Likewise \(v=L\,\dd i/\dd t\) becomes \(V=\jj\omega L\,I\).
+
+In every case the phasor voltage is a \emph{complex multiple} of the phasor
+current---exactly the algebraic form of Ohm's law, with a complex proportionality
+constant. Solving each relation for the ratio \(V/I\) defines that constant. It is
+the \textbf{impedance}:
+\[
+Z=\frac{V}{I}=R+\jj X,
+\]
+a frequency-dependent generalization of resistance. For the capacitor, dividing
+\(I=\jj\omega C V\) through gives
+\[
+Z_C=\frac{V}{I}=\frac{1}{\jj\omega C},
+\]
+which is where the \(1/\jj\omega\) comes from: the capacitor law puts \(\jj\omega\)
+on the \emph{current} side, so it lands in the denominator of \(V/I\). Multiplying
+top and bottom by \(-\jj\) (since \(1/\jj=-\jj\)) puts it in rectangular form,
+\(Z_C=-\jj/(\omega C)\). Its real part \(R\) is
+resistance (dissipation); its imaginary part \(X\) is \textbf{reactance} (energy
+storage, no dissipation). For the three elements,
+\[
+Z_R=R,\qquad
+Z_L=\jj\omega L,\qquad
+Z_C=\frac{1}{\jj\omega C}=-\jj\frac{1}{\omega C}.
+\]
+An inductor contributes positive reactance \(X_L=\omega L\); a capacitor
+contributes negative reactance, of magnitude \(X_C=1/(\omega C)\), so that
+\(Z_C=-\jj X_C\). At low frequency a capacitor's impedance is large
+(it blocks DC) and an inductor's is small (it passes DC); at high frequency the
+roles reverse.
+
+\begin{physicalbox}
+\textbf{A chemical-engineering analogy.} Circuits obey the same
+across/through (effort/flow) structure as the hydraulic and thermal systems of
+process dynamics:
+\begin{center}
+\begin{tabularx}{0.92\textwidth}{@{}L{0.26\textwidth}Y@{}}
+\toprule
+Electrical & Process / hydraulic analog \\
+\midrule
+Voltage \(V\) (across) & Pressure or head (driving force) \\
+Current \(I\) (through) & Volumetric flow rate \\
+Resistance \(R\) & Flow resistance (pressure drop per unit flow) \\
+Capacitance \(C\) & Tank capacitance (volume stored per unit head) \\
+Inductance \(L\) & Fluid inertance (inertia opposing flow change) \\
+Impedance \(Z\) & Frequency-domain ``flow resistance'' \\
+\bottomrule
+\end{tabularx}
+\end{center}
+So \emph{impedance} is the generalized flow resistance of a network in the
+frequency domain, and \emph{reactance} is the piece contributed by storage---a
+surge tank or fluid inertia opposes a \emph{change} in flow without dissipating
+energy, storing it and handing it back a quarter cycle later. That energy return,
+not loss, is exactly why reactance shifts phase by \(90^\circ\) instead of
+consuming power.
+\end{physicalbox}
+
+\section{Series Impedance: Where the RLC Impedance Comes From}
+Impedances in series add, exactly like resistors, because the same current flows
+through each and the voltages sum (KVL). For \(R\), \(L\), \(C\) in series that
+gives the impedance directly:
+\[
+Z=Z_R+Z_L+Z_C=R+\jj\omega L+\frac{1}{\jj\omega C}
+=R+\jj\left(\omega L-\frac{1}{\omega C}\right).
+\]
+The reactance is the \emph{difference} \(\omega L-1/(\omega C)\); it vanishes at
+resonance, a fact \cref{ch:rlc} builds on.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}
+\draw (0,0) to[sV,l=\(v_s\)] (0,2)
+      to[R,l=\(R\)] (2.6,2)
+      to[L,l=\(L\)] (5.2,2)
+      to[C,l=\(C\)] (5.2,0)
+      -- (0,0);
+\end{circuitikz}
+\caption{A series RLC circuit whose impedance
+\(Z=R+\jj(\omega L-1/\omega C)\) is just the sum of the three element
+impedances.}
+\end{figure}
+
+\section{Parallel Impedance}
+The dual arrangement puts the three elements across one node pair
+(\cref{fig:rlc-parallel-z}), so they share a \emph{voltage} instead of a current.
+Impedances no longer add---but their reciprocals do, because KCL sums the branch
+currents:
+\[
+I=I_R+I_L+I_C
+=\frac{V}{R}+\frac{V}{\jj\omega L}+\jj\omega C\,V
+\quad\Longrightarrow\quad
+\frac{I}{V}=\frac{1}{R}+\jj\left(\omega C-\frac{1}{\omega L}\right).
+\]
+Note the sign structure: for the parallel circuit the \emph{difference} is
+\(\omega C-1/(\omega L)\), the mirror of the series circuit's
+\(\omega L-1/(\omega C)\). It too vanishes at \(\omega_0=1/\sqrt{LC}\)---but there
+it makes \(I/V\) a \emph{minimum} rather than \(V/I\), so a parallel resonator
+presents a high impedance where a series resonator presents a low one
+(\cref{ch:rlcpar}).
+
+Rather than invert this expression every time, it is cleaner to give the reciprocal
+of impedance its own name, which the next section does.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) to[sV,l=\(v_s\)] (0,2.2);
+\draw (0,2.2) -- (5,2.2);
+\draw (0,0) -- (5,0);
+\draw (1.8,2.2) to[R,l=\(R\)] (1.8,0);
+\draw (3.4,2.2) to[L,l=\(L\)] (3.4,0);
+\draw (5,2.2) to[C,l=\(C\)] (5,0);
+\node[ground] at (2.6,0) {};
+\end{circuitikz}
+\caption{A parallel RLC circuit. All three elements share the same voltage, so the
+branch currents add (KCL) and it is the \emph{reciprocals} of the impedances that
+sum: \(I/V=1/R+\jj(\omega C-1/\omega L)\).}
+\label{fig:rlc-parallel-z}
+\end{figure}
+
+\section{Admittance and Susceptance}
+For parallel networks it is easier to work with the reciprocal of impedance, the
+\textbf{admittance}
+\[
+Y=\frac{1}{Z}=G+\jj B,
+\]
+whose real part \(G\) is conductance and imaginary part \(B\) is
+\textbf{susceptance}. Just as series impedances add, \emph{parallel admittances
+add}, because the same voltage appears across each branch and the currents sum
+(KCL):
+\[
+Y_{\mathrm{eq}}=\sum_k Y_k.
+\]
+In the process analogy, admittance is ``flow per unit driving force''---a
+conductance to flow---and parallel pipes add their flow conductances the same way.
+
+\begin{workedbox}[: a parallel branch]
+A \(\SI{100}{\ohm}\) resistor is in parallel with a capacitor whose reactance is
+\(\SI{100}{\ohm}\) at the frequency of interest (\cref{fig:rc-parallel-ex}). Their
+admittances are
+\[
+Y_R=\frac{1}{100}=\SI{0.010}{\siemens},
+\qquad
+Y_C=\frac{1}{-\jj100}=\jj\,\SI{0.010}{\siemens},
+\]
+so \(Y_{\mathrm{eq}}=0.010+\jj0.010=\SI{0.0141}{\siemens}\angle45^\circ\), and the
+parallel impedance is
+\[
+Z_{\mathrm{eq}}=\frac{1}{Y_{\mathrm{eq}}}\approx\SI{70.7}{\ohm}\angle{-45^\circ}
+=50-\jj50\ \Omega.
+\]
+Adding admittances turned a parallel combination into one addition. Note that the
+\(45^\circ\) admittance angle became \(-45^\circ\) on inversion, and that neither
+\(50\) nor \(-50\) is obvious from the \(\SI{100}{\ohm}\) parts---parallel
+combinations are where working in \(Y\) earns its keep.
+\end{workedbox}
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) to[short,-o] (0,0);
+\draw (0,2) node[left]{\(\circ\)} -- (2.8,2);
+\draw (0,0) node[left]{\(\circ\)} -- (2.8,0);
+\draw (1.2,2) to[R,l={\(R=\SI{100}{\ohm}\)}] (1.2,0);
+\draw (2.8,2) to[C,l={\(X_C=\SI{100}{\ohm}\)}] (2.8,0);
+\node at (-0.75,1) {\(Z_{\mathrm{eq}}\)};
+\end{circuitikz}
+\caption{The parallel \(R\)--\(C\) branch of the worked example, seen as a
+one-port of impedance \(Z_{\mathrm{eq}}\).}
+\label{fig:rc-parallel-ex}
+\end{figure}
+
+\section{Phasor Lead and Lag}
+The \(90^\circ\) phase relationships are not extra facts to memorize---they fall
+directly out of the element differential equations, and the derivative is doing all
+the work.
+
+Take a capacitor with \(v(t)=V_p\cos\omega t\). Its element law gives the current by
+differentiating:
+\[
+i=C\frac{\dd v}{\dd t}=-\omega C V_p\sin\omega t
+=\omega C V_p\cos\bigl(\omega t+90^\circ\bigr),
+\]
+using \(-\sin\theta=\cos(\theta+90^\circ)\). The current's cosine peaks a quarter
+cycle \emph{earlier} than the voltage's: in a capacitor, \textbf{current leads
+voltage by \(90^\circ\)}. The same conclusion in phasor form is immediate---
+multiplying by \(\jj\omega\) adds \(90^\circ\), because \(\jj=1\angle90^\circ\):
+\[
+I=\jj\omega C\,V=\omega C\,V\angle{+90^\circ}.
+\]
+An inductor is the dual. With \(i(t)=I_p\cos\omega t\),
+\(v=L\,\dd i/\dd t\) puts the \(+90^\circ\) on the \emph{voltage} instead, so
+\textbf{voltage leads current by \(90^\circ\)}. In both cases the derivative in the
+element law is the phase shift, and \(\jj\omega\) is that derivative wearing a
+phasor's clothing.
+
+Consequently a positive impedance angle means net inductive behavior and a negative
+angle means net capacitive behavior---the angle simply reports which store wins.
+
+\begin{workedbox}[: a lagging (inductive) load]
+A \(\SI{50}{\ohm}\) resistor in series with \(X_L=\SI{50}{\ohm}\) gives
+\(Z=50+\jj50=\SI{70.7}{\ohm}\angle{+45^\circ}\). For \(V=100\angle0^\circ\)~V,
+\[
+I=\frac{V}{Z}=\frac{100\angle0^\circ}{70.7\angle45^\circ}
+=1.41\angle{-45^\circ}\ \si{\ampere}.
+\]
+The current angle is \emph{negative}: the current lags the voltage by
+\(45^\circ\)---not the full \(90^\circ\), because the resistor contributes no phase
+shift and pulls the total back toward zero. Positive \(Z\) angle, lagging current,
+inductive.
+\end{workedbox}
+
+\begin{workedbox}[: a leading (capacitive) load]
+Swap the inductor for a capacitor of the same reactance magnitude:
+\(Z=50-\jj50=\SI{70.7}{\ohm}\angle{-45^\circ}\). Now
+\[
+I=\frac{100\angle0^\circ}{70.7\angle{-45^\circ}}
+=1.41\angle{+45^\circ}\ \si{\ampere},
+\]
+so the current \emph{leads} by \(45^\circ\). Same magnitudes, opposite sign, and
+the sign is the entire physical difference between the two loads.
+\end{workedbox}
+
+\begin{exambox}
+If a question says ``lead'' or ``lag,'' sketch a tiny phasor diagram before
+answering. Most mistakes come from recalling the right \(90^\circ\) relationship
+with the direction reversed. Mnemonic: ELI the ICE man---in an inductor (L)
+voltage E leads current I; in a capacitor (C) current I leads voltage E.
+\end{exambox}
+
+\section{Complex Power}
+With RMS phasors and the passive sign convention, complex power uses the
+conjugate of the current:
+\[
+S=V I^{*}=P+\jj Q .
+\]
+The real part \(P\) is average power actually dissipated (watts); the imaginary
+part \(Q\) is reactive power (VAR, volt-amperes reactive), the energy sloshing
+back and forth between the source and the reactive elements each cycle. The
+conjugate is what makes \(P\) come out as the in-phase product, and the magnitude
+\(|S|\) is the apparent power, measured in volt-amperes (VA).
+
+\begin{workedbox}[: real and reactive power]
+A load draws \(I=2\angle{-30^\circ}\ \si{\ampere}\) (RMS) from
+\(V=120\angle0^\circ\ \si{\volt}\) (RMS)---current lagging, so the load is
+inductive. Then
+\[
+S=VI^{*}=120\angle0^\circ\cdot 2\angle{+30^\circ}=240\angle30^\circ
+=207.8+\jj120\ \mathrm{VA}.
+\]
+So \(P=\SI{207.8}{\watt}\) is dissipated and \(Q=120\,\mathrm{VAR}\) is exchanged with
+the load's reactance. A purely reactive load (\(\pm90^\circ\)) would show
+\(P=0\): it consumes no average power.
+\end{workedbox}
+
+\section{Worked Example: Series Reactance}
+Find the impedance of a \(\SI{50}{\ohm}\) resistor in series with
+\(\SI{10}{\micro\henry}\) at \(\SI{7.1}{\mega\hertz}\)
+(\cref{fig:series-rl-ex})---a coil and its loss, seen at the low end of the
+\SI{40}{\meter} band.
+
+\begin{figure}[htbp]
+\centering
+\begin{circuitikz}[scale=1]
+\draw (0,0) node[left]{\(\circ\)} to[R,l={\(R=\SI{50}{\ohm}\)}] (2.6,0)
+      to[L,l={\(L=\SI{10}{\micro\henry}\)}] (5.4,0) node[right]{\(\circ\)};
+\node at (2.7,-1.05) {\(Z=R+\jj\omega L\)};
+\end{circuitikz}
+\caption{The series \(R\)--\(L\) one-port of the worked example.}
+\label{fig:series-rl-ex}
+\end{figure}
+
+First convert frequency to angular frequency, then take the reactance:
+\[
+\omega=2\pi(7.1\times10^6)=\SI{4.46e7}{\radian\per\second},
+\qquad
+X_L=\omega L=(4.46\times10^7)(10\times10^{-6})\approx\SI{446}{\ohm}.
+\]
+Thus \(Z=50+\jj446\ \Omega\), and in polar form
+\[
+|Z|=\sqrt{50^2+446^2}\approx\SI{449}{\ohm},
+\qquad
+\theta=\operatorname{atan2}(446,50)\approx83.6^\circ .
+\]
+The angle is close to \(+90^\circ\): the coil's reactance dwarfs its resistance, so
+at this frequency the part behaves almost like a pure inductor, and the current will
+lag the voltage by nearly a quarter cycle.

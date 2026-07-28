@@ -1,9 +1,11 @@
-\chapter{Resistive Networks}
+\chapter{Series and Parallel Networks}
 \label{ch:resistive}
 Resistive networks set bias points, divide voltages, sample currents, terminate
 transmission lines, and model losses. They are the simplest place to practice the
-conservation laws of \cref{ch:foundations}---KCL and KVL---and the equivalent-circuit
-idea, so every rule below is derived from those laws rather than memorized.
+conservation laws of \cref{ch:foundations}---KCL and KVL---and the
+equivalent-circuit idea, so every rule below is derived from those laws rather than
+memorized. Because the same two laws also fix how capacitors and inductors combine,
+this chapter collects all three components' series and parallel rules in one place.
 
 \section{Series and Parallel from KCL and KVL}
 \textbf{Series} resistors carry the \emph{same current} \(I\). KVL sums their
@@ -24,6 +26,83 @@ R_{\mathrm{eq}}=\frac{R_1R_2}{R_1+R_2}\ \text{(two resistors)}.
 \]
 Series adds resistances; parallel adds conductances. That single distinction---same
 current vs.\ same voltage---is the whole idea.
+
+\section{Series and Parallel Capacitors}
+The same two laws fix how capacitors combine, but the result comes out
+\emph{backwards} from resistors---and it is worth seeing why rather than
+memorizing it.
+
+\textbf{Capacitors in series} carry the same current, so each accumulates the same
+charge \(q\). Since \(v=q/C\) for each one, KVL sums the voltages:
+\[
+v=\frac{q}{C_1}+\frac{q}{C_2}+\cdots=q\sum_k\frac{1}{C_k}
+\quad\Longrightarrow\quad
+\frac{1}{C_{\mathrm{eq}}}=\sum_k\frac{1}{C_k},
+\qquad
+C_{\mathrm{eq}}=\frac{C_1C_2}{C_1+C_2}\ \text{(two capacitors)}.
+\]
+\textbf{Capacitors in parallel} share the same voltage, so their stored charges add
+directly, \(q=C_1v+C_2v+\cdots\):
+\[
+C_{\mathrm{eq}}=\sum_k C_k .
+\]
+
+\begin{physicalbox}
+\textbf{Why capacitors look ``backwards.''} Capacitance is charge stored per volt,
+which makes it an ``ease'' quantity like conductance, not an ``opposition'' quantity
+like resistance. So capacitance adds where conductance adds (parallel) and combines
+reciprocally where resistance adds (series). The consistent way to see it is through
+reactance: \(X_C=1/(\omega C)\) is the opposition, and \emph{reactances} in series
+add exactly like resistors---which forces \(1/C\) to add. Two equal capacitors in
+series give half the capacitance and twice the reactance, just as two equal
+resistors in series give twice the resistance.
+\end{physicalbox}
+
+\section{Series and Parallel Inductors}
+Inductors behave like resistors, because inductance is an opposition-like quantity
+(\(X_L=\omega L\) grows with \(L\)). \textbf{In series} the same current flows
+through each, so KVL adds their voltages \(L_k\,\dd i/\dd t\):
+\[
+L_{\mathrm{eq}}=\sum_k L_k .
+\]
+\textbf{In parallel} each sees the same voltage, so KCL adds their currents:
+\[
+\frac{1}{L_{\mathrm{eq}}}=\sum_k\frac{1}{L_k},
+\qquad
+L_{\mathrm{eq}}=\frac{L_1L_2}{L_1+L_2}\ \text{(two inductors)}.
+\]
+These assume no magnetic coupling between the coils; mutual inductance adds a cross
+term.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.17\textwidth}Y Y@{}}
+\toprule
+Component & Series (same current) & Parallel (same voltage) \\
+\midrule
+Resistors \(R\) & \(R_{\mathrm{eq}}=\sum_k R_k\) & \(1/R_{\mathrm{eq}}=\sum_k 1/R_k\) \\
+Inductors \(L\) & \(L_{\mathrm{eq}}=\sum_k L_k\) & \(1/L_{\mathrm{eq}}=\sum_k 1/L_k\) \\
+Capacitors \(C\) & \(1/C_{\mathrm{eq}}=\sum_k 1/C_k\) & \(C_{\mathrm{eq}}=\sum_k C_k\) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{workedbox}[: combining reactive parts]
+Two \(\SI{220}{\pico\farad}\) capacitors in series give
+\[
+C_{\mathrm{eq}}=\frac{(220)(220)}{220+220}=\SI{110}{\pico\farad},
+\]
+half the value---the standard trick for making a smaller capacitance out of two
+larger ones. In parallel the same pair gives \(\SI{440}{\pico\farad}\). Two
+\(\SI{10}{\micro\henry}\) inductors do the opposite: \(\SI{20}{\micro\henry}\) in
+series, \(\SI{5}{\micro\henry}\) in parallel.
+\end{workedbox}
+
+\begin{exambox}
+The exam expects both directions from memory, and the reliable check is
+reactance: whichever connection increases the total \emph{opposition} at a given
+frequency is the one that behaves like series resistors. Series inductors add;
+series capacitors combine reciprocally.
+\end{exambox}
 
 \section{Voltage and Current Dividers}
 A voltage divider is just two series resistors read across one of them

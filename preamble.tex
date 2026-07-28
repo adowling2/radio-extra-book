@@ -40,6 +40,7 @@
 \definecolor{GuideTeal}{HTML}{1F6B6B}
 \definecolor{GuideIndigo}{HTML}{433D78}
 \definecolor{GuideSlate}{HTML}{51606B}
+\definecolor{GuidePlum}{HTML}{6B3A5B}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.58em}
@@ -89,6 +90,10 @@
   colframe=GuideRed,    colback=GuideRed!5,    coltitle=white, colbacktitle=GuideRed}
 \newtcolorbox{advancedbox}{title=\textbf{Advanced Note},
   colframe=GuideSlate,  colback=GuideSlate!6,  coltitle=white, colbacktitle=GuideSlate}
+% In-line worked examples live in this box; each chapter's main closing worked
+% example stays a numbered section so it appears in the table of contents.
+\newtcolorbox{workedbox}[1][]{title=\textbf{Worked Example#1},
+  colframe=GuidePlum,  colback=GuidePlum!5,   coltitle=white, colbacktitle=GuidePlum}
 
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
