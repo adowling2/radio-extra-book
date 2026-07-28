@@ -215,7 +215,8 @@ it is what makes all three the same fact.
 
 \section{Op-Amp Ideals}
 An ideal op-amp has very high input impedance, very low output impedance, and
-very large open-loop gain \(A(s)\).
+very large open-loop gain \(A(s)\). Of those three, only the last is an independent
+assumption---\cref{sec:feedbackz} derives the other two from it.
 
 \begin{physicalbox}
 \textbf{How the op-amp is modeled.} An op-amp is \emph{not} a reactive element
@@ -223,11 +224,15 @@ like an inductor or capacitor---it stores no energy and contributes no pole of i
 own in the ideal picture. It is modeled as a \textbf{dependent source}:
 specifically a voltage-controlled voltage source (VCVS) whose output is
 \(A(s)\,(v_+-v_-)\), the open-loop gain times the difference of the two input
-voltages. The idealizations attach to that source: infinite input impedance means
-no current flows into the \(\pm\) terminals; zero output impedance means the
-controlled source drives the output stiffly; and \(A(s)\) is enormous (and rolls
-off with frequency, \cref{sec:gbw}). Every op-amp result below is bookkeeping on
-this one dependent-source model plus the feedback wired around it.
+voltages. Only \emph{one} idealization is really attached to that source: that
+\(A(s)\) is enormous (and rolls off with frequency, \cref{sec:gbw}). The other two
+usually listed alongside it---infinite input impedance and zero output
+impedance---need not be assumed at all. Give the model a finite \(R_{id}\) across its
+inputs and a finite \(R_o\) in series with its output, close a loop of gain \(L\)
+around it, and \cref{sec:feedbackz} shows the input impedance comes out
+\(R_{id}(1+L)\) and the output impedance \(R_o/(1+L)\). The ideals are the
+\(L\to\infty\) limit of that, not axioms. Every op-amp result below is bookkeeping on
+one dependent source plus the feedback wired around it.
 \end{physicalbox}
 
 Negative feedback makes practical closed-loop gains predictable:
@@ -287,6 +292,74 @@ so for \(V_o=\SI{10}{\volt}\) and \(A=10^5\) the two inputs differ by
 \SI{100}{\micro\volt}. ``The inputs are at the same voltage'' is not an axiom---it is
 a consequence of \(A\) being enormous, and it degrades exactly as \(A\) falls with
 frequency.
+
+\subsection{Feedback Sets Impedance}
+\label{sec:feedbackz}
+The other two ideals are consequences too, and the same \(1+L\) does both. Neither
+derivation needs more than a test source and \cref{ch:resistive}'s Th\'evenin
+thinking.
+
+\textbf{Output impedance is divided by \(1+L\).} Give the op-amp a realistic output:
+an internal source \(A\,v_d\) behind a resistance \(R_o\). Ground the input, apply a
+test voltage \(V_t\) at the output, and ask what current it takes. The feedback
+divider samples the output, so \(v_-=\beta V_t\) while \(v_+=0\), making
+\(v_d=-\beta V_t\) and the internal source \(A v_d=-A\beta V_t\). The test source
+therefore faces not \(V_t\) across \(R_o\) but \(V_t\) \emph{plus} that opposing
+source:
+\[
+I_t=\frac{V_t-Av_d}{R_o}=\frac{V_t\left(1+A\beta\right)}{R_o}
+\qquad\Longrightarrow\qquad
+\boxed{\;Z_{\mathrm{out}}=\frac{R_o}{1+L}\;}
+\]
+The mechanism is worth saying in words: try to drag the output away from where
+feedback wants it, and the loop sees the error and pushes back. The harder you pull,
+the harder it pushes---which is precisely what a low output impedance \emph{is}.
+
+\textbf{Input impedance is multiplied by \(1+L\).} Now give the op-amp a finite
+differential input resistance \(R_{id}\) and drive the non-inverting input with
+\(V_t\). The voltage across \(R_{id}\) is \(v_d=V_t-\beta V_o\) and \(V_o=Av_d\), so
+\(v_d\left(1+A\beta\right)=V_t\) and the differential voltage is squeezed down by the
+loop:
+\[
+I_t=\frac{v_d}{R_{id}}=\frac{V_t}{R_{id}\left(1+L\right)}
+\qquad\Longrightarrow\qquad
+\boxed{\;Z_{\mathrm{in}}=R_{id}\left(1+L\right)\;}
+\]
+Again the mechanism is the point: feedback works to make \(v_d\) vanish, and a
+resistor with no voltage across it draws no current. The input looks like an open
+circuit not because the transistors are perfect but because the loop is refusing to
+let a voltage develop.
+
+So ``infinite input impedance'' and ``zero output impedance'' are the \(L\to\infty\)
+limit of two ordinary circuit results. A \SI{1}{\mega\ohm} input and a
+\SI{75}{\ohm} output, wrapped in a loop of \(L=10^5\), become
+\SI{100}{\giga\ohm} and \SI{750}{\micro\ohm}---not infinite and not zero, but far
+enough past the resistors around them that no measurement in the circuit can tell.
+
+\begin{controlsbox}
+\textbf{One factor, five consequences.} Everything feedback buys is the same number.
+\Cref{ch:feedback} showed the loop divides gain by \(1+L\) and divides the plant's
+fractional errors by \(1+L\); \cref{sec:gbw} showed it multiplies bandwidth by
+\(1+L\); and the two results above divide output impedance and multiply input
+impedance by \(1+L\). Distortion, being a gain that varies with signal level, is
+divided by it as well. Surplus gain is the currency and \(1+L\) is the exchange
+rate---which is also why \cref{ch:feedback}'s stability question is unavoidable: the
+only way to buy more of any of these is to raise \(L\), and \(1+L=0\) is where the
+loop oscillates.
+\end{controlsbox}
+
+\begin{mistakebox}
+\textbf{Feedback does not always \emph{raise} input impedance---it depends where the
+loop samples and compares.} The result above is for the non-inverting connection,
+where the feedback voltage is subtracted \emph{in series} with the input. The
+inverting connection of \cref{fig:opamp-inv} compares \emph{currents} at a node
+instead, and there the same loop action drives the input impedance \emph{down}: the
+inverting terminal is held at a virtual ground, so what the source sees is just
+\(R_{in}\), and the op-amp's own \(R_{id}\) is irrelevant. That is why an inverting
+stage loads its source and a non-inverting one does not---and it is a property of the
+\emph{topology}, not of the chip. The op-amp data sheet's ``input impedance'' is
+\(R_{id}\), which is neither of these numbers.
+\end{mistakebox}
 
 \begin{figure}[htbp]
 \centering

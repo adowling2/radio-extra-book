@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **32 done, 25 open.** Nothing has been silently dropped.
+Score: **33 done, 24 open.** Nothing has been silently dropped.
 
-## ✅ Done (32)
+## ✅ Done (33)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -193,11 +193,13 @@ noise bandwidth
 
 **Tier B1 — S-parameters (`sec:sparams`, `sec:vna`).** The bridge Alex flagged. `a = (V+Z₀I)/2√Z₀` and `b = (V−Z₀I)/2√Z₀` collapse, on substituting Ch 16's own `V = V⁺+V⁻` and `Z₀I = V⁺−V⁻`, to `a = V⁺/√Z₀` and `b = V⁻/√Z₀` — an invertible change of basis (det `−½`), with `|a|²` the incident power. Hence `S₁₁ = Γ` *identically*, so return loss and SWR are three readings of one number. `S₂₁` is the forward transmission of the `Z₀`-embedded two-port, i.e. `G(jω)`, so **a VNA sweep is a Bode plot** and `−20log|S₂₁|` is `sec:filterspecs`'s insertion loss. Calibration is three standards because the one-port error model is bilinear with three complex unknowns, and the natural three are the `Γ = −1, 0, +1` that Ch 16 already evaluated. `sec:vna` carries the `controlsbox` where the book's two halves shake hands. **Precision point the usual telling gets wrong:** `S₂₁ ≠ V₂/V₁` in general — `V₂/V₁ = S₂₁/(1+S₁₁)`, equal only when the input is matched — so the identification is safe in a filter's passband and wrong at its band edges; a `mistakebox` says so. Pool: E4B03/04/05/07/09/11, all verified against `references/` (E4B09, "filter frequency response," is literally the `|S₂₁|` sweep).
 
+**Tier B2 — feedback sets impedance (`sec:feedbackz`).** Two test-source derivations retire the op-amp ideals as axioms. Ground the input, drive the output: the loop returns `βV_t`, so the internal source opposes with `−AβV_t` and `Z_out = R_o/(1+L)`. Drive the non-inverting input: the loop squeezes `v_d` to `V_t/(1+L)`, and a resistor with no voltage across it draws no current, so `Z_in = R_id(1+L)`. The ideals are the `L→∞` limit of two ordinary circuit results — 1 MΩ and 75 Ω inside a loop of `L = 10⁵` become 100 GΩ and 750 µΩ. A `controlsbox` collects the payoff: **one factor, five consequences** — `1+L` divides gain, fractional error, distortion and output impedance, and multiplies bandwidth and input impedance, which is also why stability is unavoidable, since `1+L = 0` is where the loop oscillates. A `mistakebox` adds the nuance the usual telling omits: feedback does not always *raise* input impedance — the inverting topology compares currents at a node, so the source sees only `R_in` and `R_id` is irrelevant. That is a property of the topology, not the chip. The `physicalbox` that used to attach all three ideals to the dependent source now attaches only the large-`A` one.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (25), ranked
+## ⬜ Open (24), ranked
 
 ### Tier A — the book asserts these itself, so they are defects by our own convention
 

@@ -7,7 +7,7 @@ Last updated: 2026-07-28 (Round 4, plus the Round 5 environment check below).
 
 **Start-up check on the new machine:** `make all` and `make figures` both succeed;
 figures regenerate byte-identically; `./scripts/check.sh` prints **ALL CHECKS PASSED**
-(194 pages, 23 chapters, 29 figures, 56 section labels, 65 glossary entries). One
+(196 pages, 23 chapters, 29 figures, 57 section labels, 65 glossary entries). One
 portability bug was fixed in the checker itself — see §5b.
 
 **The question pools are now in the repo** (§5a), with greppable markdown extracts of
@@ -25,7 +25,7 @@ reason for coil `Q` falling, and A5 found the same mistold for push-pull and IMD
 
 **Tier B1 (S-parameters) is also done** — `sec:sparams` in Ch 16 and `sec:vna` in
 Ch 20, the latter carrying the `controlsbox` where Part II's `G(jω)` and Part IV's
-circuits finally meet on an instrument screen. **Next: B2, feedback sets impedance.**
+circuits finally meet on an instrument screen. **B2 (feedback sets impedance) is done too** — `sec:feedbackz`. **Next: B3 onward.**
 See §6 for the plan, and the LEDGER in `ARRL-GAP-PROPOSAL.md` for the running score.
 
 Per-round markup plans live alongside this file and are the archive, not the status:
@@ -52,7 +52,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 194 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 196 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -78,7 +78,7 @@ Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedbac
 `ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 56 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 57 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
@@ -88,7 +88,7 @@ Section labels, all 56 of them: `sec:complexrefresher` `sec:rms` `sec:secondorde
 `sec:samplingismult` `sec:samplingthm` `sec:quantnoise` `sec:decimation` `sec:firiir`
 `sec:noisefloor` `sec:noisefigure` `sec:friis` `sec:powerseries` `sec:compression`
 `sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits` `sec:pll`
-`sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna`.
+`sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna` `sec:feedbackz`.
 
 ### Conventions in force
 
@@ -254,7 +254,7 @@ Round 4 hand-filtered.
 **See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
 the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
 the General-pool check, and the four ARRL chapter audits — against the book as built,
-so nothing can be silently dropped. Current score: **32 done, 25 open**, with the open
+so nothing can be silently dropped. Current score: **33 done, 24 open**, with the open
 items ranked in four tiers.
 
 The highest-priority open items are **Tier A: things the book asserts itself**, and so
