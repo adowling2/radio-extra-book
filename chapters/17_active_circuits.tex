@@ -29,9 +29,7 @@ distinction of \cref{sec:decibels}.
 Amplifier \emph{class} describes how much of the input cycle the active device
 conducts, which trades linearity against efficiency:
 \begin{description}
-\item[Class A] conducts the full \(360^\circ\); most linear, least efficient
-(theoretical max \SI{50}{\percent} transformer-coupled, near \SI{25}{\percent}
-resistively coupled).
+\item[Class A] conducts the full \(360^\circ\); most linear, least efficient.
 \item[Class B / AB] Class B conducts half the cycle (\(180^\circ\)); Class AB
 somewhat more than half. Higher efficiency than Class A, with some crossover
 distortion; common in linear single-sideband (SSB) power amplifiers.
@@ -43,6 +41,112 @@ Class C is nonlinear on purpose: the output tank is the high-\(Q\) parallel reso
 of \cref{ch:rlcpar} (a pole pair near the \(\jj\omega\) axis) that rings at the
 fundamental and rejects the harmonics the clipped current injects. The same nonlinearity that spoils
 linearity is what makes mixers and frequency multipliers work.
+
+\subsection{Where the Efficiency Numbers Come From}
+\label{sec:conductionangle}
+The efficiencies usually quoted alongside those classes---\SI{50}{\percent},
+\SI{25}{\percent}, \SI{78.5}{\percent}---are not conventions to memorize. They are one
+integral evaluated at three conduction angles, and the tool is
+\cref{sec:fourier}'s: a periodic current \emph{is} its harmonics, so ask which
+harmonic each part of the circuit is paid for.
+
+Let the device current be a cosine truncated at half-angle \(\theta\), so the
+conduction angle is \(2\theta\):
+\[
+i(\phi)=I_{pk}\,\frac{\cos\phi-\cos\theta}{1-\cos\theta},
+\qquad |\phi|\le\theta,
+\]
+and zero elsewhere. Only two of its Fourier coefficients matter. The supply delivers
+the DC component, and the tuned load is paid only at the fundamental
+(\cref{ch:rlcpar} rejects everything else), so
+\[
+I_{\mathrm{dc}}=\frac{1}{2\pi}\int_{-\theta}^{\theta}\!i\,\dd\phi
+=I_{pk}\,\frac{\sin\theta-\theta\cos\theta}{\pi\,(1-\cos\theta)},
+\qquad
+I_1=\frac{1}{\pi}\int_{-\theta}^{\theta}\!i\cos\phi\,\dd\phi
+=I_{pk}\,\frac{\theta-\sin\theta\cos\theta}{\pi\,(1-\cos\theta)} .
+\]
+Both integrals are elementary---the second needs only
+\(\int\cos^2=\tfrac12(\phi+\sin\phi\cos\phi)\). Now the efficiency is output power over
+input power. The load gets \(\tfrac12V_1I_1\) at the fundamental; the supply pays
+\(V_{\mathrm{dc}}I_{\mathrm{dc}}\). Hence
+\[
+\boxed{\;\eta=\frac{\tfrac12V_1I_1}{V_{\mathrm{dc}}I_{\mathrm{dc}}}
+=\frac{1}{2}\,\frac{I_1}{I_{\mathrm{dc}}}\,\frac{V_1}{V_{\mathrm{dc}}}\;}
+\]
+Two factors, and they are independent: a \emph{current} ratio set purely by the
+conduction angle, and a \emph{voltage} ratio set purely by how the load is coupled.
+
+Take the voltage factor first, because it is where the two Class A numbers part
+company. A transformer or a tuned tank places no DC across itself, so the output can
+swing a full \(V_{\mathrm{dc}}\) either side of the supply rail and
+\(V_1/V_{\mathrm{dc}}\to1\). A resistive load, by contrast, must carry the DC current
+too, dropping half the supply before any signal appears---so
+\(V_1/V_{\mathrm{dc}}\le\tfrac12\) and the efficiency is halved. That is the entire
+content of ``\SI{50}{\percent} transformer-coupled, \SI{25}{\percent} resistively
+coupled.'' Nothing about the device changed.
+
+Now the current factor. Evaluating the two coefficients:
+
+\begin{center}
+\begin{tabular}{@{}lccl@{}}
+\toprule
+Conduction angle \(2\theta\) & Class & \(I_1/I_{\mathrm{dc}}\) & \(\eta\) (tuned load) \\
+\midrule
+\(360^\circ\) & A  & \(1\)            & \(\tfrac12=\SI{50.0}{\percent}\) \\
+\(240^\circ\) & AB & \(1.321\)        & \SI{66.1}{\percent} \\
+\(180^\circ\) & B  & \(\pi/2\)        & \(\pi/4=\SI{78.5}{\percent}\) \\
+\(120^\circ\) & C  & \(1.794\)        & \SI{89.7}{\percent} \\
+\(\to0^\circ\) & C & \(\to2\)         & \(\to\SI{100}{\percent}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two exact entries are worth doing by hand. At \(\theta=\pi\) both coefficients
+collapse to \(I_{pk}/2\), so \(\eta=\tfrac12\) exactly. At \(\theta=\pi/2\),
+\(\cos\theta=0\) kills a term in each, leaving \(I_{\mathrm{dc}}=I_{pk}/\pi\) and
+\(I_1=I_{pk}/2\), so
+\(\eta=\tfrac12\cdot\tfrac{\pi}{2}=\pi/4\). The famous \SI{78.5}{\percent} is
+\(\pi/4\), and it is \(\pi/4\) because a half-wave rectified cosine has exactly those
+two components.
+
+Read the last row as the honest statement of the linearity--efficiency trade: narrowing
+the conduction angle drives \(\eta\) toward \SI{100}{\percent}, but \(I_1\) itself is
+shrinking, so the \emph{power} goes to zero along with the loss. Class C buys
+efficiency with output power and with linearity, which is why it is confined to
+signals whose amplitude carries no information.
+
+\subsection{Why Switching Amplifiers Escape the Table}
+\label{sec:switching}
+A Class D or E amplifier is not further along that curve---it is off it, and the
+argument takes one line. Instantaneous dissipation in the device is
+\(p(t)=v(t)\,i(t)\). An ideal switch is either closed, with \(v=0\), or open, with
+\(i=0\). Either way \emph{one factor is zero}, so \(p(t)=0\) at every instant and
+\[
+\int_0^T p(t)\,\dd t=0
+\]
+identically---no integral to evaluate, no conduction angle, no dependence on the
+waveform at all. There is no efficiency ceiling to derive because the ideal device
+dissipates nothing.
+
+What is left is a list of the ways a real switch fails to be one, and each names a
+real design constraint: finite on-resistance costs \(i^2R_{\mathrm{on}}\) while
+conducting; finite switching time means both \(v\) and \(i\) are briefly nonzero
+during each transition, so loss grows with switching frequency; and the output is a
+\emph{square} wave, whose harmonics (\cref{sec:fourier}) are entirely
+unwanted. Hence the one thing a switching amplifier cannot do without: a low-pass or
+band-pass filter on its output, which is the \cref{ch:filters} design problem.
+
+\begin{exambox}
+The pool's amplifier-class questions (group E7B) ask for the mechanism, not the
+percentage. A Class C stage on SSB gives ``distortion and excessive bandwidth,''
+because amplitude \emph{is} the information in SSB and Class C does not preserve it.
+Switching amplifiers are efficient because ``the switching device is at saturation or
+cutoff most of the time''---which is \(v=0\) or \(i=0\), the one-line argument above.
+And a switching amplifier requires ``a filter to remove harmonic content'' at its
+output, for the reason just given. The derivation is not needed to answer these, but
+it is what makes all three the same fact.
+\end{exambox}
 
 \section{Op-Amp Ideals}
 An ideal op-amp has very high input impedance, very low output impedance, and
