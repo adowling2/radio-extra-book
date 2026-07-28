@@ -1,34 +1,79 @@
-@misc{worddraft,
-  title = {Ham Radio Circuit Theory for the Amateur Extra Exam},
-  author = {Dowling, Alex},
-  year = {2026},
-  note = {Author's own first draft (prepared with the aid of ChatGPT); the starting point developed into this edition}
+% Bibliography for "Circuit Theory for the Amateur Extra Exam".
+%
+% The question pools are the primary sources: every pool identifier and answer letter
+% cited in the book is checked against them. NCVEC's releases are authoritative; the
+% HamExam reprints are what the machine-readable extracts in references/ were parsed
+% from, and the two were verified to agree exactly -- 599 Extra and 423 General
+% questions, identical identifiers, no answer-letter differences.
+
+@misc{ncvec_extra_2024,
+  title        = {2024--2028 Amateur Extra Class (Element 4) Question Pool and Syllabus},
+  author       = {{National Conference of Volunteer Examiner Coordinators}},
+  year         = {2026},
+  note         = {Public release incorporating the 4th errata of 4 February 2026;
+                  released into the public domain by the NCVEC Question Pool Committee},
+  howpublished = {\url{https://ncvec.org/index.php/2024-2028-extra-class-question-pool-release}}
+}
+
+@misc{ncvec_general_2023,
+  title        = {2023--2027 General Class (Element 3) Question Pool and Syllabus},
+  author       = {{National Conference of Volunteer Examiner Coordinators}},
+  year         = {2026},
+  note         = {Public release incorporating the 6th errata of 4 February 2026; used
+                  only for the coverage check described in the preface},
+  howpublished = {\url{https://ncvec.org/index.php/2023-2027-general-question-pool-release}}
+}
+
+@misc{hamexam,
+  title        = {HamExam.org question-pool reprints, Elements 3 and 4},
+  year         = {2026},
+  note         = {Convenient reprints of the NCVEC pools; the extracts in
+                  \texttt{references/} were parsed from these and then verified against
+                  the NCVEC releases above},
+  howpublished = {\url{https://hamexam.org/}}
 }
 
 @book{arrl_extra_12,
-  title = {The ARRL Extra Class License Manual},
-  author = {{ARRL Inc.}},
-  edition = {12},
-  year = {2021},
-  note = {Supporting reference used for terminology and coverage checks}
+  title     = {The ARRL Extra Class License Manual},
+  author    = {{ARRL Inc.}},
+  edition   = {12},
+  year      = {2021},
+  publisher = {American Radio Relay League},
+  note      = {Used for terminology and topic-coverage checks only; keyed to the
+               2020--2024 question pool, one cycle behind the pool this book targets}
 }
 
+% FIXME (Alex): I could not identify this source well enough to describe it. It has no
+% author, and the title is ambiguous between a study guide and the pool itself. Please
+% either identify it properly or drop it -- I have left it in rather than silently
+% removing what may be a real credit.
 @misc{extra_pool_2020,
-  title = {Extra Class Study Guide 2020-2024},
-  year = {2021},
-  note = {Supporting historical question-pool guide used for coverage checks}
+  title  = {Extra Class Study Guide 2020--2024},
+  year   = {2021},
+  note   = {Supporting guide to the superseded 2020--2024 question pool, used for
+            historical coverage checks}
 }
 
+% FIXME (Alex): year unverified -- the citation key says 2016 and the year field says
+% 2013. Confirm which edition was actually consulted before publishing.
 @misc{romanchik_extra_2016,
-  title = {No Nonsense Extra Class License Study Guide},
+  title  = {No Nonsense Extra Class License Study Guide},
   author = {Romanchik, Dan},
-  year = {2013},
-  note = {Supporting historical study guide used for coverage checks}
+  year   = {2013},
+  note   = {Supporting study guide (KB6NU) used for terminology cross-checks}
 }
 
 @misc{shellhamer_extra_2017,
-  title = {Extra Class Study Guide},
+  title  = {Extra Class Study Guide},
   author = {Shellhamer, James},
-  year = {2017},
-  note = {Supporting historical study guide used for coverage checks}
+  year   = {2017},
+  note   = {Supporting study guide used for terminology cross-checks}
+}
+
+@misc{worddraft,
+  title  = {Ham Radio Circuit Theory for the Amateur Extra Exam},
+  author = {Dowling, Alex},
+  year   = {2026},
+  note   = {The author's own first draft, prepared with the aid of ChatGPT; the starting
+            point that developed into this edition}
 }
