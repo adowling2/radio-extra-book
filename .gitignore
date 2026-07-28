@@ -5,9 +5,17 @@
 __pycache__/
 *.pyc
 
-# Large source/reference materials used during conversion.
-# Keep these locally, but do not commit them to the lightweight repo.
-references/
+# Reference materials. Default to ignoring everything here, then allow back the
+# question pools and their derived markdown: NCVEC publishes the pools for free
+# reproduction, and having them in the repo is what makes a pool citation
+# checkable on a fresh clone. The commercial manuals and the original Word draft
+# stay out. See references/README.md.
+references/*
+!references/README.md
+!references/HamExam.org Extra Question Pool.pdf
+!references/HamExam.org General Question Pool.pdf
+!references/extra-pool-circuits.md
+!references/general-pool-circuits.md
 
 # LaTeX build products
 *.aux

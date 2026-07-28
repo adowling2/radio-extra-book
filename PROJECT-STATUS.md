@@ -1,7 +1,13 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-07-28 (end of Round 4).
+Last updated: 2026-07-28 (Round 4, plus the Round 5 environment check below).
+
+**Round 5 start-up check (new machine):** `make all` and `make figures` both succeed;
+figures regenerate byte-identically; `./scripts/check.sh` prints **ALL CHECKS PASSED**
+(181 pages, 23 chapters, 29 figures, 47 section labels, 65 glossary entries). One
+portability bug was fixed in the checker itself — see §5b. `references/` is **absent**,
+as expected on a fresh clone, so **no pool citation can be verified right now** (§5a).
 
 Per-round markup plans live alongside this file and are the archive, not the status:
 `revision-notes.md` (Round 1), `revision-notes-round2.md` (Round 2),
@@ -27,7 +33,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 178 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 181 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -53,7 +59,7 @@ Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedbac
 `ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 46 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 47 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
@@ -62,7 +68,7 @@ Section labels, all 46 of them: `sec:complexrefresher` `sec:rms` `sec:secondorde
 `sec:probe` `sec:groundloops` `sec:instpower` `sec:fourier` `sec:parseval`
 `sec:samplingismult` `sec:samplingthm` `sec:quantnoise` `sec:decimation` `sec:firiir`
 `sec:noisefloor` `sec:noisefigure` `sec:friis` `sec:powerseries` `sec:compression`
-`sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits`.
+`sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits` `sec:pll`.
 
 ### Conventions in force
 
@@ -120,7 +126,7 @@ the `−20n` dB/decade row, which had been credited to `ch:filters`.
   `fig:smith-basic`, `fig:feedback-loop`) were never referenced; the `fig:smith-basic`
   reference now also carries the pool's Smith-chart vocabulary (resistance axis, prime
   center, wavelength scales), closing the old §4B.8 item.
-- **Glossary.** Four alphabetization errors fixed; **30 → 62 entries**.
+- **Glossary.** Four alphabetization errors fixed; **30 → 65 entries**.
 - **Callout coverage.** Every teaching chapter (2–18) now has an `exambox` except the
   two-page hinge Ch 10, and Chs 11–14 each now have a `workedbox` — they had none.
 
@@ -211,11 +217,13 @@ identification, digital logic, modulation theory (Carson's rule, deviation, QPSK
 I/Q), protocols, electrical code and RF-exposure safety, propagation, operating
 practice, and antenna pattern geometry.
 
-Two caveats on the source file: the HamExam General export carries **no cycle dates**
-(don't cite 2023–2027 from it — that came from the other PDF's filename), and it is
-**missing three IDs**: G6B09, G8C01, G9C06. Cross-check against NCVEC before relying
-on any count. Full inventory: see the scratchpad file
-`general-pool-circuits-inventory.md` from the Round 4 session, or regenerate it.
+*Updated in Round 5:* the cycle is confirmed **2023–2027** (valid through 2027-06-30),
+and the missing IDs are real absences, not an extraction fault — `G8C01` is a dated
+NCVEC withdrawal, while `G6B09` and `G9C06` remain unexplained. The full inventory is
+no longer a scratchpad file: it is
+[`references/general-pool-circuits.md`](references/general-pool-circuits.md), tracked in
+the repo, and it is over-inclusive at 249 questions (all of G4–G9) against the 236 that
+Round 4 hand-filtered.
 
 ---
 
@@ -262,11 +270,10 @@ exam-relevance claim sourced from the manual as suspect.
 
 1. ✅ **Sampling and DSP — done** (`ch:dsp`). Authorized and written.
 2. ✅ **Receiver noise and dynamic range — done** (`ch:noise`). Authorized and written.
-3. **Phase-locked loops (E7H).** A control loop in radio clothing — the strongest
-   thematic fit of anything still missing. Chs 5, 6 and `sec:nyquist` supply every
-   tool, and `sec:phasenoise` now supplies the noise half — a PLL section would slot
-   straight in after Ch 17's oscillators. **This is now the top content gap.**
-4. **Rebuild Ch 19 (Worked Examples).** Unchanged and still the weakest chapter: four
+3. ✅ **Phase-locked loops (E7H) — done** (`sec:pll`, in Ch 17 after the oscillators).
+   With it written, the top remaining content gap is **Tier A of the ledger** (§6),
+   which is defect-fixing rather than new content, followed by **B1 S-parameters**.
+4. **Rebuild Ch 21 (Worked Examples).** Unchanged and still the weakest chapter: four
    examples with zero cross-references, zero poles, and component values unrelated to
    the book's running examples — a direct contradiction of the thesis, in the chapter
    meant to demonstrate it. Either make it a pure map (Ch 21 carries the real
@@ -278,12 +285,12 @@ exam-relevance claim sourced from the manual as suspect.
 
 ### C. Smaller cleanups still outstanding
 
-- **Ch 10 and Ch 19 have no callout boxes and no figures.** Ch 10 is defensible as a
-  two-page hinge; Ch 19 is not (see B4).
+- **Ch 10 and Ch 21 have no callout boxes and no figures.** Ch 10 is defensible as a
+  two-page hinge; Ch 21 is not (see B4).
 - **Figure provenance:** 26 of 27 computed figures still don't say how they were
   generated. Consider a one-line "computed from…" clause per caption, or one note in
   the front matter.
-- **Ch 20 mixes two structural registers** — numbered sections with starred
+- **Ch 22 mixes two structural registers** — numbered sections with starred
   per-question subsections, then abandons the pattern halfway.
 - **Appendix B** still restates Ch 7's units material (cross-referenced, not merged).
 - **No figure has been added since Round 3.** Several new sections would benefit from
@@ -307,29 +314,47 @@ exam-relevance claim sourced from the manual as suspect.
 Everything needed to build the book is in the repository. **Two things are not**, and
 both will silently degrade the workflow if you do not notice:
 
-### 5a. `references/` does not come with the clone
+### 5a. `references/` — the pools now come with the clone; the manuals do not
 
-It is gitignored, deliberately — it holds copyrighted material. After cloning you will
-have no question pools and no manuals, which means **you cannot verify pool
-identifiers or re-run any coverage check** until you replace them. The audits in
-`notes/` were built from these files:
+**Changed in Round 5.** Both question pools are now tracked in git, along with two
+greppable markdown extracts of their circuit questions, so **pool identifiers and
+answer letters are verifiable on a fresh clone.** See
+[`references/README.md`](references/README.md).
 
-| File in `references/` | Used for | Where to get it |
+| File in `references/` | Tracked | Used for |
 |---|---|---|
-| `HamExam.org Extra Question Pool.pdf` | Verifying every pool ID and answer letter cited in Ch 22; the coverage map in §3 | hamexam.org, "view pool" → print to PDF (Element 4, 2024–2028) |
-| `HamExam.org General Question Pool.pdf` | The General coverage check (`notes/audit-general-pool.md`) | same, Element 3 |
-| `ARRL_Extra_Class_Lcense_Manual_12th_Edition.pdf` | The four ARRL audits in `notes/` | **Get the 13th edition instead** — see §4D. The 12th is keyed to the 2020–2024 pool and produced one materially wrong finding |
-| `Ham_Extra_Circuits_Study_Guide_First_Draft.docx` | The original Word draft the book grew from | Alex's own files |
-| Other study guides (KB6NU, etc.) | Terminology cross-checks only | optional |
+| `HamExam.org Extra Question Pool.pdf` | ✅ | Verifying every pool ID and answer letter cited in Ch 22; the coverage map in §3 |
+| `HamExam.org General Question Pool.pdf` | ✅ | The General coverage check (`notes/audit-general-pool.md`) |
+| `extra-pool-circuits.md` | ✅ derived | 420 of 599 Extra questions — the circuits and calculation subelements, greppable |
+| `general-pool-circuits.md` | ✅ derived | 249 of 423 General questions, same basis |
+| `ARRL_Extra_Class_Lcense_Manual_12th_Edition.pdf` | ❌ | The four ARRL audits in `notes/`. **Get the 13th edition** — see §4D; the 12th is keyed to the 2020–2024 pool and produced one materially wrong finding |
+| `Ham_Extra_Circuits_Study_Guide_First_Draft.docx` | ❌ | The original Word draft the book grew from — Alex's own files |
+| Other study guides (KB6NU, etc.) | ❌ | Terminology cross-checks only; optional |
 
-Create the directory and drop the files in; nothing else needs configuring:
+Prefer the markdown over the PDFs — checking a coverage claim is now a `grep`:
 
 ```bash
-mkdir -p references   # then copy the PDFs in
+grep -n -i "half-power\|bandwidth" references/extra-pool-circuits.md
 ```
 
-**Until then, treat every pool citation in the book as unverified.** Do not add new
-ones from memory.
+The markdown is **derived data**; never hand-edit it. Regenerate after replacing a PDF:
+
+```bash
+./scripts/build_pool_md.sh
+```
+
+Three caveats the extracts record for you, and one that is resolved:
+
+- **32 questions depend on a figure** that exists only in the PDF. Each file lists
+  them; they are unanswerable from the markdown.
+- **Five absences are unexplained**: `E9E10`, `G1C08`, `G1C10`, `G6B09`, `G9C06`. These
+  IDs appear nowhere in the PDF text. Round 4 guessed that three of them were an
+  extraction fault — that was wrong. Verify against NCVEC before relying on any count.
+- Removals *are* now traceable: `E2A13`, `E4D05`, `E6D07`, `G1A04`, `G1C09`, `G1E09`
+  and `G8C01` are matched to dated NCVEC withdrawals.
+- ✅ **Resolved:** the General cycle. It is the **2023–2027** pool, valid through
+  2027-06-30, confirmed from hamexam.org's pool table. Round 4 was right to distrust
+  the filename, but the dates were correct.
 
 ### 5b. Toolchain
 
@@ -346,6 +371,11 @@ sudo apt install texlive-full poppler-utils python3-numpy python3-scipy python3-
 LaTeX packages used: `amsmath` `siunitx` `booktabs` `tabularx` `longtable` `tcolorbox`
 `tikz` `circuitikz` `pgfplots` `hyperref` `cleveref`. With a minimal TeX Live install,
 `circuitikz` and `tcolorbox` are the two most likely to be missing.
+
+`scripts/check.sh` embeds Python heredocs, so it runs under whatever `python3` is first
+on `PATH` — on this machine that is an Anaconda 3.9, not the system Python. Keep the
+embedded code 3.9-compatible; one check silently reported a `SyntaxError` instead of a
+result until it was.
 
 ### 5c. First commands on the new machine
 
