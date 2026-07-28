@@ -35,10 +35,10 @@ axs.annotate(rf"SWR $=\dfrac{{V_{{\max}}}}{{V_{{\min}}}}={vmax/vmin:.0f}$",
              xy=(0.63, 1.49), color=GUIDE_RED, fontsize=8.5, ha="center",
              va="center")
 # mark the quarter-wave spacing between a max and the next min
-axs.annotate("", xy=(0.0, 0.72), xytext=(0.25, 0.72),
+axs.annotate("", xy=(0.0, 0.80), xytext=(0.25, 0.80),
              arrowprops=dict(arrowstyle="<->", color=GUIDE_AMBER, lw=1.1))
-axs.annotate(r"$\lambda/4$", xy=(0.125, 0.70), color=GUIDE_AMBER, fontsize=8,
-             ha="center", va="top")
+axs.annotate(r"$\lambda/4$", xy=(0.125, 0.84), color=GUIDE_AMBER, fontsize=8,
+             ha="center", va="bottom")
 axs.set_xlabel(r"distance back from load, $x/\lambda$")
 axs.set_ylabel(r"$|V(x)|$  (normalized to $|V^+|$)")
 axs.set_xlim(0, 1.62)
