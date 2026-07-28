@@ -15,23 +15,37 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Corner frequency] Frequency where a first-order response begins its asymptotic slope change.
 \item[Cutoff frequency] Often the \(-\SI{3}{\decibel}\) frequency for a filter.
 \item[Damping ratio] Dimensionless \(\zeta\) grading a second-order system; \(\zeta=1/(2Q)\).
+\item[Decimation] Reducing the sample rate by keeping every \(M\)th sample; requires an anti-aliasing filter \emph{first}, because it lowers the Nyquist frequency.
+\item[Dither] Small deliberate noise added before quantization so the error behaves as random noise rather than a signal-dependent pattern, allowing averaging to recover resolution.
+\item[Dynamic range] Span between the weakest usable signal and the strongest tolerable one. \emph{Blocking} dynamic range uses the \SI{1}{\decibel} compression point; \emph{intermodulation} dynamic range (DR3) uses the third-order products and carries a factor \(\tfrac23\).
+\item[FIR] Finite impulse response: a digital filter with no feedback. Symmetric coefficients give exactly constant group delay, hence exactly linear phase.
+\item[Friis's formula] Noise figure of a cascade, \(F=F_1+(F_2-1)/G_1+\cdots\); each stage is discounted by the gain ahead of it, so the first stage dominates.
 \item[Gain margin] How far below \(\SI{0}{\decibel}\) the loop gain sits where its phase reaches \(-180^\circ\).
 \item[Gain--bandwidth product] Constant product of closed-loop gain and bandwidth for a single-pole amplifier.
 \item[Group delay] \(\tau_g=-\dd\phi/\dd\omega\), the delay experienced by a signal's envelope; constant \(\tau_g\) is \emph{linear phase} and means undistorted waveforms.
+\item[IIR] Infinite impulse response: a recursive digital filter. Having poles makes it efficient but not linear phase.
 \item[Image] The unwanted input frequency that mixes to the same intermediate frequency as the wanted one, lying \(2\times\) the IF away; rejectable only before the mixer.
 \item[Impedance] Complex ratio \(Z=V/I\) for sinusoidal steady state.
 \item[Insertion loss] Attenuation a filter imposes inside its own passband.
+\item[Intercept point] Extrapolated level at which a distortion product would equal the wanted signal. A linearity coefficient expressed as a power, not an achievable operating point.
 \item[Intermodulation] Spurious \(mf_1\pm nf_2\) products created when two signals pass through a nonlinearity; the third-order pair \(2f_1-f_2\) and \(2f_2-f_1\) falls closest to the originals.
 \item[Loaded Q] Quality factor including external loading or coupling.
 \item[Loop gain] Gain around an opened feedback loop, \(L=A\beta\); sets stability and how insensitive the closed loop is to changes in the forward path. (Not to be confused with receiver \emph{desensitization}, an unrelated exam term meaning loss of sensitivity caused by a strong nearby signal.)
+\item[MDS] Minimum discernible signal: the input level arriving at the same strength as the noise, i.e.\ \(\mathrm{SNR}=\SI{0}{\decibel}\).
 \item[Neutralization] Deliberate cancellation of an amplifier's internal feedback path (usually a device capacitance) to stop self-oscillation.
+\item[Noise bandwidth] Width of the ideal rectangular filter passing the same noise as the real one; always wider than the \(-\SI{3}{\decibel}\) bandwidth.
+\item[Noise figure] Factor by which a stage degrades the signal-to-noise ratio, \(F=1+T_e/T_0\). Added in decibels to the thermal floor.
+\item[Nyquist frequency] Half the sampling rate, \(f_s/2\); the frequency about which aliased components fold.
 \item[Nyquist plot] Loop gain \(L(\jj\omega)\) drawn in the complex plane, on which both stability margins are clearances from the point \(-1\). Unrelated to the Nyquist \emph{sampling} theorem.
 \item[Phase margin] Amount by which loop phase exceeds \(-180^\circ\) at unity loop gain.
+\item[Phase noise] Random phase disturbance of an oscillator, appearing as skirts beside the carrier and quoted in dBc/Hz. Scales as \(1/Q_L^2\).
 \item[Phasor] Complex representation of sinusoidal magnitude and phase.
 \item[Pole] Root of a transfer-function denominator; equivalently an eigenvalue and a natural mode.
 \item[Quality factor \(Q\)] Sharpness of a resonance, \(Q=1/(2\zeta)=2\pi\times\) (energy stored)/(energy lost per cycle). \emph{Component} \(Q\) is one part's loss; see also Loaded \(Q\), Unloaded \(Q\).
+\item[Quantization noise] Rounding error of a converter, of mean square \(\Delta^2/12\); gives \SI{6}{\decibel} of signal-to-noise ratio per bit.
 \item[Radiation resistance] The part of an antenna's feed-point resistance representing power that leaves as radiation rather than heat.
 \item[Reactance] Imaginary part of impedance associated with energy storage.
+\item[Reciprocal mixing] Apparent rise in a receiver's noise floor when a strong nearby signal beats against the local oscillator's phase-noise skirt.
 \item[Reflection coefficient] Complex ratio of reflected to incident wave amplitude.
 \item[Return loss] Decibel measure of reflection magnitude.
 \item[Ringing] The decaying oscillation of an underdamped second-order system.
@@ -46,6 +60,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Stub] Short length of deliberately unterminated line used as a reactance or resonator.
 \item[Susceptance] Imaginary part of admittance, \(B\); for a pure reactance \(B=-1/X\).
 \item[SWR] Standing-wave ratio, \((1+|\Gamma|)/(1-|\Gamma|)\); 1 means a perfect match.
+\item[Thermal noise] Noise from thermal motion of charge carriers; available power \(kTB\), i.e.\ \SI{-174}{dBm} per hertz at room temperature.
 \item[Ultimate rejection] The stopband attenuation floor a filter reaches far from its passband.
 \item[Unloaded Q] Quality factor due to internal resonator loss alone.
 \item[Velocity factor] \(VF=v_p/c\), how much slower a wave travels in a line than in free space.

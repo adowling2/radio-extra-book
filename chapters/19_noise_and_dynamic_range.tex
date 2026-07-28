@@ -1,0 +1,432 @@
+\chapter{Noise, Sensitivity, and Dynamic Range}
+\label{ch:noise}
+A receiver is judged at two extremes: the weakest signal it can hear and the strongest
+it can tolerate. Both are numbers this book can now derive rather than quote, because
+both come from material already in hand---the noise floor from thermal physics plus
+\cref{ch:resistive}'s maximum-power-transfer condition, and the strong-signal limits
+from the same nonlinearity \cref{sec:mixers} used to explain mixing.
+
+That is the shape of the chapter. The lower limit is set by \emph{noise}: how much of
+it the receiver adds, and where in the chain that addition happens. The upper limit is
+set by \emph{nonlinearity}: how gracefully the front end fails when overdriven. The gap
+between them is the \textbf{dynamic range}, and the several numbers that quantify it
+turn out to be consequences of a single power series.
+
+\section{The Noise Floor: Where \texorpdfstring{\(-174\)}{-174} dBm/Hz Comes From}
+\label{sec:noisefloor}
+Every resistor at a temperature above absolute zero generates a small random voltage,
+because its charge carriers are in thermal motion. Johnson and Nyquist showed the
+open-circuit noise voltage across a resistance \(R\) in a bandwidth \(B\) is
+\[
+v_{\RMS}=\sqrt{4kTRB},
+\]
+where \(k=\SI{1.38e-23}{\joule\per\kelvin}\) is Boltzmann's constant and \(T\) is the
+absolute temperature. That is the one physical input this chapter needs; everything
+below is circuit theory.
+
+What a receiver actually cares about is not the voltage but the \emph{power} that
+resistor can deliver to it. And \cref{ch:resistive} already settled how much that
+is---maximum power transfer occurs into a matched load \(R\), which by the voltage
+divider takes half the source voltage. So the \textbf{available noise power} is
+\[
+P_n=\frac{\bigl(v_{\RMS}/2\bigr)^2}{R}
+=\frac{4kTRB}{4R}
+\qquad\Longrightarrow\qquad
+\boxed{\;P_n=kTB\;}
+\]
+Notice that the resistance cancels completely: available noise power depends only on
+temperature and bandwidth, not on the resistor generating it. And notice the factor of
+\(4\) in the Johnson formula---it is there precisely so that this result comes out
+clean, which is the usual sign that the available power, not the open-circuit voltage,
+is the physically meaningful quantity.
+
+Now evaluate it. At a reference temperature \(T_0=\SI{290}{\kelvin}\),
+\[
+kT_0=(1.38\times10^{-23})(290)=\SI{4.00e-21}{\watt\per\hertz},
+\]
+and converting to dBm (\cref{sec:sunits}) by dividing by \SI{1}{\milli\watt},
+\[
+10\log_{10}\frac{4.00\times10^{-21}}{10^{-3}}
+=10\log_{10}(4.00\times10^{-18})
+\approx\boxed{\;\SI{-174}{dBm}\ \text{per hertz}\;}
+\]
+That is the number every receiver specification is measured against. It is not a
+property of any circuit---it is what a matched resistor at room temperature hands you,
+and therefore the best any receiver could possibly do.
+
+The bandwidth dependence needs no further work: since \(P_n\propto B\), widening the
+bandwidth raises the floor by \(10\log_{10}B\). So
+\[
+\text{floor (dBm)}=-174+10\log_{10}B .
+\]
+A \SI{500}{\hertz} CW filter sits \(10\log_{10}500\approx\SI{27}{\decibel}\) above the
+per-hertz figure, at \SI{-147}{dBm}; a \SI{2.4}{\kilo\hertz} SSB filter sits
+\SI{34}{\decibel} up, at \SI{-140}{dBm}. \emph{Narrower is quieter}, and by an amount
+you can compute.
+
+\begin{workedbox}[: from microvolts to dBm]
+Receiver sensitivity is quoted both ways, so the bridge is worth having. In a
+\SI{50}{\ohm} system, \(P=V_{\RMS}^2/R\), so
+\[
+P_{\mathrm{dBm}}=10\log_{10}\frac{V^2/50}{10^{-3}}
+=20\log_{10}V+13.0 ,
+\]
+with \(V\) in volts---or, with \(V\) in the microvolts receivers are usually specified
+in, \(P_{\mathrm{dBm}}=20\log_{10}V_{\mu\mathrm{V}}-107\). Check it on a common
+figure: \(\SI{0.5}{\micro\volt}\) gives
+\(20\log_{10}(0.5)-107=-6-107=\SI{-113}{dBm}\). So ``\SI{0.5}{\micro\volt}
+sensitivity'' and ``\SI{-113}{dBm}'' are the same claim.
+\end{workedbox}
+
+\begin{unitsbox}
+\[
+kTB=\left(\frac{\si{\joule}}{\si{\kelvin}}\right)(\si{\kelvin})
+\left(\frac{1}{\si{\second}}\right)=\frac{\si{\joule}}{\si{\second}}=\si{\watt}.
+\]
+\end{unitsbox}
+
+\section{Noise Figure and Noise Temperature}
+\label{sec:noisefigure}
+A real receiver adds noise of its own. The standard measure is the \textbf{noise
+figure}: the factor by which the receiver degrades the signal-to-noise ratio,
+\[
+F=\frac{\mathrm{SNR}_{\mathrm{in}}}{\mathrm{SNR}_{\mathrm{out}}},
+\]
+with the input driven by a source at \(T_0\). An ideal, noiseless amplifier multiplies
+signal and noise equally and leaves the ratio alone, so \(F=1\) (\SI{0}{\decibel}); any
+real one has \(F>1\).
+
+It is often more convenient to express the same thing as an \textbf{equivalent noise
+temperature} \(T_e\)---the temperature a resistor at the input would need in order to
+account, all by itself, for the noise the device actually adds. Writing the total output
+noise of a stage of gain \(G\) as
+\[
+N_{\mathrm{out}}=G\,kB\,(T_0+T_e)
+\]
+and comparing with the ideal \(GkBT_0\) gives
+\[
+\boxed{\;F=1+\frac{T_e}{T_0}\;}
+\]
+so the two descriptions carry identical content.
+
+This also explains a step usually presented as a rule. Since \(F\) multiplies a power
+ratio, and decibels turn multiplication into addition (\cref{sec:cascadeadd}), the
+receiver's actual noise floor is the thermal floor \emph{plus} the noise figure:
+\[
+\text{floor}=-174+10\log_{10}B+\mathrm{NF}_{\dB}.
+\]
+Nothing is being asserted---the addition is what taking a logarithm of a product does.
+
+\section{Cascades: Why the First Stage Decides}
+\label{sec:friis}
+Receivers are chains, so the useful question is how the stages combine. Take two, with
+gains \(G_1,G_2\) and excess noise temperatures \(T_{e1},T_{e2}\). Stage 1 delivers
+\(G_1kB(T_0+T_{e1})\) to stage 2, which amplifies all of it and adds its own:
+\[
+N_{\mathrm{out}}=G_1G_2\,kB\!\left(T_0+T_{e1}+\frac{T_{e2}}{G_1}\right).
+\]
+The structure is the whole result: stage 2's contribution is \emph{divided by the gain
+ahead of it}. Converting to noise figures gives \textbf{Friis's formula},
+\[
+\boxed{\;
+F=F_1+\frac{F_2-1}{G_1}+\frac{F_3-1}{G_1G_2}+\cdots\;}
+\]
+Three consequences follow, and none of them is obvious without the derivation:
+\begin{description}
+\item[The first stage dominates.] Every later stage is discounted by the accumulated
+gain in front of it. A receiver's noise figure is very nearly its first amplifier's,
+provided that amplifier has useful gain.
+\item[A loss ahead of the receiver costs its full value.] A passive attenuator or a
+length of feed line with loss \(L\) has \(F=L\) and \(G=1/L\), so \(n\) decibels of
+line loss adds \(n\) decibels directly to the system noise figure. There is no gain
+ahead of it to discount it.
+\item[Therefore put the preamplifier at the antenna.] At the mast, the preamp is stage
+one: its gain then discounts both the feed line's loss and the receiver's own noise. In
+the shack, the line's loss comes first and has already been added in full, and no amount
+of subsequent gain removes it.
+\end{description}
+
+\begin{controlsbox}
+\textbf{Two chains, two different rules.} \Cref{sec:sunits}'s link budget adds gains and
+subtracts losses in decibels, treating every stage alike. This chain \emph{weights}
+them, discounting each stage by the gain preceding it. The difference is that a link
+budget tracks the \emph{signal}, which every stage multiplies equally, while Friis tracks
+the \emph{ratio} of signal to a noise that each stage adds afresh. Same cascade, two
+different questions.
+\end{controlsbox}
+
+\section{Sensitivity and MDS}
+The two results above define the weakest usable signal. The \textbf{minimum discernible
+signal} (MDS) is conventionally the input level that arrives at the same strength as the
+noise---a signal-to-noise ratio of \SI{0}{\decibel}:
+\[
+\mathrm{MDS}=-174+10\log_{10}B+\mathrm{NF}_{\dB}.
+\]
+It is measured on the bench by watching for a \SI{3}{\decibel} rise in output as the
+signal is applied, and that number is not arbitrary either: when signal power equals
+noise power, the total is twice the noise alone, and \(10\log_{10}2\approx\SI{3}{\decibel}\).
+
+\begin{workedbox}[: the sensitivity of a real receiver]
+A receiver has \(\mathrm{NF}=\SI{8}{\decibel}\) and a \SI{500}{\hertz} CW filter. Then
+\[
+\mathrm{MDS}=-174+10\log_{10}500+8
+=-174+27+8=\SI{-139}{dBm},
+\]
+which by the bridge above is about \SI{0.025}{\micro\volt}. Switch to a
+\SI{2.4}{\kilo\hertz} SSB filter and the floor rises to \(-174+34+8=\SI{-132}{dBm}\)
+--- \SI{7}{\decibel} worse, purely from bandwidth. And improving the noise figure from
+\SI{8}{\decibel} to \SI{3}{\decibel} would buy \SI{5}{\decibel}: on HF, where external
+atmospheric noise usually dominates anyway, the filter choice matters more than the
+preamplifier.
+\end{workedbox}
+
+\section{One Power Series Generates Every Strong-Signal Number}
+\label{sec:powerseries}
+Now the other end. \Cref{sec:mixers} said that real mixers and overdriven amplifiers ``do
+not multiply cleanly'' and left it there. Making that precise turns out to produce every
+strong-signal specification at once.
+
+Model a weakly nonlinear stage by expanding its transfer characteristic as a power
+series about the operating point:
+\[
+y=a_1x+a_2x^2+a_3x^3+\cdots
+\]
+The first term is the wanted linear gain; the rest are the trouble. Drive it with two
+equal tones, \(x=A(\cos\omega_1t+\cos\omega_2t)\), and expand using the same
+product-to-sum identity as \cref{sec:mixers}. Three results fall out of one calculation.
+
+\subsection{The Slopes Are the Exponents}
+The \(a_2x^2\) term produces components at \(\omega_1\pm\omega_2\) with amplitude
+proportional to \(a_2A^2\); the \(a_3x^3\) term produces the third-order products
+\(2\omega_1-\omega_2\) and \(2\omega_2-\omega_1\) with amplitude
+\(\tfrac34a_3A^3\). So if the input amplitude rises by a factor \(r\):
+\begin{itemize}
+\item the wanted output rises as \(r\) --- \(\SI{1}{\decibel}\) per \si{\decibel};
+\item second-order products rise as \(r^2\) --- \(\SI{2}{\decibel}\) per \si{\decibel};
+\item third-order products rise as \(r^3\) --- \(\SI{3}{\decibel}\) per \si{\decibel}.
+\end{itemize}
+\emph{The famous slopes are just the exponents of the series.} There is nothing to
+memorize once the model is written down, and the reason third-order products are the
+dangerous ones is already in \cref{sec:mixers}: they land next to the signals that
+created them.
+
+\subsection{Gain Compression}
+\label{sec:compression}
+The cubic term does something else too. Collecting the components at \(\omega_1\)
+itself---the cube of a sum contributes back to the fundamental---the effective gain
+becomes
+\[
+a_1+\tfrac94a_3A^2
+\qquad\text{(two equal tones; }\tfrac34\text{ for a single tone).}
+\]
+In a real device \(a_3\) has the \emph{opposite} sign to \(a_1\), so the gain
+\emph{falls} as drive increases. That single term is gain compression, blocking, and
+desensitization---three names for one coefficient. The \textbf{\(\SI{1}{\decibel}\)
+compression point} is where the gain has dropped by \SI{1}{\decibel}, i.e.\ where the
+bracket equals \(10^{-1/20}a_1\approx0.891\,a_1\).
+
+\subsection{The Third-Order Intercept}
+Finally, compare the third-order product with the wanted output. The product grows three
+times as fast, so extrapolating both straight lines on a log--log plot they must cross.
+Setting \(\tfrac34|a_3|A^3=a_1A\) gives the crossing amplitude,
+\[
+A_{\mathrm{IIP3}}^2=\frac{4}{3}\left|\frac{a_1}{a_3}\right|,
+\]
+and the input power there is the \textbf{input third-order intercept} \(\mathrm{IIP3}\).
+Two things about it are worth saying plainly. First, it is a \emph{fiction}: the
+intercept is an extrapolation to a power level that would destroy the receiver long
+before reaching it, so IIP3 is best read as a linearity coefficient wearing the units of
+power. Second, since both \(P_{\SI{1}{\decibel}}\) and IIP3 are set by the same ratio
+\(|a_1/a_3|\), they are not independent---dividing the two expressions gives
+\[
+\mathrm{IIP3}\approx P_{\SI{1}{\decibel}}+\SI{9.6}{\decibel}
+\]
+for a purely cubic nonlinearity. A useful sanity check on a datasheet: if the two
+numbers differ by wildly more or less than \SI{10}{\decibel}, something beyond the
+cubic term is at work.
+
+\section{Dynamic Range: Two Numbers, Two Different Failures}
+\label{sec:dynamicrange}
+The receiver is usable between the noise floor and whichever strong-signal effect bites
+first. The two effects fail differently, so they get separate figures.
+
+\textbf{Blocking dynamic range} uses compression: it is simply how far the
+\SI{1}{\decibel} compression point sits above the MDS,
+\[
+\mathrm{BDR}=P_{\SI{1}{\decibel}}-\mathrm{MDS},
+\]
+a plain subtraction, \emph{because} compression is a one-for-one phenomenon.
+
+\textbf{Intermodulation dynamic range} uses the third-order products, and here the
+slope enters. From the slopes above, the third-order product referred to the input obeys
+\[
+P_{\mathrm{IM3}}=3P_{\mathrm{in}}-2\,\mathrm{IIP3}
+\]
+in decibels---which passes the obvious check: at \(P_{\mathrm{in}}=\mathrm{IIP3}\) it
+returns \(\mathrm{IIP3}\), as the definition of an intercept requires. The usable limit
+is the drive level at which those products just reach the noise floor, so set
+\(P_{\mathrm{IM3}}=\mathrm{MDS}\) and solve:
+\[
+P_{\mathrm{in}}=\frac{2\,\mathrm{IIP3}+\mathrm{MDS}}{3}
+\qquad\Longrightarrow\qquad
+\boxed{\;\mathrm{DR3}=P_{\mathrm{in}}-\mathrm{MDS}
+=\tfrac{2}{3}\bigl(\mathrm{IIP3}-\mathrm{MDS}\bigr)\;}
+\]
+\emph{The \(2/3\) is slope-3 geometry and nothing else.} The same argument at slope two
+gives \(\mathrm{DR2}=\tfrac12(\mathrm{IIP2}-\mathrm{MDS})\)---the coefficient is always
+\((n-1)/n\) for order \(n\), which is worth noticing because it makes the number
+memorable instead of magic.
+
+\begin{workedbox}[: a full receiver budget]
+A receiver has \(\mathrm{NF}=\SI{10}{\decibel}\),
+\(\mathrm{IIP3}=\SI{-10}{dBm}\), \(P_{\SI{1}{\decibel}}=\SI{-20}{dBm}\), measured in a
+\SI{500}{\hertz} bandwidth. Then
+\[
+\mathrm{MDS}=-174+27+10=\SI{-137}{dBm},
+\]
+\[
+\mathrm{BDR}=-20-(-137)=\SI{117}{\decibel},
+\qquad
+\mathrm{DR3}=\tfrac23\bigl(-10-(-137)\bigr)=\tfrac23(127)\approx\SI{85}{\decibel}.
+\]
+Two readings. The intermodulation figure is \SI{32}{\decibel} \emph{worse} than the
+blocking figure, which is why DR3 is the number that characterizes a crowded band---it
+is third-order products, not compression, that spoil a contest weekend. And the
+\SI{10}{\decibel} gap between \(P_{\SI{1}{\decibel}}\) and IIP3 is close to the
+\SI{9.6}{\decibel} the cubic model predicts, so these numbers are mutually consistent.
+\end{workedbox}
+
+\begin{workedbox}[: why the attenuator switch helps]
+The front-panel attenuator looks like it can only make things worse, and the power
+series shows why it does not. Insert \(L\) decibels of attenuation. The wanted signal
+falls by \(L\); the third-order products, rising at \SI{3}{\decibel} per \si{\decibel},
+fall by \(3L\). So the product-to-signal ratio \emph{improves} by
+\[
+3L-L=2L\ \si{\decibel} .
+\]
+Ten decibels of attenuation buys \SI{20}{\decibel} of intermodulation relief. The cost,
+by \cref{sec:friis}, is \(L\) decibels of noise figure---which is free whenever external
+noise already dominates the receiver's own, because then signal and noise are attenuated
+together and the signal-to-noise ratio does not change at all. That is precisely the
+situation on the low HF bands, and precisely why the switch exists.
+\end{workedbox}
+
+\section{Phase Noise and Reciprocal Mixing}
+\label{sec:phasenoise}
+One more mechanism raises the noise floor, and it is the most on-thesis of all of them:
+it is purely a statement about where an oscillator's poles sit.
+
+\Cref{ch:active} noted qualitatively that a high-\(Q\) resonator pins an oscillator's
+pole pair tightly to the \(\jj\omega\) axis and gives a sharp spectral line. Make that
+quantitative. Write the local oscillator with a small random phase disturbance
+\(\phi(t)\) and expand for small \(\phi\):
+\[
+\cos\bigl(\omega_{\mathrm{LO}}t+\phi(t)\bigr)
+\approx\cos\omega_{\mathrm{LO}}t-\phi(t)\sin\omega_{\mathrm{LO}}t .
+\]
+A pure carrier, \emph{plus} a term carrying the phase noise in quadrature with it. So a
+jittering oscillator is not a line: it is a line with \textbf{skirts}, whose density at
+an offset \(\Delta f\) from the carrier is quoted in dBc/Hz---decibels relative to the
+carrier, per hertz.
+
+Now put that oscillator in a mixer. The mixer multiplies, so a strong interfering signal
+at offset \(\Delta f\) from the tuned frequency beats against the skirt component at
+that same offset, and the product lands \emph{inside} the IF passband, where it is
+indistinguishable from noise. Its level is
+\[
+P_{\text{noise}}=P_{\text{interferer}}+\mathcal{L}(\Delta f)+10\log_{10}B ,
+\]
+with \(\mathcal{L}\) the phase-noise density. This is \textbf{reciprocal mixing}, and
+its signature is distinctive: the noise floor \emph{rises as you tune towards} a strong
+signal, because the skirt is steeper closer in. Note that it is a noise-floor
+mechanism, not a distortion mechanism---which is exactly why it is specified separately
+from \cref{sec:dynamicrange}'s dynamic ranges.
+
+\subsection{Where the Skirt's Shape Comes From}
+The final step connects it to a pole. An oscillator's tank filters the active device's
+own noise, and by \cref{ch:rlc} a resonator of loaded quality factor \(Q_L\) is a
+band-pass whose half-bandwidth is \(\omega_0/2Q_L\). Above that corner the filtering
+rolls off at \(-\SI{20}{\decibel}\) per decade, so
+\[
+\mathcal{L}(\Delta f)\ \propto\ \frac{1}{Q_L^2}\cdot\frac{1}{\Delta f^{2}} .
+\]
+Two readings, both practical. The \(-\SI{20}{\decibel}\)/decade slope is the
+single-pole roll-off of \cref{ch:splane}, appearing here as the shape of a noise skirt.
+And the \(1/Q_L^2\) means \textbf{doubling the loaded \(Q\) buys \SI{6}{\decibel} of
+phase noise}---which finally puts a number on the tank-loading trade-off of
+\cref{ch:crossproblems}: coupling the next stage loosely is not fussiness, it is
+\SI{6}{\decibel} per octave of \(Q\).
+
+\begin{controlsbox}
+\textbf{Everything about an oscillator's spectrum is its pole location.} A pole exactly
+on the \(\jj\omega\) axis is a perfect sinusoid---an infinitely thin spectral line. Real
+loss and noise let the pole wander slightly, and the width of that wander \emph{is} the
+skirt. High \(Q_L\) means a stiffly held pole, hence a narrow skirt, hence low phase
+noise, hence less reciprocal mixing. One geometric fact explains an oscillator
+specification, a receiver specification, and a design rule.
+\end{controlsbox}
+
+\section{Noise Bandwidth Is Not the \texorpdfstring{\(-3\)}{-3} dB Bandwidth}
+\label{sec:noisebw}
+One loose end in the arithmetic above: the \(10\log_{10}B\) term assumed a filter that
+passes everything inside \(B\) and nothing outside. Real filters do not, so \(B\) needs
+defining honestly.
+
+Noise arrives at every frequency, so the noise a filter passes is the integral of its
+power response. Define the \textbf{equivalent noise bandwidth} as the width of the ideal
+rectangular filter that would pass the same noise:
+\[
+B_n=\frac{\displaystyle\int_0^\infty|H(f)|^2\,\dd f}{|H|^2_{\max}} .
+\]
+Evaluate it on the book's own first-order low-pass, \(|H|^2=1/[1+(f/f_c)^2]\) from
+\cref{ch:rc}. The integral is a standard arctangent:
+\[
+\int_0^\infty\frac{\dd f}{1+(f/f_c)^2}=f_c\Bigl[\arctan\frac{f}{f_c}\Bigr]_0^\infty
+=\frac{\pi}{2}f_c
+\qquad\Longrightarrow\qquad
+B_n=\frac{\pi}{2}f_c\approx1.57\,f_{\SI{3}{\decibel}} .
+\]
+So a single-pole filter is \(10\log_{10}1.57\approx\SI{1.96}{\decibel}\) noisier than its
+nameplate bandwidth suggests---the skirts let in noise the \(-\SI{3}{\decibel}\) figure
+does not account for. For a Butterworth response of order \(n\) the ratio is
+\((\pi/2n)/\sin(\pi/2n)\):
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.30\textwidth}Y Y Y Y@{}}
+\toprule
+Butterworth order \(n\) & 1 & 2 & 3 & 4 \\
+\midrule
+\(B_n/f_{\SI{3}{\decibel}}\) & 1.571 & 1.111 & 1.047 & 1.026 \\
+Penalty (dB) & 1.96 & 0.46 & 0.20 & 0.11 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Sharper skirts make nameplate and noise bandwidth converge---which is a second,
+independent reason to add poles, alongside the stopband slope of \cref{sec:filterspecs}.
+
+Finally, the question of how wide to make the filter answers itself. Signal power
+collected saturates once the passband covers the signal's own occupied bandwidth, while
+noise keeps growing as \(B\):
+\[
+\mathrm{SNR}(B)=\frac{S(B)}{N_0B}
+\qquad\Longrightarrow\qquad
+\text{maximum near } B\approx B_{\text{signal}} .
+\]
+Too wide costs \(10\log_{10}(B/B_{\text{signal}})\) in pure noise; too narrow starts
+truncating the signal. That is why receiver filters are specified per mode, and the
+usual table of recommended bandwidths stops being a list to memorize.
+
+\begin{exambox}
+The chain of reasoning here is worth carrying whole, because most questions ask for one
+link in it. The floor is \SI{-174}{dBm} per hertz, plus \(10\log B\) for bandwidth,
+plus the noise figure in decibels---so \emph{narrower is quieter} and MDS follows
+directly. In a cascade the first stage dominates and any loss ahead of the receiver
+costs its full value in noise figure, which is the whole argument for a mast-mounted
+preamplifier. At the top end, second-order products rise \SI{2}{\decibel} per
+\si{\decibel} and third-order \SI{3}{\decibel} per \si{\decibel}, which makes
+\(\mathrm{DR3}=\tfrac23(\mathrm{IIP3}-\mathrm{MDS})\) while blocking range is a plain
+subtraction. An attenuator improves intermodulation by twice what it costs in signal.
+And excessive local-oscillator phase noise raises the apparent floor near strong
+signals---reciprocal mixing---which is a \(Q\) problem, not a distortion problem.
+\end{exambox}

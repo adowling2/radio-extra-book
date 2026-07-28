@@ -118,8 +118,8 @@ Chebyshev & Poles on an ellipse pushed closer to the \(\jj\omega\) axis, raising
 Elliptic (Cauer; ``elliptical'' in the pool) & Chebyshev-like poles plus transmission \emph{zeros} on the \(\jj\omega\) axis in the stopband---depth bought at specific frequencies rather than slope everywhere. Sharpest transition; ripple in both bands. \\
 Bessel & Poles positioned for maximally flat \emph{group delay} \(\tau_g=-\dd\phi/\dd\omega\), i.e.\ linear phase (defined in \cref{sec:groupdelay}); gentle amplitude cutoff. Good for pulse fidelity. \\
 Crystal / cavity & Very high-\(Q\) resonators (poles hugging the axis) for narrow, highly selective band-pass shapes. \\
-DSP FIR & Digital (DSP, digital signal processing) filter with no feedback (FIR, finite impulse response): no poles away from the origin, so it can be exactly linear phase. \\
-DSP IIR & Recursive digital filter (IIR, infinite impulse response): has poles, so it mimics analog families efficiently but with nonlinear phase. \\
+DSP FIR & Digital (DSP, digital signal processing) filter with no feedback (FIR, finite impulse response): no poles away from the origin, so it can be exactly linear phase---proved in \cref{sec:firiir}. \\
+DSP IIR & Recursive digital filter (IIR, infinite impulse response): has poles, so it mimics analog families efficiently but with nonlinear phase (\cref{sec:firiir}). \\
 \bottomrule
 \end{tabularx}
 
@@ -210,6 +210,7 @@ Cutoff frequency & The \(-\SI{3}{\decibel}\) (half-power) edge of the passband. 
 Insertion loss & Attenuation \emph{inside} the passband---what the filter costs you on the signal you wanted. Ideally \SI{0}{\decibel}; real components make it a fraction of a decibel to a few decibels. \\
 Ripple & Peak-to-peak variation within the passband: zero for Butterworth, a design choice for Chebyshev and elliptic. \\
 Ultimate rejection & The attenuation floor far into the stopband. Poles give slope forever in theory, but stray coupling around the filter sets a real-world limit---often \SI{60}{\decibel} to \SI{100}{\decibel}. \\
+Noise bandwidth & The width of the ideal rectangular filter passing the same noise, \(B_n=\int|H|^2\dd f/|H|^2_{\max}\). Always \emph{wider} than the \(-\SI{3}{\decibel}\) figure---by \SI{1.96}{\decibel} for one pole---because the skirts admit noise the nameplate ignores (\cref{sec:noisebw}). \\
 Shape factor & The ratio of the stopband width to the passband width, conventionally \(\SI{-60}{\decibel}\) bandwidth divided by \(\SI{-6}{\decibel}\) bandwidth. It is one number for skirt steepness: \(1.0\) would be a brick wall, and smaller is sharper. \\
 \bottomrule
 \end{tabularx}

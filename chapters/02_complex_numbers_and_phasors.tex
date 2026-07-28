@@ -124,6 +124,40 @@ is not: a square wave of peak \(X_p\) has \(X_{\RMS}=X_p\), and a triangle wave 
 sinusoidal.
 \end{mistakebox}
 
+\subsection{RMS of a Signal With Harmonics}
+\label{sec:parseval}
+The definition above is general, so it also settles what happens when a signal is
+\emph{not} a single sinusoid. Looking ahead slightly: \cref{sec:fourier} will show
+that any periodic signal is a sum of a DC term and sinusoids at multiples of one
+fundamental frequency---its \emph{harmonics}. Write a signal that way and square it. Every cross term between different harmonics
+integrates to zero over a period---distinct frequencies are orthogonal---so only the
+squares survive:
+\[
+\boxed{\;X_{\RMS}^2=X_{\mathrm{dc}}^2+\sum_{n\ge1}X_{n,\RMS}^2\;}
+\]
+This is \textbf{Parseval's relation}: RMS values add \emph{in quadrature} across
+harmonics, never linearly. Two consequences. First, total harmonic distortion has an
+obvious definition---the harmonics' combined RMS as a fraction of the fundamental's,
+\(\mathrm{THD}=\sqrt{\sum_{n\ge2}X_n^2}\,/\,X_1\). Second, and practically: computing
+the true RMS of a distorted waveform requires this whole sum, which is what a
+\textbf{true-RMS} meter does and a cheap meter does not.
+
+\begin{physicalbox}
+\textbf{Why an averaging meter lies, and by exactly how much.} Most inexpensive AC
+meters do not compute an RMS value at all. They rectify and average, measuring
+\(\overline{|x|}\), then multiply by a fixed constant chosen to give the right answer
+\emph{for a sine wave}. That constant is the sine's \textbf{form factor},
+\[
+\frac{X_{\RMS}}{\overline{|x|}}
+=\frac{X_p/\sqrt2}{2X_p/\pi}=\frac{\pi}{2\sqrt2}\approx1.111 .
+\]
+Feed such a meter anything else and the error is computable rather than mysterious. A
+square wave has \(X_{\RMS}=X_p\) and \(\overline{|x|}=X_p\), so its form factor is
+exactly \(1.000\)---and the meter, still multiplying by \(1.111\), reads
+\SI{11}{\percent} \emph{high}. That single number is the whole content of the usual
+warning to use a true-RMS meter on non-sinusoidal signals.
+\end{physicalbox}
+
 \begin{workedbox}[: household mains]
 A \SI{120}{\volt} outlet is quoted in RMS, because that is the number that predicts
 heating. Its peak and peak-to-peak values are therefore

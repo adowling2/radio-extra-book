@@ -406,6 +406,12 @@ pinned to the axis. A high-\(Q\) resonator holds the pole pair tightly at
 \(\pm\jj\omega_{\text{osc}}\), so the spectrum is a sharp line; a low-\(Q\) loop
 lets the poles wander, smearing the line. This is why crystal and high-\(Q\) LC
 oscillators are quieter.
+
+\Cref{sec:phasenoise} puts a number on it: the skirt inherits the tank's
+single-pole roll-off, so phase noise falls at \(-\SI{20}{\decibel}\) per decade of
+offset and scales as \(1/Q_L^2\)---\emph{doubling the loaded \(Q\) buys
+\SI{6}{\decibel}}. It also shows what that costs a receiver, since a noisy local
+oscillator raises the apparent noise floor near strong signals.
 \end{physicalbox}
 
 \section{Active Filters and Their Limits}
@@ -518,6 +524,12 @@ by a local oscillator, keep the difference, and you have translated the signal t
 fixed intermediate frequency where the sharp filters of \cref{ch:filters} and the
 high-gain amplifiers of this chapter can do their work at one frequency forever.
 
+The same multiplication has one more use, and it is the reason \cref{ch:dsp} needs
+almost no new theory: \emph{sampling} a signal is multiplying it by a train of
+impulses, which is multiplication by every multiple of the sampling rate at once
+(\cref{sec:samplingismult}). A mixer makes two frequency-shifted copies; a sampler
+makes infinitely many.
+
 Two consequences follow immediately from the algebra.
 
 \emph{Image response.} The difference term depends only on
@@ -569,6 +581,11 @@ signals they land \emph{nearby too}---inside the passband, where no filter can r
 them. That is why receiver front ends are specified for intermodulation
 performance, and why an amplifier driven into nonlinearity produces spurious signals
 rather than merely a distorted one.
+
+\Cref{sec:powerseries} makes that nonlinearity explicit---expanding the device as
+\(y=a_1x+a_2x^2+a_3x^3\) and driving it with two tones---and shows that every
+strong-signal specification a receiver carries is a consequence of those three
+coefficients.
 
 Concretely, with \(f_1=\SI{14.20}{\mega\hertz}\) and \(f_2=\SI{14.21}{\mega\hertz}\),
 the third-order products land at

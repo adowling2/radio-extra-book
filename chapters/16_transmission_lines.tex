@@ -324,7 +324,12 @@ decibels per unit length, conventionally per \SI{100}{\foot} or per
 \approx8.686\,\alpha x .
 \]
 Because it is a decibel figure it is \emph{proportional to length}, which is what
-makes the per-100-foot quotation useful: double the run, double the decibels.
+makes the per-100-foot quotation useful: double the run, double the decibels. It also
+costs more than it looks: by \cref{sec:noisefigure}, a passive loss ahead of a
+receiver adds its full value to the system noise figure, so \SI{2}{\decibel} of feed
+line is \SI{2}{\decibel} of sensitivity thrown away---which is the argument for
+mounting a preamplifier at the antenna rather than in the shack
+(\cref{sec:friis}).
 Representative figures for common cable, which vary between manufacturers and
 should be read off the actual data sheet:
 

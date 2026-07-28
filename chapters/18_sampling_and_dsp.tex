@@ -1,0 +1,314 @@
+\chapter{Sampling and Digital Signal Processing}
+\label{ch:dsp}
+Every circuit so far has been analog: voltages and currents defined at every instant.
+A modern radio converts its signal to numbers early and does the rest in software, and
+this chapter is what that costs and what it buys. It belongs in this part of the book
+because it needs almost nothing new---the central operation, sampling, turns out to be
+\emph{multiplication}, which \cref{sec:mixers} already analyzed in full. The chapter's
+one genuinely new object is the thing being multiplied by.
+
+Two loose ends also get tied. \Cref{ch:filters} asserted that a digital filter with no
+feedback can be exactly linear phase; \cref{sec:firiir} proves it. And
+\cref{sec:nyquist} promised that the \emph{other} Nyquist---the sampling one---was a
+separate idea; here it is.
+
+\section{Sampling Is Multiplication}
+\label{sec:samplingismult}
+To sample a signal is to look at it only at instants spaced \(T_s=1/f_s\) apart. Model
+that as multiplying by a train of impulses, one per sampling instant:
+\[
+x_s(t)=x(t)\cdot p(t),
+\qquad
+p(t)=\sum_{k=-\infty}^{\infty}\delta(t-kT_s).
+\]
+Everything follows from asking what \(p(t)\) looks like in the frequency domain. It is
+periodic with period \(T_s\), so by \cref{sec:fourier} it is a sum of sinusoids at
+multiples of \(f_s\)---and because an impulse train is as sharp in time as a signal can
+be, \emph{all} of those harmonics are present, with equal weight:
+\[
+p(t)=\frac{1}{T_s}\sum_{n=-\infty}^{\infty}\ee^{\jj 2\pi n f_s t}.
+\]
+That is the key fact: the sampling operation is multiplication by a
+\textbf{comb} of frequencies spaced \(f_s\) apart.
+
+Now use the mixer result. \Cref{sec:mixers} showed that multiplying by a sinusoid at
+\(f_{\mathrm{LO}}\) shifts a signal to the sum and difference frequencies. Here we are
+multiplying by \emph{every} multiple of \(f_s\) at once, so the input spectrum is
+shifted to sit around every one of them:
+\[
+\boxed{\;
+X_s(f)=\frac{1}{T_s}\sum_{n=-\infty}^{\infty}X(f-nf_s)\;}
+\]
+\emph{Sampling replicates the spectrum, once around each multiple of the sampling
+rate.} A mixer made two copies because it multiplied by one frequency; a sampler makes
+infinitely many because it multiplies by infinitely many. No new mathematics---just a
+different multiplier.
+
+\begin{controlsbox}
+\textbf{Why this is the whole chapter.} Sampling introduces exactly one phenomenon:
+copies of the spectrum, spaced \(f_s\). Every result below is a consequence of asking
+when those copies overlap (\cref{sec:samplingthm}), what the numbers cost in precision
+(\cref{sec:quantnoise}), or how to move between rates without letting them overlap
+(\cref{sec:decimation}). The signal processing that happens \emph{after} sampling is
+just the filtering of \cref{ch:filters} with the poles and zeros placed by arithmetic
+instead of by components.
+\end{controlsbox}
+
+\section{The Sampling Theorem, and Aliasing as Folding}
+\label{sec:samplingthm}
+The copies are harmless as long as they do not overlap. Suppose the signal contains no
+frequency above \(f_{\max}\), so each copy of the spectrum occupies a band of width
+\(f_{\max}\) either side of its center. The copy at \(0\) reaches up to \(f_{\max}\);
+the copy at \(f_s\) reaches down to \(f_s-f_{\max}\). They stay clear of each other
+precisely when
+\[
+f_s-f_{\max}>f_{\max}
+\qquad\Longleftrightarrow\qquad
+\boxed{\;f_s>2f_{\max}\;}
+\]
+This is the \textbf{sampling theorem}, and it is a non-overlap condition, not a
+convention. The frequency \(f_s/2\) at which the copies meet is the \textbf{Nyquist
+frequency}.
+
+What if the condition fails? Then a component above \(f_s/2\) lands inside the
+baseband copy, at
+\[
+f_{\text{alias}}=\bigl|f-nf_s\bigr|
+\]
+for whichever \(n\) brings it closest to zero. The spectrum \emph{folds} about
+\(f_s/2\): a component just above the Nyquist frequency appears just below it, and one
+at \(f_s\) appears at DC. That is \textbf{aliasing}.
+
+\begin{mistakebox}
+\textbf{Aliasing cannot be undone.} This is the point that matters, and it follows from
+the sampling operation rather than from the equipment. Two different input
+frequencies---one below \(f_s/2\), one folded down onto it---produce \emph{identical
+sample sequences}. Not similar: identical. Once the numbers exist there is no
+information left that distinguishes the two, so no filter, algorithm, or amount of
+processing applied afterwards can separate them. The only cure is to prevent the
+offending component from reaching the converter, which is what an
+\textbf{anti-aliasing} low-pass filter is for.
+\end{mistakebox}
+
+The anti-aliasing filter also explains why a converter's usable bandwidth is
+\emph{less} than \(f_s/2\). A real filter does not stop at its cutoff; it rolls off at
+\(-20n\,\si{\decibel}\) per decade (\cref{sec:cascadeadd}), so there must be a
+transition band between the highest wanted frequency and \(f_s/2\) in which the filter
+does its work. Higher filter order buys a narrower transition band and therefore more
+usable bandwidth---the same order-versus-sharpness trade as
+\cref{sec:filterspecs}, now paid for in sample rate.
+
+\begin{workedbox}[: where does a stray signal land?]
+An SDR samples at \(f_s=\SI{48}{\kilo\hertz}\), so its Nyquist frequency is
+\SI{24}{\kilo\hertz}. A \SI{30}{\kilo\hertz} spur leaks past the anti-aliasing filter.
+With \(n=1\),
+\[
+f_{\text{alias}}=|30-48|=\SI{18}{\kilo\hertz},
+\]
+so it appears as an \SI{18}{\kilo\hertz} tone---inside the audio band, sounding
+entirely real, and untraceable from the samples alone. Note the folding: the spur was
+\SI{6}{\kilo\hertz} \emph{above} Nyquist and its alias sits \SI{6}{\kilo\hertz}
+\emph{below} it. A \SI{48}{\kilo\hertz} spur would fold all the way to DC.
+\end{workedbox}
+
+\section{Quantization: Six Decibels per Bit}
+\label{sec:quantnoise}
+Sampling discretizes time. The other half of conversion discretizes \emph{amplitude},
+and it has its own cost.
+
+An \(N\)-bit converter spanning a full-scale range \(V_{\mathrm{FS}}\) has
+\(2^N\) levels, so its step size is
+\[
+\Delta=\frac{V_{\mathrm{FS}}}{2^N}.
+\]
+Rounding to the nearest level makes an error somewhere in \(\pm\Delta/2\), and with a
+busy signal that error is effectively random and uniformly distributed across the step.
+Its mean-square value is the variance of a uniform distribution of width \(\Delta\):
+\[
+\overline{e^2}=\frac{1}{\Delta}\int_{-\Delta/2}^{\Delta/2}e^2\,\dd e
+=\frac{\Delta^2}{12}.
+\]
+So quantization behaves as an added noise of RMS value \(\Delta/\sqrt{12}\). Compare it
+with the largest signal the converter can hold---a full-scale sinusoid of amplitude
+\(V_{\mathrm{FS}}/2\), whose mean square is \(V_{\mathrm{FS}}^2/8\) by
+\cref{sec:rms}:
+\[
+\mathrm{SNR}=\frac{V_{\mathrm{FS}}^2/8}{\Delta^2/12}
+=\frac{12}{8}\,\frac{V_{\mathrm{FS}}^2}{\Delta^2}
+=\frac{3}{2}\cdot 2^{2N}.
+\]
+In decibels, using \(20\log_{10}2\approx6.02\),
+\[
+\boxed{\;\mathrm{SNR}_{\dB}=6.02\,N+1.76\;}
+\]
+\textbf{Six decibels per bit.} Each extra bit halves the step size, which is a factor
+of two in amplitude, which is \SI{6}{\decibel}---the same \SI{6}{\decibel} as one S
+unit (\cref{sec:sunits}), so a bit of converter resolution and an S unit are the same
+factor of four in power.
+
+\begin{workedbox}[: how many bits for a millivolt?]
+A signal spans \SI{1}{\volt} and must be resolved to \SI{1}{\milli\volt}. The
+requirement is \(2^N\ge1000\), and since \(2^{10}=1024\),
+\[
+N=10\ \text{bits}
+\]
+suffices while \(N=9\) (512 levels, \SI{1.95}{\milli\volt} steps) does not. The
+resulting dynamic range is \(6.02(10)+1.76\approx\SI{62}{\decibel}\). For comparison, a
+16-bit converter reaches \SI{98}{\decibel} and a 24-bit one \SI{146}{\decibel}---which
+is why receiver designers count bits directly as decibels of dynamic range.
+\end{workedbox}
+
+\subsection{Oversampling Buys Back Resolution}
+The quantization noise power \(\Delta^2/12\) is fixed by the converter, but it is
+spread over the whole sampled bandwidth---everything from DC to \(f_s/2\). A receiver
+listening to a bandwidth \(B\) much narrower than that only admits the fraction of the
+noise that falls in \(B\), so filtering (digitally, after conversion) recovers
+\[
+\text{processing gain}=10\log_{10}\frac{f_s/2}{B}\ \si{\decibel}.
+\]
+Sampling faster than strictly necessary therefore improves in-band dynamic range even
+though it does not add a single bit---which is why converters are run far above the
+Nyquist rate and why an SDR's in-band performance beats its raw converter
+specification. \textbf{Dither}, a small deliberate noise added before conversion, is the
+same idea used differently: it makes the quantization error behave more like true random
+noise rather than a signal-dependent pattern, so that averaging can act on it.
+
+\begin{mistakebox}
+The two ends of a converter's range fail differently, and this is the practical
+difference between an analog and a digital receiver. The noise floor is \emph{soft}: it
+can be pushed down by oversampling and filtering. The ceiling is \emph{hard}---once the
+input exceeds the reference voltage the converter simply cannot represent it, and the
+output clips abruptly rather than compressing gracefully as an overdriven amplifier does
+(\cref{sec:compression}). An SDR is overloaded exactly when its input exceeds full
+scale, with no warning region beforehand.
+\end{mistakebox}
+
+\section{Changing Rate: Decimation and Interpolation}
+\label{sec:decimation}
+Software radios rarely keep the converter's raw rate. \textbf{Decimation} reduces the
+sample rate by keeping every \(M\)th sample; \textbf{interpolation} raises it by
+inserting samples. The asymmetry between them is a direct reading of
+\cref{sec:samplingthm}.
+
+Decimating divides \(f_s\) by \(M\), which divides the Nyquist frequency by \(M\) too.
+Content that was legally below the old \(f_s/2\) may now be above the new one---so it
+will fold. The fix is forced: \emph{filter first, then discard samples}. That is why a
+decimator always contains an anti-aliasing filter ahead of the rate change, and it is
+the same argument as the anti-aliasing filter at the converter input, applied to a rate
+that is about to shrink.
+
+Interpolation moves the Nyquist frequency the other way, so nothing that was already
+legal can become illegal, and no filter is needed \emph{beforehand}. (One is generally
+used afterwards, to remove the images the inserted samples create.)
+
+\section{FIR and IIR: Proving the Linear-Phase Claim}
+\label{sec:firiir}
+\Cref{ch:filters} listed two digital filter families and asserted that one of them can
+be exactly linear phase. With \cref{sec:groupdelay} in hand that assertion can be
+discharged.
+
+A \textbf{finite impulse response} (FIR) filter computes each output as a weighted sum
+of the last \(N\) inputs, with no feedback:
+\[
+y[k]=\sum_{m=0}^{N-1}h_m\,x[k-m].
+\]
+Its frequency response is \(H(\ee^{\jj\omega T_s})=\sum_m h_m\ee^{-\jj m\omega T_s}\).
+Now impose \textbf{symmetry} on the coefficients, \(h_m=h_{N-1-m}\), and pair the terms
+from the two ends. Each pair combines into a cosine times a common exponential, and
+factoring that exponential out gives
+\[
+H=\underbrace{\ee^{-\jj\omega T_s(N-1)/2}}_{\text{pure delay}}
+\cdot\underbrace{\bigl(\text{a real function of }\omega\bigr)}_{\text{no phase}} .
+\]
+The entire phase sits in the first factor, and it is \emph{strictly linear} in
+\(\omega\). By \cref{sec:groupdelay} that means the group delay is constant:
+\[
+\tau_g=-\frac{\dd\phi}{\dd\omega}=\frac{(N-1)T_s}{2}
+\qquad\text{--- exactly } \tfrac{N-1}{2}\text{ samples, at every frequency.}
+\]
+So a symmetric FIR filter delays every component equally and distorts no waveform,
+whatever its magnitude response does. That is the claim \cref{ch:filters} made, now
+proved---and note that it required no poles at all, only symmetry.
+
+An \textbf{infinite impulse response} (IIR) filter feeds its output back:
+\[
+y[k]=\sum_m b_m x[k-m]-\sum_{j\ge1}a_j\,y[k-j].
+\]
+Feedback means poles, and poles away from the origin mean phase that is not linear in
+\(\omega\)---the same reason the analog families of \cref{sec:poleplacement} trade phase
+for sharpness. What the poles buy is efficiency: an IIR filter can mimic a Butterworth
+or Chebyshev response with far fewer arithmetic operations than the equivalent FIR.
+
+\begin{controlsbox}
+\textbf{The whole comparison in one line.} An FIR filter is a cascade of delays with no
+loop, so it cannot ring and can be made exactly linear phase, but needs many taps to be
+selective. An IIR filter is a feedback loop, so it inherits everything
+\cref{ch:feedback} says---efficiency, poles, and the possibility of instability if the
+coefficients place a pole outside the unit circle. It is the analog trade-off, in
+arithmetic.
+\end{controlsbox}
+
+\section{Getting Back Out: the Zero-Order Hold}
+A converter running the other way holds each sample's value until the next one arrives,
+producing a staircase rather than a smooth curve. That hold is itself a filter: holding
+for \(T_s\) is convolution with a rectangular pulse of width \(T_s\), whose frequency
+response is
+\[
+H_{\mathrm{ZOH}}(f)=T_s\,\frac{\sin\pi fT_s}{\pi fT_s},
+\]
+a \(\operatorname{sinc}\) shape. Two consequences. It \emph{droops}: the response is
+already down about \SI{3.9}{\decibel} at \(f_s/2\), a known and correctable error. And
+its nulls sit at multiples of \(f_s\), which partially suppresses the spectral images
+the staircase contains---but only partially, which is why a
+\textbf{reconstruction} low-pass filter follows the converter. Its job is exactly the
+mirror of the anti-aliasing filter's: one keeps images out, the other keeps them in.
+
+\section{Direct Digital Synthesis}
+The same ideas run backwards make an oscillator. A \textbf{direct digital synthesizer}
+adds a constant \(M\) to an \(N\)-bit accumulator on every clock edge; the accumulator
+overflows periodically, and that periodicity is the output frequency:
+\[
+f_{\mathrm{out}}=f_{\mathrm{clk}}\,\frac{M}{2^N}.
+\]
+Because \(f_{\mathrm{clk}}\) can come from a crystal, the output inherits crystal
+stability while remaining tunable in steps of \(f_{\mathrm{clk}}/2^N\)---which is why
+DDS replaced the variable-frequency oscillator. The cost is spurious outputs: the
+accumulator's finite width means the phase advances in slightly wrong increments, and
+that periodic phase error appears as discrete spurs rather than as broadband noise.
+
+\section{Worked Example}
+A direct-sampling receiver digitizes the whole HF spectrum with a 16-bit converter
+running at \(f_s=\SI{122.88}{\mega\hertz}\), then filters down to a \SI{2.4}{\kilo\hertz}
+SSB channel.
+
+\emph{Usable bandwidth.} The Nyquist frequency is \SI{61.44}{\mega\hertz}, so with a
+reasonable anti-aliasing filter the receiver covers HF to \SI{30}{\mega\hertz}
+comfortably---the transition band from \SI{30}{\mega\hertz} to \SI{61.44}{\mega\hertz}
+is more than an octave, which even a modest filter order can fill.
+
+\emph{Converter dynamic range.} From \cref{sec:quantnoise},
+\[
+\mathrm{SNR}=6.02(16)+1.76\approx\SI{98}{\decibel}
+\]
+across the full \SI{61.44}{\mega\hertz}.
+
+\emph{In-band dynamic range.} That noise is spread over the whole band, but the
+receiver listens to only \SI{2.4}{\kilo\hertz}. The processing gain is
+\[
+10\log_{10}\frac{61.44\times10^{6}}{2.4\times10^{3}}
+=10\log_{10}(2.56\times10^{4})\approx\SI{44}{\decibel},
+\]
+so the in-band dynamic range is about \(98+44=\SI{142}{\decibel}\)---far beyond what 16
+bits suggests, and the entire reason direct sampling is viable. Note what bought it:
+not resolution, but the ratio of sample rate to channel bandwidth.
+
+\begin{exambox}
+Five facts carry most of the questions here, and each is a line of this chapter.
+Sample at more than \emph{twice} the highest frequency, or components fold about
+\(f_s/2\) and are unrecoverable. An anti-aliasing filter must come \emph{before} the
+converter, and before any decimation, but is not needed before interpolation.
+Resolution is \(2^N\) levels, so an 8-bit converter has 256 and each bit is worth
+\SI{6}{\decibel}. A digital receiver overloads abruptly when the input exceeds the
+converter's reference. And an FIR filter can be exactly linear phase because symmetric
+coefficients make its group delay constant.
+\end{exambox}

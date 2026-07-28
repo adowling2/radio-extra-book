@@ -51,6 +51,23 @@ P=\frac{V_{\RMS}^2}{R}=I_{\RMS}^2R=\frac{V_{pp}^2}{8R}
 \]
 PEP \(=\) average power for an unmodulated carrier.
 
+\section*{Sampling and Noise}
+\[
+f_s>2f_{\max},\quad
+f_{\mathrm{alias}}=|f-nf_s|
+\]
+\[
+\mathrm{SNR}_{\dB}=6.02N+1.76
+\]
+\[
+\mathrm{MDS}=-174+10\log_{10}B+\mathrm{NF}\ [\mathrm{dBm}]
+\]
+\[
+\mathrm{DR3}=\tfrac{2}{3}(\mathrm{IIP3}-\mathrm{MDS})
+\]
+Third-order products rise \(3\,\mathrm{dB/dB}\); \(L\) dB of attenuation improves
+the IMD ratio by \(2L\). Friis: the first stage dominates.
+
 \section*{Combinations}
 \[
 R_s=\sum R_k,\quad

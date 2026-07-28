@@ -32,6 +32,8 @@ Formula & Use & Derived in \\
 \(G_C=1/(1+RCs)\) & RC low-pass (output across \(C\)). & \cref{sec:rc-freq} \\
 \(G_R=RCs/(1+RCs)\) & RC high-pass (output across \(R\)). & \cref{sec:rc-freq} \\
 \addlinespace
+\(y=\sum_n G(\jj n\omega_0)c_n\ee^{\jj n\omega_0 t}\) & Fourier: \(G\) at the harmonics is the whole answer. & \cref{sec:fourier} \\
+\addlinespace
 \multicolumn{3}{@{}l}{\textbf{Higher order: cascades, pole patterns, delay}}\\
 \(G=K\prod\frac{1}{1+\tau_ks}\prod\frac{\omega_{0j}^2}{s^2+2\zeta_j\omega_{0j}s+\omega_{0j}^2}\) & Factoring theorem: every real \(G(s)\) is first- and second-order sections. & \cref{sec:factoring} \\
 \(20\log|G|=\sum_k 20\log|G_k|\) & Cascades add in decibels; phases add in degrees. & \cref{sec:cascadeadd} \\
@@ -51,6 +53,8 @@ Formula & Use & Derived in \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{RMS, average power, and PEP}}\\
 \(X_{\RMS}=\sqrt{\frac1T\int_0^T x^2\dd t}\) & Definition of RMS (any waveform). & \cref{sec:rms} \\
+\(X_{\RMS}^2=X_{\mathrm{dc}}^2+\sum_n X_n^2\) & Parseval: RMS adds in quadrature over harmonics. & \cref{sec:parseval} \\
+\(\pi/(2\sqrt2)\approx1.111\) & Form factor of a sine; why averaging meters misread. & \cref{sec:parseval} \\
 \(V_{\RMS}=V_p/\sqrt2=V_{pp}/(2\sqrt2)\) & Sinusoid only; \(V_{pp}=2V_p\). & \cref{sec:rms} \\
 \(P=V_{\RMS}^2/R=I_{\RMS}^2R\) & Average power; DC formulas hold with RMS values. & \cref{sec:pep} \\
 \(P=V_{pp}^2/(8R)\) & Power straight from a scope reading. & \cref{sec:pep} \\
@@ -105,6 +109,27 @@ Formula & Use & Derived in \\
 \(\alpha\approx R'/(2Z_0)+G'Z_0/2\) & Low-loss attenuation constant: conductor plus dielectric. & \cref{sec:lineloss} \\
 \(\text{dB}\approx8.686\,\alpha x\) & Nepers to decibels; loss is proportional to length. & \cref{sec:lineloss} \\
 \(|\Gamma_{\mathrm{in}}|=|\Gamma_L|\ee^{-2\alpha\ell}\) & Line loss masks a mismatch (round trip). & \cref{sec:lineloss} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Sampling and digital signal processing}}\\
+\(X_s(f)=\frac{1}{T_s}\sum_n X(f-nf_s)\) & Sampling replicates the spectrum at every multiple of \(f_s\). & \cref{sec:samplingismult} \\
+\(f_s>2f_{\max}\) & Sampling theorem; \(f_s/2\) is the Nyquist frequency. & \cref{sec:samplingthm} \\
+\(f_{\text{alias}}=|f-nf_s|\) & Where an out-of-band component folds to. & \cref{sec:samplingthm} \\
+\(\mathrm{SNR}_{\dB}=6.02N+1.76\) & Quantization noise: \SI{6}{\decibel} per bit. & \cref{sec:quantnoise} \\
+\(10\log_{10}\bigl(\tfrac{f_s/2}{B}\bigr)\) & Oversampling processing gain. & \cref{sec:quantnoise} \\
+\(\tau_g=\tfrac{N-1}{2}T_s\) & Symmetric FIR: constant group delay, exactly linear phase. & \cref{sec:firiir} \\
+\(f_{\mathrm{out}}=f_{\mathrm{clk}}M/2^N\) & Direct digital synthesis output frequency. & \cref{ch:dsp} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Noise, sensitivity, and dynamic range}}\\
+\(P_n=kTB\) & Available thermal noise power; independent of \(R\). & \cref{sec:noisefloor} \\
+\(-174+10\log_{10}B+\mathrm{NF}\) & Receiver noise floor in dBm; also the MDS. & \cref{sec:noisefloor} \\
+\(F=1+T_e/T_0\) & Noise figure and equivalent noise temperature. & \cref{sec:noisefigure} \\
+\(F=F_1+\frac{F_2-1}{G_1}+\cdots\) & Friis: the first stage dominates. & \cref{sec:friis} \\
+\(y=a_1x+a_2x^2+a_3x^3\) & Weak nonlinearity; slopes 2 and 3 dB/dB follow. & \cref{sec:powerseries} \\
+\(\mathrm{IIP3}\approx P_{\SI{1}{\decibel}}+\SI{9.6}{\decibel}\) & Cubic nonlinearity ties the two together. & \cref{sec:powerseries} \\
+\(\mathrm{DR3}=\tfrac23(\mathrm{IIP3}-\mathrm{MDS})\) & IMD dynamic range; \(\tfrac{n-1}{n}\) for order \(n\). & \cref{sec:dynamicrange} \\
+\(\mathrm{BDR}=P_{\SI{1}{\decibel}}-\mathrm{MDS}\) & Blocking dynamic range (a plain difference). & \cref{sec:dynamicrange} \\
+\(\mathcal{L}\propto 1/(Q_L^2\Delta f^2)\) & Phase-noise skirt; doubling \(Q_L\) buys \SI{6}{\decibel}. & \cref{sec:phasenoise} \\
+\(B_n=\int|H|^2\dd f/|H|^2_{\max}\) & Noise bandwidth; \(1.57f_c\) for one pole. & \cref{sec:noisebw} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Measurement}}\\
 \(R_{\mathrm{in}}/(R_{\mathrm{in}}+R_{Th})\) & Voltmeter loading error. & \cref{ch:measurement} \\

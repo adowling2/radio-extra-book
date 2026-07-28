@@ -65,6 +65,15 @@ which again reads low, and is negligible only when
 \(R_{\text{shunt}}\ll R_{\text{loop}}\). A \SI{5}{\ohm} shunt inserted into a
 \SI{50}{\ohm} loop costs \SI{9}{\percent} of the current.
 
+\begin{mistakebox}
+\textbf{An averaging meter is not an RMS meter.} A cheap AC meter rectifies and
+averages, then multiplies by the \(1.111\) form factor of a \emph{sine wave}
+(\cref{sec:parseval}). On anything else the calibration is simply wrong---a square
+wave reads \SI{11}{\percent} high. A \textbf{true-RMS} meter performs the
+root-mean-square integral itself, which by Parseval's relation is the only way to get
+a distorted or harmonic-rich waveform right.
+\end{mistakebox}
+
 \begin{controlsbox}
 \textbf{One rule, stated twice.} A voltmeter must be a much \emph{worse} path than
 the node it measures; an ammeter must be a much \emph{better} path than the loop it
@@ -296,9 +305,12 @@ V_{\dB}=20\log_{10}\frac{V}{V_{\mathrm{ref}}}.
 Always check which reference is meant. \textbf{dBW} references \(\SI{1}{\watt}\) and
 \textbf{dBm} references \(\SI{1}{\milli\watt}\), so the two differ by exactly
 \SI{30}{\decibel} (\(\SI{1}{\watt}=\SI{30}{dBm}\)). A bare ``dB'' with no reference
-is a ratio---gain, loss, or return loss---and not a level at all.
+is a ratio---gain, loss, or return loss---and not a level at all. The most important
+referenced level in receiver work is the thermal noise floor of
+\cref{sec:noisefloor}, \SI{-174}{dBm} per hertz.
 
 \subsection{Adding It All Up: Link Budgets and S Units}
+\label{sec:sunits}
 The reason referenced decibels are worth the bookkeeping is that they turn a chain of
 multiplications into a sum. \Cref{sec:cascadeadd} established this for cascaded
 transfer functions; the same arithmetic applied to a whole radio path is a

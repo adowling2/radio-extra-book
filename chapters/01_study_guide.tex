@@ -248,6 +248,37 @@ Z_t=\sqrt{Z_0Z_L}
 for a lossless quarter-wave transformer matching a real load \(Z_L\) to a line
 with characteristic impedance \(Z_0\).
 
+\section{Sampling, Noise, and Dynamic Range}
+For a sampled system, with \(f_s\) the sampling rate and \(N\) the converter's bit
+count,
+\[
+f_s>2f_{\max},
+\qquad
+f_{\text{alias}}=|f-nf_s|,
+\qquad
+\mathrm{SNR}_{\dB}=6.02N+1.76 .
+\]
+Anti-aliasing filtering must happen \emph{before} the converter, and before any
+decimation. For receiver performance, with \(B\) the noise bandwidth in hertz,
+\[
+\text{noise floor}=\mathrm{MDS}=-174+10\log_{10}B+\mathrm{NF}_{\dB}\quad[\mathrm{dBm}],
+\]
+\[
+F=F_1+\frac{F_2-1}{G_1}+\cdots,
+\qquad
+\mathrm{DR3}=\tfrac{2}{3}\bigl(\mathrm{IIP3}-\mathrm{MDS}\bigr),
+\qquad
+\mathrm{BDR}=P_{\SI{1}{\decibel}}-\mathrm{MDS}.
+\]
+Second-order products rise \SI{2}{\decibel} per \si{\decibel} of drive and
+third-order \SI{3}{\decibel} per \si{\decibel}; an input attenuator of \(L\) decibels
+therefore improves the intermodulation ratio by \(2L\).
+
+\begin{mistakebox}
+\SI{-174}{dBm} is a density---power \emph{per hertz}. It is only a noise floor once
+\(10\log_{10}B\) has been added for the actual bandwidth.
+\end{mistakebox}
+
 \section{What to Memorize and What to Derive}
 Memorize the definitions of units, Ohm's law, \(Z_R\), \(Z_L\), \(Z_C\),
 \(\omega=2\pi f\), \(f_0=1/(2\pi\sqrt{LC})\), decibel ratio rules, and the

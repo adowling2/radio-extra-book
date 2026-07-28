@@ -153,6 +153,57 @@ loop with forward path \(G\) and feedback \(H\) collapses to
 \label{fig:blocks}
 \end{figure}
 
+\section{Why One Sinusoid at a Time Is Enough}
+\label{sec:fourier}
+Almost everything that follows analyzes a system by asking what it does to a
+\emph{single} sinusoid. That deserves a justification, because real signals are not
+sinusoids---they are speech, keyed carriers, square waves, pulses. The
+justification is one line of superposition plus one theorem, and it is worth
+stating once so the rest of the book can lean on it.
+
+\textbf{Fourier's theorem} says any reasonable periodic signal of period
+\(T=2\pi/\omega_0\) is a sum of sinusoids at integer multiples of \(\omega_0\):
+\[
+x(t)=\sum_{n=-\infty}^{\infty}c_n\,\ee^{\jj n\omega_0 t},
+\]
+where \(n=1\) is the \textbf{fundamental} and \(n\ge2\) are the
+\textbf{harmonics}. Now feed that into a linear system. Linearity means the
+response to a sum is the sum of the responses, and we already know the response to
+each individual exponential---it is multiplication by \(G\) evaluated at that
+frequency. So
+\[
+\boxed{\;y(t)=\sum_{n}G(\jj n\omega_0)\,c_n\,\ee^{\jj n\omega_0 t}\;}
+\]
+\emph{The transfer function sampled at the harmonics is the entire answer.} That is
+the licence for the whole method: knowing \(G(\jj\omega)\) at every frequency means
+knowing what the system does to \emph{any} signal, because the signal is a sum of
+frequencies and the system treats each one independently. It is also why a Bode
+plot is worth drawing at all.
+
+\begin{physicalbox}
+\textbf{Why a square wave has only odd harmonics.} This is usually asserted; it
+follows from a symmetry. A square wave satisfies
+\[
+x(t+T/2)=-x(t)
+\]
+---shift by half a period and it inverts. Apply that to the \(n\)th term: shifting
+by \(T/2\) multiplies \(\ee^{\jj n\omega_0t}\) by \(\ee^{\jj n\pi}=(-1)^n\). For the
+whole sum to flip sign, every term must flip, so \((-1)^n=-1\): only \emph{odd}
+\(n\) survive. Even harmonics are forbidden by the symmetry, not merely small.
+Carrying out the integrals gives
+\[
+x(t)=\frac{4}{\pi}\left(\sin\omega_0t+\frac{\sin3\omega_0t}{3}
++\frac{\sin5\omega_0t}{5}+\cdots\right),
+\]
+so the amplitudes fall as \(1/n\). A sawtooth has no such symmetry, and indeed it
+contains \emph{all} harmonics.
+
+One more reading: an envelope falling as \(1/n\) is \(-\SI{20}{\decibel}\) per
+decade---the same slope as a single pole (\cref{ch:splane}), and for a related
+reason. A slow spectral roll-off is the frequency-domain signature of a sharp
+corner in time, and a square wave's discontinuity is as sharp as corners get.
+\end{physicalbox}
+
 \section{First-Order Systems}
 The canonical first-order system has one state and one time constant \(\tau\):
 \[
