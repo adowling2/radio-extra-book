@@ -1,40 +1,84 @@
 \chapter{Formula Index}
-\begin{longtable}{@{}L{0.34\textwidth}L{0.58\textwidth}@{}}
+Every formula below is derived somewhere in the book; the last column says where, so
+this index doubles as a map back to the reasoning. Nothing here needs to be memorized
+that can be re-derived from the element laws, KCL, and KVL.
+
+\begin{longtable}{@{}L{0.31\textwidth}L{0.47\textwidth}L{0.14\textwidth}@{}}
 \toprule
-Formula & Use \\
+Formula & Use & Derived in \\
 \midrule
 \endhead
-\(i=\dd q/\dd t\) & Current as rate of charge flow. \\
-\(V=IR\) & Resistor law. \\
-\(P=VI=I^2R=V^2/R\) & Power in resistive circuits. \\
-\(i=C\,\dd v/\dd t\) & Capacitor current-voltage law. \\
-\(v=L\,\dd i/\dd t\) & Inductor voltage-current law. \\
-\(E_C=\frac{1}{2}CV^2\) & Capacitor energy. \\
-\(E_L=\frac{1}{2}LI^2\) & Inductor energy. \\
-\(\tau_{RC}=RC\) & RC time constant. \\
-\(\tau_{RL}=L/R\) & RL time constant. \\
-\(Z_R=R\) & Resistor impedance. \\
-\(Z_L=\jj\omega L\) & Inductor impedance. \\
-\(Z_C=1/(\jj\omega C)\) & Capacitor impedance. \\
-\(\omega=2\pi f\) & Angular frequency conversion. \\
-\(\omega_0=1/\sqrt{LC}\) & Undamped LC angular frequency. \\
-\(f_0=1/(2\pi\sqrt{LC})\) & Resonant frequency in hertz. \\
-\(Q_s=\omega_0L/R\) & Series RLC quality factor. \\
-\(BW\approx f_0/Q\) & Narrowband half-power bandwidth estimate. \\
-\(s^2+2\zeta\omega_0 s+\omega_0^2\) & Standard second-order pole polynomial. \\
-\(\alpha=R/2L,\ \zeta=\alpha/\omega_0\) & Series RLC damping rate and ratio. \\
-\(s=-\alpha\pm\jj\omega_d,\ \omega_d=\sqrt{\omega_0^2-\alpha^2}\) & Underdamped pole pair. \\
-\(Q=1/(2\zeta)\) & Quality factor and damping ratio. \\
-\(S=VI^*\) & Complex power using RMS phasors. \\
-\(A_{\mathrm{cl}}=A/(1+A\beta)\) & Closed-loop gain; \(L=A\beta\) is loop gain. \\
-\(\text{gain}\times\text{BW}=A_0\omega_a\) & Gain--bandwidth product (single-pole amp). \\
-\(|L|=1,\ \angle L=-180^\circ\) & Barkhausen oscillation condition. \\
-\(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\) & L-network matching \(Q\). \\
-\(Z_0=\sqrt{L'/C'},\ v_p=1/\sqrt{L'C'}\) & Line impedance and phase velocity. \\
-\(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\) & Load reflection coefficient. \\
-\(\mathrm{SWR}=(1+|\Gamma|)/(1-|\Gamma|)\) & Standing wave ratio. \\
-\(RL=-20\log_{10}|\Gamma|\) & Return loss in decibels. \\
-\(Z_{\mathrm{in}}=Z_0\dfrac{Z_L+\jj Z_0\tan\beta\ell}{Z_0+\jj Z_L\tan\beta\ell}\) & Input impedance along a lossless line. \\
-\(Z_t=\sqrt{Z_0Z_L}\) & Quarter-wave transformer for real impedances. \\
+\multicolumn{3}{@{}l}{\textbf{Elements and energy}}\\
+\(i=\dd q/\dd t\) & Current as rate of charge flow. & \cref{ch:foundations} \\
+\(V=IR\) & Resistor law. & \cref{ch:foundations} \\
+\(P=VI=I^2R=V^2/R\) & Power in resistive circuits. & \cref{ch:resistive} \\
+\(i=C\,\dd v/\dd t\) & Capacitor current-voltage law. & \cref{ch:foundations} \\
+\(v=L\,\dd i/\dd t\) & Inductor voltage-current law. & \cref{ch:foundations} \\
+\(E_C=\frac{1}{2}CV^2\) & Capacitor energy. & \cref{ch:foundations} \\
+\(E_L=\frac{1}{2}LI^2\) & Inductor energy. & \cref{ch:foundations} \\
+\(R_{\mathrm{eq}}=\sum R_k\), \(1/C_{\mathrm{eq}}=\sum 1/C_k\) & Series combining (parallel is the dual). & \cref{ch:resistive} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Decibels}}\\
+\(10\log_{10}(P_2/P_1)\) & Power ratio in dB. & \cref{sec:decibels} \\
+\(20\log_{10}(V_2/V_1)\) & Amplitude ratio (same impedance). & \cref{sec:decibels} \\
+\(-\SI{3.01}{\decibel}=20\log_{10}(1/\sqrt2)\) & Half power; the cutoff convention. & \cref{sec:decibels} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{First-order circuits}}\\
+\(\tau_{RC}=RC\) & RC time constant. & \cref{ch:rc} \\
+\(\tau_{RL}=L/R\) & RL time constant. & \cref{ch:rl} \\
+\(G_C=1/(1+RCs)\) & RC low-pass (output across \(C\)). & \cref{sec:rc-freq} \\
+\(G_R=RCs/(1+RCs)\) & RC high-pass (output across \(R\)). & \cref{sec:rc-freq} \\
+\(-20n\ \si{\decibel}\)/decade & Roll-off of an \(n\)-pole response. & \cref{ch:filters} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Phasors, impedance, power}}\\
+\(Z_R=R\) & Resistor impedance. & \cref{ch:ac} \\
+\(Z_L=\jj\omega L\) & Inductor impedance. & \cref{ch:ac} \\
+\(Z_C=1/(\jj\omega C)\) & Capacitor impedance. & \cref{ch:ac} \\
+\(\omega=2\pi f\) & Angular frequency conversion. & \cref{ch:foundations} \\
+\(S=VI^*\) & Complex power using RMS phasors. & \cref{ch:ac} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Resonance and second-order systems}}\\
+\(\omega_0=1/\sqrt{LC}\) & Undamped LC angular frequency. & \cref{ch:rlc} \\
+\(f_0=1/(2\pi\sqrt{LC})\) & Resonant frequency in hertz. & \cref{ch:rlc} \\
+\(s^2+2\zeta\omega_0 s+\omega_0^2\) & Standard second-order pole polynomial. & \cref{ch:linsys} \\
+\(\det(sI-A)=0\) & Poles are the eigenvalues of \(A\). & \cref{ch:rlc} \\
+\(\alpha=R/2L,\ \zeta=\alpha/\omega_0\) & Series RLC damping rate and ratio. & \cref{ch:rlc} \\
+\(s=-\alpha\pm\jj\omega_d,\ \omega_d=\sqrt{\omega_0^2-\alpha^2}\) & Underdamped pole pair. & \cref{ch:rlc} \\
+\(Q=1/(2\zeta)\) & Quality factor and damping ratio. & \cref{ch:linsys} \\
+\(Q_s=\omega_0L/R\) & \emph{Series} RLC quality factor. & \cref{ch:rlc} \\
+\(Q_p=R/(\omega_0L)=\omega_0RC\) & \emph{Parallel} RLC quality factor. & \cref{ch:rlcpar} \\
+\(BW\approx f_0/Q\) & Narrowband half-power bandwidth. & \cref{ch:rlc} \\
+\(G=\wzero^2/(s^2+\tfrac{\wzero}{Q}s+\wzero^2)\) & LC low-pass as a filter. & \cref{sec:lc-lowpass} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Feedback and active circuits}}\\
+\(A_{\mathrm{cl}}=A/(1+A\beta)\) & Closed-loop gain; \(L=A\beta\) is loop gain. & \cref{ch:feedback} \\
+\(A_{\mathrm{cl}}\to1/\beta\) & Large-loop-gain limit. & \cref{ch:feedback} \\
+\(\dd A_{\mathrm{cl}}/A_{\mathrm{cl}}=(\dd A/A)/(1+L)\) & Feedback divides gain error by \(1+L\). & \cref{ch:feedback} \\
+\(\text{gain}\times\text{BW}=A_0\omega_a\) & Gain--bandwidth product (single-pole amp). & \cref{sec:gbw} \\
+\(\beta=R_g/(R_f+R_g)\) & Feedback fraction from the resistors. & \cref{sec:beta-resistors} \\
+\(-R_f/R_{in}\), \(1+R_f/R_g\) & Inverting and non-inverting gains. & \cref{ch:active} \\
+\(L=-1\): \(|L|=1,\ \angle L=-180^\circ\) & Barkhausen oscillation condition. & \cref{ch:feedback} \\
+\(\wzero=1/\sqrt{R_1R_2C_1C_2}\) & Sallen--Key corner frequency. & \cref{ch:active} \\
+\(f_{\mathrm{LO}}\pm f_{\mathrm{RF}}\) & Mixer output frequencies (nonlinear!). & \cref{sec:mixers} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Matching and transformers}}\\
+\(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\) & L-network matching \(Q\). & \cref{ch:filters} \\
+\(X_{\text{series}}=QR_{\text{lo}}\), \(X_{\text{shunt}}=R_{\text{hi}}/Q\) & L-network element reactances. & \cref{ch:filters} \\
+\(Z_p=(N_p/N_s)^2Z_s\) & Transformer impedance ratio. & \cref{ch:filters} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Transmission lines}}\\
+\(Z_0=\sqrt{L'/C'},\ v_p=1/\sqrt{L'C'}\) & Line impedance and phase velocity. & \cref{ch:lines} \\
+\(\lambda=v_p/f=VF\,c/f\) & Wavelength on the line. & \cref{ch:lines} \\
+\(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\) & Load reflection coefficient. & \cref{ch:lines} \\
+\(\mathrm{SWR}=(1+|\Gamma|)/(1-|\Gamma|)\) & Standing wave ratio. & \cref{ch:lines} \\
+\(\mathrm{RL}=-20\log_{10}|\Gamma|\) & Return loss in decibels. & \cref{ch:lines} \\
+\(Z_{\mathrm{in}}=Z_0\dfrac{Z_L+\jj Z_0\tan\beta\ell}{Z_0+\jj Z_L\tan\beta\ell}\) & Input impedance along a lossless line. & \cref{ch:lines} \\
+\(Z_{\mathrm{in}}=Z_0^2/Z_L\) & Quarter-wave impedance inversion. & \cref{ch:lines} \\
+\(Z_t=\sqrt{Z_0Z_L}\) & Quarter-wave transformer for real impedances. & \cref{ch:lines} \\
+\(\jj Z_0\tan\beta\ell\) & Shorted-stub reactance. & \cref{sec:stubs} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Measurement}}\\
+\(R_{\mathrm{in}}/(R_{\mathrm{in}}+R_{Th})\) & Voltmeter loading error. & \cref{ch:measurement} \\
+\(R_1C_1=R_2C_2\) & Compensated scope probe (zero on pole). & \cref{sec:probe} \\
 \bottomrule
 \end{longtable}

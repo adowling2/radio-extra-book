@@ -1,28 +1,186 @@
-\chapter{Solutions to Selected Worked Examples}
-\section{Capacitive Reactance}
-For \(C=\SI{100}{\pico\farad}\) and \(f=\SI{14.2}{\mega\hertz}\),
-\[
-X_C=\frac{1}{2\pi f C}=\SI{112}{\ohm}.
-\]
-The signed impedance is capacitive:
-\[
-Z_C=-\jj\SI{112}{\ohm}.
-\]
+\chapter{Cross-Chapter Practice Problems}
+\label{app:practice}
+The problems below are the point of the book: each one needs results from
+\emph{several} chapters chained together, which is what real analysis looks like and
+what the individual chapters cannot exercise on their own. Attempt each before reading
+the solution, and note which chapters you had to visit.
 
-\section{RLC Bandwidth}
-For \(L=\SI{2.2}{\micro\henry}\), \(C=\SI{150}{\pico\farad}\), and
-\(R=\SI{3}{\ohm}\),
-\[
-f_0\approx \SI{8.76}{\mega\hertz},
-\qquad
-Q_s\approx 40.4,
-\qquad
-BW\approx \SI{217}{\kilo\hertz}.
-\]
+\section{A Coupling Capacitor's Low-Frequency Loss}
+\emph{Uses \cref{ch:rc,ch:splane}.} An audio stage is coupled through a capacitor into
+a \SI{10}{\kilo\ohm} load, forming a high-pass. (a) Choose \(C\) for a corner at
+\SI{100}{\hertz}. (b) How much is a \SI{50}{\hertz} hum component attenuated?
 
-\section{SWR from Reflection Coefficient}
-For \(|\Gamma|=0.2\),
+\subsection*{Solution}
+(a) The corner of a first-order RC is \(f_c=1/(2\pi RC)\)
+(\cref{ch:rc}), so
 \[
-\mathrm{SWR}=\frac{1+0.2}{1-0.2}=1.5.
+C=\frac{1}{2\pi R f_c}=\frac{1}{2\pi(10^4)(100)}\approx\SI{159}{\nano\farad}.
 \]
-The reflected power fraction is \(|\Gamma|^2=0.04\), or \(4\%\).
+(b) The high-pass magnitude is \(|G|=\omega\tau/\sqrt{1+(\omega\tau)^2}\)
+(\cref{sec:rc-freq}). At \SI{50}{\hertz}, \(\omega\tau=2\pi(50)(1.59\times10^{-3})=0.5\), so
+\[
+|G|=\frac{0.5}{\sqrt{1.25}}=0.447
+\qquad\Longrightarrow\qquad
+20\log_{10}(0.447)\approx-\SI{7.0}{\decibel}.
+\]
+One octave below the corner costs about \SI{7}{\decibel}---which is why a coupling
+corner is placed well below the lowest wanted frequency, not at it.
+
+\section{Designing a Trap to a Bandwidth Specification}
+\emph{Uses \cref{ch:rlc,ch:filters}.} A series-LC trap must notch
+\SI{7.1}{\mega\hertz} using \(L=\SI{2.2}{\micro\henry}\), and its half-power width
+must be about \SI{50}{\kilo\hertz}. Find \(C\), the required \(Q\), the series
+resistance that produces it, and the pole locations.
+
+\subsection*{Solution}
+From \(\omega_0=1/\sqrt{LC}\) (\cref{ch:rlc}), with
+\(\omega_0=2\pi(7.1\times10^6)=\SI{4.46e7}{\radian\per\second}\),
+\[
+C=\frac{1}{\omega_0^2L}\approx\SI{228}{\pico\farad}.
+\]
+The bandwidth specification fixes \(Q\) through \(BW\approx f_0/Q\):
+\[
+Q=\frac{f_0}{BW}=\frac{7.1\times10^6}{5.0\times10^4}=142 .
+\]
+Then \(Q_s=\omega_0L/R\) gives the allowed resistance, using
+\(\omega_0L=\SI{98.1}{\ohm}\):
+\[
+R=\frac{\omega_0L}{Q}=\frac{98.1}{142}\approx\SI{0.69}{\ohm}.
+\]
+Finally \(\alpha=R/2L=\SI{1.57e5}{\per\second}\) and \(\omega_d\approx\omega_0\)
+(since \(\zeta=1/2Q\) is tiny), so
+\[
+s\approx-1.57\times10^{5}\pm\jj\,4.46\times10^{7}\ \si{\radian\per\second}.
+\]
+Note what the specification really demanded: less than an ohm of total loss,
+\emph{including} the coil's own resistance. That is the practical reason narrow traps
+need high-\(Q\) components---the pole must sit that close to the \(\jj\omega\) axis.
+
+\section{Loading an Oscillator Tank}
+\emph{Uses \cref{ch:rlcpar,ch:active}.} The same \(L=\SI{2.2}{\micro\henry}\) and
+\(C=\SI{228}{\pico\farad}\) form the \emph{parallel} tank of an oscillator, with an
+unloaded \(Q\) of \(200\). (a) What impedance does the tank present at resonance?
+(b) The following stage loads it with \SI{5}{\kilo\ohm}. What are the loaded \(Q\) and
+bandwidth, and why does it matter for phase noise?
+
+\subsection*{Solution}
+(a) For the parallel circuit \(Q_p=R_p/(\omega_0L)\) (\cref{ch:rlcpar}), so the
+equivalent shunt loss resistance is
+\[
+R_p=Q_p\,\omega_0L=(200)(98.1)\approx\SI{19.6}{\kilo\ohm},
+\]
+and that is the (purely resistive) impedance at resonance---a \emph{maximum}, the
+mirror of the series trap above.
+
+(b) The load appears in parallel with \(R_p\) (\cref{ch:resistive}):
+\[
+R_{\text{tot}}=\frac{(19.6)(5.0)}{19.6+5.0}\approx\SI{3.98}{\kilo\ohm},
+\qquad
+Q_{\text{loaded}}=\frac{R_{\text{tot}}}{\omega_0L}=\frac{3980}{98.1}\approx41,
+\]
+so \(BW\approx f_0/Q\approx\SI{175}{\kilo\hertz}\). Loading cut \(Q\) by a factor of
+five. Since \(Q\) measures how tightly the pole pair is pinned to the \(\jj\omega\)
+axis (\cref{ch:active}), a heavily loaded tank lets the poles wander and the
+oscillator's spectrum smears---worse phase noise. The fix is to couple the next stage
+loosely, trading signal amplitude for spectral purity.
+
+\section{An Antenna, a Line, and a Matching Section}
+\emph{Uses \cref{ch:rlc,ch:filters,ch:lines}.} An antenna measures
+\(Z=35+\jj40\ \si{\ohm}\) at the operating frequency, fed with \SI{50}{\ohm} coax.
+(a) Find \(|\Gamma|\) and SWR. (b) The antenna is then shortened until it is resonant,
+giving \(Z=\SI{35}{\ohm}\) purely real. Now what is the SWR? (c) What quarter-wave
+section would match the resonant antenna exactly?
+
+\subsection*{Solution}
+(a) With \(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\) (\cref{ch:lines}),
+\[
+\Gamma=\frac{-15+\jj40}{85+\jj40},
+\qquad
+|\Gamma|=\frac{\sqrt{15^2+40^2}}{\sqrt{85^2+40^2}}=\frac{42.7}{93.9}=0.455,
+\qquad
+\mathrm{SWR}=\frac{1.455}{0.545}\approx2.7 .
+\]
+(b) At resonance the reactance is gone (\cref{ch:rlc}) and only the resistive
+mismatch remains:
+\[
+|\Gamma|=\left|\frac{35-50}{35+50}\right|=0.176,
+\qquad
+\mathrm{SWR}=\frac{1.176}{0.824}\approx1.43 .
+\]
+Tuning out the reactance did most of the work---but not all, because
+\(\SI{35}{\ohm}\ne\SI{50}{\ohm}\). This is exactly the two-part job a matching network
+does (\cref{ch:filters}): cancel the reactance, then transform the resistance.
+
+(c) The quarter-wave section needs the geometric mean (\cref{ch:lines}):
+\[
+Z_t=\sqrt{Z_0Z_L}=\sqrt{(50)(35)}\approx\SI{41.8}{\ohm}.
+\]
+Note that (b) and (c) are the two halves in order: reactance first, resistance second.
+
+\section{What the Scope Is Really Showing You}
+\emph{Uses \cref{ch:resistive,ch:rlc,ch:measurement}.} You probe a node whose
+Th\'evenin resistance is \SI{47}{\kilo\ohm} with a \(10\!:\!1\) probe
+(\SI{10}{\mega\ohm}, \SI{12}{\pico\farad} tip) using a three-inch ground lead.
+(a) How much does the probe load the node at DC? (b) A fast edge shows overshoot and
+ringing that the circuit should not produce. Where does it come from?
+
+\subsection*{Solution}
+(a) The probe is a load on the node's Th\'evenin equivalent
+(\cref{ch:measurement}):
+\[
+\frac{V_{\text{meas}}}{V_{\text{true}}}=\frac{R_{\mathrm{in}}}{R_{\mathrm{in}}+R_{Th}}
+=\frac{10\times10^6}{10\times10^6+47\times10^3}=99.5\%,
+\]
+so the DC reading is only \(0.5\%\) low---acceptable.
+
+(b) The ringing is the measurement setup, not the circuit. Three inches of ground lead
+is about \(L=\SI{60}{\nano\henry}\), which forms a series LC loop with the probe's
+\SI{12}{\pico\farad} tip capacitance. By \(f_0=1/(2\pi\sqrt{LC})\)
+(\cref{ch:rlc}),
+\[
+f_0=\frac{1}{2\pi\sqrt{(60\times10^{-9})(12\times10^{-12})}}\approx\SI{188}{\mega\hertz},
+\]
+and the loop has almost no resistance, so its \(Q\) is high and any fast edge
+shock-excites it. Shorten the ground path---a one-inch spring tip moves the resonance
+above \SI{350}{\mega\hertz}, out of the way.
+
+\section{How Many Poles Does the Filter Need?}
+\emph{Uses \cref{sec:decibels,ch:filters}.} A transmitter low-pass must attenuate the
+second harmonic---at twice the cutoff frequency---by at least \SI{40}{\decibel}. What
+Butterworth order is required?
+
+\subsection*{Solution}
+Far above cutoff an \(n\)-pole filter rolls off at \(-20n\ \si{\decibel}\) per decade
+(\cref{ch:filters}). One octave is \(\log_{10}2\approx0.301\) decade, so the
+attenuation an octave past cutoff is about
+\[
+20n\,(0.301)=6.02n\ \si{\decibel}.
+\]
+Setting \(6.02n\ge40\) gives \(n\ge6.6\), so \textbf{seven poles}. (The exact
+Butterworth expression \(|G|^2=1/[1+(f/f_c)^{2n}]\) gives \(n=6.64\), the same
+answer---the asymptotic estimate is reliable this far out.) Seven reactive elements is
+a lot, which is why real transmitter filters often add \emph{zeros} instead: an
+elliptic design places a transmission zero right at the harmonic and reaches
+\SI{40}{\decibel} with far fewer parts (\cref{ch:filters}).
+
+\section{An L-Network and Its Bandwidth Cost}
+\emph{Uses \cref{ch:filters,ch:rlc}.} Match a \SI{50}{\ohm}
+source to a \SI{1500}{\ohm} load with an L-network. Find the network \(Q\), both
+reactances, and comment on the bandwidth.
+
+\subsection*{Solution}
+From \cref{ch:filters},
+\[
+Q=\sqrt{\frac{R_{\text{hi}}}{R_{\text{lo}}}-1}=\sqrt{\frac{1500}{50}-1}=\sqrt{29}\approx5.4,
+\]
+\[
+X_{\text{series}}=Q\,R_{\text{lo}}=(5.4)(50)\approx\SI{269}{\ohm},
+\qquad
+X_{\text{shunt}}=\frac{R_{\text{hi}}}{Q}=\frac{1500}{5.4}\approx\SI{279}{\ohm}.
+\]
+The \(Q\) is not a free choice---the resistance ratio fixed it. And since a loaded
+\(Q\) of \(5.4\) means a fractional bandwidth of roughly \(1/Q\approx18\%\)
+(\cref{ch:rlc}), this match holds over a useful range but must be retuned across
+bands. A \(\pi\) or T network would let you choose \(Q\) independently of the
+resistance ratio, buying either wider bandwidth or sharper harmonic rejection as
+needed.
