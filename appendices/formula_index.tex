@@ -18,7 +18,9 @@ Formula & Use & Derived in \\
 \(E_C=\frac{1}{2}CV^2\) & Capacitor energy. & \cref{ch:foundations} \\
 \(E_L=\frac{1}{2}LI^2\) & Inductor energy. & \cref{ch:foundations} \\
 \(f_{\mathrm{SRF}}=1/(2\pi\sqrt{L_sC})\) & Self-resonance of a real part; above it the part inverts type. & \cref{sec:selfresonance} \\
-\(R_{\mathrm{AC}}\propto\sqrt f\) & Skin effect raises AC resistance with frequency. & \cref{sec:selfresonance} \\
+\(\delta=\sqrt{2/(\omega\mu\sigma)}=1/\sqrt{\pi f\mu\sigma}\) & Skin depth, from the diffusion equation; \SI{66}{\micro\meter} in copper at \SI{1}{\mega\hertz}. & \cref{sec:selfresonance} \\
+\(R_{\mathrm{AC}}\propto1/\delta\propto\sqrt f\) & Skin effect raises AC resistance; \(R_{\mathrm{AC}}/R_{\mathrm{DC}}\approx a/2\delta\). & \cref{sec:selfresonance} \\
+\(f_{\text{peak}}=f_{\mathrm{SRF}}/\sqrt5\) & Where a coil's \(Q\) peaks: \(\sqrt f\) rise against the \(C_p\) fall. & \cref{sec:selfresonance} \\
 \(R_{\mathrm{eq}}=\sum R_k\), \(1/C_{\mathrm{eq}}=\sum 1/C_k\) & Series combining (parallel is the dual). & \cref{ch:resistive} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Decibels}}\\

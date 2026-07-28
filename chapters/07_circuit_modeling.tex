@@ -99,15 +99,119 @@ and those oppose the current flow most strongly at the center. The net effect is
 that high-frequency current is pushed out into a thin surface layer---the
 \textbf{skin depth}---so the cross-section actually carrying current shrinks as
 frequency rises. Since resistance goes inversely with area, the AC resistance
-climbs, roughly as
+climbs. \emph{How fast} it climbs is worth deriving rather than quoting, because the
+answer is a law the rest of the book leans on in four places.
+
+\subsubsection*{The Field Diffuses into the Metal}
+Inside a good conductor the current is Ohmic, \(J=\sigma E\), and the displacement
+current is utterly negligible---for copper, \(\sigma\gg\omega\varepsilon\) until far
+past microwaves. Faraday's law couples the electric and magnetic curls, and
+eliminating the magnetic field between them leaves one equation for the current with
+\emph{no wave term at all}:
 \[
-R_{\mathrm{AC}}\propto\sqrt{f} .
+\frac{\partial^2 J}{\partial x^2}=\mu\sigma\,\frac{\partial J}{\partial t},
 \]
-Three consequences the rest of the book uses: an inductor's \(Q=\omega_0L/R\) does
-\emph{not} improve indefinitely with frequency, because \(R\) is rising too;
-RF conductors are stranded, tubular, or silver-plated, since only the surface
-matters; and a transmission line's attenuation inherits the same \(\sqrt f\) law
-(\cref{sec:lineloss}).
+taking the conductor to fill \(x\ge0\) with current flowing along its surface. That
+is a \textbf{diffusion} equation---the same form as heat spreading through a wall.
+Fields do not propagate into a conductor, they soak in.
+
+Now apply the move this book uses everywhere: look at one frequency at a time, so
+\(J=\hat J(x)\,\ee^{\jj\omega t}\) and \(\partial/\partial t\to\jj\omega\)
+(\cref{ch:ac}). The partial differential equation becomes an ordinary one,
+\[
+\frac{\dd^2\hat J}{\dd x^2}=\jj\omega\mu\sigma\,\hat J\equiv k^2\hat J,
+\qquad
+k=\sqrt{\jj\omega\mu\sigma} .
+\]
+Everything now turns on \(\sqrt{\jj}\), which \cref{ch:complex} supplies:
+\(\jj=1\angle90^\circ\), so \(\sqrt{\jj}=1\angle45^\circ=(1+\jj)/\sqrt2\). Hence
+\[
+k=\frac{1+\jj}{\delta},
+\qquad
+\boxed{\;\delta=\sqrt{\frac{2}{\omega\mu\sigma}}=\frac{1}{\sqrt{\pi f\mu\sigma}}\;}
+\]
+and keeping the root that decays into the metal,
+\[
+J(x,t)=J_0\,\ee^{-x/\delta}\,\ee^{\jj(\omega t-x/\delta)} .
+\]
+Read the two exponentials separately. The amplitude falls by a factor \(\ee\) in one
+skin depth; the phase lags by one radian over that same distance. The decay length
+and the phase-slip length are \emph{equal}, and the reason is precisely that
+\(\sqrt{\jj}\) has equal real and imaginary parts---a \(45^\circ\) angle from
+\cref{ch:complex} showing up as a physical fact about copper. Current deep in a thick
+conductor is not merely smaller, it is out of phase with the surface current, which
+is why it contributes so little.
+
+For copper (\(\sigma=\SI{5.8e7}{\siemens\per\meter}\), \(\mu=\mu_0\)):
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Frequency & \SI{1}{\kilo\hertz} & \SI{1}{\mega\hertz} & \SI{7.1}{\mega\hertz} & \SI{144}{\mega\hertz} \\
+\midrule
+\(\delta\) & \SI{2.1}{\milli\meter} & \SI{66}{\micro\meter} & \SI{25}{\micro\meter} & \SI{5.5}{\micro\meter} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At \SI{144}{\mega\hertz} the current rides in a layer thinner than a sheet of paper.
+
+\subsubsection*{Hence the \texorpdfstring{\(\sqrt f\)}{sqrt f} Law}
+Take a round wire of radius \(a\gg\delta\). The current is confined to an annulus of
+thickness about \(\delta\), whose area is \(2\pi a\delta\), so
+\[
+R_{\mathrm{AC}}=\frac{\ell}{\sigma\,2\pi a\delta}\propto\frac{1}{\delta}\propto\sqrt f ,
+\]
+because \(\delta\propto1/\sqrt f\). Compared with the DC resistance, which uses the
+whole area \(\pi a^2\),
+\[
+\frac{R_{\mathrm{AC}}}{R_{\mathrm{DC}}}\approx\frac{a}{2\delta} ,
+\]
+so \SI{1}{\milli\meter}-diameter copper wire carries about \(3.8\times\) its DC
+resistance at \SI{1}{\mega\hertz} and \(45\times\) at \SI{144}{\mega\hertz}. This is
+the law used later for coil \(Q\), for capacitor loss at RF, and---twice---for
+feed-line attenuation (\cref{sec:lineloss}), and it is now earned rather than
+asserted. The practical corollaries follow immediately: RF conductors are stranded,
+tubular, or silver-plated, because only a few skin depths of surface do any work, and
+plating a \emph{worse} conductor with a better one is not a cheat.
+
+\subsubsection*{Why Coil \texorpdfstring{\(Q\)}{Q} Rises and Then Falls}
+The two parasitics of this section now work against each other, and together they
+predict something a datasheet plots. An inductor's \(Q=\omega L/R\) climbs in
+proportion to \(f\) while \(R\) is still its DC value; once skin effect takes over,
+\(R\propto\sqrt f\) and
+\[
+Q_0=\frac{\omega L}{R}\propto\frac{f}{\sqrt f}=\sqrt f ,
+\]
+so \(Q\) still rises, but at half the slope on log axes. It cannot rise forever,
+though, because the inter-turn capacitance \(C_p\) is also present. Put \(L\) in
+series with \(R\), shunt the pair with \(C_p\), and take the ratio of the parts of the
+resulting impedance:
+\[
+Q_{\mathrm{eff}}=\frac{\operatorname{Im}Z}{\operatorname{Re}Z}
+=Q_0\left[\left(1-\left(\frac{f}{f_{\mathrm{SRF}}}\right)^{2}\right)-\frac{R^2C_p}{L}\right]
+\approx Q_0\left(1-\left(\frac{f}{f_{\mathrm{SRF}}}\right)^{2}\right),
+\]
+the last step dropping a term that is negligible whenever \(Q\) is worth having. Note
+the check: \(Q_{\mathrm{eff}}\to0\) at \(f_{\mathrm{SRF}}\), as it must, because that
+is exactly where the coil is purely resistive. Now combine the two: with
+\(Q_0\propto\sqrt f\), maximizing \(\sqrt f\,(1-f^2/f_{\mathrm{SRF}}^2)\) gives
+\(1=5f^2/f_{\mathrm{SRF}}^2\), so
+\[
+f_{\text{peak}}=\frac{f_{\mathrm{SRF}}}{\sqrt5}\approx0.45\,f_{\mathrm{SRF}} .
+\]
+A coil's \(Q\) peaks a little under halfway to its self-resonance, then collapses.
+Both parasitics of this subsection were needed to say that, and neither was
+adjustable.
+
+\begin{exambox}
+On skin effect the pool (group E5D) wants the \emph{direction} and the \emph{cause},
+never the exponent: resistance rises with frequency because the current flows nearer
+the surface. The first sentence of this subsection answers that. Everything after it
+is here so the \(\sqrt f\) law---which the pool does not give you---is available when
+a question turns on feed-line loss rising with frequency, and so that ``skin effect''
+is an answer you can justify rather than one you recognize.
+\end{exambox}
 
 \begin{workedbox}[: where a bypass capacitor quits]
 A \(\SI{10}{\nano\farad}\) ceramic capacitor with \SI{10}{\milli\meter} of total lead

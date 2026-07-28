@@ -302,7 +302,10 @@ met.
 
 Conductor loss grows because of \emph{skin effect}: at higher frequency the current
 crowds into a thinner outer layer of the conductor, so the usable cross-section
-shrinks and \(R'\) rises roughly as \(\sqrt f\). Dielectric loss grows because the
+shrinks and \(R'\) rises as \(\sqrt f\). That exponent is not a fit---
+\cref{sec:selfresonance} derived it from the skin depth
+\(\delta=\sqrt{2/\omega\mu\sigma}\), and a conductor carrying its current in a layer
+of thickness \(\delta\) has \(R\propto1/\delta\propto\sqrt f\). Dielectric loss grows because the
 insulation's leakage tracks the displacement current through it, making \(G'\)
 roughly proportional to \(f\).
 

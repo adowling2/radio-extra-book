@@ -7,17 +7,18 @@ Last updated: 2026-07-28 (Round 4, plus the Round 5 environment check below).
 
 **Start-up check on the new machine:** `make all` and `make figures` both succeed;
 figures regenerate byte-identically; `./scripts/check.sh` prints **ALL CHECKS PASSED**
-(186 pages, 23 chapters, 29 figures, 51 section labels, 65 glossary entries). One
+(188 pages, 23 chapters, 29 figures, 51 section labels, 65 glossary entries). One
 portability bug was fixed in the checker itself — see §5b.
 
 **The question pools are now in the repo** (§5a), with greppable markdown extracts of
 their circuit questions. Pool citations are verifiable again; the ARRL manual is still
 gitignored, so the `notes/` audits still cannot be re-run.
 
-**Ledger progress: A1 and A2 done** — the exact half-power bandwidth
-(`sec:halfpower`) and the series↔parallel transformation (`sec:seriesparallel`,
-which also made `sec:lnetwork` a derivation). See §6 for what A3–A5 are and the
-LEDGER in `ARRL-GAP-PROPOSAL.md` for the running score.
+**Ledger progress: A1, A2 and A3 done** — the exact half-power bandwidth
+(`sec:halfpower`), the series↔parallel transformation (`sec:seriesparallel`, which
+also made `sec:lnetwork` a derivation), and skin depth (in `sec:selfresonance`).
+A3 also caught a wrong claim of ours in Ch 22 about why coil `Q` falls. See §6 for
+A4–A5 and the LEDGER in `ARRL-GAP-PROPOSAL.md` for the running score.
 
 Per-round markup plans live alongside this file and are the archive, not the status:
 `revision-notes.md` (Round 1), `revision-notes-round2.md` (Round 2),
@@ -43,7 +44,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 186 pages, 29 figures.**
+- **23 chapters + 3 appendices, five parts, 188 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -245,7 +246,7 @@ Round 4 hand-filtered.
 **See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
 the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
 the General-pool check, and the four ARRL chapter audits — against the book as built,
-so nothing can be silently dropped. Current score: **28 done, 29 open**, with the open
+so nothing can be silently dropped. Current score: **29 done, 28 open**, with the open
 items ranked in four tiers.
 
 The highest-priority open items are **Tier A: things the book asserts itself**, and so
@@ -443,7 +444,7 @@ Fixing them also *removes* text in a couple of cases.
 |---|---|---|---|
 | ✅ A1 | **Exact half-power bandwidth** — done (`sec:halfpower`) | `ch:rlc` §Q and Bandwidth | `\|Z\|² = R²[1 + Q²(ω/ω₀ − ω₀/ω)²]`; half power gives a quadratic whose two roots **differ by exactly `ω₀/Q`** and **multiply to exactly `ω₀²`**. So `BW = f₀/Q` is an equality for the current response, and the band edges straddle resonance *geometrically*: `f₀ = √(f₁f₂)`. Quantify the error in arithmetic centring (≈`1/8Q²`). Then relax the hedge in the four other places that state it. |
 | ✅ A2 | **Series↔parallel, `R_p = (1+Q²)R_s`** — done (`sec:seriesparallel`) | `ch:rlcpar`, after §Why Q Inverts | Equate `1/Z_series` with `Y_parallel` at one frequency. Retires three of *our* assertions: a real tank's `Z_max` is `Q²R_s` (not "approximately the circuit resistance"); `Q_s` and `Q_p` are one quantity seen through this map; and solving `R_hi = R_lo(1+Q²)` **is** `ch:filters`'s asserted L-network `Q`. Cross-ref from Ch 23 problem 3, which currently does this conversion as an unexplained step. |
-| A3 | **Skin depth** | `sec:selfresonance` | `∂²J/∂x² = μσ ∂J/∂t` with `e^{jωt}` gives `J ∝ e^{−x/δ}e^{−jx/δ}`, `δ = √(2/ωμσ)`. Copper: 66 µm at 1 MHz, 5.5 µm at 144 MHz. Then `R_AC ∝ √f` from an annulus of thickness `δ` — the law we now assert in **four** places. Also explains why coil `Q ∝ √f` rises then falls. |
+| ✅ A3 | **Skin depth** — done (`sec:selfresonance`) | `sec:selfresonance` | `∂²J/∂x² = μσ ∂J/∂t` with `e^{jωt}` gives `J ∝ e^{−x/δ}e^{−jx/δ}`, `δ = √(2/ωμσ)`. Copper: 66 µm at 1 MHz, 5.5 µm at 144 MHz. Then `R_AC ∝ √f` from an annulus of thickness `δ` — the law we now assert in **four** places. Also explains why coil `Q ∝ √f` rises then falls. |
 | A4 | **Conduction-angle efficiency** | `sec:classes` | Fourier `a₀`/`a₁` of a cosine truncated at half-angle `θ`; `η = ½(a₁/a₀)(V₁/V_dc)` returns ½ at `θ=180°`, ¼ resistively loaded (the asserted 25 %), `π/4 = 78.5 %` at `θ=90°`. For switching, `p = vi` with an ideal switch forces one factor to zero always, so `∫p dt = 0` identically. Replaces four numbers currently on ARRL's authority. |
 | A5 | **Push-pull even-order cancellation** | `sec:classes` + `sec:mixers` | `f(x) − f(−x) = 2Σ_{n odd}aₙxⁿ`. Even orders cancel *identically for any f*, which is why the pair must be **matched** rather than specially biased. Two corollaries: push-pull does **nothing** for third-order IMD (the product `sec:powerseries` says matters), and the same algebra is why a *balanced* mixer nulls carrier feedthrough — which `sec:mixers` currently takes on faith. |
 

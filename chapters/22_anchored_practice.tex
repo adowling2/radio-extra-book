@@ -113,10 +113,15 @@ electrically short at HF and a significant fraction of a wavelength at VHF.
 \emph{Parasitics and skin effect} are where the lumped-element idealization breaks
 down, and both are derived in \cref{sec:selfresonance}: every real component has a
 self-resonant frequency, above which it behaves as its \emph{opposite} type, and skin
-effect drives its AC resistance up as \(\sqrt f\). For the exam the two consequences
+effect drives its AC resistance up as \(\sqrt f\)---the latter from \(\delta=\sqrt{2/\omega\mu\sigma}\),
+so the exponent is derived and not quoted. For the exam the two consequences
 worth carrying are that a bypass capacitor or an RF choke simply stops working above
-its own \(f_{\mathrm{SRF}}\), and that a coil's \(Q\) falls at the top of its range
-because \(R\) is rising while \(\omega L\) is. \Cref{ch:measurement} runs the same
+its own \(f_{\mathrm{SRF}}\), and that a coil's \(Q\) peaks near
+\(0.45f_{\mathrm{SRF}}\) and falls above it. Be careful with the reason for that
+second one: skin effect alone would still let \(Q\propto\sqrt f\) keep \emph{rising},
+because \(\omega L\) grows faster than \(\sqrt f\) does. What pulls \(Q\) back down is
+the inter-turn capacitance, which drives \(Q_{\mathrm{eff}}\) to zero at
+\(f_{\mathrm{SRF}}\). \Cref{ch:measurement} runs the same
 effect in reverse when it computes a probe ground lead's resonance, and
 \cref{sec:lineloss} inherits the \(\sqrt f\) law as feed-line attenuation.
 
