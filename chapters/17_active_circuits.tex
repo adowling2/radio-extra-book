@@ -399,6 +399,11 @@ location and lower phase noise.
 \item[RC phase-shift / Wien-bridge] use RC networks to reach the required loop
 phase; common at audio frequencies.
 \end{description}
+Each of these fixes \(\omega_{\text{osc}}\) by construction, which is fine for a
+single frequency and useless for a transceiver that must cover a band in small steps.
+\Cref{sec:pll} takes the next step: wrapping a \emph{second} loop around the
+oscillator so that where its poles sit becomes a controlled variable rather than a
+property of the parts.
 
 \begin{physicalbox}
 Phase noise is the frequency-domain fingerprint of how firmly the poles are
@@ -413,6 +418,184 @@ offset and scales as \(1/Q_L^2\)---\emph{doubling the loaded \(Q\) buys
 \SI{6}{\decibel}}. It also shows what that costs a receiver, since a noisy local
 oscillator raises the apparent noise floor near strong signals.
 \end{physicalbox}
+
+\section{The Phase-Locked Loop}
+\label{sec:pll}
+An oscillator places its poles on the \(\jj\omega\) axis; the obvious next question is
+whether you can \emph{control} where on the axis they sit. A \textbf{phase-locked loop}
+(PLL) does exactly that, and it is the most literal control loop in radio---a servo
+whose controlled variable is phase.
+
+Three blocks (\cref{fig:pll}). A \textbf{phase detector} compares the input phase with
+the oscillator's and outputs a voltage proportional to the difference, with gain
+\(K_d\) volts per radian. A \textbf{loop filter} \(F(s)\) smooths that error. And a
+\textbf{voltage-controlled oscillator} (VCO) converts the filtered voltage into a
+frequency, with gain \(K_v\) radians per second per volt.
+
+\subsection{Why the Loop Has a Free Integrator}
+The one physical insight is in that last block. A VCO's control voltage sets its
+\emph{frequency}, but the phase detector compares \emph{phase}---and phase is the
+integral of frequency:
+\[
+\phi_{\mathrm{out}}(t)=\int K_v\,v(t)\,\dd t
+\qquad\Longrightarrow\qquad
+\Phi_{\mathrm{out}}(s)=\frac{K_v}{s}\,V(s).
+\]
+\emph{A VCO is an integrator.} That is the whole reason a PLL behaves the way it does,
+and it is invisible if you think of the VCO as merely ``a tunable oscillator.'' The
+loop gain therefore carries a free \(1/s\):
+\[
+\boxed{\;L(s)=\frac{K_dK_vF(s)}{s}\;}
+\]
+
+\subsection{What ``Locked'' Actually Means}
+Now read the consequences off \cref{ch:feedback}. The phase error obeys
+\(\Phi_e/\Phi_{\mathrm{in}}=1/(1+L)\), and with \(K=K_dK_vF(0)\) the DC loop gain,
+\[
+\frac{\Phi_e}{\Phi_{\mathrm{in}}}=\frac{s}{s+K}.
+\]
+Apply the final-value theorem to two kinds of input:
+\begin{description}
+\item[A phase step] (the input phase jumps by \(\Delta\phi\)) leaves \emph{zero}
+steady-state error. The loop pulls the phase back exactly.
+\item[A frequency step] (the input frequency moves by \(\Delta\omega\), so its phase
+ramps) leaves a \emph{constant} phase error
+\[
+\phi_e(\infty)=\frac{\Delta\omega}{K}.
+\]
+\end{description}
+That second result is the important one and it is easy to state carelessly. The
+\emph{frequency} error goes to zero---the loop tracks the input frequency
+exactly---but a \emph{static phase offset} remains, proportional to how far the VCO had
+to be pulled and inversely proportional to the DC loop gain. So ``locked'' means
+frequencies equal, not phases equal, and high loop gain is what makes the residual
+offset small. (Adding a second integrator inside \(F(s)\)---a \emph{type-2} loop, which
+is what real synthesizers use---drives that offset to zero as well, at the cost of the
+extra pole's phase lag.)
+
+\subsection{Loop Dynamics Are the Standard Second-Order System}
+Take the simplest useful filter, a single pole \(F(s)=1/(1+s/\omega_f)\). Then
+\(1+L=0\) gives
+\[
+s^2+\omega_f s+K\omega_f=0,
+\]
+which is \cref{ch:linsys}'s standard form with
+\[
+\omega_n=\sqrt{K\omega_f},
+\qquad
+\zeta=\frac{1}{2}\sqrt{\frac{\omega_f}{K}} .
+\]
+Everything about the loop's transient behavior now follows from Part~II with no extra
+work: how fast it acquires lock is \(\omega_n\), whether it overshoots and rings on the
+way is \(\zeta\), and---note the sign---\emph{raising the loop gain lowers the
+damping}, exactly as \cref{ch:feedback} found for any second-order plant under
+proportional feedback. A synthesizer that rings after a band change is an underdamped
+servo, nothing more exotic.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,
+  block/.style={draw,minimum width=1.5cm,minimum height=0.8cm}]
+\node (in) at (0,0) {\(\phi_{\mathrm{in}}\)};
+\node[draw,circle,inner sep=1.4pt] (pd) at (1.6,0) {\(K_d\)};
+\node[block] (f) at (3.7,0) {\(F(s)\)};
+\node[block] (vco) at (6.3,0) {\(K_v/s\)};
+\node (out) at (8.6,0) {\(\phi_{\mathrm{out}}\)};
+\node[block] (div) at (4.6,-1.6) {\(\div N\)};
+\draw[->] (in) -- (pd);
+\draw[->] (pd) -- (f);
+\draw[->] (f) -- (vco);
+\draw[->] (vco) -- (out);
+\coordinate (tap) at (7.6,0);
+\draw[->] (tap) |- (div.east);
+\draw[->] (div.west) -| (pd.south);
+\node at (1.25,-0.32) {\small \(-\)};
+\node[align=center,font=\small,GuideBlue] at (1.6,0.62) {phase\\detector};
+\node[align=center,font=\small,GuideBlue] at (3.7,0.92) {loop\\filter};
+\node[align=center,font=\small,GuideBlue] at (6.3,0.92) {VCO\\(integrator)};
+\end{tikzpicture}
+\caption{Phase-locked loop. The input is a reference phase
+\(\phi_{\mathrm{in}}\) and the output is the VCO's phase \(\phi_{\mathrm{out}}\). The
+VCO contributes the \(1/s\) that makes this a type-1 servo; the optional \(\div N\) in
+the feedback path makes the output frequency \(N\) times the reference.}
+\label{fig:pll}
+\end{figure}
+
+\subsection{Two Jobs the Loop Does for Free}
+Because the loop equations are so simple, the PLL's two classic applications are
+immediate consequences rather than separate designs.
+
+\emph{Frequency synthesis.} Insert a divider \(\div N\) in the feedback path. Locked
+now means the \emph{divided} output tracks the reference, so
+\[
+f_{\mathrm{out}}=N\,f_{\mathrm{ref}} .
+\]
+Let \(f_{\mathrm{ref}}\) come from a crystal and the output inherits crystal accuracy
+while being tunable by changing an integer. That is a synthesizer, and it is why a
+modern transceiver has one crystal and thousands of usable frequencies.
+
+\emph{FM demodulation.} Suppose the input frequency wanders---which is exactly what a
+frequency-modulated signal does. For the loop to stay locked, the VCO must follow, so
+the control voltage must be whatever produces that frequency:
+\[
+v(t)=\frac{\omega_{\mathrm{in}}(t)-\omega_0}{K_v} .
+\]
+\emph{The control voltage is proportional to the input's instantaneous frequency
+deviation}---which is the demodulated audio. No detector, no discriminator: the
+demodulated signal is a byproduct of the loop doing its job, and it appears at the
+loop-filter output.
+
+\begin{controlsbox}
+\textbf{The loop's bandwidth is a filter on noise, and it points two ways.} Inside the
+loop bandwidth \(|L|\gg1\), so the output faithfully follows the reference: the
+reference's phase noise is \emph{passed} (and multiplied by \(N\), since multiplying
+frequency by \(N\) multiplies phase by \(N\)---worth \(20\log_{10}N\) decibels), while
+the VCO's own noise is suppressed by \(1/(1+L)\) exactly as \cref{ch:feedback}
+predicts. Outside the loop bandwidth \(|L|\ll1\), the loop cannot correct anything, so
+the VCO's noise passes unaltered.
+
+So a synthesizer's phase-noise spectrum has a characteristic shape---reference-dominated
+close to the carrier, VCO-dominated far out, often with a bump where the two cross near
+the loop bandwidth. It also explains a practical rule: a high division ratio \(N\)
+degrades close-in phase noise by \(20\log_{10}N\), which is why synthesizers at high
+output frequencies are noisier, and why \cref{sec:phasenoise}'s reciprocal mixing gets
+worse on the higher bands.
+\end{controlsbox}
+
+\begin{workedbox}[: a 2-metre synthesizer]
+A loop generates \SI{146.52}{\mega\hertz} from a \SI{15}{\kilo\hertz} reference, so
+\[
+N=\frac{146.52\times10^{6}}{15\times10^{3}}=9768 ,
+\]
+an integer, as a divider requires---which is precisely why reference frequencies are
+chosen to divide the channel spacing evenly. The reference's phase noise is multiplied
+by \(20\log_{10}(9768)\approx\SI{80}{\decibel}\) at the output---which is why the
+reference must be far quieter than the specification you actually want, and why
+fractional-\(N\) synthesizers (which allow a much higher reference frequency for the
+same step size) exist. Suppose the loop is designed with \(K=\SI{2e4}{\per\second}\)
+and \(\omega_f=\SI{5e3}{\radian\per\second}\). Then
+\[
+\omega_n=\sqrt{K\omega_f}=\SI{1e4}{\radian\per\second},
+\qquad
+\zeta=\tfrac12\sqrt{\omega_f/K}=\tfrac12\sqrt{0.25}=0.25,
+\]
+so \(Q=1/(2\zeta)=2\)---underdamped, and by \cref{fig:step2} it will overshoot and
+ring for a couple of cycles at about \SI{1.5}{\kilo\hertz} before settling. Raising
+\(K\) to reduce the static phase error would make that \emph{worse}, which is the
+design tension in one line.
+\end{workedbox}
+
+\begin{exambox}
+A phase-locked loop is a servo loop containing a phase detector, a loop filter (with
+amplifier), and a voltage-controlled oscillator. Its two examined applications are
+\textbf{frequency synthesis} and \textbf{FM demodulation}, and both fall out of the
+loop equations above. Two ranges are worth distinguishing: the \textbf{lock range} is
+how far the loop can hold once locked, set by the detector's usable span and the DC
+loop gain; the \textbf{capture range} is how far off it can be and still \emph{acquire}
+lock, which is narrower because acquisition requires the beat note between input and
+VCO to fall inside the loop filter's passband. Lock range is a linear result; capture
+range is not.
+\end{exambox}
 
 \section{Active Filters and Their Limits}
 Op-amps can implement active RC filters that synthesize the second-order pole

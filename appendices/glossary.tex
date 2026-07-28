@@ -30,6 +30,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Intercept point] Extrapolated level at which a distortion product would equal the wanted signal. A linearity coefficient expressed as a power, not an achievable operating point.
 \item[Intermodulation] Spurious \(mf_1\pm nf_2\) products created when two signals pass through a nonlinearity; the third-order pair \(2f_1-f_2\) and \(2f_2-f_1\) falls closest to the originals.
 \item[Loaded Q] Quality factor including external loading or coupling.
+\item[Lock range] How far a phase-locked loop can hold lock once acquired, set by the phase detector's usable span and the DC loop gain. Wider than the \emph{capture} range, which additionally requires the beat note to fall inside the loop filter's passband.
 \item[Loop gain] Gain around an opened feedback loop, \(L=A\beta\); sets stability and how insensitive the closed loop is to changes in the forward path. (Not to be confused with receiver \emph{desensitization}, an unrelated exam term meaning loss of sensitivity caused by a strong nearby signal.)
 \item[MDS] Minimum discernible signal: the input level arriving at the same strength as the noise, i.e.\ \(\mathrm{SNR}=\SI{0}{\decibel}\).
 \item[Neutralization] Deliberate cancellation of an amplifier's internal feedback path (usually a device capacitance) to stop self-oscillation.
@@ -39,6 +40,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Nyquist plot] Loop gain \(L(\jj\omega)\) drawn in the complex plane, on which both stability margins are clearances from the point \(-1\). Unrelated to the Nyquist \emph{sampling} theorem.
 \item[Phase margin] Amount by which loop phase exceeds \(-180^\circ\) at unity loop gain.
 \item[Phase noise] Random phase disturbance of an oscillator, appearing as skirts beside the carrier and quoted in dBc/Hz. Scales as \(1/Q_L^2\).
+\item[Phase-locked loop] Servo loop of phase detector, loop filter and voltage-controlled oscillator. The VCO integrates frequency into phase, so the loop always contains a free \(1/s\).
 \item[Phasor] Complex representation of sinusoidal magnitude and phase.
 \item[Pole] Root of a transfer-function denominator; equivalently an eigenvalue and a natural mode.
 \item[Quality factor \(Q\)] Sharpness of a resonance, \(Q=1/(2\zeta)=2\pi\times\) (energy stored)/(energy lost per cycle). \emph{Component} \(Q\) is one part's loss; see also Loaded \(Q\), Unloaded \(Q\).
@@ -63,6 +65,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Thermal noise] Noise from thermal motion of charge carriers; available power \(kTB\), i.e.\ \SI{-174}{dBm} per hertz at room temperature.
 \item[Ultimate rejection] The stopband attenuation floor a filter reaches far from its passband.
 \item[Unloaded Q] Quality factor due to internal resonator loss alone.
+\item[VCO] Voltage-controlled oscillator: frequency proportional to control voltage, hence an integrator in phase.
 \item[Velocity factor] \(VF=v_p/c\), how much slower a wave travels in a line than in free space.
 \item[Virtual ground] A node held near zero volts by feedback rather than by a physical connection.
 \item[Zero] Root of a transfer-function numerator; a frequency of null transmission (e.g.\ a trap).

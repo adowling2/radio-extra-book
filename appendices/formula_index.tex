@@ -32,7 +32,10 @@ Formula & Use & Derived in \\
 \(G_C=1/(1+RCs)\) & RC low-pass (output across \(C\)). & \cref{sec:rc-freq} \\
 \(G_R=RCs/(1+RCs)\) & RC high-pass (output across \(R\)). & \cref{sec:rc-freq} \\
 \addlinespace
-\(y=\sum_n G(\jj n\omega_0)c_n\ee^{\jj n\omega_0 t}\) & Fourier: \(G\) at the harmonics is the whole answer. & \cref{sec:fourier} \\
+\multicolumn{3}{@{}l}{\textbf{Signals and spectra}}\\
+\(x=\sum_n c_n\ee^{\jj n\omega_0t}\) & Fourier series of a periodic signal. & \cref{sec:fourier} \\
+\(y=\sum_n G(\jj n\omega_0)c_n\ee^{\jj n\omega_0 t}\) & \(G\) at the harmonics is the whole answer---the licence for analyzing one sinusoid at a time. & \cref{sec:fourier} \\
+\(x(t+T/2)=-x(t)\) & Half-wave symmetry forbids even harmonics (square wave). & \cref{sec:fourier} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Higher order: cascades, pole patterns, delay}}\\
 \(G=K\prod\frac{1}{1+\tau_ks}\prod\frac{\omega_{0j}^2}{s^2+2\zeta_j\omega_{0j}s+\omega_{0j}^2}\) & Factoring theorem: every real \(G(s)\) is first- and second-order sections. & \cref{sec:factoring} \\
@@ -82,6 +85,10 @@ Formula & Use & Derived in \\
 \(-R_f/R_{in}\), \(1+R_f/R_g\) & Inverting and non-inverting gains. & \cref{ch:active} \\
 \(L=-1\): \(|L|=1,\ \angle L=-180^\circ\) & Barkhausen oscillation condition. & \cref{ch:feedback} \\
 \(\omega_0=1/\sqrt{R_1R_2C_1C_2}\) & Sallen--Key corner frequency. & \cref{ch:active} \\
+\(L(s)=K_dK_vF(s)/s\) & PLL loop gain; the VCO supplies the free integrator. & \cref{sec:pll} \\
+\(\phi_e(\infty)=\Delta\omega/K\) & Static phase error of a type-1 loop (frequency locks exactly). & \cref{sec:pll} \\
+\(\omega_n=\sqrt{K\omega_f},\ \zeta=\tfrac12\sqrt{\omega_f/K}\) & PLL dynamics with a single-pole loop filter. & \cref{sec:pll} \\
+\(f_{\mathrm{out}}=Nf_{\mathrm{ref}}\) & Synthesizer; reference noise rises \(20\log_{10}N\). & \cref{sec:pll} \\
 \(f_{\mathrm{LO}}\pm f_{\mathrm{RF}}\) & Mixer output frequencies (nonlinear!). & \cref{sec:mixers} \\
 \(2f_{\mathrm{IF}}\) & Image offset from the wanted signal. & \cref{sec:mixers} \\
 \(2f_1-f_2,\ 2f_2-f_1\) & Third-order intermodulation products; the two-tone test. & \cref{sec:mixers} \\

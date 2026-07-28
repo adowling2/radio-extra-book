@@ -272,9 +272,17 @@ f_{\mathrm{out}}=f_{\mathrm{clk}}\,\frac{M}{2^N}.
 \]
 Because \(f_{\mathrm{clk}}\) can come from a crystal, the output inherits crystal
 stability while remaining tunable in steps of \(f_{\mathrm{clk}}/2^N\)---which is why
-DDS replaced the variable-frequency oscillator. The cost is spurious outputs: the
-accumulator's finite width means the phase advances in slightly wrong increments, and
-that periodic phase error appears as discrete spurs rather than as broadband noise.
+DDS replaced the variable-frequency oscillator. It is the digital alternative to the
+phase-locked synthesizer of \cref{sec:pll}: a DDS sets frequency by arithmetic and a
+PLL by a feedback loop, and the two are often combined, a PLL multiplying a
+DDS-generated reference.
+
+The accumulator only produces a rising \emph{phase}, so one more step is needed to get
+a waveform: the accumulator's value indexes a \textbf{lookup table} holding
+\emph{amplitude} samples of one cycle of the desired shape, and those samples feed a
+converter. Phase in, amplitude out. The cost is spurious outputs: the accumulator's
+finite width means the phase advances in slightly wrong increments, and that periodic
+phase error appears as discrete spurs rather than as broadband noise.
 
 \section{Worked Example}
 A direct-sampling receiver digitizes the whole HF spectrum with a 16-bit converter
