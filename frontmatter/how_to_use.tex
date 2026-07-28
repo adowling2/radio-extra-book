@@ -1,26 +1,40 @@
 \chapter*{How to Use This Book}
 \addcontentsline{toc}{chapter}{How to Use This Book}
-The book is organized in four parts, and how you read them depends on your goal:
+The book is organized in five parts, and how you read them depends on your goal:
 \begin{description}
 \item[Part I --- Exam-Ready Reference] a compact study guide. If the exam is close
 and you only need to refresh the \emph{circuit-theory} formulas, this part (with the
-practice in Part~IV) is the fastest route---but see the scope note in the preface:
+practice in Part~V) is the fastest route---but see the scope note in the preface:
 this book covers one portion of the exam, not all of it.
 \item[Part II --- Mathematical and Control-Theory Foundations] the generic
-toolkit: complex numbers and phasors; modeling first- and second-order linear
-systems (ODEs, state space, Laplace, block diagrams); frequency response, Bode
-plots, poles, zeros, and the s-plane; and feedback. Read this if you are rusty on
-control theory.
-\item[Part III --- The Circuits] each amateur-radio circuit built up as an
-instance of the Part~II toolkit. This is where the dynamical systems understanding
-(hopefully) happens.
-\item[Part IV --- Practice and Study] worked examples and reasoning through real
-question-pool items.
+toolkit, with no circuits assumed: complex numbers and phasors; modeling first- and
+second-order linear systems (ODEs, state space, Laplace, block diagrams); frequency
+response, Bode plots, poles, zeros, and the s-plane; feedback; and how all of it
+extends to higher order. Read this if you are rusty on control theory.
+\item[Part III --- Circuit Models] the simple circuits, built one at a time as
+instances of the Part~II toolkit: components and modeling, series and parallel
+networks, AC steady state, and then RC, RL, series RLC, and parallel RLC. This is
+where the dynamical systems understanding (hopefully) happens.
+\item[Part IV --- Applying the Circuit Models] what those simple circuits explain:
+filters and matching networks, transmission lines and antennas, active circuits and
+oscillators, and measurement. Almost nothing here is derived from scratch---the point
+is that the earlier models already contain the answers.
+\item[Part V --- Practice and Study] an exam map, reasoning through real
+question-pool items, and cross-chapter problems that each require several chapters at
+once.
 \end{description}
 
-Each circuit chapter in Part~III follows the same recipe:
+The division between Parts~III and~IV is the book's central claim: the tools of
+control theory describe simple circuits made of ideal components, and understanding
+those simple circuits---together with their extensions---is what makes filters,
+antennas, transmission lines, and the rest of the exam's circuit content
+intelligible rather than arbitrary.
+
+Each of the four circuit chapters in Part~III (RC, RL, series RLC, parallel RLC)
+follows the same recipe:
 \begin{enumerate}
-\item draw the schematic and name the energy-storage state variables;
+\item draw the schematic, name the energy-storage state variables, and say what the
+output is;
 \item apply KCL/KVL and the element laws to get the differential equation;
 \item write the state-space model and read off the poles;
 \item match it to the generic first- or second-order system of Part~II;
@@ -34,5 +48,5 @@ Throughout, colored sidebars separate the layers. \emph{Exam Relevance} and
 \emph{Units Check} and \emph{Advanced Note} are asides; and \emph{Worked Example}
 holds a calculation done in full. For a fast review, read the \emph{Exam Relevance}
 and \emph{Common Mistake} boxes first. The appendices add a formula index (with a
-column saying where each result is derived), a units and prefix reference, a
-glossary, and a set of cross-chapter practice problems.
+column saying where each result is derived), a units and prefix reference, and a
+glossary.

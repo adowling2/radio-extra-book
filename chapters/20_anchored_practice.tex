@@ -95,14 +95,30 @@ X_L=2\pi f L=2\pi(3.505\times10^6)(18\times10^{-6})\approx\SI{396}{\ohm},
 so \(Z\approx300+\jj396\,\si{\ohm}\)---first quadrant (resistance positive, reactance
 inductive/positive). The matching figure point is the one up and to the right.
 
-\section{RF Effects in Components (E5D)}
-These questions (skin effect, stray/distributed L and C, self-resonance) are
-where the lumped-element idealization of \cref{ch:foundations} breaks down. The
-recurring theme: at RF, a resistor has inductance, an inductor has
+\section{RF Effects in Components and Circuits (E5D)}
+This group has three distinct halves, and the book is strong on two of them.
+
+\emph{Real and reactive power} is \cref{ch:ac} directly: \(S=VI^{*}=P+\jj Q\), where
+\(P\) (watts) is dissipated and \(Q\) (VAR) merely shuttles in and out of storage each
+cycle, so a purely reactive load consumes no average power. Apparent power \(|S|\) in
+volt-amperes exceeds \(P\) whenever there is reactance.
+
+\emph{Electrical length} is \cref{ch:lines}: what matters at RF is length measured in
+wavelengths, \(\lambda=VF\,c/f\), not in metres---so the same conductor is
+electrically short at HF and a significant fraction of a wavelength at VHF.
+
+\emph{Parasitics and skin effect} are where the lumped-element idealization of
+\cref{ch:foundations} breaks down. At RF a resistor has inductance, an inductor has
 inter-winding capacitance, and a capacitor has lead inductance, so every real
-component has a self-resonant frequency above which it behaves as its
-\emph{opposite} type. This is the same ``modeling-assumption'' checklist as the
-troubleshooting chapter: ideal element, lumped, no parasitics.
+component has a self-resonant frequency above which it behaves as its \emph{opposite}
+type---the effect \cref{ch:measurement} exploits in reverse when it computes a probe
+ground lead's resonance. \textbf{Skin effect} is the related loss mechanism: at high
+frequency, induced eddy currents force conduction into a thin outer layer of the
+conductor, so the effective cross-section shrinks and the AC resistance rises roughly
+as \(\sqrt f\). This is why RF conductors are silver-plated or stranded rather than
+solid, and why a coil's \(Q\) falls at the top of its range. It is the same
+``modeling-assumption'' checklist as \cref{ch:measurement}: ideal element, lumped, no
+parasitics.
 
 \section{Filters and Matching (E7C, E9E)}
 A filter question is a pole/zero question: identify passband, stopband, cutoff,

@@ -1,0 +1,304 @@
+\chapter{Higher-Order Systems: Cascades, Pole Patterns, and Delay}
+\label{ch:highorder}
+Everything in Part~II so far has had one or two energy stores. Real radio circuits
+often have more: a five-pole filter, a three-stage amplifier, a feed line with
+infinitely many modes. This chapter closes Part~II by extending the toolkit to
+arbitrary order, and its thesis is deliberately anticlimactic---\emph{almost no new
+machinery is required}. Every high-order linear system factors into the first- and
+second-order pieces of \cref{ch:linsys}, and every high-order frequency response is
+those pieces' responses added up in decibels and degrees.
+
+That claim is worth a chapter precisely because it is so useful. It means the two
+systems you already understand are not special cases to be outgrown; they are the
+alphabet. It also settles three loose ends: where \(-20n\)~dB/decade comes from, why
+\cref{ch:feedback} insisted that instability needs three poles, and what ``linear
+phase'' means when a filter datasheet claims it.
+
+\section{Order Is the Number of Independent Energy Stores}
+The counting rule is the same one \cref{ch:linsys} used, just not stopped at two. A
+system with \(n\) independent energy stores has \(n\) state variables, so its state
+matrix \(A\) is \(n\times n\), its characteristic polynomial
+\(\det(sI-A)\) has degree \(n\), and it therefore has exactly \(n\) poles:
+\[
+\dot{\state}=A\state+Bu,
+\qquad
+\state\in\mathbb{R}^n
+\qquad\Longrightarrow\qquad
+n \text{ poles} .
+\]
+Nothing about \(n=5\) is harder than \(n=2\) in principle. What changes is that
+factoring a fifth-degree polynomial by hand is unpleasant---which is exactly why the
+next section matters.
+
+\section{Every High-Order System Is a Cascade of the Two You Know}
+\label{sec:factoring}
+Here is the structural fact that makes higher order tractable.
+
+A physical system has \emph{real} coefficients---resistances, inductances, masses are
+real numbers---so its characteristic polynomial has real coefficients. And a real
+polynomial's complex roots always occur in \textbf{conjugate pairs}: if
+\(\sigma+\jj\omega\) is a root, so is \(\sigma-\jj\omega\). (Otherwise multiplying the
+factors out would leave imaginary coefficients.) Therefore every real polynomial
+factors into
+\begin{itemize}
+\item \textbf{real linear factors} \((s+1/\tau_k)\), one per real pole, and
+\item \textbf{irreducible real quadratic factors}
+\(\bigl(s^2+2\zeta_k\omega_{0k}s+\omega_{0k}^2\bigr)\), one per conjugate pair.
+\end{itemize}
+So any transfer function of order \(n\) can be written as a \emph{product}:
+\[
+\boxed{\;
+G(s)=K\prod_k\underbrace{\frac{1}{1+\tau_ks}}_{\text{first order}}
+\prod_j\underbrace{\frac{\omega_{0j}^2}{s^2+2\zeta_j\omega_{0j}s+\omega_{0j}^2}}_{\text{second order}} \;}
+\]
+An even-order system is \(n/2\) quadratic sections; an odd-order system is
+\((n-1)/2\) quadratics plus one real pole. \emph{There is no third kind of building
+block, at any order.}
+
+\begin{controlsbox}
+\textbf{Why this is the whole chapter in one idea.} A fifth-order filter is not a new
+object requiring new theory. It is two second-order systems and one first-order system
+in series, each of which \cref{ch:linsys,ch:splane} already characterized completely.
+Reading a high-order design therefore reduces to reading a list of
+\((\omega_0,\zeta)\) pairs---and \emph{building} one reduces to building those
+sections and connecting them, which is exactly how active filters are made
+(\cref{ch:active}).
+\end{controlsbox}
+
+\section{Cascades Add in Decibels and in Degrees}
+\label{sec:cascadeadd}
+Now the frequency-domain payoff. \Cref{ch:linsys} showed that cascaded blocks
+\emph{multiply}, \(G=G_1G_2\). Multiplication of complex numbers multiplies magnitudes
+and adds angles, so
+\[
+|G(\jj\omega)|=|G_1(\jj\omega)|\cdot|G_2(\jj\omega)|,
+\qquad
+\angle G=\angle G_1+\angle G_2 .
+\]
+Take \(20\log_{10}\) of the magnitude equation and the product becomes a sum, because
+that is what logarithms do:
+\[
+\boxed{\;
+20\log_{10}|G|=20\log_{10}|G_1|+20\log_{10}|G_2|,
+\qquad
+\angle G=\angle G_1+\angle G_2 \;}
+\]
+\textbf{This is the reason Bode plots use decibels.} On a dB scale, cascading is
+addition---so a high-order Bode plot is literally the sum of its sections' plots, and
+the sketching rules of \cref{ch:splane} (each pole bends the slope down by
+\SI{20}{\decibel}/decade, each zero up) are simply this addition performed
+graphically.
+
+\subsection{Deriving the \texorpdfstring{\(-20n\)}{-20n} dB/Decade Roll-Off}
+The rule quoted throughout the book now follows in one step. Far above all its
+corners, each first-order section contributes \(-\SI{20}{\decibel}\) per decade
+(\cref{sec:asymptotes}), and each second-order section contributes twice that. For
+\(n\) poles total, the contributions add:
+\[
+\underbrace{(-20)+(-20)+\cdots}_{n\text{ terms}}
+=-20n\ \si{\decibel}\text{ per decade}.
+\]
+Likewise the phase lag accumulates \(-90^\circ\) per pole, approaching
+\(-90n^\circ\) far above the corners. Both facts are consequences of
+\cref{sec:cascadeadd} and nothing more.
+
+\begin{workedbox}[: three identical lags]
+Cascade three identical first-order stages, each with corner \(\omega_0\):
+\[
+G(s)=\frac{1}{(1+s/\omega_0)^3}.
+\]
+Far above \(\omega_0\), the magnitude falls at \(-\SI{60}{\decibel}\) per decade and
+the phase approaches \(-270^\circ\). At the corner itself each stage is down
+\SI{3.01}{\decibel} and lagging \(45^\circ\), so the cascade is down
+\(3\times3.01\approx\SI{9}{\decibel}\) and lagging \(135^\circ\)---all three numbers
+obtained by addition, with no new algebra. Keep this system in mind; the next section
+shows it is the one that can oscillate.
+\end{workedbox}
+
+\section{Why Three Poles Can Oscillate and Two Cannot}
+\label{sec:threepoles}
+\Cref{ch:feedback} asserted that genuine instability needs three or more poles. With
+\cref{sec:cascadeadd} in hand we can prove it, and the proof is just phase
+accounting.
+
+Recall the condition for closed-loop poles on the \(\jj\omega\) axis:
+\(L(\jj\omega)=-1\), meaning \(|L|=1\) and \(\angle L=-180^\circ\) at the \emph{same}
+frequency. Since each first-order lag contributes at most \(-90^\circ\):
+\begin{description}
+\item[One pole] the phase approaches \(-90^\circ\) but never reaches
+\(-180^\circ\). The condition is unreachable at any gain---the loop is
+unconditionally stable, as \cref{ch:feedback} found by moving the pole directly.
+\item[Two poles] the phase approaches \(-180^\circ\) only asymptotically, as
+\(\omega\to\infty\), where the magnitude has already fallen to zero. So \(|L|=1\) and
+\(\angle L=-180^\circ\) never coincide: still unconditionally stable, though the poles
+can be driven arbitrarily close to the axis (which is why a two-pole loop can ring
+hard without ever oscillating).
+\item[Three poles] the phase reaches \(-180^\circ\) at a \emph{finite} frequency, where
+the magnitude is still nonzero. Now enough gain will satisfy both conditions at once,
+and the loop oscillates.
+\end{description}
+
+For the three-lag cascade of the box above, put \(L(s)=K/(1+s/\omega_0)^3\). The phase
+is three times a single lag's:
+\[
+\angle L=-3\arctan\!\frac{\omega}{\omega_0}=-180^\circ
+\quad\Longrightarrow\quad
+\arctan\frac{\omega}{\omega_0}=60^\circ
+\quad\Longrightarrow\quad
+\omega_{\mathrm{osc}}=\sqrt3\,\omega_0 .
+\]
+At that frequency each stage has magnitude
+\(1/|1+\jj\sqrt3|=1/2\), so the cascade has magnitude \(K/8\). Setting \(|L|=1\):
+\[
+\boxed{\;K=8\quad\text{puts the poles exactly on the }\jj\omega\text{ axis at }
+\omega=\sqrt3\,\omega_0 . \;}
+\]
+Below \(K=8\) the loop is stable with positive margins; above it, the pole pair is in
+the right half-plane. This single system is the one plotted three ways in
+\cref{fig:fb-margins} (\(K=3\), healthy margins),
+\cref{fig:opamp-rootlocus} (the poles migrating, crossing at \(K=8\)), and
+\cref{fig:oscillator-loopgain} (\(K=8\), margins exactly zero)---and now the arithmetic
+behind all three lives here.
+
+\section{Pure Delay: Phase Lag Without Any Poles}
+A delay of \(T\) seconds is not a pole at all, yet it destabilizes loops more
+effectively than poles do. Its transfer function is
+\[
+G(s)=\ee^{-sT},
+\qquad
+|G(\jj\omega)|=1,
+\qquad
+\angle G(\jj\omega)=-\omega T .
+\]
+Read those two facts together: the magnitude is \emph{never} attenuated, while the
+phase lag grows \emph{without bound} and linearly in \(\omega\). So a delay crosses
+\(-180^\circ\), then \(-540^\circ\), then \(-900^\circ\), forever, always at full
+amplitude. Any loop containing a real delay can be made to oscillate, and at
+infinitely many frequencies. This is why transport lag is the classic difficulty in
+process control, and why it deserves mention here: a transmission line
+(\cref{ch:lines}) \emph{is} a delay, which is the physical reason it has infinitely
+many resonances rather than a handful.
+
+\section{Where Designers Put the Poles}
+\label{sec:poleplacement}
+Given that a high-order response is a product of sections, designing one means
+choosing where the poles go. The named filter families are exactly rules for that
+choice, and the archetype is worth deriving because the answer is so clean.
+
+The \textbf{Butterworth} family is defined by a magnitude specification---as flat as
+possible in the passband:
+\[
+|G(\jj\omega)|^2=\frac{1}{1+(\omega/\omega_c)^{2n}} .
+\]
+Setting the denominator to zero to find the poles gives
+\((s/\jj\omega_c)^{2n}=-1\), whose \(2n\) roots are equally spaced around a circle of
+radius \(\omega_c\). Keeping the \(n\) in the left half-plane (the others would be
+unstable) leaves \(n\) poles \emph{equally spaced on a semicircle of radius
+\(\omega_c\)}, separated by \(\pi/n\). That is the picture
+\cref{fig:butterworth-poles} shows.
+
+Now factor that pattern into sections using \cref{sec:factoring}. A pole pair sitting
+at angle \(\phi\) from the negative real axis has
+\(\cos\phi=\zeta\) (\cref{ch:splane}), hence \(Q=1/(2\cos\phi)\). Applying that to the
+equally spaced Butterworth angles gives the table every filter designer works from:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.10\textwidth}L{0.30\textwidth}Y@{}}
+\toprule
+Order & Sections & Section \(Q\) (all at \(\omega_0=\omega_c\)) \\
+\midrule
+2 & one quadratic & \(Q=0.707\) \\
+3 & one quadratic + one real pole & \(Q=1.000\); real pole at \(-\omega_c\) \\
+4 & two quadratics & \(Q=0.541\), \(Q=1.307\) \\
+5 & two quadratics + one real pole & \(Q=0.618\), \(Q=1.618\); real pole at \(-\omega_c\) \\
+6 & three quadratics & \(Q=0.518\), \(Q=0.707\), \(Q=1.932\) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Three things are worth noticing. First, the fifth-order values \(0.618\) and \(1.618\)
+are the golden ratio and its reciprocal---a consequence of the pentagonal spacing, and
+a good sanity check that you have the pattern right. Second, higher order always
+introduces at least one \emph{high-\(Q\)} section: order 6 needs a \(Q=1.93\) stage,
+which will visibly peak on its own even though the assembled filter is maximally flat.
+Third, this table is the bridge between \cref{ch:filters}, which shows what the
+families do, and \cref{ch:active}, which builds one Sallen--Key stage per row---an
+order-5 Butterworth is two Sallen--Key stages with \(Q=0.618\) and \(Q=1.618\) plus
+one RC section.
+
+\textbf{Chebyshev} filters keep the same idea but place the poles on an
+\emph{ellipse} pushed closer to the \(\jj\omega\) axis, raising every section's \(Q\).
+The result is a sharper transition at the price of passband ripple and worse transient
+behavior---which is now predictable rather than surprising, since higher \(Q\) has
+meant more ringing since \cref{ch:linsys}. \Cref{ch:filters} takes the comparison up
+from here.
+
+\section{Zeros at Higher Order}
+Poles are not the only tool. A \textbf{zero} at \(s=\jj\omega_z\) drives the response
+to zero at that frequency and bends the magnitude slope \emph{up} by
+\SI{20}{\decibel}/decade---the mirror of a pole, and additive in dB by
+\cref{sec:cascadeadd}. A system with \(n\) poles and \(m\) zeros rolls off at
+\(-20(n-m)\)~dB/decade far out, but can have deep, narrow nulls placed exactly where
+interference lives.
+
+This is a genuine design trade: zeros buy stopband \emph{depth} at specific
+frequencies, where poles buy stopband \emph{slope} everywhere. Elliptic filters spend
+both. \Cref{ch:filters} shows what this buys in practice---and
+\cref{ch:measurement} shows a zero being placed on top of a pole to cancel it
+entirely.
+
+\section{Phase Delay, Group Delay, and Waveform Fidelity}
+\label{sec:groupdelay}
+One axis of the filter trade-off has not yet been quantified: phase. A filter that
+passes every frequency at the right amplitude can still ruin a waveform, if it delays
+different frequencies by different amounts.
+
+For a sinusoid at \(\omega\), a phase shift \(\phi(\omega)=\angle G(\jj\omega)\) is
+equivalent to a time shift of \(-\phi/\omega\). But a real signal is many
+frequencies, and what matters is how the \emph{envelope} moves. That is the
+\textbf{group delay}:
+\[
+\boxed{\;\tau_g(\omega)=-\frac{\dd\phi}{\dd\omega}\;}
+\]
+If \(\tau_g\) is \emph{constant}, every frequency component is delayed equally: the
+waveform arrives later but otherwise unchanged. Constant group delay means
+\(\phi=-\omega\tau_g\), i.e.\ phase falling \emph{linearly} with frequency---which is
+what ``\textbf{linear phase}'' means, and why the two terms are used
+interchangeably. Note that a pure delay (previous section) has exactly this property,
+with \(\tau_g=T\): a delay is the ideal distortionless element.
+
+Group delays add across a cascade, since phases do. So the design question becomes
+whether a family's poles can be placed to flatten \(\tau_g\)---and the
+\textbf{Bessel} family is defined by doing exactly that, accepting a gentle amplitude
+roll-off in exchange. Chebyshev sits at the opposite corner: its high-\(Q\) sections
+make \(\tau_g\) peak sharply near cutoff, so a pulse through a Chebyshev filter rings
+and spreads.
+
+\begin{physicalbox}
+\textbf{Which one you want depends on what you are sending.} For a narrow SSB or CW
+signal, amplitude selectivity is everything and phase distortion is inaudible---use
+Chebyshev or elliptic. For anything where pulse shape carries the information (digital
+modes, video, or a transmitted waveform whose envelope must stay clean), group-delay
+flatness matters and Bessel or a linear-phase FIR filter is the right choice. This is
+the third axis of \cref{fig:filter-families}, and now it has a number attached.
+\end{physicalbox}
+
+\section{The Limit of Infinitely Many Poles}
+Push the order up without bound and something qualitatively new appears. A cascade of
+\(n\) identical lags, each of time constant \(T/n\), tends to a pure delay of \(T\) as
+\(n\to\infty\)---infinitely many poles conspiring to produce exactly the
+\(\ee^{-sT}\) of the delay section. That is not an idle limit: it is what a
+transmission line \emph{is}. \Cref{ch:lines} models a line as an infinite ladder of
+infinitesimal \(L\) and \(C\) sections, finds a wave equation rather than an ODE, and
+sees the infinite family of resonances directly in the periodic poles of
+\(\tan\beta\ell\). The lumped machinery of Part~II reaches its edge there, and the
+transition is continuous.
+
+\begin{exambox}
+The exam does not ask for fifth-order pole coordinates. It asks for the roll-off of an
+\(n\)-pole filter (\(-20n\)~dB/decade, \cref{sec:cascadeadd}), which family is sharp
+versus flat versus linear-phase (\cref{sec:poleplacement,sec:groupdelay}), what a
+notch or trap does (zeros), and why an amplifier with too much loop gain oscillates
+(\cref{sec:threepoles}). All four are consequences of one idea: a high-order system is
+its first- and second-order sections, added up in decibels and degrees.
+\end{exambox}
