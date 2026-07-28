@@ -60,18 +60,28 @@ only in the source PDF. Treat these as unanswerable from this file:
 
 ## Questions absent from this export
 
-The export has 599 questions. NCVEC has withdrawn questions mid-cycle, so the
-numbering has gaps. Every gap found by scanning each group for interior missing
-numbers is listed here, whether or not we can explain it. **A missing ID is not
-evidence the question never existed** — cite nothing from this table as a pool
-question.
+The export has 599 questions, because NCVEC withdraws questions mid-cycle. This
+table is **cross-checked against the NCVEC errata record itself**
+([Element 4 release page](https://ncvec.org/index.php/2024-2028-extra-class-question-pool-release)),
+not merely against gaps in the numbering, and every withdrawal NCVEC lists is
+confirmed absent from this export. The export is current through the **4th
+errata of 2026-02-04**. Do not cite anything in this table as a pool question.
 
 | ID | Status |
 |---|---|
-| `E2A13` | Removed by NCVEC; HamExam removed it 2024-12-06. Last in its group, so it leaves no interior gap. |
-| `E4D05` | Removed by NCVEC; HamExam removed it 2026-02-23. See the [NCVEC pool release page](https://ncvec.org/index.php/2024-2028-extra-class-question-pool-release). |
-| `E6D07` | Removed by NCVEC 2025-10-15 — it "contained more than one correct answer." |
-| `E9E10` | **Unexplained.** Absent from the export but not in HamExam's change log. Verify against NCVEC before assuming anything about it. |
+| `E9E10` | NCVEC 1st errata, 2024-01-31. E9E left with 10 questions, and this export has exactly 10. |
+| `E2A13` | NCVEC 2nd errata, 2024-11-08. **Last in its group**, so no interior gap — see the note below. |
+| `E6D07` | Withdrawn 2025-09-24: the question "contained more than one correct answer." |
+| `E4D05` | NCVEC 4th errata, 2026-02-04. E4D left with 13 questions, and this export has exactly 13. |
+
+**On how this table is built, and a trap in it.** Withdrawn questions are found
+two ways. Scanning each group for a *missing interior number* catches most of
+them, but it is structurally blind to a withdrawal of the **last** question in a
+group: nothing is left after it to make a gap. Two such cases exist across the
+two pools, and both were invisible until the tables were checked against NCVEC
+directly. So this table is not the output of the gap scan — it is the NCVEC errata
+list, verified against the export. If you replace a source PDF, re-check it the
+same way rather than trusting the numbering.
 
 ---
 

@@ -244,8 +244,9 @@ I/Q), protocols, electrical code and RF-exposure safety, propagation, operating
 practice, and antenna pattern geometry.
 
 *Updated in Round 5:* the cycle is confirmed **2023–2027** (valid through 2027-06-30),
-and the missing IDs are real absences, not an extraction fault — `G8C01` is a dated
-NCVEC withdrawal, while `G6B09` and `G9C06` remain unexplained. The full inventory is
+and every missing ID is a real, dated NCVEC withdrawal rather than an extraction
+fault — including `G6B09` and `G9C06`, which were open until Alex supplied the errata
+pages, and `G9D13`, which our gap scan structurally could not see. The full inventory is
 no longer a scratchpad file: it is
 [`references/general-pool-circuits.md`](references/general-pool-circuits.md), tracked in
 the repo, and it is over-inclusive at 249 questions (all of G4–G9) against the 236 that
@@ -411,9 +412,12 @@ Three caveats the extracts record for you, and one that is resolved:
 
 - **32 questions depend on a figure** that exists only in the PDF. Each file lists
   them; they are unanswerable from the markdown.
-- **Five absences are unexplained**: `E9E10`, `G1C08`, `G1C10`, `G6B09`, `G9C06`. These
-  IDs appear nowhere in the PDF text. Round 4 guessed that three of them were an
-  extraction fault — that was wrong. Verify against NCVEC before relying on any count.
+- ✅ **All absences are now explained.** Alex supplied NCVEC's errata pages, and all
+  thirteen withdrawals across the two pools trace to a numbered errata: the five that
+  had been open (`E9E10`, `G1C08`, `G1C10`, `G6B09`, `G9C06`) are 1st- to 3rd-errata
+  deletions. The cross-check also found `G9D13`, invisible to our gap scan because it
+  removed the last question in its group. Both exports are verified current through the
+  errata of **2026-02-04**; the authoritative URLs are in `references/README.md`.
 - Removals *are* now traceable: `E2A13`, `E4D05`, `E6D07`, `G1A04`, `G1C09`, `G1E09`
   and `G8C01` are matched to dated NCVEC withdrawals.
 - ✅ **Resolved:** the General cycle. It is the **2023–2027** pool, valid through

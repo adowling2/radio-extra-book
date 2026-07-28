@@ -246,4 +246,12 @@ its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
 Every item from all three Round 4 audits has been addressed. Tiers A, B, C and D are complete.
 
+**Closed after the ledger was finished:** the five unexplained pool absences are
+resolved. Alex supplied NCVEC's own errata pages, and `E9E10`, `G1C08`, `G1C10`,
+`G6B09` and `G9C06` are all numbered NCVEC withdrawals (1st to 3rd errata). The
+cross-check also turned up `G9D13`, which our method could not have found because it
+removed the *last* question in its group and so left no gap in the numbering. Both
+extracts are now verified against NCVEC through the errata of 2026-02-04, and
+`references/README.md` records the authoritative URLs.
+
 Round 5 also produced work that was **not** on the ledger, recorded here so it is not lost: two claims of the book's own were found wrong and corrected (Ch 22 on why coil `Q` falls, and the push-pull/third-order-IMD relationship); Class D amplifiers were absent entirely despite three pool questions (E7B02/03/08) and are now covered in `sec:switching`; and the ledger's own item total was off by one.

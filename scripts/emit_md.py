@@ -89,7 +89,16 @@ def emit(name, qs, meta, out):
     w('| ID | Status |\n|---|---|\n')
     for qid, status in meta['absent']:
         w(f'| `{qid}` | {status} |\n')
-    w('\n---\n\n')
+    w('\n')
+    w('**On how this table is built, and a trap in it.** Withdrawn questions are found\n'
+      'two ways. Scanning each group for a *missing interior number* catches most of\n'
+      'them, but it is structurally blind to a withdrawal of the **last** question in a\n'
+      'group: nothing is left after it to make a gap. Two such cases exist across the\n'
+      'two pools, and both were invisible until the tables were checked against NCVEC\n'
+      'directly. So this table is not the output of the gap scan — it is the NCVEC errata\n'
+      'list, verified against the export. If you replace a source PDF, re-check it the\n'
+      'same way rather than trusting the numbering.\n\n')
+    w('---\n\n')
 
     cur_sub = cur_group = None
     for q in keep:
@@ -126,21 +135,22 @@ EXTRA_META = {
         ('Extracted', '2026-07-28, by `pdftotext -layout` plus `scripts/parse_pool.py`'),
     ],
     'absent_intro': (
-        'The export has 599 questions. NCVEC has withdrawn questions mid-cycle, so the\n'
-        'numbering has gaps. Every gap found by scanning each group for interior missing\n'
-        'numbers is listed here, whether or not we can explain it. **A missing ID is not\n'
-        'evidence the question never existed** — cite nothing from this table as a pool\n'
-        'question.'
+        'The export has 599 questions, because NCVEC withdraws questions mid-cycle. This\n'
+        'table is **cross-checked against the NCVEC errata record itself**\n'
+        '([Element 4 release page](https://ncvec.org/index.php/2024-2028-extra-class-question-pool-release)),\n'
+        'not merely against gaps in the numbering, and every withdrawal NCVEC lists is\n'
+        'confirmed absent from this export. The export is current through the **4th\n'
+        'errata of 2026-02-04**. Do not cite anything in this table as a pool question.'
     ),
     'absent': [
-        ('E2A13', 'Removed by NCVEC; HamExam removed it 2024-12-06. Last in its group, '
-                  'so it leaves no interior gap.'),
-        ('E4D05', 'Removed by NCVEC; HamExam removed it 2026-02-23. See the '
-                  '[NCVEC pool release page](https://ncvec.org/index.php/2024-2028-extra-class-question-pool-release).'),
-        ('E6D07', 'Removed by NCVEC 2025-10-15 — it "contained more than one correct '
+        ('E9E10', 'NCVEC 1st errata, 2024-01-31. E9E left with 10 questions, and this '
+                  'export has exactly 10.'),
+        ('E2A13', 'NCVEC 2nd errata, 2024-11-08. **Last in its group**, so no interior '
+                  'gap — see the note below.'),
+        ('E6D07', 'Withdrawn 2025-09-24: the question "contained more than one correct '
                   'answer."'),
-        ('E9E10', '**Unexplained.** Absent from the export but not in HamExam\'s change '
-                  'log. Verify against NCVEC before assuming anything about it.'),
+        ('E4D05', 'NCVEC 4th errata, 2026-02-04. E4D left with 13 questions, and this '
+                  'export has exactly 13.'),
     ],
 }
 
@@ -162,22 +172,29 @@ GENERAL_META = {
         ('Extracted', '2026-07-28, by `pdftotext -layout` plus `scripts/parse_pool.py`'),
     ],
     'absent_intro': (
-        'The export has 423 questions, with gaps where NCVEC withdrew questions\n'
-        'mid-cycle. Every interior gap is listed, explained or not. Four are accounted\n'
-        'for by HamExam\'s change log; four are not, and **must not be treated as\n'
-        'settled** — an earlier round of work wrongly assumed the same absences were an\n'
-        'extraction fault. They are not: the IDs appear nowhere in the PDF text.'
+        'The export has 423 questions, because NCVEC withdraws questions mid-cycle. This\n'
+        'table is **cross-checked against the NCVEC errata record itself**\n'
+        '([Element 3 release page](https://ncvec.org/index.php/2023-2027-general-question-pool-release)),\n'
+        'not merely against gaps in the numbering, and all nine withdrawals NCVEC lists\n'
+        'are confirmed absent here. The export is current through the **6th errata of\n'
+        '2026-02-04**. Do not cite anything in this table as a pool question.'
     ),
     'absent': [
-        ('G1A04', 'Removed by NCVEC; HamExam removed it 2026-03-18. (Rules — outside '
-                  'this file\'s scope anyway.)'),
-        ('G1C08', '**Unexplained.**'),
-        ('G1C09', 'Removed by NCVEC; HamExam removed it 2026-03-18.'),
-        ('G1C10', '**Unexplained.**'),
-        ('G1E09', 'Removed by NCVEC as of 2024-03-06.'),
-        ('G6B09', '**Unexplained** — and in scope for this file. Verify against NCVEC.'),
-        ('G8C01', 'Removed by NCVEC; HamExam removed it 2024-12-06.'),
-        ('G9C06', '**Unexplained** — and in scope for this file. Verify against NCVEC.'),
+        ('G9C06', 'NCVEC 1st errata.'),
+        ('G9D13', 'NCVEC 1st errata. **Last in its group**, so no interior gap — this '
+                  'one was missing from earlier versions of this table entirely. See '
+                  'the note below.'),
+        ('G6B09', 'NCVEC 2nd errata. G6B left with 11 questions, and this export has '
+                  'exactly 11.'),
+        ('G1C08', 'NCVEC 3rd errata, 2023-12-01, following an FCC rule change.'),
+        ('G1C10', 'NCVEC 3rd errata, 2023-12-01, following an FCC rule change.'),
+        ('G1E09', 'NCVEC 4th errata, 2024-03-06. G1E left with 11, and this export has 11.'),
+        ('G8C01', 'NCVEC 5th errata, 2024-11-08. G8C left with 15, and this export has 15.'),
+        ('G1A04', 'NCVEC 6th errata, 2026-02-04. G1A left with 10, and this export has 10.'),
+        ('G1C09', 'NCVEC 6th errata, 2026-02-04. G1C therefore has 8, which is what this '
+                  'export has — note NCVEC\'s own syllabus header still says 55 for all '
+                  'of G1, a count set by the 3rd errata and never updated; the true '
+                  'current figure is 52.'),
     ],
 }
 

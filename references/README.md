@@ -34,15 +34,30 @@ question.
 `scripts/parse_pool.py` does the extraction (and fails loudly on a malformed or
 duplicated question); `scripts/emit_md.py` holds the scope and formatting rules.
 
+### Authoritative errata sources
+
+The HamExam PDFs are convenient reprints, not the record. NCVEC's own release pages are
+authoritative, and the extracts are cross-checked against them:
+
+- Element 4 (Extra): <https://ncvec.org/index.php/2024-2028-extra-class-question-pool-release>
+- Element 3 (General): <https://ncvec.org/index.php/2023-2027-general-question-pool-release>
+
+As of 2026-07-28 the two exports are current through the **4th Extra errata** and the
+**6th General errata**, both dated 2026-02-04, and every withdrawal NCVEC lists is
+confirmed absent from the corresponding export. Two of those withdrawals removed the
+*last* question in a group, which a gap-in-the-numbering scan cannot detect — so
+re-check against these pages, not against the numbering, whenever a PDF is replaced.
+
 Three things each file records that the PDF does not make obvious:
 
 - **Which subelements are in scope.** Whole subelements are kept or dropped — nothing
   inside a kept subelement is filtered, because a question missing from the extract is
   a coverage gap we would never notice.
-- **Which questions are absent from the export**, with the reason where the HamExam
-  change log gives one. Five absences are *unexplained* and flagged as such: `E9E10`,
-  `G1C08`, `G1C10`, `G6B09`, `G9C06`. An earlier round of work assumed three of these
-  were an extraction fault. They are not — the IDs appear nowhere in the PDF text.
+- **Which questions are absent from the export** — all thirteen (four Extra, nine
+  General), each traced to a numbered NCVEC errata with its date. Nothing is
+  unexplained any more: the five that were open (`E9E10`, `G1C08`, `G1C10`, `G6B09`,
+  `G9C06`) are 1st- to 3rd-errata withdrawals, and one of the thirteen (`G9D13`) was
+  found only by this cross-check, having been invisible to the gap scan.
 - **Which questions need a figure** (32 of them) and so cannot be answered from the
   markdown at all.
 
