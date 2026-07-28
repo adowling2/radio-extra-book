@@ -38,6 +38,19 @@ E_C=\frac{1}{2}CV^2,\quad
 E_L=\frac{1}{2}LI^2
 \]
 
+\section*{RMS and Power}
+\[
+V_{\RMS}=\frac{V_p}{\sqrt2}=\frac{V_{pp}}{2\sqrt2}
+\quad\text{(sinusoid only)}
+\]
+\[
+P=\frac{V_{\RMS}^2}{R}=I_{\RMS}^2R=\frac{V_{pp}^2}{8R}
+\]
+\[
+\mathrm{PEP}=\frac{V_{pp,\max}^2}{8R}
+\]
+PEP \(=\) average power for an unmodulated carrier.
+
 \section*{Combinations}
 \[
 R_s=\sum R_k,\quad
@@ -146,6 +159,10 @@ Matching cancels reactance and transforms resistance.
 \[
 \mathrm{SWR}=\frac{1+|\Gamma|}{1-|\Gamma|},\quad
 RL=-20\log_{10}|\Gamma|
+\]
+\[
+|\Gamma_{\mathrm{in}}|=|\Gamma_L|\ee^{-2\alpha\ell},\quad
+\ell_{\lambda/2}\approx\frac{468}{f_{\mathrm{MHz}}}\ \mathrm{ft}
 \]
 \[
 Z_t=\sqrt{Z_0Z_L}\quad\text{for a lossless quarter-wave match}

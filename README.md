@@ -74,6 +74,12 @@ passing requires 37 of 50. It deliberately omits rules and regulations, operatin
 practice, propagation, safety, digital protocols, and device physics. The preface
 states this explicitly — see `PROJECT-STATUS.md` §3 for the group-by-group map.
 
+It has also been checked against the **General** (Element 3) pool, whose 236
+circuit questions distil to 157 concepts: the electrical-principles core is covered
+by derivation, and what remains missing is the same by-design list above. So the
+book is usable as the circuits foundation a General licensee needs before Extra,
+which is what it was written for — but it never mentions the General exam.
+
 Practice material is anchored to the 2024–2028 Element 4 pool. The question
 identifiers and answer letters cited in the Anchored Practice chapter have been
 verified against `references/HamExam.org Extra Question Pool.pdf`, but pool wording

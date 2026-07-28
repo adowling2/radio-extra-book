@@ -1,12 +1,14 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-07-27 (end of Round 3).
+Last updated: 2026-07-28 (end of Round 4).
 
 Per-round markup plans live alongside this file and are the archive, not the status:
 `revision-notes.md` (Round 1), `revision-notes-round2.md` (Round 2),
 `revision-notes-round3.md` (Round 3 — includes the parsed markup, 11 decisions, and
-the execution plan).
+the execution plan). Round 4 had no markup file: it was driven by a front-to-back
+read-through plus a coverage check against the General (Element 3) question pool,
+and its findings are recorded in §2 below.
 
 ---
 
@@ -25,10 +27,11 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **21 chapters + 3 appendices, five parts, 140 pages.**
-- **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt.
-- **19 commits ahead of `origin/main`. Nothing has been pushed.** Decide whether to
-  push before continuing.
+- **21 chapters + 3 appendices, five parts, 158 pages.**
+- **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
+  labels, 0 dangling references, 0 hard-coded cross-references.
+- **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
+  version of this file claimed 19 unpushed commits; that was simply wrong.)
 - Build with `make book`; regenerate figures with `make figures` (or run individual
   scripts in `figures/src/`); `make all` also builds the standalone study-guide card.
 
@@ -44,14 +47,19 @@ circuits, Part IV is what they explain.
 | **Appendices** | A Formula Index · B Units & Prefixes · C Glossary |
 
 Labels are stable across renumbering — **always `\cref`, never hard-code a number.**
-Key labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane`/`ch:bode`
-`ch:feedback` `ch:highorder` `ch:foundations` `ch:resistive` `ch:ac` `ch:fourviews`
-`ch:rc` `ch:rl` `ch:rlc` `ch:rlcpar` `ch:filters` `ch:lines` `ch:active`
-`ch:measurement` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas`
-`app:units` `app:glossary`. Section labels worth knowing: `sec:decibels`
-`sec:asymptotes` `sec:rc-freq` `sec:lc-lowpass` `sec:stubs` `sec:probe` `sec:gbw`
-`sec:beta-resistors` `sec:mixers` `sec:factoring` `sec:cascadeadd` `sec:threepoles`
-`sec:poleplacement` `sec:groupdelay`.
+Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedback`
+`ch:highorder` `ch:foundations` `ch:resistive` `ch:ac` `ch:fourviews` `ch:rc` `ch:rl`
+`ch:rlc` `ch:rlcpar` `ch:filters` `ch:lines` `ch:active` `ch:measurement`
+`ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
+`app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
+
+Section labels, all 29 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+`sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
+`sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
+`sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
+`sec:lc-lowpass` `sec:filterspecs` `sec:lineloss` `sec:stubs` `sec:antennalength`
+`sec:classes` `sec:beta-resistors` `sec:gbw` `sec:neutralization` `sec:mixers`
+`sec:probe` `sec:groundloops`.
 
 ### Conventions in force
 
@@ -72,141 +80,165 @@ Key labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane`/`ch:bode`
 
 ---
 
-## 2. What Round 3 did (this session)
+## 2. What Round 4 did (this session)
 
-Driven by Alex's markup of `main 3.pdf` (front matter through Ch 12 read in detail).
+No markup file this round. The work came from two audits: a front-to-back
+read-through of the whole book, and a coverage check against the **General
+(Element 3)** pool — 423 questions, of which 236 are circuit/electronics questions,
+distilled to a 157-concept checklist. Four commits, all pushed.
 
-**Structure.** Ch 3 retitled *Modeling LTI Systems*; new **Ch 5 Feedback** (generic,
-state-space + frequency-domain); RLC **split** into Series + Parallel; filters chapter
-became design-only with the RC/LC derivations moved back into the RC and Series-RLC
-chapters; new `workedbox`; new **§4.1 Decibels** and Bode asymptote derivation;
-C/L combining rules added; parallel-impedance section added.
+### 2a. Ch 6 was an orphan (the biggest finding)
 
-**Later chapters — the big push, per Alex's instruction to leverage earlier
-fundamentals.** Ch 16 (lines) now derives telegrapher's → wave equation *by the same
-substitution as the Series RLC chapter*, plus `Z₀`, `Γ` from boundary conditions, SWR,
-and quarter-wave `Z_t`; a new **Stubs** section shows a stub *is* the series/parallel
-resonator; the antenna gets real values and `Q = 5.7 → BW = 2.5 MHz`. Ch 17 (active)
-connects `β = R_g/(R_f+R_g)` so the abstract feedback fraction becomes the textbook
-gain formula, derives Sallen–Key `Q`, and adds **Mixers** as the one deliberate break
-from linearity. Ch 18 (measurement) was rebuilt from a 47-line stub: meter loading
-from Thévenin, **scope probe as pole–zero cancellation**, ground lead as an accidental
-145 MHz resonator, analyzer as the Smith locus.
+`ch:highorder` and all five of its section labels were referenced **only from inside
+Ch 6**. Nothing else in the book pointed into it, so every assertion Ch 6 was written
+to retire was still being asserted elsewhere — and Ch 15's `advancedbox` was
+independently **re-deriving** the Butterworth pole circle that `sec:poleplacement`
+already derives, in violation of the cite-don't-re-derive convention.
 
-**New Ch 6 Higher-Order Systems.** Thesis: higher order needs *no new machinery*.
-Contains the factoring theorem, derives `−20n` dB/decade (previously asserted 4×),
-derives why three poles oscillate (`K=8`, `ω=√3ω₀`), pure delay, Butterworth pole
-placement with the order-2…6 **section-`Q` table**, zeros at higher order, and
-**group delay** (used for Bessel filters but previously never defined).
+Fixed: inbound references went **0 → 27**, from Chs 1, 3, 4, 5, 10, 15, 16, 17, 18.
+Ch 6 also gained `sec:puredelay` and `sec:infinitepoles` (§6.5 and §6.9 had no
+labels), and contributed its first rows to the formula index — including taking over
+the `−20n` dB/decade row, which had been credited to `ch:filters`.
 
-**Part split.** The old Part III held 12 chapters / 57 % of the book. Split into
-*Circuit Models* and *Applying the Circuit Models*; cross-chapter problems promoted
-from an appendix to Ch 21.
+### 2b. Read-through defects
 
-**Consistency.** Two review passes fixed: Ch 17 crediting feedback to the wrong
-chapter and re-deriving Ch 5 four times; Barkhausen stated wrongly in the formula
-index; `energybox` defined-but-never-used; a duplicated exam box; missing chapter
-openers; worked-example levels and ordering; unlabeled schematics; `\wzero` vs
-`\omega_0`; 12 dead macros; unlabeled appendices. Formula index gained a **"Derived
-in" column**.
+- **Nyquist.** Ch 17 said "the Nyquist −1 point" but the book never introduced the
+  Nyquist plot. New `sec:nyquist` in Ch 5 draws `L(jω)` in the complex plane and reads
+  both margins off it as one clearance from one point — deliberately **without** the
+  encirclement criterion, which nothing here needs. A `mistakebox` separates it from
+  the unrelated Nyquist **sampling** theorem, stating `f_s > 2·f_max` and aliasing;
+  Alex asked for this explicitly, and it gives a cheap foothold on E7F/E8A.
+- **Acronyms.** Ch 6 had introduced regressions: SSB, CW, FIR all appeared unexpanded
+  there and were expanded only later. Fixed, along with HF, FET, DSP.
+- **Ch 13 ordering.** §13.10 used the worked example's numbers and called them "the
+  same worked example" — but the worked example was §13.11. The phasor material is now
+  a *subsection* of the worked example, so the chapter again closes with it.
+- **Orphan labels: 9 → 0.** Four figures (`fig:phasor`, `fig:series-z`,
+  `fig:smith-basic`, `fig:feedback-loop`) were never referenced; the `fig:smith-basic`
+  reference now also carries the pool's Smith-chart vocabulary (resistance axis, prime
+  center, wavelength scales), closing the old §4B.8 item.
+- **Glossary.** Four alphabetization errors fixed; **30 → 47 entries**.
+- **Callout coverage.** Every teaching chapter (2–18) now has an `exambox` except the
+  two-page hinge Ch 10, and Chs 11–14 each now have a `workedbox` — they had none.
 
-**Verification.** Ch 20's pool citations were checked against the real pool:
-**all 16 identifiers exist and all 15 answer letters are correct.**
+### 2c. Coverage gaps closed
+
+| Gap | Where it landed |
+|---|---|
+| **RMS never derived** (used in 17 files on the strength of one parenthetical) | new `sec:rms` in Ch 2 — derives it from the cycle-average of `cos²`, which also explains the `√2` in the phasor definition |
+| **PEP absent entirely** | new `sec:pep` in Ch 9 — average power, scope readings, `P = V_pp²/8R`, PEP as the average over the largest cycle |
+| **Ch 16 was entirely lossless**, yet Ch 18 already used "3 dB of matched-line loss" | new `sec:lineloss` — full complex propagation constant `γ = α + jβ` per Alex's choice, complex `Z_0`, low-loss limit, √f law tested against a cable table, mismatched-line loss with both sanity limits, `\|Γ_in\| = \|Γ_L\|e^{−2αℓ}` |
+| Self-resonance and skin effect taught **only in Ch 20**, the practice chapter | new `sec:selfresonance` in Ch 7 |
+| Ch 17 §Power Supplies was **7 lines** | rebuilt: conduction angles, ripple at `2f_line`, filter as low-pass, bleeder as RC discharge |
+| **Neutralization absent** | new `sec:neutralization` — the one place feedback is deliberately cancelled |
+| Mixer roles, image offset, two-tone test | `sec:mixers` — image at `2·f_IF`, four jobs of one multiplier, why the linearity test uses two tones |
+| Ferrites, common-mode current | new `sec:commonmode` in Ch 12 — a ferrite choke is a filter in *mode*, not frequency |
+| Ground loops | new `sec:groundloops` in Ch 18 — KVL around the return path |
+| Filter datasheet vocabulary | new `sec:filterspecs` in Ch 15 — insertion loss, ultimate rejection, shape factor |
+| Antenna length, dBi/dBd | new `sec:antennalength` in Ch 16 — **derives** 468/f and 234/f rather than quoting them |
+| S units, link budgets | Ch 18 §Decibels in Measurement |
+
+### 2d. Verification
+
+44 new numeric results re-derived independently in Python — **all pass**. Every new
+page rendered at 95 dpi and visually inspected. Cheat sheet gained RMS/PEP/line-loss
+rows (and its new section was moved to avoid straddling a column break). No figures
+were added or changed, so no figure regeneration was needed.
 
 ---
 
-## 3. Exam coverage — measured, and now stated honestly in the preface
+## 3. Exam coverage
 
-Against the real 2024–2028 pool (`references/HamExam.org Extra Question Pool.pdf`,
-which **does** carry question IDs and answer letters — an earlier note claiming
-otherwise was wrong):
+### Extra (Element 4) — the book's actual target
 
-- **COVERED (8 groups):** E5A, E5B, E5C, E7C, E7G, E9E, E9F, E9G
-- **PARTIAL (13)**, six of them thin: E4A, E4B, E4D, E5D, E6D, E7B, E7D, E7E, E7F,
-  E7H, E8A, E9A, E9D
-- **ABSENT (29)**
+Against the 2024–2028 pool: **8 groups covered well** (E5A, E5B, E5C, E7C, E7G, E9E,
+E9F, E9G), **13 partial**, **29 absent** — so roughly 21 of 50 generously, ~15
+strictly, against **37/50 to pass**. Round 4 improved E4B, E5D, E7B, E7E, E9A and
+E9G but did not change the headline: this book alone is not sufficient, and the
+preface says so.
 
-That is **21 of 50 generously, ~15 strictly. Passing requires 37/50**, so this book
-alone is not sufficient. The preface now says so explicitly and names what is out of
-scope. "How to Use" no longer claims Part I "should be enough."
+### General (Element 3) — checked in Round 4
+
+423 questions, 35 groups; **236 (56%) are circuit/electronics questions** — all of G5
+(40), G6 (23), G7 (38), plus most of G4, G8, G9. Distilled to 157 distinct concepts.
+
+**Verdict: the electrical-principles core is now covered, and covered by derivation.**
+What remains absent is absent *by design* and named in the preface: device physics
+(diode drops, MOSFET/JFET/tube structure, capacitor dielectrics), schematic-symbol
+identification, digital logic, modulation theory (Carson's rule, deviation, QPSK/FSK,
+I/Q), protocols, electrical code and RF-exposure safety, propagation, operating
+practice, and antenna pattern geometry.
+
+Two caveats on the source file: the HamExam General export carries **no cycle dates**
+(don't cite 2023–2027 from it — that came from the other PDF's filename), and it is
+**missing three IDs**: G6B09, G8C01, G9C06. Cross-check against NCVEC before relying
+on any count. Full inventory: see the scratchpad file
+`general-pool-circuits-inventory.md` from the Round 4 session, or regenerate it.
 
 ---
 
 ## 4. Recommended next steps, in priority order
 
-### A. Start here tomorrow — the General-exam check
+### A. Start here — the ARRL manual pass (Alex's standing request)
 
-Paste this prompt verbatim:
+> After you complete everything planned, I want you to review the ARRL Extra Class
+> license manual (see the PDF in the references folder), especially Chapters 4, 6, 7,
+> and 9. What content in these chapters is missing from our book, but within the
+> scope/spirit of the book? Again, the goal of our book is to explain the math behind
+> the circuit fundamentals for the Extra exam. The ARRL manual asserts a lot of things
+> that we can explain more deeply from our mathematical perspective.
 
-> ### BEGIN
-> Next, please examine "HamExam.org General Question Pool" in the references folder.
-> While this book is intended for the Extra exam, I want to confirm that it covers all
-> of the background material required for the circuits questions in the General exam.
-> While I did pass the General exam, that was mainly by memory. I want to go back and
-> understand the material. I do not want to explicitly mention General exam questions
-> in the book or any of its appendices.
-> ### END
+The framing to keep: **they assert, we derive.** The deliverable is a prioritized
+proposal, not prose in the book, so Alex can choose. Hard constraint: extract
+*concepts and topic lists only* — `references/` is gitignored copyrighted material, so
+no ARRL prose, figures, or question text may be reproduced.
 
-Note: `references/HamExam.org General Question Pool.pdf` is already present, as is
-`General Class Pool and Syllabus 2023-2027 ... Feb 4 2026.pdf`. The General pool runs
-on a **2023–2027** cycle (different from Extra's 2024–2028). The constraint is
-explicit: **find and fill background gaps, but never mention the General exam in the
-book or appendices** — any additions must read as ordinary prerequisite material.
+### B. Content gaps still open
 
-### B. Highest-value content gaps (all in-scope, all reachable from existing tools)
-
-1. **Receiver noise and dynamic range (E4C/E4D).** The most defensible addition and
-   the most embarrassing omission: Ch 17 already derives image response and
-   third-order products from the mixer algebra — only the *metrics* are missing.
-   Needs `kTB`, the −174 dBm/Hz floor, noise figure, cascaded NF (Friis), MDS, 1 dB
-   compression, IP3 with its 3:1 slope, blocking/IMD dynamic range, desensitization.
-   All arithmetic on the existing decibel machinery. Two exam groups.
-2. **Sampling and DSP (E7F, plus E4A01/A06, E8A).** The sampling theorem appears
-   **nowhere** in the book, yet Ch 15 mentions anti-aliasing paths and asserts FIR
-   linear phase. Needs Nyquist, aliasing as spectral folding, ≈6 dB/bit, decimation,
-   FIR/IIR. Pairs naturally with Ch 6's new group-delay material.
+1. **Sampling and DSP (E7F, E8A, plus General G7C).** `sec:nyquist`'s mistakebox now
+   states the sampling theorem in one sentence, which is a foothold and not coverage.
+   A real treatment — Nyquist rate, aliasing as spectral folding, ≈6 dB/bit,
+   decimation, FIR/IIR — pairs naturally with `sec:groupdelay`. **Alex has not
+   authorized this**; it was deliberately left out of Round 4's scope.
+2. **Receiver noise and dynamic range (E4C/E4D).** Still the most defensible
+   addition: `sec:mixers` now derives image response *and* third-order products *and*
+   the two-tone test, so only the **metrics** are missing — `kTB`, the −174 dBm/Hz
+   floor, noise figure, cascaded NF (Friis), MDS, 1 dB compression, IP3 and its 3:1
+   slope, blocking/IMD dynamic range. All arithmetic on machinery that now exists.
 3. **Phase-locked loops (E7H).** A control loop in radio clothing — the strongest
-   thematic fit of anything missing, and Ch 5/Ch 6 already supply every tool.
-4. **Rebuild Ch 19 (Worked Examples).** Its four examples have zero cross-references,
-   zero poles, and component values unrelated to the book's running examples — a
-   direct contradiction of the thesis in the chapter meant to demonstrate it.
-   Either make it a pure map (Ch 21 now carries the real cross-chapter practice) or
-   rebuild the examples around the book's running values.
-5. **Cheap filter/matching wins (E7C).** Pi-L network, shape factor, crystal-lattice
-   and helical filters — 2–3 lines each in an existing table.
-6. **Antenna gain and patterns (E9A/E9B).** The book models an antenna's feed-point
-   impedance and stops; ERP/EIRP, dBi/dBd, and beamwidth are two more groups.
-7. **S-parameters and the VNA (E4B).** `S₁₁` *is* `Γ`, already derived; `S₂₁` is
-   forward gain. Half a page connecting two things the book owns.
-8. **Smith chart pool vocabulary (E9G).** Attach the pool's terms (reactance axis,
-   resistance axis, prime center, wavelength scales) to `fig:smith-basic`. Trivial.
+   thematic fit of anything missing. Chs 5, 6 and `sec:nyquist` supply every tool.
+4. **Rebuild Ch 19 (Worked Examples).** Unchanged and still the weakest chapter: four
+   examples with zero cross-references, zero poles, and component values unrelated to
+   the book's running examples — a direct contradiction of the thesis, in the chapter
+   meant to demonstrate it. Either make it a pure map (Ch 21 carries the real
+   cross-chapter practice) or rebuild it around the book's running values.
+5. **Antenna patterns and gain (E9A/E9B).** `sec:antennalength` added dBi/dBd and
+   length; ERP/EIRP and beamwidth remain.
+6. **S-parameters and the VNA (E4B).** `S₁₁` *is* `Γ`, already derived; `S₂₁` is
+   forward gain. Half a page.
 
 ### C. Smaller cleanups still outstanding
 
-- **Ch 10 (Four Views) and Ch 19 have no callout boxes and no figures.** Ch 10 is
-  defensible as a 2-page hinge chapter; Ch 19 is not.
-- **`exambox` missing from Ch 7, 11, 13, 15, 16** — including the two most exam-dense
-  chapters (filters, lines).
-- **Chs 11–14 have zero `workedbox`** — the in-line example device is absent exactly
-  where step-by-step modelling happens.
-- **Figure provenance:** 26 of 27 computed figures don't say how they were generated.
-  Consider a one-line "computed from…" clause in each caption, or one note in the
-  front matter.
-- **Ch 20 mixes two structural registers** — numbered sections with 12 starred
+- **Ch 10 and Ch 19 have no callout boxes and no figures.** Ch 10 is defensible as a
+  two-page hinge; Ch 19 is not (see B4).
+- **Figure provenance:** 26 of 27 computed figures still don't say how they were
+  generated. Consider a one-line "computed from…" clause per caption, or one note in
+  the front matter.
+- **Ch 20 mixes two structural registers** — numbered sections with starred
   per-question subsections, then abandons the pattern halfway.
-- **Ch 17 §Power Supplies** is 7 lines and the least-integrated passage in Parts
-  III–V; a rectifier + filter cap is an RC discharge and a bleeder is a divider.
-- **Appendix B** still restates Ch 7's units material (now cross-referenced, not
-  merged — revisit if it bothers you).
+- **Appendix B** still restates Ch 7's units material (cross-referenced, not merged).
+- **No figure has been added since Round 3.** Several new sections would benefit from
+  one: `sec:nyquist` especially wants a Nyquist plot showing the two margins as one
+  clearance, and `sec:lineloss` wants an attenuation-versus-frequency curve.
 
 ### D. Still awaiting Alex's judgment
 
-- **Preface personal paragraph** — currently names the University of Notre Dame and
-  says the book was drafted with ChatGPT and developed with Claude Code. Tune the
-  candor as you like.
-- **Notation carets (S7 / C-p4 from Round 2)** — the ω/f caret markup in the markup
-  was ambiguous; notation was left as-is.
-- **Whether to push** the 19 local commits.
+- **Preface personal paragraph** — names the University of Notre Dame and says the
+  book was drafted with ChatGPT and developed with Claude Code. Tune the candor.
+- **Notation carets (S7 / C-p4 from Round 2)** — the ω/f caret markup was ambiguous;
+  notation left as-is.
+- **Whether to open the sampling/DSP topic** (B1) — it is the one place where the
+  preface's declared scope and the exam's demands genuinely conflict.
 
 ---
 
@@ -217,10 +249,27 @@ cd /Users/adowling/GitHub/radio-extra-book
 make book          # -> main.pdf and output/Circuit_Theory_for_the_Amateur_Extra_Exam.pdf
 ```
 
-Health check that should stay at zero:
+Health checks that should all stay at zero:
 
 ```bash
-grep -c undefined /dev/stdin < <(make book 2>&1)
+make book >/dev/null 2>&1; grep -ci undefined main.log; grep -cE 'Overfull.*\(([2-9][0-9]|[0-9]{3,})\.' main.log
+```
+
+Orphan labels and dangling references — both lists should be empty:
+
+```bash
+python3 -c "
+import re,glob
+t=''.join(open(f).read() for f in glob.glob('chapters/*.tex')+glob.glob('frontmatter/*.tex')+glob.glob('appendices/*.tex'))
+L=set(re.findall(r'\\\\label\{([^}]+)\}',t)); R=set()
+for m in re.findall(r'\\\\[cC]?ref\{([^}]+)\}',t): R.update(p.strip() for p in m.split(','))
+print('orphan:',sorted(L-R)); print('dangling:',sorted(R-L))"
+```
+
+No hard-coded cross-references (should print nothing):
+
+```bash
+grep -nE '(Chapter|Section|Figure|Table|Appendix) *~?[0-9]' chapters/*.tex frontmatter/*.tex appendices/*.tex | grep -v '\\label'
 ```
 
 Before committing figure changes, render and eyeball them:
