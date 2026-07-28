@@ -115,7 +115,20 @@ the wavelength \emph{on the line} at frequency \(f\) is
 \]
 Because \(v_p=1/\sqrt{L'C'}\) and a dielectric raises \(C'\), a line
 with dielectric has \(VF<1\); its physical length is shorter than the free-space
-electrical length. Typical values span the dielectric fill: solid-polyethylene
+electrical length. That can be closed into a formula rather than left as a tendency.
+A non-magnetic insulator leaves \(L'\) alone but multiplies \(C'\) by the relative
+permittivity \(\varepsilon_r\), so
+\[
+v_p=\frac{1}{\sqrt{L'\varepsilon_rC'_0}}=\frac{c}{\sqrt{\varepsilon_r}}
+\qquad\Longrightarrow\qquad
+\boxed{\;VF=\frac{1}{\sqrt{\varepsilon_r}}\;}
+\]
+where \(C'_0\) is the capacitance the same geometry would have in vacuum. This is the
+same \(v_p=1/\sqrt{L'C'}\) already derived, with the dielectric's effect named---and
+it predicts the table below rather than merely being consistent with it.
+Polyethylene has \(\varepsilon_r\approx2.25\), giving \(VF=1/1.5=0.667\); PTFE's
+\(2.1\) gives \(0.69\); a foam that is half air gives about \(0.82\). Compare those
+with the measured values quoted next. Typical values span the dielectric fill: solid-polyethylene
 coax (RG-8, RG-58) runs \(VF\approx0.66\); foam-dielectric coax
 \(VF\approx0.78\text{--}0.85\); PTFE coax \(VF\approx0.70\); flat twin-lead
 \(VF\approx0.82\); and mostly-air open-wire or ``ladder'' line
@@ -131,6 +144,7 @@ looks infinitely long---no reflection---because the load absorbs the traveling
 wave exactly as more line would.
 
 \section{Reflection Coefficient}
+\label{sec:reflectionsection}
 A wave traveling toward a load carries a fixed voltage-to-current ratio \(Z_0\). The
 load demands its own ratio, \(Z_L\). If the two disagree, one wave cannot satisfy
 both---so a second, backward-traveling wave appears, sized precisely to reconcile
@@ -575,6 +589,20 @@ Reading the tangent tells you which. A shorted stub shorter than \(\lambda/4\) h
 \(\lambda/4\) looks \textbf{capacitive}. Each behavior inverts every quarter
 wavelength thereafter.
 
+One length deserves singling out. At \(\ell=\lambda/8\) we have
+\(\beta\ell=45^\circ\), where \(\tan=\cot=1\), so
+\[
+|X|=Z_0
+\qquad\text{at}\qquad
+\ell=\frac{\lambda}{8}
+\]
+for \emph{either} kind of stub---inductive if shorted, capacitive if open. And it is
+the \emph{only} length below \(\lambda/4\) that does this, because \(\tan\) is
+strictly increasing on \((0^\circ,90^\circ)\) and can equal \(1\) just once. That
+makes \(\lambda/8\) the natural unit of stub design: it is where a stub's reactance
+magnitude matches the line it is built from, so a \(\lambda/8\) shorted stub in a
+\SI{50}{\ohm} system is a \(+\jj\SI{50}{\ohm}\) inductor with no calculation at all.
+
 \begin{physicalbox}
 \textbf{A stub is the two resonators of \cref{ch:rlc,ch:rlcpar} in disguise.}
 Watch what happens at the special lengths:
@@ -772,6 +800,24 @@ This is why gain and pattern are the same statement, and why an antenna cannot h
 gain in every direction at once.
 \end{mistakebox}
 
+Those two references are all that separates the two ``radiated power'' figures a
+regulation or a data sheet may quote. Both are the link budget of \cref{sec:sunits}
+stopped after the antenna instead of carried to the far end---transmitter power, minus
+what the feed line and connectors lose, plus what the antenna concentrates:
+\[
+\mathrm{ERP}\,[\dB\mathrm{W}]=P_{\text{tx}}-L_{\text{line}}+G_{\mathrm{dBd}},
+\qquad
+\mathrm{EIRP}\,[\dB\mathrm{W}]=P_{\text{tx}}-L_{\text{line}}+G_{\mathrm{dBi}} .
+\]
+The only difference is which reference the gain used, so
+\(\mathrm{EIRP}=\mathrm{ERP}+\SI{2.15}{\decibel}\) always---a factor of \(1.64\) in
+watts. A \SI{100}{\watt} transmitter through \SI{1.5}{\decibel} of feed line into a
+\(6\,\mathrm{dBd}\) beam gives
+\(\mathrm{ERP}=\SI{282}{\watt}\) and \(\mathrm{EIRP}=\SI{462}{\watt}\): the same
+station, described twice. Note also that neither is efficiency---
+\cref{sec:antennaeff}'s \(\eta\) is already buried inside the gain figure, since a
+lossy antenna concentrates less of what reaches it.
+
 \subsection{Putting Numbers On It}
 Take a dipole resonant in the \SI{20}{\meter} band at
 \(f_0=\SI{14.1}{\mega\hertz}\), with radiation resistance
@@ -866,6 +912,7 @@ direct proportion to the loss added. A dummy load is the limiting case---a flawl
 \(1{:}1\) across every band, radiating nothing. \emph{An SWR meter measures how
 comfortable the transmitter is, not how much signal leaves.} That is the whole reason
 \(\eta\) has to be a separate number, and why it cannot be measured from the shack.
+\Cref{sec:travelingwave} is the case where that trade is made on purpose.
 \end{mistakebox}
 
 \begin{exambox}
@@ -944,7 +991,8 @@ E9A asks which factors affect feed-point impedance, and the answer is \emph{ante
 height}---not line length, not tuner settings, not power level. This section explains
 why the first two are excluded: the feed-point impedance is a property of the current
 distribution on the antenna, so it changes when the antenna's surroundings change the
-distribution (height above ground does, via the ground reflection) and not when you
+distribution (height above ground does, via the ground reflection of
+\cref{sec:groundimage}) and not when you
 alter something on the transmitter side of the feed point. A line merely
 \emph{transforms} what is already there (\cref{ch:lines}), which is a different claim
 from changing it.
@@ -1015,6 +1063,90 @@ phase give a \emph{cardioid}. Rather than memorizing which is which, evaluate
 lands.
 \end{exambox}
 
+\subsection{Ground Is an Image, and Three Antennas That Follow}
+\label{sec:groundimage}
+\Cref{sec:arrayfactor} was written for two real antennas, but it does not care whether
+the second one exists. A conducting ground plane forces the tangential electric field
+to zero at its surface, and that boundary condition is satisfied exactly by adding an
+\emph{image} antenna as far below the ground as the real one is above it. So an antenna
+at height \(h\) over ground \emph{is} a two-element array with spacing \(d=2h\), and
+the only question is the image's phase.
+
+For a \textbf{horizontal} antenna the image is inverted, \(\phi=180^\circ\). Measuring
+elevation \(\psi\) up from the horizon, the vertical separation projects as
+\(2h\sin\psi\), so \cref{sec:arrayfactor} gives
+\[
+|F|=2\left|\cos\!\left(\frac{\pi+2\beta h\sin\psi}{2}\right)\right|
+=2\left|\sin\left(\beta h\sin\psi\right)\right| .
+\]
+Two facts drop out. At \(\psi=0\) the sine vanishes: \emph{a horizontal antenna over
+ground radiates nothing at the horizon}, at any height, because the image always
+cancels it there. And the first maximum sits where \(\beta h\sin\psi=\pi/2\), that is
+\[
+\sin\psi=\frac{\lambda}{4h},
+\]
+so height alone sets the lobe: \(h=\lambda/4\) puts it straight up, \(h=\lambda/2\)
+at \(30^\circ\), \(h=\lambda\) at \(14.5^\circ\), and \(h=1.5\lambda\) at
+\(9.6^\circ\). Raising a horizontal antenna lowers its lobe---which is the whole
+reason height matters for DX, and it is arithmetic, not folklore.
+
+For a \textbf{vertical} antenna the image is \emph{not} inverted, \(\phi=0\), and the
+same formula returns a \emph{maximum} at the horizon instead. That single sign is why
+verticals are favoured for low-angle work and why a horizontal antenna must be got up
+high to compete. It is also why \cref{sec:feedpoint}'s answer to ``what affects
+feed-point impedance'' was \emph{antenna height}: the image is a second element
+coupled to the first, and moving it changes the impedance as surely as moving a real
+one would.
+
+\subsection{The Folded Dipole's Factor of Four}
+\label{sec:foldeddipole}
+A folded dipole is a half-wave dipole whose ends are bent back and joined, making a
+narrow loop fed at the middle of one side. Its feed impedance is famously about four
+times a plain dipole's, and the reason is \cref{sec:feedpoint}'s power argument plus
+\cref{sec:stubs}'s stub.
+
+Decompose the excitation into two modes. In the \emph{transmission-line} mode the two
+conductors are driven in opposition, which makes each half a two-wire line a quarter
+wave long, shorted at the far end---and \cref{sec:stubs} says a shorted quarter-wave
+stub has infinite input impedance. That mode therefore draws no current and radiates
+nothing. Everything happens in the \emph{antenna} mode, where both conductors carry
+current in the same direction and the pair radiates like one fat dipole.
+
+Now count current. The feed injects \(I\), and in the antenna mode that current
+appears in \emph{both} conductors, so the structure radiates as a dipole carrying
+\(2I\). The radiated power is set by the total current and the ordinary dipole's
+radiation resistance, \(P=(2I)^2R_d\), while the feed point sees \(P=I^2Z\). Equate:
+\[
+Z=4R_d\approx4\times\SI{73}{\ohm}=\SI{292}{\ohm}\approx\SI{300}{\ohm}.
+\]
+So the factor of four is a current-doubling squared, exactly as in
+\cref{sec:feedpoint}---and it explains why folded dipoles are fed with
+\SI{300}{\ohm} twin-lead, and why a folded dipole is the driven element of choice
+when a \(4{:}1\) step-up is wanted for free.
+
+\subsection{Terminated Antennas: Choosing \texorpdfstring{\(\Gamma_L=0\)}{Gamma L = 0}}
+\label{sec:travelingwave}
+A rhombic, a terminated V, or a terminated long wire carries a resistor at its far end
+instead of an open circuit, and everything about such an antenna follows from
+\cref{sec:reflectionsection}'s single formula. Choose the terminating resistor equal to
+the structure's characteristic impedance and \(\Gamma_L=0\): no reflected wave, so no
+standing wave, so the current is a \emph{traveling} wave running one way along the
+wire. Three consequences, all of them the reflection coefficient's:
+\begin{itemize}
+\item The pattern is \textbf{unidirectional}. A standing wave has current flowing both
+ways and radiates both ways; a traveling wave has a direction, and the pattern
+inherits it.
+\item The bandwidth is \textbf{broad}. Resonance is a standing-wave phenomenon---it is
+where the reflected wave returns in phase---so an antenna with no reflection has no
+resonance to be narrow about. Its behavior changes only as slowly as \(\Gamma_L=0\)
+degrades.
+\item The efficiency is \textbf{poor}. The power that would have been reflected is
+instead dissipated in the terminator, and by \cref{sec:antennaeff} that resistor is
+pure \(R_{\text{loss}}\). Half the input power is a typical figure. \emph{You are
+buying pattern and bandwidth with efficiency}, which is the same currency
+\cref{sec:antennaeff} was spending.
+\end{itemize}
+
 \subsection{The Named Antenna Matches}
 \label{sec:antennamatches}
 Antenna books present four matching schemes under proper names---hairpin (or beta),
@@ -1063,7 +1195,8 @@ place. Rather than transform the centre resistance with reactances, they move th
 connection \emph{outward} along the element and use \cref{sec:feedpoint}'s
 \(R(z)=R_{\text{centre}}/\cos^2\beta z\) to find a point where the resistance already
 equals what the line wants. For a \SI{25}{\ohm} element, \(\lambda/8\) out doubles it
-to exactly \SI{50}{\ohm}. A \emph{delta} match does this symmetrically, fanning the
+to exactly \SI{50}{\ohm}. A folded driven element (\cref{sec:foldeddipole}) reaches a
+similar step-up by a different route. A \emph{delta} match does this symmetrically, fanning the
 feed to two points either side of centre; a \emph{gamma} match does it
 \emph{unbalanced}, bonding the coax shield to the centre and tapping the centre
 conductor out to one side---which is precisely why the gamma is the one used to

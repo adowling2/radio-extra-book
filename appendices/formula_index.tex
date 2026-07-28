@@ -116,6 +116,7 @@ Formula & Use & Derived in \\
 \multicolumn{3}{@{}l}{\textbf{Transmission lines}}\\
 \(Z_0=\sqrt{L'/C'},\ v_p=1/\sqrt{L'C'}\) & Line impedance and phase velocity. & \cref{ch:lines} \\
 \(\lambda=v_p/f=VF\,c/f\) & Wavelength on the line. & \cref{ch:lines} \\
+\(VF=1/\sqrt{\varepsilon_r}\) & Velocity factor from the dielectric; \(0.66\) for solid PE. & \cref{ch:lines} \\
 \(\Gamma=(Z_L-Z_0)/(Z_L+Z_0)\) & Load reflection coefficient. & \cref{ch:lines} \\
 \(a=(V+Z_0I)/2\sqrt{Z_0}\), \(b=(V-Z_0I)/2\sqrt{Z_0}\) & Wave coordinates; \(|a|^2\) is incident power. & \cref{sec:sparams} \\
 \(S_{11}=b/a=\Gamma\) & One-port \(S\)-parameter \emph{is} the reflection coefficient. & \cref{sec:sparams} \\
@@ -128,10 +129,14 @@ Formula & Use & Derived in \\
 \(Z_t=\sqrt{Z_0Z_L}\) & Quarter-wave transformer for real impedances. & \cref{ch:lines} \\
 \(\ell_{\lambda/2}\approx468/f_{\mathrm{MHz}}\) ft & Resonant dipole length (end effect included); \(234/f\) for a quarter wave. & \cref{sec:antennalength} \\
 \(\eta=R_{\mathrm{rad}}/(R_{\mathrm{rad}}+R_{\mathrm{loss}})\) & Antenna efficiency; loss \emph{improves} SWR while lowering it. & \cref{sec:antennaeff} \\
+\(|F|=2|\sin(\beta h\sin\psi)|\) & Horizontal antenna over ground; first lobe at \(\sin\psi=\lambda/4h\). & \cref{sec:groundimage} \\
+\(Z=4R_d\approx\SI{300}{\ohm}\) & Folded dipole: current doubling, squared. & \cref{sec:foldeddipole} \\
+\(\mathrm{EIRP}=\mathrm{ERP}+\SI{2.15}{\decibel}\) & Same station, dBi instead of dBd. & \cref{sec:antennalength} \\
 \(R(z)=R_{\mathrm{centre}}/\cos^2\beta z\) & Feed-point resistance vs position; \(2\times\) at \(\lambda/8\), \(\to\infty\) at the end. & \cref{sec:feedpoint} \\
 \(|F|=2|\cos((\phi+\beta d\cos\theta)/2)|\) & Two-element array factor; the four named patterns are substitutions. & \cref{sec:arrayfactor} \\
 \(\mathrm{dBi}=\mathrm{dBd}+2.15\) & Antenna gain references: isotropic vs dipole. & \cref{sec:antennalength} \\
 \(\jj Z_0\tan\beta\ell\) & Shorted-stub reactance. & \cref{sec:stubs} \\
+\(|X|=Z_0\) at \(\ell=\lambda/8\) & The only stub length where reactance matches the line. & \cref{sec:stubs} \\
 \(\gamma=\sqrt{(R'+\jj\omega L')(G'+\jj\omega C')}=\alpha+\jj\beta\) & Complex propagation constant of a real line. & \cref{sec:lineloss} \\
 \(\alpha\approx R'/(2Z_0)+G'Z_0/2\) & Low-loss attenuation constant: conductor plus dielectric. & \cref{sec:lineloss} \\
 \(\text{dB}\approx8.686\,\alpha x\) & Nepers to decibels; loss is proportional to length. & \cref{sec:lineloss} \\
