@@ -27,7 +27,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **21 chapters + 3 appendices, five parts, 158 pages.**
+- **21 chapters + 3 appendices, five parts, 159 pages, 29 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 - **Everything is pushed.** `main` and `origin/main` are identical. (An earlier
@@ -53,13 +53,13 @@ Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedbac
 `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
 `app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 29 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
+Section labels, all 30 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
 `sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
 `sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
 `sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
 `sec:lc-lowpass` `sec:filterspecs` `sec:lineloss` `sec:stubs` `sec:antennalength`
 `sec:classes` `sec:beta-resistors` `sec:gbw` `sec:neutralization` `sec:mixers`
-`sec:probe` `sec:groundloops`.
+`sec:probe` `sec:groundloops` `sec:instpower`.
 
 ### Conventions in force
 
@@ -137,6 +137,7 @@ the `−20n` dB/decade row, which had been credited to `ch:filters`.
 | Filter datasheet vocabulary | new `sec:filterspecs` in Ch 15 — insertion loss, ultimate rejection, shape factor |
 | Antenna length, dBi/dBd | new `sec:antennalength` in Ch 16 — **derives** 468/f and 234/f rather than quoting them |
 | S units, link budgets | Ch 18 §Decibels in Measurement |
+| Reactive power described only as "sloshing" | new `sec:instpower` in Ch 9 — derives the `2\omega` term, so the metaphor becomes an equation and the power factor falls out (from the ARRL Ch 4 audit) |
 
 ### 2d. Verification
 
@@ -179,19 +180,29 @@ on any count. Full inventory: see the scratchpad file
 
 ## 4. Recommended next steps, in priority order
 
-### A. Start here — the ARRL manual pass (Alex's standing request)
+### A. Decide on the ARRL audit findings
 
-> After you complete everything planned, I want you to review the ARRL Extra Class
-> license manual (see the PDF in the references folder), especially Chapters 4, 6, 7,
-> and 9. What content in these chapters is missing from our book, but within the
-> scope/spirit of the book? Again, the goal of our book is to explain the math behind
-> the circuit fundamentals for the Extra exam. The ARRL manual asserts a lot of things
-> that we can explain more deeply from our mathematical perspective.
+**Done, and waiting on you: see [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md).**
 
-The framing to keep: **they assert, we derive.** The deliverable is a prioritized
-proposal, not prose in the book, so Alex can choose. Hard constraint: extract
-*concepts and topic lists only* — `references/` is gitignored copyrighted material, so
-no ARRL prose, figures, or question text may be reproduced.
+Alex's standing request was to review ARRL Extra manual Chs 4, 6, 7 and 9 for content
+that is missing from the book but within its scope and spirit — framed as "they
+assert, we derive." That audit ran in Round 4 and produced 28 ranked proposals.
+Nothing has been written into the book from it except one item that was a defect by
+our own convention (`sec:instpower`, below).
+
+Headline: the strongest finding is a **new chapter, "Noise, Sensitivity, and Dynamic
+Range"** (six derivations: the −174 dBm/Hz floor, noise figure and Friis, the power
+series that generates every dynamic-range number, the 2/3 in DR3, reciprocal mixing
+and the 1/Q_L² phase-noise skirt, and noise bandwidth ≠ −3 dB bandwidth). Then a
+tier of ten single sections, of which the best thesis fits are **the PLL as a control
+loop** and **S₂₁ *is* the Bode transfer function**.
+
+**⚠️ Critical caveat, recorded in the proposal:** the manual in `references/` is the
+**12th edition, keyed to the 2020–2024 pool**, not the current 2024–2028 one. This
+already produced one wrong claim (power factor, cited as ten E5D questions — it is
+now only a distractor) and one bad citation (E7H14/E7H15 do not exist). Every pool ID
+in the proposal has been re-verified against the real pool; treat any *new*
+exam-relevance claim sourced from the manual as suspect.
 
 ### B. Content gaps still open
 
