@@ -158,9 +158,9 @@ impedance (the `cos²` hit was the RMS derivation), skin depth (the *term* appea
 `sec:selfresonance`, but `δ = √(2/ωμσ)` is not derived), and the exact half-power
 bandwidth (the "geometrically" hits were unrelated).
 
-Score: **35 done, 22 open.** Nothing has been silently dropped.
+Score: **36 done, 21 open.** Nothing has been silently dropped.
 
-## ✅ Done (35)
+## ✅ Done (36)
 
 **Read-through (4 of 7 findings + 2 cleanups):** Ch 6 wired in (0 → 27 inbound refs) ·
 acronym regressions · Nyquist introduced (`sec:nyquist`) · self-resonance and skin
@@ -199,11 +199,13 @@ noise bandwidth
 
 **Tier B4 — feed-point impedance vs position (`sec:feedpoint`).** The dipole's open ends impose the same current node as `sec:stubs`'s open stub, so `I(z) = I₀cos βz`. Radiated power does not depend on where the coax attaches, but the feed sees `P = |I(z)|²R(z)`, so `R(z) = R_centre/cos²βz` — conservation of power, no field theory. λ/8 gives exactly `cos²45° = ½`, hence exactly double, 146 Ω; the end gives `R → ∞`, a *voltage* feed, cured by the `Z₀²/Z_L` inversion `sec:quarterwave` already derived. **Two corrections to the plan's framing:** the OCFD's real selling point per E9C05 is a *similar impedance on multiple bands*, not a 4:1 ratio (200 Ω sits at 0.147λ, not λ/8), so the text says that instead; and E9A04's answer is *antenna height*, which the section now explains — line length and tuner settings are excluded because a line only transforms what the current distribution already set. `sec:quarterwave` is a new label added so two self-referential `\cref{ch:lines}` citations inside Ch 16 could point somewhere useful.
 
+**Tier B5 — the two-element array factor (`sec:arrayfactor`).** Pure phasor addition: the far element's extra path `d cos θ` is a phase `βd cos θ`, add the feed phase `φ`, and the common element pattern divides out, leaving `F = 1 + e^{j(φ+βd cos θ)}`. Factor out half the angle as with any two phasors and `|F| = 2|cos((φ+βd cos θ)/2)|`. The three patterns E9C01/02/03 ask for by name are then three substitutions evaluated at `θ = 0°` and `90°` — verified against the pool: λ/2 in phase → figure-eight broadside, λ/2 out of phase → figure-eight along the axis, λ/4 at 90° → cardioid. A `physicalbox` gets the DF sense antenna free and explains why direction finding nulls rather than peaks: a cosine is flat at its maximum and steep at its zero, so the sharpness is calculus, not hardware.
+
 **ARRL Tier 3 (5 of 22):** Fourier series (`sec:fourier`) · Parseval and form factor
 (`sec:parseval`) · the aliasing fold-back formula (`sec:samplingthm` — though *not*
 its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
-## ⬜ Open (22), ranked
+## ⬜ Open (21), ranked
 
 ### Tier A — ✅ complete (all five landed in Round 5; see Done above)
 
@@ -211,7 +213,6 @@ its oscilloscope application in Ch 20) · the attenuator corollary (`2L`)
 
 | # | Item | Why |
 |---|---|---|
-| T2.12 | **Two-element array factor** | `\|F\| = 2\|cos((φ+βd cosθ)/2)\|` — pure phasor addition. Turns a memorized table of four patterns into four substitutions, and gives the DF sense antenna free. |
 | T2.11 | **Crystal as two resonances** | `R–L_m–C_m` parallel `C₀` gives an impedance zero and pole a few hundred ppm apart — which *is* the pulling range, sets lattice-filter bandwidth, and explains why `C_L` must be specified. E6D02, E7H12. |
 | T2.16 | **Named antenna matches** | Hairpin, gamma, delta, stub — all absent, though we own both the L-network and stub reactances. The hairpin is a shorted stub `<λ/4`, hence inductive, hence the network **demands** a series capacitance — so "the element must be capacitive" becomes a consequence. Six pool questions, zero new math. |
 

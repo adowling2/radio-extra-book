@@ -949,6 +949,72 @@ alter something on the transmitter side of the feed point. A line merely
 from changing it.
 \end{exambox}
 
+\subsection{Two Elements: the Array Factor}
+\label{sec:arrayfactor}
+Put two identical antennas a distance \(d\) apart and feed them with a deliberate
+phase difference \(\phi\). The pattern that results is usually presented as a table of
+four cases to memorize. It is one line of phasor addition.
+
+Look in a far-off direction making angle \(\theta\) with the line joining the two
+elements. The wave from the far element travels an extra distance \(d\cos\theta\) to
+reach that direction, which is a phase lag \(\beta d\cos\theta\); add the feed phase
+\(\phi\) you chose. Both elements radiate the same pattern, so that common factor
+divides out and what remains is the sum of two unit phasors---\cref{ch:complex}'s
+addition, nothing more:
+\[
+F(\theta)=1+\ee^{\jj\left(\phi+\beta d\cos\theta\right)} .
+\]
+Factor out half the angle, exactly as when adding any two phasors:
+\(1+\ee^{\jj x}=\ee^{\jj x/2}\bigl(\ee^{-\jj x/2}+\ee^{\jj x/2}\bigr)=2\ee^{\jj x/2}\cos(x/2)\).
+The leading exponential has unit magnitude, so
+\[
+\boxed{\;|F(\theta)|=2\left|\cos\!\left(\frac{\phi+\beta d\cos\theta}{2}\right)\right|\;}
+\]
+Every two-element pattern is now a substitution. With \(\beta d=2\pi d/\lambda\):
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}llccY@{}}
+\toprule
+\(d\) & \(\phi\) & \(|F|\) along axis & \(|F|\) broadside & Pattern \\
+\midrule
+\(\lambda/2\) & \(0^\circ\)   & \(2|\cos90^\circ|=0\) & \(2|\cos0^\circ|=2\) & figure-eight \emph{broadside} to the axis \\
+\(\lambda/2\) & \(180^\circ\) & \(2|\cos180^\circ|=2\) & \(2|\cos90^\circ|=0\) & figure-eight \emph{along} the axis (end-fire) \\
+\(\lambda/4\) & \(90^\circ\)  & \(2|\cos90^\circ|=0\) & \(2|\cos45^\circ|=\sqrt2\) & \emph{cardioid}: one lobe, one null \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Read the mechanism off the formula rather than the table. Feeding in phase makes the
+two contributions add broadside, where the path difference is zero, and cancel along
+the axis whenever the half-wave spacing turns the path difference into a half cycle.
+Feeding out of phase swaps the two. And the cardioid case is the pretty one: with
+\(d=\lambda/4\) the path difference along the axis is a quarter cycle, which the
+\(90^\circ\) feed phase either doubles to a half cycle---complete cancellation on one
+side---or annuls to zero, giving full addition on the other. \emph{One deliberate
+phase and one path length, set to agree in one direction and disagree in the other.}
+
+\begin{physicalbox}
+\textbf{Why direction finding listens for the null.} Near a maximum the cosine is
+flat, so the signal barely changes as you rotate; near a zero it is steep, and the
+signal falls off a cliff. A cardioid's single null is therefore a far sharper
+indicator of bearing than its single broad lobe, which is why a direction-finding
+set---a loop plus a sense antenna, phased to make exactly the third row above---is
+aimed by nulling the signal rather than peaking it. The sharpness is not a property of
+the hardware but of differentiating a cosine near its zero.
+\end{physicalbox}
+
+\begin{exambox}
+Group E9C asks for three of these patterns by name, and all three are the table above:
+two quarter-wave verticals \(\lambda/2\) apart \emph{in phase} give a figure-eight
+\emph{broadside} to the array axis; the same pair fed \(180^\circ\) out of phase give
+a figure-eight \emph{along} the axis; and \(\lambda/4\) apart fed \(90^\circ\) out of
+phase give a \emph{cardioid}. Rather than memorizing which is which, evaluate
+\(|F|=2|\cos((\phi+\beta d\cos\theta)/2)|\) at \(\theta=0^\circ\) and
+\(90^\circ\)---two arithmetic steps, and the pattern name follows from where the zero
+lands.
+\end{exambox}
+
+
 \begin{figure}[htbp]
 \centering
 \begin{circuitikz}[scale=1]
