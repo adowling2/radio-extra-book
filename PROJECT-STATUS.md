@@ -1,9 +1,22 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-07-28 (end of Round 5).
+Last updated: 2026-09-02 (Round 6, uncommitted).
 
-## Round 5 (in progress)
+## Round 6 (in progress)
+
+The book now has three new applied chapters: Ch 21 derives pattern metrics,
+polarization, aperture scaling, and practical antenna models; Ch 22 derives AM and
+FM spectra and follows signals through a superheterodyne; Ch 23 develops local diode,
+BJT, FET, and tube models, bias, load lines, and regulation as feedback. The practice
+chapters moved to Chs 24--26 so the applications precede the exercises. The current
+build is clean: **226 pages, 26 chapters, 36 figures, 87 section labels, and 65
+glossary entries.**
+
+The older coverage counts below predate this expansion and remain historical. Do not
+reuse them as a current measure until the pool map is re-audited.
+
+## Round 5 (completed)
 
 **Start-up check on the new machine:** `make all` and `make figures` both succeed;
 figures regenerate byte-identically; `./scripts/check.sh` prints **ALL CHECKS PASSED**
@@ -52,7 +65,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **23 chapters + 3 appendices, five parts, 216 pages, 35 figures.**
+- **26 chapters + 3 appendices, five parts, 226 pages, 36 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 **Pool sources are now the official NCVEC releases** (`references/`), and the

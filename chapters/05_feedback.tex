@@ -1,19 +1,13 @@
 \chapter{Feedback: State-Space and Frequency-Domain Views}
 \label{ch:feedback}
-Apart from one block-diagram rule in \cref{ch:linsys}, every system in
-\cref{ch:linsys,ch:splane} has been analyzed \emph{open loop}: an input goes in, an
-output comes out, and nothing the output does affects the input. Feedback breaks that
-one-way street---we measure the output, compare it with what we wanted, and use the
-difference to drive the system. That single change is powerful enough to
-reshape a system's dynamics, and it is worth its own chapter because feedback is the
-one operation that \emph{moves the poles} rather than merely combining them.
+So far, \cref{ch:linsys,ch:splane} has treated systems \emph{open loop}: an input
+drives an output, but the output does not affect the input. Feedback measures the
+output, compares it with the reference, and uses the difference to drive the
+system. That operation moves poles rather than merely combining them.
 
-This chapter stays generic, like the rest of Part~II: the systems here are the same
-first- and second-order models of \cref{ch:linsys}, with no circuits assumed. We
-look at feedback twice---once in the time and state-space view, where it changes
-the coefficients of the differential equation, and once in the frequency view,
-where it shows up as loop gain and stability margins. The two views answer different
-questions, and a designer needs both. \Cref{ch:active} then cashes all of it in on
+Like the rest of Part~II, this chapter stays generic. In the time and state-space
+view, feedback changes differential-equation coefficients. In the frequency view,
+it sets loop gain and stability margins. \Cref{ch:active} applies both views to
 op-amps, oscillators, and regulators.
 
 \section{Closing the Loop}

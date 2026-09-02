@@ -1,24 +1,17 @@
 \chapter{Active Circuits, Feedback, and Oscillators}
 \label{ch:active}
-Everything so far has been \emph{passive}: circuits that store and dissipate the
-energy handed to them. An active circuit adds a device that can supply gain, and with
-gain comes the one operation passive circuits cannot perform---feedback around a
-loop. This chapter is therefore where \cref{ch:feedback} finally meets hardware, and
-where the resonators of \cref{ch:rlc,ch:rlcpar} stop being things to analyze and
-become things a designer places deliberately.
+Everything so far has been \emph{passive}: it stores or dissipates supplied energy.
+An active circuit adds a device that supplies gain and therefore supports feedback
+around a loop. Here, \cref{ch:feedback} meets hardware, and the resonators of
+\cref{ch:rlc,ch:rlcpar} become deliberate design elements.
 
 \section{Why Active Circuits Appear}
 The Extra exam includes amplifiers, op-amps, feedback, oscillators, mixers, and
-regulated power supplies. A full electronics text is not needed here; the goal is
-to connect the circuit formulas to system behavior---and, in this chapter, to the
-classical feedback ideas that a controls background already contains. The device
-details (bias points, transistor models, tube parameters) live in the ARRL
-manual; what follows is the systems view that ties them together. The feedback
-groundwork of \cref{ch:feedback}---closed-loop gain \(A/(1+A\beta)\), the
-large-loop-gain limit \(A_{\text{cl}}\to1/\beta\), pole motion under feedback, and
-the gain and phase margins---is the backbone of this chapter. Rather than restate
-those results, this chapter puts them to work on real devices, so it is worth having
-\cref{ch:feedback} fresh in mind.
+regulated power supplies. This chapter connects their circuit formulas to system
+behavior. Device-level details such as bias points, transistor models, and tube
+parameters belong in the ARRL manual. Here we apply the feedback results of
+\cref{ch:feedback}: closed-loop gain \(A/(1+A\beta)\), the large-loop-gain limit
+\(A_{\text{cl}}\to1/\beta\), pole motion, and gain and phase margins.
 
 \section{Amplifier Gain and Classes}
 \label{sec:classes}
@@ -203,10 +196,8 @@ decomposition the circuit's own symmetry prefers, and the unwanted half is not
 suppressed but absent.
 \end{controlsbox}
 
-The same algebra explains a mixer, and it is worth spending three more lines here so
-that \cref{sec:mixers} can lean on the result instead of asserting it. Apply the
-antiphase-and-subtract trick to the \emph{RF} port while feeding the local oscillator
-to both devices in common:
+The same algebra explains a mixer. Apply the antiphase-and-subtract operation to the
+\emph{RF} port while feeding the local oscillator to both devices in common:
 \[
 y=f(v_{\mathrm{LO}}+v_{\mathrm{RF}})-f(v_{\mathrm{LO}}-v_{\mathrm{RF}}) .
 \]
@@ -268,9 +259,8 @@ and the inverting input held at a virtual ground by feedback, the input current
 
 \subsection{Where \texorpdfstring{\(\beta\)}{beta} Is Hiding}
 \label{sec:beta-resistors}
-\Cref{ch:feedback} worked entirely with an abstract feedback fraction \(\beta\), and
-it is worth connecting that symbol to actual components before going further---because
-every result in that chapter then becomes an op-amp result.
+\Cref{ch:feedback} used an abstract feedback fraction \(\beta\). In an op-amp,
+components make that quantity concrete.
 
 Look at the non-inverting amplifier. The output drives the divider \(R_f\)--\(R_g\),
 and the voltage fed back to the inverting input is what that divider delivers:
@@ -698,10 +688,8 @@ oscillator raises the apparent noise floor near strong signals.
 
 \subsection{The Crystal Is Two Resonances}
 \label{sec:crystal}
-That last remark makes the quartz crystal worth a page, because everything special
-about it is one equivalent circuit built from parts this book already owns---and it
-has \emph{two} resonances a few parts per million apart, which is the fact all the
-practical consequences hang on.
+A quartz crystal has one equivalent circuit built from familiar parts, but \emph{two}
+resonances a few parts per million apart. That separation drives its practical use.
 
 Mechanically, a quartz plate is a vibrating mass with stiffness and friction, and a
 piezoelectric plate converts that motion to charge. Driven electrically it therefore
@@ -827,9 +815,8 @@ integral of frequency:
 \qquad\Longrightarrow\qquad
 \Phi_{\mathrm{out}}(s)=\frac{K_v}{s}\,V(s).
 \]
-\emph{A VCO is an integrator.} That is the whole reason a PLL behaves the way it does,
-and it is invisible if you think of the VCO as merely ``a tunable oscillator.'' The
-loop gain therefore carries a free \(1/s\):
+\emph{A VCO is an integrator.} Treating it as merely a tunable oscillator hides the
+free \(1/s\) in the loop gain:
 \[
 \boxed{\;L(s)=\frac{K_dK_vF(s)}{s}\;}
 \]
@@ -1014,10 +1001,9 @@ resistors the bracket becomes \(2\), leaving
 \[
 Q=\frac{1}{2}\sqrt{\frac{C_1}{C_2}} ,
 \]
-so \textbf{the capacitor ratio sets the damping}. That is the whole trick. In an LC
-filter \(Q\) is set by resistance (\cref{sec:lc-lowpass}); here it is set by a ratio of
-two capacitors, and the feedback path through \(C_2\) is what makes the pole pair
-complex. No inductor appears anywhere.
+so \textbf{the capacitor ratio sets the damping}. In an LC filter, resistance sets
+\(Q\) (\cref{sec:lc-lowpass}); here a capacitor ratio sets it, and feedback through
+\(C_2\) makes the pole pair complex. No inductor is required.
 
 \begin{workedbox}[: a Butterworth audio section]
 Design a second-order Butterworth low-pass at \(f_0=\SI{3}{\kilo\hertz}\).

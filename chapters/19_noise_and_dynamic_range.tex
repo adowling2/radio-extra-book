@@ -1,16 +1,13 @@
 \chapter{Noise, Sensitivity, and Dynamic Range}
 \label{ch:noise}
-A receiver is judged at two extremes: the weakest signal it can hear and the strongest
-it can tolerate. Both are numbers this book can now derive rather than quote, because
-both come from material already in hand---the noise floor from thermal physics plus
-\cref{ch:resistive}'s maximum-power-transfer condition, and the strong-signal limits
-from the same nonlinearity \cref{sec:mixers} used to explain mixing.
+A receiver is judged by the weakest signal it can hear and the strongest it can
+tolerate. The noise floor follows from thermal physics and \cref{ch:resistive}'s
+maximum-power-transfer condition; strong-signal limits follow from the nonlinearity
+of \cref{sec:mixers}.
 
-That is the shape of the chapter. The lower limit is set by \emph{noise}: how much of
-it the receiver adds, and where in the chain that addition happens. The upper limit is
-set by \emph{nonlinearity}: how gracefully the front end fails when overdriven. The gap
-between them is the \textbf{dynamic range}, and the several numbers that quantify it
-turn out to be consequences of a single power series.
+The lower limit is \emph{noise}: how much the receiver adds and where it adds it.
+The upper limit is \emph{nonlinearity}: how the front end fails when overdriven.
+Their gap is the \textbf{dynamic range}; one power series yields its several measures.
 
 \section{The Noise Floor: Where \texorpdfstring{\(-174\)}{-174} dBm/Hz Comes From}
 \label{sec:noisefloor}
@@ -34,11 +31,10 @@ P_n=\frac{\bigl(v_{\RMS}/2\bigr)^2}{R}
 \qquad\Longrightarrow\qquad
 \boxed{\;P_n=kTB\;}
 \]
-Notice that the resistance cancels completely: available noise power depends only on
-temperature and bandwidth, not on the resistor generating it. And notice the factor of
-\(4\) in the Johnson formula---it is there precisely so that this result comes out
-clean, which is the usual sign that the available power, not the open-circuit voltage,
-is the physically meaningful quantity.
+The resistance cancels: available noise power depends on temperature and bandwidth,
+not on the resistor. The factor of \(4\) in the Johnson formula yields this result,
+showing that available power, rather than open-circuit voltage, is the relevant
+quantity.
 
 Now evaluate it. At a reference temperature \(T_0=\SI{290}{\kelvin}\),
 \[

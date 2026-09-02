@@ -1,20 +1,18 @@
 \chapter{Measurement and Troubleshooting}
 \label{ch:measurement}
-This chapter is where the book's models meet a bench, and it introduces almost no new
-theory. Every instrument here is a circuit built from parts already analyzed: a
-voltmeter is a resistance you add to a Th\'evenin source (\cref{ch:resistive}), a
-scope probe is a divider with a pole and a zero (\cref{ch:rc,ch:splane}), a probe's
-ground lead is a series RLC resonator (\cref{ch:rlc}), and an antenna analyzer traces
-the Smith locus of \cref{ch:lines}. The reason measurement deserves its own chapter is
-that these added circuits are usually \emph{invisible on the schematic}, so their
-effects get blamed on the circuit under test.
+This chapter brings the models to the bench. Each instrument is a circuit built
+from previously analyzed parts: a voltmeter adds resistance to a Th\'evenin source
+(\cref{ch:resistive}); a scope probe is a pole--zero divider
+(\cref{ch:rc,ch:splane}); a ground lead is a series RLC resonator
+(\cref{ch:rlc}); and an antenna analyzer traces the Smith locus of
+\cref{ch:lines}. These added circuits are usually absent from the schematic, so
+their effects are often blamed on the circuit under test.
 
 \section{Why Measurement Is a Circuit Problem}
-Meters, probes, oscilloscopes, antenna analyzers, and SWR bridges are themselves
-circuits. Connecting one changes the circuit unless its impedance is high, low, or
-matched in the right way for the measurement---and ``high'' or ``low'' is never
-absolute, only relative to the impedance of the node you touch. That is the single
-idea this chapter applies four times.
+Meters, probes, oscilloscopes, antenna analyzers, and SWR bridges are circuits.
+Connecting one changes the circuit unless its impedance is appropriate for the
+measurement. ``High'' and ``low'' are relative to the impedance of the node under
+test.
 
 \section{Voltmeter and Ammeter Loading}
 A voltmeter with input resistance \(R_{\mathrm{in}}\) placed across a node is simply
@@ -146,8 +144,8 @@ analog-to-digital converter}, for the fold-back reason above.
 
 \section{The Oscilloscope Probe: Pole-Zero Cancellation on the Bench}
 \label{sec:probe}
-A \(10\!:\!1\) scope probe is the neatest application of \cref{ch:splane} in the whole
-book, so it is worth deriving rather than asserting.
+A \(10\!:\!1\) scope probe is a direct application of \cref{ch:splane}, so we derive
+it rather than assert its behavior.
 
 The probe contributes a series resistor \(R_1\) with an adjustable capacitor \(C_1\)
 across it; the scope input contributes \(R_2\) with its own capacitance \(C_2\)
@@ -394,18 +392,17 @@ resonator (\SI{10}{\micro\henry}, \SI{20}{\pico\farad}, \SI{6}{\ohm}) between
 \end{figure}
 
 \begin{controlsbox}
-\textbf{This is where the book's two halves shake hands.} Part II built
-\(G(\jj\omega)\) as a mathematical object: a ratio of polynomials in \(s\), read on log
-axes, with poles setting corners and slopes counted in decibels per decade. Part IV
-built filters, matching networks and lines as circuits. A VNA closes the gap by
-\emph{measuring} the object Part II defined. Sweep a band-pass filter and the
+\textbf{A VNA measures the model.} Part II built \(G(\jj\omega)\) as a ratio of
+polynomials in \(s\), read on log axes, with poles setting corners and slopes in
+decibels per decade. Part IV built filters, matching networks, and lines as circuits.
+A VNA measures that transfer function. Sweep a band-pass filter and the
 \(|S_{21}|\) trace shows the passband, the \(-\SI{3}{\decibel}\) edges whose
 separation is \(f_0/Q\) exactly (\cref{sec:halfpower}), the insertion loss of
 \cref{sec:filterspecs}, and skirts falling at \(-20n\,\si{\decibel}\) per decade from
-which you can read the order \(n\) (\cref{sec:cascadeadd}). Nothing on that screen is
-new physics; it is \cref{ch:filters}'s design equations, verified. The phase trace is
-just as real: its slope is the group delay of \cref{sec:groupdelay}, so a filter's
-delay is measurable, and \(S_{21}\) of an amplifier plus \(S_{12}\) of its unintended
+which reveal the order \(n\) (\cref{sec:cascadeadd}). The screen verifies
+\cref{ch:filters}'s design equations. Its phase slope is the group delay of
+\cref{sec:groupdelay}, so a filter's delay is measurable, and \(S_{21}\) of an
+amplifier plus \(S_{12}\) of its unintended
 reverse path is the loop whose stability \cref{ch:feedback} governs---which is why
 \cref{sec:neutralization} matters at all.
 \end{controlsbox}

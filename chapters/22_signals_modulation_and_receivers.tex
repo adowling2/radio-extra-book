@@ -1,0 +1,119 @@
+\chapter{Signals, Modulation, and Receiver Architecture}
+\label{ch:signals}
+Radio carries information by changing a sinusoid, then recovers that information
+from a selected portion of the spectrum.  This chapter starts with products of
+sines, connects them to bandwidth, and follows the signal through a receiver.
+It uses the mixer multiplication of \cref{sec:mixers}, the filter models of
+\cref{ch:filters}, and the sampling view of \cref{ch:dsp}.
+
+\section{Amplitude Modulation Makes Two Sidebands}
+\label{sec:am}
+Let a single-tone message be \(\cos\omega_m t\), a carrier be
+\(\cos\omega_c t\), and \(m\) be the modulation index.  Conventional AM is
+\[
+s(t)=A_c[1+m\cos\omega_m t]\cos\omega_c t.
+\]
+Using \(\cos a\cos b=[\cos(a+b)+\cos(a-b)]/2\) gives
+\[
+\boxed{\;s(t)=A_c\cos\omega_ct+
+\frac{mA_c}{2}\cos(\omega_c+\omega_m)t+
+\frac{mA_c}{2}\cos(\omega_c-\omega_m)t.\;}
+\]
+One time-domain multiplication has become a carrier and equal upper and lower
+sidebands.  A message whose highest audio frequency is \(f_m\) therefore
+occupies \(2f_m\) of RF bandwidth.  This is Fourier analysis in a practical
+form: multiplication shifts a spectrum, while a linear filter independently
+scales each shifted component (\cref{sec:fourier}).
+
+With a fixed load, power is proportional to squared amplitude.  The carrier
+power is \(P_c\); each sideband has power \(m^2P_c/4\), so
+\[
+\boxed{\quad P_{\rm AM}=P_c\left(1+\frac{m^2}{2}\right).\quad}
+\]
+At \(m=1\), the sidebands together carry one third of the transmitted power.
+Overmodulation, \(m>1\), makes the envelope cross zero and an envelope detector
+can no longer recover the original message without distortion.
+
+\section{SSB, Frequency Modulation, and Phase Modulation}
+\label{sec:anglemod}
+An SSB transmitter removes the carrier and one of AM's sidebands.  It needs only
+the message bandwidth rather than twice the message bandwidth, and it does not
+spend transmitter power on an uninformative carrier.  A receiver restores a
+local carrier with a product detector; the mixer sum and difference terms of
+\cref{sec:mixers} bring the selected sideband back to audio.
+
+Frequency and phase modulation keep the carrier amplitude nearly constant and
+put information into its angle.  A single-tone FM signal is
+\[
+s(t)=A_c\cos[\omega_ct+\beta\sin\omega_mt],\qquad
+\beta=\frac{\Delta f}{f_m},
+\]
+where \(\Delta f\) is peak frequency deviation and \(\beta\) is the modulation
+index.  Differentiating the phase shows the instantaneous frequency:
+\[
+f_i(t)=f_c+\Delta f\cos\omega_mt.
+\]
+FM has infinitely many mathematical sidebands, with amplitudes set by Bessel
+functions; for engineering channel planning, Carson's rule keeps the important
+ones:
+\[
+\boxed{\quad B\approx2(\Delta f+f_m).\quad}
+\]
+It is an approximation, not a hard spectral wall.  Phase modulation instead
+makes phase directly proportional to the message.  Because frequency is the
+time derivative of phase, an integrator before a phase modulator produces FM,
+and a differentiator before an FM modulator produces PM.
+
+\begin{exambox}
+AM's bandwidth comes from two translated copies of the message.  SSB retains one.
+FM's deviation is a frequency excursion, not its channel width: audio bandwidth
+and deviation both enter Carson's rule.
+\end{exambox}
+
+\section{Why a Superheterodyne Uses an Intermediate Frequency}
+\label{sec:receiverarchitecture}
+A receiver wants to select one desired RF signal, amplify it without overload,
+and recover its information.  In a superheterodyne the mixer translates the
+desired RF to a fixed intermediate frequency (IF):
+\[
+\boxed{\quad f_{\rm IF}=|f_{\rm RF}-f_{\rm LO}|.\quad}
+\]
+Fixed-frequency filters can then supply repeatable selectivity and gain.  The
+price is an image: a second RF frequency also differs from the local oscillator
+by \(f_{\rm IF}\).  For high-side injection,
+\[
+f_{\rm LO}=f_{\rm RF}+f_{\rm IF},\qquad
+\boxed{\quad f_{\rm image}=f_{\rm RF}+2f_{\rm IF}.\quad}
+\]
+An RF preselector must reject that image before the mixer, because after mixing
+the wanted signal and image occupy the same IF and no later filter can tell them
+apart.
+
+The resulting signal path is a sequence of models already developed in this book:
+\[
+\text{antenna}\ \longrightarrow\ \text{preselector/LNA}\ \longrightarrow\
+\text{mixer}\ \longrightarrow\ \text{IF filter and gain}\ \longrightarrow\
+\text{detector or ADC}.
+\]
+The preselector trades bandwidth against image rejection and strong-signal
+protection.  The first low-noise stage matters because of Friis's formula
+(\cref{sec:friis}); the IF filter sets both adjacent-signal rejection and much of
+the noise bandwidth (\cref{sec:noisebw}).  A direct-conversion or software-defined
+receiver simply moves the translation and filtering into quadrature baseband and
+digital processing; sampling still replicates spectra exactly as in \cref{ch:dsp}.
+
+\begin{workedbox}[: one AM signal through a receiver]
+An AM station at \SI{14.200}{\mega\hertz} carries a \SI{1}{\kilo\hertz} tone.
+Its spectral lines are at \SI{14.199}{\mega\hertz}, \SI{14.200}{\mega\hertz},
+and \SI{14.201}{\mega\hertz}; the occupied width is \SI{2}{\kilo\hertz}.
+Choose \(f_{\rm IF}=\SI{9}{\mega\hertz}\) and high-side injection.  The local
+oscillator is \SI{23.200}{\mega\hertz}, and a station at
+\(14.200+2\times9=\SI{32.200}{\mega\hertz}\) produces the same IF.  A filter
+after the mixer cannot remove it, so the RF preselector must do that work.
+\end{workedbox}
+
+\begin{mistakebox}
+The IF is not an extra signal produced by the transmitter.  It is a frequency
+chosen by the receiver designer so that its filters, gain, and detectors work at
+one convenient frequency while the tuning occurs at RF.
+\end{mistakebox}

@@ -1,16 +1,13 @@
 \chapter{Sampling and Digital Signal Processing}
 \label{ch:dsp}
-Every circuit so far has been analog: voltages and currents defined at every instant.
-A modern radio converts its signal to numbers early and does the rest in software, and
-this chapter is what that costs and what it buys. It belongs in this part of the book
-because it needs almost nothing new---the central operation, sampling, turns out to be
-\emph{multiplication}, which \cref{sec:mixers} already analyzed in full. The chapter's
-one genuinely new object is the thing being multiplied by.
+So far, every circuit has been analog: voltage and current exist at every instant.
+A modern radio converts its signal to numbers early and processes it in software.
+Sampling is still \emph{multiplication}, an operation \cref{sec:mixers} already
+analyzed; only the multiplier is new.
 
-Two loose ends also get tied. \Cref{ch:filters} asserted that a digital filter with no
-feedback can be exactly linear phase; \cref{sec:firiir} proves it. And
-\cref{sec:nyquist} promised that the \emph{other} Nyquist---the sampling one---was a
-separate idea; here it is.
+This chapter also proves the exact linear phase of a no-feedback digital filter
+(\cref{sec:firiir}) and distinguishes the sampling Nyquist theorem from the
+Nyquist plot of \cref{sec:nyquist}.
 
 \section{Sampling Is Multiplication}
 \label{sec:samplingismult}
@@ -45,13 +42,11 @@ infinitely many because it multiplies by infinitely many. No new mathematics---j
 different multiplier.
 
 \begin{controlsbox}
-\textbf{Why this is the whole chapter.} Sampling introduces exactly one phenomenon:
-copies of the spectrum, spaced \(f_s\). Every result below is a consequence of asking
-when those copies overlap (\cref{sec:samplingthm}), what the numbers cost in precision
-(\cref{sec:quantnoise}), or how to move between rates without letting them overlap
-(\cref{sec:decimation}). The signal processing that happens \emph{after} sampling is
-just the filtering of \cref{ch:filters} with the poles and zeros placed by arithmetic
-instead of by components.
+\textbf{One phenomenon drives the chapter.} Sampling creates spectrum copies spaced
+\(f_s\). The remaining questions are when they overlap (\cref{sec:samplingthm}),
+what precision costs (\cref{sec:quantnoise}), and how to change rates without
+overlap (\cref{sec:decimation}). Subsequent signal processing is filtering with
+poles and zeros placed by arithmetic instead of components.
 \end{controlsbox}
 
 \section{The Sampling Theorem, and Aliasing as Folding}
@@ -226,9 +221,9 @@ The entire phase sits in the first factor, and it is \emph{strictly linear} in
 \tau_g=-\frac{\dd\phi}{\dd\omega}=\frac{(N-1)T_s}{2}
 \qquad\text{--- exactly } \tfrac{N-1}{2}\text{ samples, at every frequency.}
 \]
-So a symmetric FIR filter delays every component equally and distorts no waveform,
-whatever its magnitude response does. That is the claim \cref{ch:filters} made, now
-proved---and note that it required no poles at all, only symmetry.
+Thus a symmetric FIR filter delays every component equally and introduces no
+waveform distortion from phase, regardless of magnitude response. This proves the
+claim of \cref{ch:filters}; symmetry, not poles, is sufficient.
 
 An \textbf{infinite impulse response} (IIR) filter feeds its output back:
 \[
@@ -240,12 +235,11 @@ for sharpness. What the poles buy is efficiency: an IIR filter can mimic a Butte
 or Chebyshev response with far fewer arithmetic operations than the equivalent FIR.
 
 \begin{controlsbox}
-\textbf{The whole comparison in one line.} An FIR filter is a cascade of delays with no
-loop, so it cannot ring and can be made exactly linear phase, but needs many taps to be
-selective. An IIR filter is a feedback loop, so it inherits everything
-\cref{ch:feedback} says---efficiency, poles, and the possibility of instability if the
-coefficients place a pole outside the unit circle. It is the analog trade-off, in
-arithmetic.
+\textbf{FIR versus IIR.} An FIR filter is a delay cascade with no loop. It cannot
+ring and can have exactly linear phase, but needs many taps for selectivity. An IIR
+filter is a feedback loop, so it gains efficiency and poles, along with instability
+when a coefficient places a pole outside the unit circle. This is the analog
+trade-off in arithmetic.
 \end{controlsbox}
 
 \section{Getting Back Out: the Zero-Order Hold}

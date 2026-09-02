@@ -137,6 +137,17 @@ I/Q or modulation.
 
 ## What I rejected
 
+### Superseded scope decision (Round 6, 2026-09-02)
+
+Alex explicitly authorized a mathematical expansion in three formerly excluded areas:
+antenna patterns and practical design; signals, modulation, and receiver
+architecture; and devices, bias, and regulation. Those topics now live in Chs 21--23.
+The chapters remain deliberately limited to models that can be derived from the
+book's existing circuit and systems tools; they do not attempt a full treatment of
+propagation, digital modes, detailed device physics, or operating practice.
+
+The historical boundary follows, because it explains the earlier audit decisions.
+
 Consistently across all four audits, and worth recording so the boundary stays
 stable: modulation and demodulation theory (AM/SSB/FM spectra, reactance modulators,
 Carson's rule, discriminators, I/Q, Hilbert transforms); semiconductor and tube

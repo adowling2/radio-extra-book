@@ -1,25 +1,17 @@
 \chapter{Circuit Modeling: Paradigms and Components}
 \label{ch:foundations}
-Part~II built a generic linear-systems toolkit. Part~III
-now grounds it in real circuits. Before any specific circuit, this chapter sets up
-the modeling paradigm the rest of the book uses---what a ``circuit'' even
-is---then introduces the ideal components (\(R\), \(L\), \(C\), and sources), the
-two conservation laws that connect them, the state variables that carry a
-circuit's memory, and the unit bookkeeping that catches errors. Everything here is
-the vocabulary the later chapters use.
+Part~II built a generic linear-systems toolkit. Part~III applies it to circuits.
+This chapter defines the modeling paradigm, ideal components (\(R\), \(L\), \(C\),
+and sources), conservation laws, energy-storage states, and unit bookkeeping.
 
 \section{The Lumped-Element Modeling Paradigm}
-A real circuit is a tangle of fields spread through space. To analyze it we make
-the \textbf{lumped-element idealization}: we pretend all the interesting physics
-lives inside a few discrete two-terminal components joined by perfect wires. Each
-component is described by a single relationship between the voltage across it and
-the current through it; the wires carry current with no voltage drop and store no
-energy. This is reasonable whenever the circuit is small compared with the wavelength of
-the signals in it, so that a change at one end is felt essentially instantly at the
-other. When that assumption fails---long feed lines, antennas at radio
-frequencies (RF)---we switch to
-the distributed model of \cref{ch:lines}. Until then, ``the circuit'' means an
-idealized network of lumped elements.
+A real circuit contains fields distributed through space. The \textbf{lumped-
+element idealization} concentrates that physics in discrete two-terminal
+components joined by perfect wires. Each component supplies one voltage--current
+relationship; the wires have no voltage drop or stored energy. The approximation
+holds when the circuit is small relative to the signal wavelength, so a change at
+one end reaches the other essentially instantly. Long feed lines and antennas at
+radio frequencies (RF) require the distributed model of \cref{ch:lines}.
 
 \begin{controlsbox}
 Lumping is the electrical version of the modeling step every engineer makes:
@@ -98,9 +90,8 @@ A changing magnetic field inside a conductor induces circulating eddy currents,
 and those oppose the current flow most strongly at the center. The net effect is
 that high-frequency current is pushed out into a thin surface layer---the
 \textbf{skin depth}---so the cross-section actually carrying current shrinks as
-frequency rises. Since resistance goes inversely with area, the AC resistance
-climbs. \emph{How fast} it climbs is worth deriving rather than quoting, because the
-answer is a law the rest of the book leans on in four places.
+frequency rises. Since resistance is inverse to area, the AC resistance climbs.
+Deriving the rate supplies a result reused throughout the book.
 
 \subsubsection*{The Field Diffuses into the Metal}
 Inside a good conductor the current is Ohmic, \(J=\sigma E\), and the displacement
@@ -115,9 +106,9 @@ taking the conductor to fill \(x\ge0\) with current flowing along its surface. T
 is a \textbf{diffusion} equation---the same form as heat spreading through a wall.
 Fields do not propagate into a conductor, they soak in.
 
-Now apply the move this book uses everywhere: look at one frequency at a time, so
-\(J=\hat J(x)\,\ee^{\jj\omega t}\) and \(\partial/\partial t\to\jj\omega\)
-(\cref{ch:ac}). The partial differential equation becomes an ordinary one,
+For one frequency, write \(J=\hat J(x)\,\ee^{\jj\omega t}\), so
+\(\partial/\partial t\to\jj\omega\) (\cref{ch:ac}). The partial differential
+equation becomes an ordinary one,
 \[
 \frac{\dd^2\hat J}{\dd x^2}=\jj\omega\mu\sigma\,\hat J\equiv k^2\hat J,
 \qquad

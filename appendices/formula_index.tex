@@ -141,6 +141,9 @@ Formula & Use & Derived in \\
 \(R(z)=R_{\mathrm{center}}/\cos^2\beta z\) & Feed-point resistance vs position; \(2\times\) at \(\lambda/8\), \(\to\infty\) at the end. & \cref{sec:feedpoint} \\
 \(|F|=2|\cos((\phi+\beta d\cos\theta)/2)|\) & Two-element array factor; the four named patterns are substitutions. & \cref{sec:arrayfactor} \\
 \(\mathrm{dBi}=\mathrm{dBd}+2.15\) & Antenna gain references: isotropic vs dipole. & \cref{sec:antennalength} \\
+\(\mathrm{F/B}=10\log_{10}(p_{\rm front}/p_{\rm back})\) & Front-to-back ratio from normalized pattern power. & \cref{sec:patternmetrics} \\
+\(P_r\propto\cos^2\alpha\) & Ideal polarization mismatch for two linear antennas. & \cref{sec:polarization} \\
+\(G\approx\eta_{\rm ap}4\pi A/\lambda^2\) & Aperture gain; fixed-dish frequency doubling gives \SI{6}{\decibel}. & \cref{sec:aperturegain} \\
 \(\jj Z_0\tan\beta\ell\) & Shorted-stub reactance. & \cref{sec:stubs} \\
 \(|X|=Z_0\) at \(\ell=\lambda/8\) & The only stub length where reactance matches the line. & \cref{sec:stubs} \\
 \(\gamma=\sqrt{(R'+\jj\omega L')(G'+\jj\omega C')}=\alpha+\jj\beta\) & Complex propagation constant of a real line. & \cref{sec:lineloss} \\
@@ -156,6 +159,19 @@ Formula & Use & Derived in \\
 \(10\log_{10}\bigl(\tfrac{f_s/2}{B}\bigr)\) & Oversampling processing gain. & \cref{sec:quantnoise} \\
 \(\tau_g=\tfrac{N-1}{2}T_s\) & Symmetric FIR: constant group delay, exactly linear phase. & \cref{sec:firiir} \\
 \(f_{\mathrm{out}}=f_{\mathrm{clk}}M/2^N\) & Direct digital synthesis output frequency. & \cref{ch:dsp} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Modulation and receiver architecture}}\\
+\(B_{\rm AM}=2f_m\) & AM bandwidth for a message limited to \(f_m\). & \cref{sec:am} \\
+\(P_{\rm AM}=P_c(1+m^2/2)\) & Total conventional-AM power. & \cref{sec:am} \\
+\(\beta=\Delta f/f_m\), \(B\approx2(\Delta f+f_m)\) & FM index and Carson's-rule bandwidth estimate. & \cref{sec:anglemod} \\
+\(f_{\rm IF}=|f_{\rm RF}-f_{\rm LO}|\) & Mixer translation to intermediate frequency. & \cref{sec:receiverarchitecture} \\
+\(f_{\rm image}=f_{\rm RF}+2f_{\rm IF}\) & High-side-injection image frequency. & \cref{sec:receiverarchitecture} \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textbf{Devices, bias, and regulation}}\\
+\(r_d\approx nV_T/I_D\) & Diode's local incremental resistance at a bias current. & \cref{sec:devicebias} \\
+\(g_m\approx I_C/V_T\) & BJT transconductance near its operating point. & \cref{sec:devicebias} \\
+\(A_v\approx-R_C/(r_e+R_E)\) & Common-emitter gain with unbypassed emitter degeneration. & \cref{sec:loadlines} \\
+\(\Delta V\approx I_{\rm load}/(f_{\rm ripple}C)\) & Capacitor-input supply ripple estimate. & \cref{sec:regulation} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Noise, sensitivity, and dynamic range}}\\
 \(P_n=kTB\) & Available thermal noise power; independent of \(R\). & \cref{sec:noisefloor} \\

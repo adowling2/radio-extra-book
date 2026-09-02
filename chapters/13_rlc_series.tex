@@ -1,12 +1,10 @@
 \chapter{Series RLC Circuits: Resonance, Damping, and Q}
 \label{ch:rlc}
-The series RLC circuit is central to tuned receivers, oscillators, matching
-networks, traps, crystal filters, and every selective RF stage. With two energy
-stores---a capacitor and an inductor---it is the electrical embodiment of the
-\emph{second-order system} of \cref{ch:linsys}, and everything that chapter said
-about \(\omega_0\), \(\zeta\), damping regimes, pole geometry, and resonant peaks
-applies here directly. Its dual, the parallel RLC circuit, follows in
-\cref{ch:rlcpar}.
+Series RLC circuits appear in tuned receivers, oscillators, matching networks,
+traps, crystal filters, and selective RF stages. Their capacitor and inductor make
+them the electrical form of the \emph{second-order system} of \cref{ch:linsys}.
+The results for \(\omega_0\), \(\zeta\), damping, pole geometry, and resonant peaks
+therefore apply directly. \Cref{ch:rlcpar} develops the parallel dual.
 
 \section{The Circuit}
 A source drives \(R\), \(L\), and \(C\) in series (\cref{fig:rlc-schematic}). Two
@@ -309,8 +307,8 @@ splitting along the real axis (overdamped). Here \(\cos\theta=\zeta\).}
 
 \section{The Same Circuit as a Second-Order Filter}
 \label{sec:lc-lowpass}
-Nothing new is needed to use this circuit as a filter---the transfer function is
-already in hand. Laplace-transforming the boxed ODE (zero initial conditions),
+The transfer function is already in hand. Laplace-transform the boxed ODE with zero
+initial conditions:
 \[
 \bigl(LC\,s^2+RC\,s+1\bigr)V_o(s)=U(s)
 \qquad\Longrightarrow\qquad
@@ -328,13 +326,12 @@ plus the source and load resistance the section works between---which is why the
 one when properly terminated.
 
 \begin{controlsbox}
-\textbf{The two design knobs fall right out.} From the first-principles model,
-\(\omega_0=1/\sqrt{LC}\) sets the cutoff frequency and
-\(Q=(1/R)\sqrt{L/C}\) sets the peaking---how close the pole pair sits to the
-\(\jj\omega\) axis. Scaling \(L\) and \(C\) together slides the whole response
-along the frequency axis without changing its shape; changing the resistance
-(loss, or the source/load termination) changes only the damping. Every passive
-filter design is some version of choosing these two, times the number of poles
+\textbf{Two design knobs.} The first-principles model gives
+\(\omega_0=1/\sqrt{LC}\), which sets cutoff, and
+\(Q=(1/R)\sqrt{L/C}\), which sets peaking through the pole pair's distance from
+the \(\jj\omega\) axis. Scaling \(L\) and \(C\) together shifts the response in
+frequency without changing its shape. Changing resistance changes only damping.
+Passive filter design chooses these quantities and the number of poles
 (\cref{ch:filters}).
 \end{controlsbox}
 
@@ -442,4 +439,3 @@ from \(0.5f_0\) to \(2f_0\): a vertical line at \(\Re\{Z\}=R\), inductive above
 \(f_0\) and capacitive below, crossing the real axis at resonance.}
 \label{fig:rlc-phasor}
 \end{figure}
-

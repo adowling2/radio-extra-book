@@ -1,21 +1,15 @@
 \chapter{Modeling LTI Systems}
 \label{ch:linsys}
-Before analyzing any specific circuit, this chapter reviews how a
-\textbf{linear time-invariant (LTI)} system---one whose behavior obeys
-superposition and does not change over time---is \emph{modeled}: the differential equation, the state-space model, and the transfer
-function, together with the time responses they predict. These are not competing
-descriptions but three ways of writing the same system down, and this chapter's job
-is to build all three and move between them. Its companion, \cref{ch:splane}, then
-\emph{reads} those models in the frequency and complex-plane view (Bode plots,
-poles, zeros, root locus), and \cref{ch:feedback} closes the loop around them.
-This chapter stops at two energy stores, which is not a limitation so much as a
-choice of alphabet: \cref{ch:highorder} shows that every higher-order system is a
-cascade of the first- and second-order pieces built here, so nothing beyond them
-needs to be learned.
-Everything here is generic---the same mathematics whether the system is a
-mechanical suspension, a chemical reactor, or an electrical filter---and Part~III
-then shows that each amateur-radio circuit is one of these systems in electrical
-form.
+Before analyzing circuits, we need models for a \textbf{linear time-invariant
+(LTI)} system: a system that obeys superposition and does not change over time.
+The differential equation, state-space model, and transfer function are three
+representations of that system. This chapter develops each and moves among them.
+\Cref{ch:splane} reads the models in frequency and complex-plane views;
+\cref{ch:feedback} closes the loop around them. We stop at two energy stores
+because \cref{ch:highorder} builds every higher-order system from these first-
+and second-order pieces. The mathematics is generic, whether the system is a
+mechanical suspension, chemical reactor, or electrical filter. Part~III applies
+it to radio circuits.
 
 \section{Four Equivalent Views of a Linear System}
 An LTI system can be written four equivalent ways, and moving
@@ -155,11 +149,9 @@ loop with forward path \(G\) and feedback \(H\) collapses to
 
 \section{Why One Sinusoid at a Time Is Enough}
 \label{sec:fourier}
-Almost everything that follows analyzes a system by asking what it does to a
-\emph{single} sinusoid. That deserves a justification, because real signals are not
-sinusoids---they are speech, keyed carriers, square waves, pulses. The
-justification is one line of superposition plus one theorem, and it is worth
-stating once so the rest of the book can lean on it.
+Much of what follows asks how a system responds to a \emph{single} sinusoid. Real
+signals are speech, keyed carriers, square waves, or pulses, so the reduction needs
+justification. Superposition and Fourier's theorem provide it.
 
 \textbf{Fourier's theorem} says any reasonable periodic signal of period
 \(T=2\pi/\omega_0\) is a sum of sinusoids at integer multiples of \(\omega_0\):
@@ -174,11 +166,10 @@ frequency. So
 \[
 \boxed{\;y(t)=\sum_{n}G(\jj n\omega_0)\,c_n\,\ee^{\jj n\omega_0 t}\;}
 \]
-\emph{The transfer function sampled at the harmonics is the entire answer.} That is
-the licence for the whole method: knowing \(G(\jj\omega)\) at every frequency means
-knowing what the system does to \emph{any} signal, because the signal is a sum of
-frequencies and the system treats each one independently. It is also why a Bode
-plot is worth drawing at all.
+\emph{The transfer function sampled at the harmonics is the answer.} Knowing
+\(G(\jj\omega)\) at every frequency determines the response to any signal because
+the signal is a sum of frequencies and a linear system treats each independently.
+That is why a Bode plot matters.
 
 \begin{physicalbox}
 \textbf{Why a square wave has only odd harmonics.} This is usually asserted; it

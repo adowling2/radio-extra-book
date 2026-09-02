@@ -1,20 +1,16 @@
 \chapter{Transmission Lines, Reflection, and SWR}
 \label{ch:lines}
-Every circuit so far has been \emph{lumped}: a finite set of components, a finite
-state vector, and the assumption from \cref{ch:foundations} that the circuit is
-small compared with a wavelength. A feed line breaks that assumption, and this
-chapter is what replaces it. The reward is that almost nothing new is needed---the
-line turns out to be built from the same \(L\) and \(C\) element laws, obeys the
-same KVL and KCL, and produces the same resonances as \cref{ch:rlc,ch:rlcpar}, only
-distributed along a length instead of concentrated in two parts.
+So far, every circuit has been \emph{lumped}: a finite set of components and a
+finite state vector, small compared with a wavelength. A feed line violates that
+assumption. Its model still uses the same \(L\), \(C\), KVL, and KCL as
+\cref{ch:rlc,ch:rlcpar}, but distributes them along a length rather than
+concentrating them in two components.
 
-The development is staged. The line is treated as \emph{lossless} from here through
-\cref{sec:sparams}---the right first model, and the one that makes every result
-clean. \Cref{sec:lineloss} then puts the loss back and shows what changes: feed-line
-attenuation, why it climbs with frequency, and why a mismatch measured at the
-transmitter looks better than it is. Everything after that---input impedance, stubs,
-transformers, the Smith chart and the antenna---returns to the lossless model, because
-loss changes the numbers without changing the structure.
+We first treat the line as \emph{lossless}, through \cref{sec:sparams}.
+\Cref{sec:lineloss} then adds attenuation, its frequency dependence, and the way it
+makes a transmitter-side mismatch look better than it is. The later treatment of
+input impedance, stubs, transformers, the Smith chart, and antennas returns to the
+lossless model because loss changes the numbers, not the structure.
 
 \section{Why Lines Matter}
 Transmission lines are distributed systems. When a feed line is a significant
@@ -235,13 +231,13 @@ an instrument can actually separate, since a directional coupler responds to
 \emph{direction of travel}, not to \(V\) or \(I\) individually.
 \end{controlsbox}
 
-For a one-port the whole story is one number, and it is one we already have:
+For a one-port, the relevant number is already familiar:
 \[
 S_{11}=\frac{b}{a}=\frac{V^{-}}{V^{+}}=\Gamma
 \]
-\emph{identically}---not approximately, and not a new quantity. So \(|S_{11}|^2\) is
-the reflected power fraction, return loss is \(-20\log_{10}|S_{11}|\), and SWR follows
-from \(|S_{11}|\) by the formula of the next section. Three names for one measurement.
+\emph{identically}. Thus \(|S_{11}|^2\) is the reflected-power fraction, return
+loss is \(-20\log_{10}|S_{11}|\), and SWR follows from \(|S_{11}|\). These are
+three names for one measurement.
 
 A two-port needs four numbers, because either port can be driven and either can
 respond. Drive port 1 with port 2 terminated in \(Z_0\) (so nothing comes back into
@@ -253,12 +249,11 @@ S_{11}=\frac{b_1}{a_1}\bigg|_{a_2=0}
 S_{21}=\frac{b_2}{a_1}\bigg|_{a_2=0}
 \quad\text{(what gets through)} .
 \]
-The subscripts are just \emph{out, in}: \(S_{21}\) is the wave out of port 2 per wave
-into port 1. And \(S_{21}\) is the payoff, because it is a transfer function---the
-forward transmission of the network as it sits in its \(Z_0\) environment. Everything
-Chs \ref{ch:linsys} and \ref{ch:splane} said about \(G(\jj\omega)\) therefore applies
-to it: magnitude and phase versus frequency, poles and zeros, decibels per decade,
-group delay. \emph{A sweep of \(S_{21}\) is a Bode plot}, and a filter's
+The subscripts mean \emph{out, in}: \(S_{21}\) is the wave out of port 2 per wave
+into port 1. It is the forward transfer function of a network in its \(Z_0\)
+environment. The results of \cref{ch:linsys,ch:splane} therefore apply: magnitude
+and phase versus frequency, poles and zeros, decibels per decade, and group delay.
+\emph{A sweep of \(S_{21}\) is a Bode plot}, and a filter's
 \(|S_{21}|\) trace is the response \cref{ch:filters} computes, measured instead. Its
 in-band value is that chapter's \emph{insertion loss}
 (\cref{sec:filterspecs}): \(-20\log_{10}|S_{21}|\), since \(|S_{21}|^2\) is the
@@ -887,11 +882,10 @@ Q=\frac{\omega_0L}{R_{\text{rad}}}=\frac{200}{35}\approx5.7,
 \qquad
 BW=\frac{f_0}{Q}=\frac{\SI{14.1}{\mega\hertz}}{5.7}\approx\SI{2.5}{\mega\hertz}.
 \]
-That last number is the practical payoff of the whole model, and it answers a
-question nothing earlier in this chapter could: \emph{what sets an antenna's usable
-bandwidth?} Its \(Q\), exactly as for any other resonator. A \(Q\) near \(6\) is very
-low by resonator standards---the pole pair sits far from the \(\jj\omega\) axis and
-the resonance is broad---which is why a full-size dipole covers a whole amateur band.
+This result answers the key question: \emph{what sets an antenna's usable
+bandwidth?} Its \(Q\), as for any resonator. A \(Q\) near \(6\) places the pole pair
+far from the \(\jj\omega\) axis and produces broad resonance, so a full-size dipole
+covers an amateur band.
 Checking the band edges with \(\Gamma=(Z-Z_0)/(Z+Z_0)\) confirms it: at
 \SI{14.0}{\mega\hertz}, \(Z\approx35-\jj2.8\ \si{\ohm}\) and
 \(\mathrm{SWR}\approx1.4\); at \SI{14.35}{\mega\hertz},
@@ -1034,8 +1028,8 @@ bandwidth improves too, and exactly: \(Q=\omega_0L/R\) falls as \(R\) rises, and
 \cref{sec:halfpower} made \(BW=f_0/Q\) an equality, so the usable window widens in
 direct proportion to the loss added. A dummy load is the limiting case---a flawless
 \(1{:}1\) across every band, radiating nothing. \emph{An SWR meter measures how
-comfortable the transmitter is, not how much signal leaves.} That is the whole reason
-\(\eta\) has to be a separate number, and why it cannot be measured from the shack.
+comfortable the transmitter is, not how much signal leaves.} Therefore \(\eta\) is a
+separate quantity and cannot be measured from the shack.
 \Cref{sec:travelingwave} is the case where that trade is made on purpose.
 \end{mistakebox}
 

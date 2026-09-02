@@ -1,13 +1,13 @@
 \chapter{RL Circuits}
 \label{ch:rl}
-An RL circuit is the current-domain sibling of the RC circuit: it is the same
-\emph{first-order system} of \cref{ch:linsys}, but now the natural state is the
-inductor current \(i_L\), which holds the stored magnetic energy.
+An RL circuit is the current-domain counterpart of an RC circuit. It has the same
+\emph{first-order system} of \cref{ch:linsys}, but its natural state is the
+inductor current \(i_L\), which stores magnetic energy.
 
 \section{Where RL Circuits Appear}
 Inductors most often appear \emph{with} capacitors, in the resonant circuits of
-\cref{ch:rlc,ch:rlcpar}---so it is fair to ask where an inductor works against a
-resistance alone. Several places, and they matter:
+\cref{ch:rlc,ch:rlcpar}. Where does an inductor work against resistance alone?
+In several useful cases:
 \begin{description}
 \item[RF chokes] a coil in a bias or supply lead, there to pass DC while blocking
 RF. What matters is the choke's inductance against the resistance of the path it
@@ -24,8 +24,8 @@ efficiency and bandwidth (\cref{ch:lines}).
 winding resistance sits in series with its inductance; its self-capacitance only
 matters near self-resonance.
 \end{description}
-The RL circuit therefore earns its own chapter both because these cases are real and
-because the RC/RL duality it exposes is the fastest way to remember either one.
+These cases justify their own chapter, and the RC/RL duality makes both circuits
+easier to remember.
 
 \section{The Circuit}
 A source \(u(t)\) drives a resistor \(R\) in series with an inductor \(L\)

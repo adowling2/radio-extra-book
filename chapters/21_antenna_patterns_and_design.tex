@@ -1,0 +1,143 @@
+\chapter{Antenna Patterns, Polarization, and Practical Design}
+\label{ch:antennapatterns}
+An antenna is an impedance at its feed point and a field pattern in space.  The
+first view belongs to \cref{ch:lines}; this chapter develops the second.  The
+same phasor addition that made the two-element array factor in
+\cref{sec:arrayfactor} also explains beamwidth, front-to-back ratio,
+polarization, and the behavior of practical directional antennas.
+
+\section{A Pattern Is a Normalized Power Function}
+\label{sec:patternmetrics}
+At a fixed distance in the far field, let the complex electric-field amplitude
+in direction \((\theta,\phi)\) be \(E(\theta,\phi)\).  Power density is
+proportional to \(|E|^2\), so a useful dimensionless pattern is
+\[
+p(\theta,\phi)=\frac{|E(\theta,\phi)|^2}
+                       {|E|^2_{\max}}.
+\]
+Its peak is one; it says where the antenna directs the power without hiding the
+answer in a choice of transmitter power or distance.  A polar plot usually shows
+\(10\log_{10}p\) in decibels.  Thus its \(-\SI{3}{\decibel}\) contour is the
+\textbf{half-power beamwidth}: the angular width between directions for which
+\(p=1/2\).  It is not an arbitrary convention: \(-\SI{3.01}{\decibel}\) is
+exactly the logarithm of one half (\cref{sec:decibels}).
+
+The \textbf{front-to-back ratio} makes the same comparison in two particular
+directions:
+\[
+\boxed{\quad\mathrm{F/B}=10\log_{10}\frac{p_{\rm front}}{p_{\rm back}}\quad}.
+\]
+A \SI{20}{\decibel} ratio means the chosen rear direction receives one hundredth
+as much power as the main direction.  It does \emph{not} state the gain: a pattern
+can have a sharp main lobe and substantial loss, or modest directivity and high
+efficiency.  Gain combines directivity with the radiation efficiency from
+\cref{sec:antennaeff}.
+
+\begin{exambox}
+Beamwidth, gain, and front-to-back ratio are power statements.  Field amplitude
+uses \(20\log_{10}\); pattern power uses \(10\log_{10}\).  The two conventions
+give the same number only because power is proportional to amplitude squared.
+\end{exambox}
+
+\section{Polarization Is the Path Traced by the Field Vector}
+\label{sec:polarization}
+At one point in space, resolve a transverse wave's electric field into two
+orthogonal components:
+\[
+ E_x=E_{0x}\cos\omega t,\qquad
+ E_y=E_{0y}\cos(\omega t+\delta).
+\]
+The tip of \(\mathbf E\) traces a line when the components have phase difference
+\(\delta=0\) or \(\pi\): this is \textbf{linear polarization}.  With equal
+amplitudes and \(\delta=\pm\pi/2\), it traces a circle, giving right- or
+left-hand \textbf{circular polarization}; unequal amplitudes give an ellipse.
+The word ``hand'' is a viewing convention, so diagrams and specifications must
+state the direction of propagation.
+
+A receiving antenna responds to the component of \(\mathbf E\) aligned with it.
+For two linearly polarized antennas with angle \(\alpha\) between their axes,
+the received field is proportional to \(\cos\alpha\), hence the ideal received
+power is
+\[
+\boxed{\quad P_r\propto\cos^2\alpha.\quad}
+\]
+Crossing vertical and horizontal Yagis therefore permits either linear
+polarization; driving equal currents in quadrature makes circular polarization.
+The calculation also explains why a perfect cross-polarized linear antenna has
+an ideal null.  Real antennas, reflections, and imperfect alignment fill it in.
+
+\section{Why Apertures Gain \SI{6}{\decibel} When Frequency Doubles}
+\label{sec:aperturegain}
+A reflector or dish collects a portion of a passing wave over its physical
+aperture \(A\).  Its directivity must compare that area with the wavelength-sized
+area occupied by one spatial mode, so
+\[
+\boxed{\quad G\approx\eta_{\rm ap}\frac{4\pi A}{\lambda^2},\qquad
+0<\eta_{\rm ap}<1.\quad}
+\]
+Here \(\eta_{\rm ap}\) is aperture efficiency: illumination taper, blockage,
+surface error, and spillover prevent a real dish from using every square metre.
+For a fixed dish, \(G\propto1/\lambda^2\propto f^2\).  Doubling frequency
+quadruples gain, which is \(10\log_{10}4=\SI{6.02}{\decibel}\).  Conversely,
+keeping gain while doubling wavelength requires four times the aperture area.
+
+This is a spatial version of the scaling already familiar from transmission
+lines: wavelength determines how large an object looks electrically.  A dish
+that is many wavelengths across can align many phase contributions into a narrow
+lobe; a dish that is only a fraction of a wavelength across cannot.
+
+\section{From Ideal Wires to Buildable Antennas}
+The half-wave dipole and ideal ground image are powerful first models, not a
+guarantee that a particular installation has their impedance or pattern.  A
+thin-wire numerical model makes the approximation explicit: divide each wire
+into short segments, assign an unknown current to each, and impose the boundary
+condition that the conductor's tangential electric field vanishes.  The result is
+a linear system
+\[
+\mathbf Z\mathbf I=\mathbf V.
+\]
+The entries of \(\mathbf Z\) represent mutual coupling between segments.  Once
+the currents are known, their re-radiated fields are summed to estimate feed-point
+impedance and pattern.  This is the \textbf{method of moments} in its simplest
+form.  It is the antenna analogue of replacing a distributed line by many small
+\(R'\), \(L'\), \(G'\), and \(C'\) sections: more, shorter segments generally
+give a more faithful model, but measurements still decide the final installation.
+
+Three design consequences follow directly from current distribution.
+\begin{description}
+\item[Loading is not free length.] A short vertical has little radiation
+resistance and large capacitive reactance.  A loading coil cancels reactance at one
+frequency, but coil and ground losses remain in series with the small radiation
+resistance.  Its efficiency is therefore still the ratio in \cref{sec:antennaeff}.
+\item[Put reactance where current is useful.] A centre or upper loading coil lies
+where more wire current can contribute to radiation than a base coil.  Top loading
+also lengthens the effective current path, reducing the inductance required.  The
+precise optimum depends on the physical antenna and ground system; the current
+distribution tells why these choices help.
+\item[Parasitic elements are coupled resonators.] A Yagi's driven element excites
+nearby detuned conductors.  A slightly longer reflector and slightly shorter director
+re-radiate with different phases.  Spacing and detuning choose those phasors so they
+add forward and partly cancel behind---the same interference calculation as
+\cref{sec:arrayfactor}, now with currents found from coupling rather than prescribed
+by two feed lines.
+\end{description}
+
+\begin{workedbox}[: a crossed Yagi and a fixed dish]
+Two equal orthogonal Yagis are fed with equal currents.  If their phase difference
+is zero, their fields add along a diagonal and the result is linearly polarized.
+Insert a \(90^\circ\) phasing line and the components become
+\(E_0\cos\omega t\) and \(E_0\cos(\omega t+90^\circ)\): equal components in
+quadrature, hence circular polarization.
+
+Now keep a dish and its feed unchanged but move from \SI{1.2}{\giga\hertz} to
+\SI{2.4}{\giga\hertz}.  The wavelength halves, so the aperture formula predicts
+\(G_2/G_1=(2.4/1.2)^2=4\), or \SI{6}{\decibel} more gain.  That result is about
+the electrically larger aperture, not extra transmitter power.
+\end{workedbox}
+
+\begin{mistakebox}
+``Resonant,'' ``matched,'' and ``efficient'' answer different questions.  A
+loading network can make the feed point look like \SI{50}{\ohm}; it cannot turn
+ground loss into radiation.  Check reactance, mismatch, and radiation efficiency
+separately before declaring an antenna improved.
+\end{mistakebox}

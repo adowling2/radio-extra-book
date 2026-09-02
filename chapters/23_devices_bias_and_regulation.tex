@@ -1,0 +1,111 @@
+\chapter{Devices, Bias, and Regulation}
+\label{ch:devices}
+Passive circuits shape a signal; active devices supply the controlled current that
+amplifies, switches, oscillates, and regulates it.  The useful mathematical model
+is local: choose a DC operating point, linearize the device there, and use the
+resulting controlled source with the feedback ideas of \cref{ch:feedback}.
+
+\section{Bias Turns a Nonlinear Device into a Small-Signal Model}
+\label{sec:devicebias}
+A diode's current rises approximately exponentially with voltage,
+\[
+I_D=I_S\left(\ee^{V_D/(nV_T)}-1\right),
+\]
+where \(V_T\) is the thermal voltage (about \SI{26}{\milli\volt} near room
+temperature) and \(n\) accounts for device physics.  The exponential is not a
+linear resistor.  But at a selected bias current \(I_D\), a small voltage change
+has incremental slope \(\dd I_D/\dd V_D\), giving the small-signal resistance
+\[
+\boxed{\quad r_d\approx\frac{nV_T}{I_D}.\quad}
+\]
+The word ``small'' matters: this model describes perturbations around the chosen
+DC point, not a large rectified waveform crossing from cutoff to conduction.
+
+A bipolar junction transistor (BJT) uses a forward-biased base--emitter junction
+to control collector current.  Near its operating point,
+\[
+I_C\approx I_S\ee^{V_{BE}/V_T},\qquad
+\boxed{\quad g_m=\frac{\partial I_C}{\partial V_{BE}}
+\approx\frac{I_C}{V_T}.\quad}
+\]
+Thus a small \(v_{be}\) produces collector current \(i_c=g_mv_{be}\); a collector
+resistor converts that controlled current back into voltage.  The base also draws
+current, approximately \(I_B=I_C/\beta\).  A field-effect transistor instead uses
+an electric field at an insulated or reverse-biased gate to control drain current.
+Its gate current is usually much smaller, and its local small-signal description
+has the same useful form: \(i_d=g_mv_{gs}\).  A vacuum tube is another controlled
+current source: grid voltage controls plate current.  The technologies differ; the
+load-line and feedback reasoning is the same.
+
+\section{Load Lines and Emitter or Source Degeneration}
+\label{sec:loadlines}
+Consider a common-emitter BJT stage with collector resistor \(R_C\) and supply
+\(V_{CC}\).  KVL constrains the possible DC points to
+\[
+V_{CE}=V_{CC}-I_CR_C.
+\]
+This straight \textbf{load line} intersects the transistor's nonlinear current--
+voltage curves at the quiescent, or \(Q\), point.  Bias near the middle of the
+available voltage swing permits a sinusoid to move both upward and downward before
+cutoff or saturation clips it.  Moving the point toward cutoff is how Class B or C
+operation trades linearity for efficiency (\cref{sec:conductionangle}).
+
+An emitter resistor \(R_E\) adds local negative feedback.  If collector current
+rises, emitter voltage rises, reducing \(V_{BE}\) and opposing the rise.  In the
+small-signal model the emitter's intrinsic resistance is
+\(r_e\approx1/g_m=V_T/I_C\), and the approximate voltage gain becomes
+\[
+\boxed{\quad A_v\approx-\frac{R_C}{r_e+R_E}.\quad}
+\]
+The minus sign is the common-emitter inversion.  The resistor lowers gain but makes
+that gain, the input resistance, and the DC current less dependent on the poorly
+controlled transistor parameters.  This is the same gain-versus-robustness bargain
+as \(A/(1+A\beta)\), executed with one resistor rather than a separate feedback
+network.  A source resistor performs the corresponding job in a FET stage.
+
+\begin{workedbox}[: how a resistor stabilizes a BJT]
+At \(I_C=\SI{1}{\milli\ampere}\), \(r_e\approx
+\SI{26}{\milli\volt}/\SI{1}{\milli\ampere}=\SI{26}{\ohm}\).  With
+\(R_C=\SI{4.7}{\kilo\ohm}\) and no unbypassed emitter resistor, the ideal local
+gain is about \(-4700/26=-181\).  Adding \(R_E=\SI{470}{\ohm}\) changes it to
+about \(-4700/(26+470)=-9.5\).  The stage gives up gain, but a modest change in
+transconductance no longer makes its behavior unpredictable.  A bypass capacitor
+can restore AC gain over a chosen band while retaining DC bias stabilization.
+\end{workedbox}
+
+\section{Rectification and Regulation Are Feedback Problems}
+\label{sec:regulation}
+A diode rectifier is deliberately used far outside its small-signal region: it
+passes one polarity of an AC waveform to charge a reservoir capacitor.  A full-wave
+bridge replenishes that capacitor twice per line cycle, so its ripple frequency is
+\(2f_{\rm line}\) (\cref{ch:active}).  Between recharge peaks the capacitor supplies
+the load, and charge balance gives the useful estimate
+\[
+\boxed{\quad\Delta V\approx\frac{I_{\rm load}}{f_{\rm ripple}C}.\quad}
+\]
+It makes the design trade visible: more capacitance, less load current, or more
+frequent charging reduces ripple.  A bridge also has two forward-biased diodes in
+the conducting path, so its available peak output is lower than the transformer
+secondary peak by roughly two diode drops.
+
+A voltage regulator senses output voltage, compares it with a reference, and
+adjusts a pass element to reduce the error.  That is a feedback loop.  At low
+frequency, large loop gain makes output changes due to load or input variation
+smaller by roughly \(1+L\), exactly as in \cref{ch:feedback}.  Compensation is
+needed because the pass device, output capacitor, and load add poles; an
+overconfident regulator can oscillate for the same phase-margin reason as an
+op-amp circuit (\cref{sec:gbw}).
+
+\begin{exambox}
+Bias, clipping, rectification, and regulation should not be collapsed into one
+``diode/transistor'' fact.  Bias chooses a locally linear operating point;
+rectification intentionally uses nonlinearity; regulation closes a feedback loop
+around a source whose raw voltage would otherwise move.
+\end{exambox}
+
+\begin{mistakebox}
+High input resistance at a FET gate does not mean every FET amplifier has high
+gain, and a large BJT current gain \(\beta\) does not make its collector current
+stable.  Gain and bias stability are circuit properties, set by the device \emph{and}
+its surrounding impedances and feedback.
+\end{mistakebox}

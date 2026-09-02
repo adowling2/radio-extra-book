@@ -1,18 +1,14 @@
 \chapter{Higher-Order Systems: Cascades, Pole Patterns, and Delay}
 \label{ch:highorder}
-Everything in Part~II so far has had one or two energy stores. Real radio circuits
-often have more: a five-pole filter, a three-stage amplifier, a feed line with
-infinitely many modes. This chapter closes Part~II by extending the toolkit to
-arbitrary order, and its thesis is deliberately anticlimactic---\emph{almost no new
-machinery is required}. Every high-order linear system factors into the first- and
-second-order pieces of \cref{ch:linsys}, and every high-order frequency response is
-those pieces' responses added up in decibels and degrees.
+Part~II has treated systems with one or two energy stores. Real radio circuits may
+have more: a five-pole filter, a three-stage amplifier, or a feed line with
+infinitely many modes. Yet little new machinery is required. Every high-order
+linear system factors into the first- and second-order pieces of \cref{ch:linsys},
+and their frequency responses add in decibels and degrees.
 
-That claim is worth a chapter precisely because it is so useful. It means the two
-systems you already understand are not special cases to be outgrown; they are the
-alphabet. It also settles three loose ends: where \(-20n\)~dB/decade comes from, why
-\cref{ch:feedback} insisted that instability needs three poles, and what ``linear
-phase'' means when a filter datasheet claims it.
+First- and second-order systems are therefore the alphabet, not special cases to
+outgrow. This chapter also derives \(-20n\)~dB/decade, explains why instability
+needs three poles, and defines the ``linear phase'' claimed on filter data sheets.
 
 \section{Order Is the Number of Independent Energy Stores}
 The counting rule is the same one \cref{ch:linsys} used, just not stopped at two. A
@@ -56,12 +52,10 @@ An even-order system is \(n/2\) quadratic sections; an odd-order system is
 block, at any order.}
 
 \begin{controlsbox}
-\textbf{Why this is the whole chapter in one idea.} A fifth-order filter is not a new
-object requiring new theory. It is two second-order systems and one first-order system
-in series, each of which \cref{ch:linsys,ch:splane} already characterized completely.
-Reading a high-order design therefore reduces to reading a list of
-\((\omega_0,\zeta)\) pairs---and \emph{building} one reduces to building those
-sections and connecting them, which is exactly how active filters are made
+\textbf{One idea carries the chapter.} A fifth-order filter is two second-order
+systems and one first-order system in series. \Cref{ch:linsys,ch:splane} already
+characterized each. Reading a high-order design reduces to reading its
+\((\omega_0,\zeta)\) pairs; building one means connecting those sections
 (\cref{ch:active}).
 \end{controlsbox}
 
@@ -117,9 +111,8 @@ shows it is the one that can oscillate.
 
 \section{Why Three Poles Can Oscillate and Two Cannot}
 \label{sec:threepoles}
-\Cref{ch:feedback} asserted that genuine instability needs three or more poles. With
-\cref{sec:cascadeadd} in hand we can prove it, and the proof is just phase
-accounting.
+\Cref{ch:feedback} asserted that genuine instability needs three or more poles.
+\Cref{sec:cascadeadd} proves it by phase accounting.
 
 Recall the condition for closed-loop poles on the \(\jj\omega\) axis:
 \(L(\jj\omega)=-1\), meaning \(|L|=1\) and \(\angle L=-180^\circ\) at the \emph{same}

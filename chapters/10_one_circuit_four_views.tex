@@ -1,15 +1,10 @@
 \chapter{One Circuit, Four Views}
 \label{ch:fourviews}
-Part~II built the generic machinery (systems seen as differential equations,
-state-space models, transfer functions, and frequency responses, then closed with
-feedback), and the earlier
-Part~III chapters supplied the pieces: the modeling paradigm and components
-(\cref{ch:foundations}), resistive networks (\cref{ch:resistive}), and---especially
----the AC steady-state view of impedance and phasors in \cref{ch:ac}. This short chapter
-states the organizing pattern the rest of Part~III follows. Its claim is simple:
-\emph{every circuit in this book is one of those systems}, and the way to
-understand a circuit is to look at it through the same set of views, each of which
-offers complementary intuition about the same object.
+Part~II introduced differential equations, state-space models, transfer functions,
+frequency responses, and feedback. The earlier Part~III chapters supplied circuit
+components, conservation laws, and phasor impedance. This chapter states the
+pattern that follows: every circuit is one of those systems, and each view exposes
+a different feature of the same object.
 
 \section{The Four Views}
 A circuit can be read as:
@@ -62,8 +57,6 @@ Once a circuit is matched to its row, everything from \cref{ch:linsys}---step
 response, time constant or damping ratio, pole geometry, resonant peak, root
 locus---transfers directly.
 
-Four rows look like a short list for a whole exam syllabus, and it is fair to ask
-what happens to the circuits that do not fit---a five-pole filter, a three-stage
-amplifier, a feed line. The answer is the factoring theorem of
-\cref{ch:highorder}: each of those is a \emph{cascade} of the rows above, so the
-table does not need more rows. Part~IV spends its four chapters cashing that in.
+What about a five-pole filter, three-stage amplifier, or feed line? The factoring
+theorem of \cref{ch:highorder} writes each as a \emph{cascade} of the rows above.
+Part~IV applies that result.

@@ -1,20 +1,16 @@
 \chapter{Filters, Matching Networks, and Transformers}
 \label{ch:filters}
-This chapter is the first of four that \emph{apply} the circuit models rather than
-build them. Almost nothing here is derived from scratch: a filter is the RC circuit
-of \cref{ch:rc} or the LC circuit of \cref{ch:rlc} with its component values chosen on
-purpose, and the design rules below are statements about where those circuits' poles
-and zeros sit. What is new is the \emph{intent}---given a required response, work
-backwards to the components.
+This is the first of four chapters that \emph{apply} circuit models rather than
+build them. A filter is an RC or LC circuit with component values chosen for a
+required response; its design rules state where its poles and zeros must sit.
+Given the response, work backward to the components.
 
 \section{Why Filters Matter in Amateur Radio}
-Filters select desired signals and reject unwanted ones. They appear in receiver
-front ends, intermediate-frequency (IF) stages, audio stages, transmitter
-outputs, anti-aliasing paths,
-power supplies, and interference cures. A filter is nothing more than a circuit
-whose transfer function has been shaped on purpose---poles placed to form the
-passband, zeros placed to notch the stopband---so everything from Part~II applies
-directly.
+Filters select wanted signals and reject unwanted ones. They appear in receiver
+front ends, intermediate-frequency (IF) and audio stages, transmitter outputs,
+anti-aliasing paths, power supplies, and interference cures. Their transfer
+functions are deliberately shaped: poles form the passband and zeros notch the
+stopband.
 
 \section{Basic Filter Types}
 Four responses cover almost every filtering job, distinguished by which band of
@@ -34,8 +30,7 @@ Band-stop (notch) & Rejects a band of frequencies; passes outside it. \\
 \end{center}
 
 \section{Where Filter Behavior Comes From}
-Two circuits already developed from first principles are the whole foundation of
-this chapter, so we recall the results rather than re-deriving them:
+Two circuits developed earlier supply the foundation, so we recall their results:
 \begin{description}
 \item[First order --- the RC low-pass (\cref{ch:rc}).] One energy store, one pole
 at \(s=-1/RC\), giving \(G(s)=1/(1+RCs)\): flat to the corner
@@ -53,12 +48,10 @@ Q=\frac{1}{R}\sqrt{\frac{L}{C}},
 which falls at \(-\SI{40}{\decibel}\) per decade and peaks by \(\approx Q\) near
 \(\omega_0\) when \(Q>1/\sqrt2\).
 \end{description}
-Those two supply everything a filter designer needs: a \emph{corner frequency}
-set by the reactance values, a \emph{roll-off rate} set by the number of poles,
-and---for second order and above---a \emph{peaking} set by the damping. The rest
-of this chapter is about choosing them deliberately, and
-\cref{sec:filterspecs} then translates the result into the numbers a data sheet
-actually quotes.
+Together they provide a \emph{corner frequency} set by reactance, a
+\emph{roll-off rate} set by pole count, and, above first order, \emph{peaking}
+set by damping. \Cref{sec:filterspecs} translates those choices into data-sheet
+specifications.
 
 \section{Order, Energy Stores, and Roll-Off}
 The pattern generalizes. Each independent energy-storage element (an \(L\) or a
@@ -268,12 +261,11 @@ envelope of a resonator's decay falls as \(\ee^{-\alpha t}\) with
 \[
 \tau=\frac{1}{\alpha}=\frac{2Q}{\omega_0}=\frac{Q}{\pi f_0}.
 \]
-Two ways of reading that, and the second is the useful one. First,
-\(\tau f_0=Q/\pi\): one time constant is \(Q/\pi\) cycles, whatever the frequency.
+First, \(\tau f_0=Q/\pi\): one time constant is \(Q/\pi\) cycles at any frequency.
 
-\emph{That is worth reconciling with the rule of thumb quoted earlier in the book,}
-that a resonator ``rings for roughly \(Q\) cycles'' (\cref{ch:linsys,ch:rlc}). Both are
-right, and they differ only in how much decay counts as finished. After \(n\) cycles
+This reconciles the earlier rule of thumb that a resonator ``rings for roughly
+\(Q\) cycles'' (\cref{ch:linsys,ch:rlc}). The statements use different thresholds
+for finished decay. After \(n\) cycles
 the envelope is \(\ee^{-\pi n/Q}\), so \(Q/\pi\) cycles takes it to \(1/\ee\)
 (\SI{37}{\percent}), while \(Q\) cycles---exactly \(\pi\) time constants---takes it
 to \(\ee^{-\pi}\), or \SI{4.3}{\percent}. So ``\(Q\) cycles'' is the ring heard out
@@ -331,9 +323,8 @@ maximizes power transfer and keeps transmission-line reflections controlled.
 \label{sec:lnetwork}
 The simplest matching network uses two reactances. To match two real resistances
 \(R_{\text{hi}}>R_{\text{lo}}\), place a series reactance on the low-resistance
-side and a shunt reactance on the high-resistance side. That is the whole design, and
-it needs no new theory: it is \cref{sec:seriesparallel}'s series-to-parallel
-transformation run backwards, once.
+side and a shunt reactance on the high-resistance side. This is
+\cref{sec:seriesparallel}'s series-to-parallel transformation, run backward once.
 
 Hang \(X_{\text{series}}\) on \(R_{\text{lo}}\). The pair is a series branch with
 \(Q=X_{\text{series}}/R_{\text{lo}}\), so by that section it is \emph{identical}, at
@@ -359,7 +350,7 @@ transformation leaves behind a shunt reactance of exactly \(R_{\text{hi}}/Q\), a
 the shunt element's only job is to cancel it---which is why the two reactances must
 be of opposite type (one inductor, one capacitor). What remains is \(R_{\text{hi}}\),
 purely real. \emph{An L-network is one series-to-parallel transformation plus a
-cancellation}, and there is nothing else in it.
+cancellation}.
 
 Two consequences. Choosing which element is the inductor sets whether the network is
 low-pass or high-pass (\cref{fig:lnetwork}). And an L-network has no free parameter

@@ -67,7 +67,7 @@ means the toolchain is wrong, not the book.
 - `preamble.tex` — style, geometry, and the eight colour-coded callout boxes
 - `macros.tex` — the few pervasive notation macros (deliberately short)
 - `frontmatter/` — title, preface (including the scope statement), how-to-use, notation
-- `chapters/` — 23 chapters, filenames numbered to match chapter numbers
+- `chapters/` — 26 chapters, filenames numbered to match chapter numbers
 - `appendices/` — formula index (with a "Derived in" column), units, glossary
 - `figures/src/*.py` — figure sources; generated PDFs are committed to `figures/`
 - `cheat_sheet.tex` — standalone two-column card
@@ -99,9 +99,11 @@ This book covers the **circuit-theory** portion of the Extra syllabus. Measured
 against the pool it reached roughly 12 of the 50 exam groups well and a further 13
 partially, out of the 37 of 50 needed to pass. **That measurement predates Round 5 and
 is now stale-low** — see PROJECT-STATUS §4D; it needs re-measuring rather than
-guessing. It deliberately omits rules and regulations, operating
-practice, propagation, safety, digital protocols, and device physics. The preface
-states this explicitly — see `PROJECT-STATUS.md` §3 for the group-by-group map.
+guessing. It now includes mathematical treatments of antenna patterns and design,
+modulation and receiver architecture, and device bias and regulation. It deliberately
+omits rules and regulations, operating practice, propagation, safety, digital
+protocols, digital logic, and detailed device physics. The preface states this
+explicitly — see `PROJECT-STATUS.md` §3 for the group-by-group map.
 
 It has also been checked against the **General** (Element 3) pool, whose 236
 circuit questions distil to 157 concepts: the electrical-principles core is covered

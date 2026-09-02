@@ -1,17 +1,15 @@
 \chapter{Parallel RLC Circuits}
 \label{ch:rlcpar}
 The parallel RLC circuit is the \emph{dual} of the series circuit of
-\cref{ch:rlc}: same two energy stores, same second-order dynamics, same
-\(\omega_0\)---but the roles of voltage and current, impedance and admittance, are
-exchanged. That duality does most of the work, so this chapter is short. It states
-the model, then concentrates on the two things that genuinely differ: the circuit
-looks like a high impedance at resonance instead of a low one, and its quality
-factor is built the other way up.
+\cref{ch:rlc}. It has the same two energy stores, second-order dynamics, and
+\(\omega_0\), but exchanges voltage for current and impedance for admittance.
+The important differences follow: it has high impedance at resonance, rather than
+low impedance, and its quality factor has a reciprocal form.
 
-The parallel form matters in radio because it is the \textbf{tank circuit}---the
-resonator in an oscillator, the tuned load of a Class C amplifier, the trap that
-blocks one frequency. Wherever a circuit needs to present a high impedance at one
-frequency and a low impedance elsewhere, it is a parallel resonator.
+In radio, the parallel form is the \textbf{tank circuit}: the resonator in an
+oscillator, the tuned load of a Class C amplifier, or a one-frequency trap. Use a
+parallel resonator when a circuit must present high impedance at one frequency and
+low impedance elsewhere.
 
 \section{The Circuit}
 Drive \(R\), \(L\), and \(C\) in parallel from a current source
@@ -65,7 +63,7 @@ second-order equation in the node voltage:
 Compare this with the series result \(LC\ddot v_C+RC\dot v_C+v_C=u\). The
 second-derivative term is identical, so \(\omega_0\) will be identical; only the
 damping term differs, and it differs by having \(R\) in the \emph{denominator}.
-That single swap is the whole story of this chapter.
+That reciprocal resistance is the essential difference.
 
 \section{State-Space Form and the Generic Match}
 With \(x_1=v\) and \(x_2=i_L\),
