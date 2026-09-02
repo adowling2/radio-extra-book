@@ -26,6 +26,8 @@ ax.set_xlabel(r"Time $\omega_0 t$")
 ax.set_ylabel(r"Step response $y(t)$")
 ax.set_xlim(0, 16)
 ax.set_ylim(0, 2.0)
-ax.legend(loc="upper right")
+ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.20), ncol=2,
+          borderaxespad=0)
+fig.subplots_adjust(bottom=0.28)
 
 save(fig, "step_second_order")

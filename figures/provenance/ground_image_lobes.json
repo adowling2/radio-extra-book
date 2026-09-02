@@ -1,0 +1,16 @@
+{
+  "figure": "ground_image_lobes.pdf",
+  "script": "src/ground_image_lobes.py",
+  "sources": [
+    "Analytical model encoded in the generating script"
+  ],
+  "size_inches": [
+    6.6,
+    2.95
+  ],
+  "created": "2026-09-02T16:04:57-05:00",
+  "python": "3.12.7",
+  "matplotlib": "3.9.2",
+  "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+  "git_dirty": true
+}

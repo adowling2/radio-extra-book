@@ -41,7 +41,10 @@ axw.set_ylabel(r"device current  $i/I_{pk}$")
 axw.set_xlim(-180, 180)
 axw.set_ylim(-0.06, 1.14)
 axw.set_xticks([-180, -90, 0, 90, 180])
-axw.legend(loc="upper right", fontsize=7.2)
+for y, text, col in ((1.08, r"A: $360^\circ$", GUIDE_BLUE),
+                     (0.94, r"B: $180^\circ$", GUIDE_GREEN),
+                     (0.80, r"C: $120^\circ$", GUIDE_AMBER)):
+    axw.text(-171, y, text, color=col, fontsize=7.6, va="center")
 axw.set_title("Narrow the conduction, cut the DC", fontsize=9)
 
 # ---------------- right: efficiency vs conduction angle ----------------

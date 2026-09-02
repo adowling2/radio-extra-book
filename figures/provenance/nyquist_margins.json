@@ -1,0 +1,16 @@
+{
+  "figure": "nyquist_margins.pdf",
+  "script": "src/nyquist_margins.py",
+  "sources": [
+    "Analytical model encoded in the generating script"
+  ],
+  "size_inches": [
+    6.3,
+    4.15
+  ],
+  "created": "2026-09-02T16:05:02-05:00",
+  "python": "3.12.7",
+  "matplotlib": "3.9.2",
+  "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+  "git_dirty": true
+}

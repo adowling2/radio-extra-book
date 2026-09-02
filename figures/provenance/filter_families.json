@@ -1,0 +1,16 @@
+{
+  "figure": "filter_families.pdf",
+  "script": "src/filter_families.py",
+  "sources": [
+    "Analytical model encoded in the generating script"
+  ],
+  "size_inches": [
+    6.4,
+    3.4
+  ],
+  "created": "2026-09-02T16:05:10-05:00",
+  "python": "3.12.7",
+  "matplotlib": "3.9.2",
+  "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+  "git_dirty": true
+}

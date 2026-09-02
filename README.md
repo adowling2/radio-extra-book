@@ -69,7 +69,8 @@ means the toolchain is wrong, not the book.
 - `frontmatter/` — title, preface (including the scope statement), how-to-use, notation
 - `chapters/` — 26 chapters, filenames numbered to match chapter numbers
 - `appendices/` — formula index (with a "Derived in" column), units, glossary
-- `figures/src/*.py` — figure sources; generated PDFs are committed to `figures/`
+- `figures/` — [adapted scientific-figure standard](figures/README.md), committed
+  PDFs, source scripts, per-figure provenance, and a generated manifest
 - `cheat_sheet.tex` — standalone two-column card
 - `scripts/check.sh` — the whole verification suite in one command
 - `notes/` — full working notes from the Round 4 audits (concept inventories only)
@@ -89,9 +90,10 @@ means the toolchain is wrong, not the book.
 - **Every schematic labels its input and output.** Every figure has a `\label`.
 - **Derive, don't assert** — and where an earlier chapter already established a result,
   cite it instead of re-deriving it.
-- Data plots are Python/matplotlib (shared palette in `figures/src/_style.py`);
-  schematics are inline circuitikz. **Render any new or changed figure to PNG and check
-  for overlapping text before committing.**
+- Data plots are Python/matplotlib (the central style, layout checks, provenance, and
+  greyscale audit live in `figures/`); schematics are inline circuitikz. Run
+  `make -C figures audit` after changing a figure and inspect its greyscale previews
+  at printed size before committing.
 
 ## Scope
 

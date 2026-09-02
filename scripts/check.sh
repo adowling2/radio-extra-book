@@ -76,6 +76,14 @@ sys.exit(1 if missing else 0)
 PY
 [ $? -ne 0 ] && fail=1
 
+# --- figure quality infrastructure ------------------------------------------
+if make -C figures audit >/dev/null 2>&1; then
+  note "figure source/provenance/grayscale audit" "OK"
+else
+  note "figure source/provenance/grayscale audit" "FAIL"
+  fail=1
+fi
+
 # --- informational ---------------------------------------------------------
 echo "=== Summary ==="
 note "pages" "$(pdfinfo main.pdf 2>/dev/null | awk '/Pages/{print $2}')"

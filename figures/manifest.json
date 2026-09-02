@@ -1,0 +1,580 @@
+{
+  "figures": [
+    {
+      "figure": "array_patterns.pdf",
+      "script": "src/array_patterns.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.6,
+        2.85
+      ],
+      "created": "2026-09-02T16:03:11-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "bode_first_order_highpass.pdf",
+      "script": "src/bode_first_order_highpass.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        4.3
+      ],
+      "created": "2026-09-02T16:03:22-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "bode_first_order_lowpass.pdf",
+      "script": "src/bode_first_order_lowpass.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        4.3
+      ],
+      "created": "2026-09-02T16:03:33-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "bode_second_order.pdf",
+      "script": "src/bode_second_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        3.0
+      ],
+      "created": "2026-09-02T16:03:44-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "conduction_angle.pdf",
+      "script": "src/conduction_angle.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.6,
+        2.9
+      ],
+      "created": "2026-09-02T16:06:58-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "crystal_impedance.pdf",
+      "script": "src/crystal_impedance.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.3,
+        4.0
+      ],
+      "created": "2026-09-02T16:04:12-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "feedback_first_order.pdf",
+      "script": "src/feedback_first_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.6,
+        2.9
+      ],
+      "created": "2026-09-02T16:04:24-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "feedback_margins.pdf",
+      "script": "src/feedback_margins.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.3,
+        4.5
+      ],
+      "created": "2026-09-02T16:04:41-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "feedback_second_order.pdf",
+      "script": "src/feedback_second_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.6,
+        3.0
+      ],
+      "created": "2026-09-02T16:04:55-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "filter_families.pdf",
+      "script": "src/filter_families.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.4,
+        3.4
+      ],
+      "created": "2026-09-02T16:05:10-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "ground_image_lobes.pdf",
+      "script": "src/ground_image_lobes.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.6,
+        2.95
+      ],
+      "created": "2026-09-02T16:04:57-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "halfpower_edges.pdf",
+      "script": "src/halfpower_edges.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.5,
+        2.9
+      ],
+      "created": "2026-09-02T16:04:58-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "line_attenuation.pdf",
+      "script": "src/line_attenuation.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.4,
+        3.0
+      ],
+      "created": "2026-09-02T16:05:00-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "line_worked.pdf",
+      "script": "src/line_worked.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.8,
+        3.0
+      ],
+      "created": "2026-09-02T16:05:01-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "nyquist_margins.pdf",
+      "script": "src/nyquist_margins.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.3,
+        4.15
+      ],
+      "created": "2026-09-02T16:05:02-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "opamp_gbw_bode.pdf",
+      "script": "src/opamp_gbw_bode.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.4,
+        3.4
+      ],
+      "created": "2026-09-02T16:05:03-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "opamp_rootlocus.pdf",
+      "script": "src/opamp_rootlocus.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        5.6,
+        4.4
+      ],
+      "created": "2026-09-02T16:05:04-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "oscillator_loopgain.pdf",
+      "script": "src/oscillator_loopgain.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        4.4
+      ],
+      "created": "2026-09-02T16:05:05-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "phasor_unit_circle.pdf",
+      "script": "src/phasor_unit_circle.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.7,
+        3.1
+      ],
+      "created": "2026-09-02T16:05:06-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "poles_second_order.pdf",
+      "script": "src/poles_second_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        4.8,
+        4.4
+      ],
+      "created": "2026-09-02T16:05:25-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "poles_zeros_notch.pdf",
+      "script": "src/poles_zeros_notch.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        4.9,
+        4.4
+      ],
+      "created": "2026-09-02T16:05:09-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "probe_compensation.pdf",
+      "script": "src/probe_compensation.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.8,
+        3.1
+      ],
+      "created": "2026-09-02T16:05:30-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rc_transient.pdf",
+      "script": "src/rc_transient.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        3.0
+      ],
+      "created": "2026-09-02T16:05:12-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rc_worked.pdf",
+      "script": "src/rc_worked.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.7,
+        3.4
+      ],
+      "created": "2026-09-02T16:05:13-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rl_transient.pdf",
+      "script": "src/rl_transient.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        3.0
+      ],
+      "created": "2026-09-02T16:05:14-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rl_worked.pdf",
+      "script": "src/rl_worked.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.7,
+        3.4
+      ],
+      "created": "2026-09-02T16:05:16-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rlc_parallel_worked.pdf",
+      "script": "src/rlc_parallel_worked.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.8,
+        3.1
+      ],
+      "created": "2026-09-02T16:05:19-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rlc_series_phasor.pdf",
+      "script": "src/rlc_series_phasor.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.7,
+        3.2
+      ],
+      "created": "2026-09-02T16:05:19-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rlc_series_worked.pdf",
+      "script": "src/rlc_series_worked.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.8,
+        3.5
+      ],
+      "created": "2026-09-02T16:05:21-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rootlocus_first_order.pdf",
+      "script": "src/rootlocus_first_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.0,
+        1.9
+      ],
+      "created": "2026-09-02T16:05:22-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "rootlocus_second_order.pdf",
+      "script": "src/rootlocus_second_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        4.9,
+        4.4
+      ],
+      "created": "2026-09-02T16:05:24-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "s21_is_bode.pdf",
+      "script": "src/s21_is_bode.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.3,
+        4.3
+      ],
+      "created": "2026-09-02T16:05:26-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "smith_chart_antenna.pdf",
+      "script": "src/smith_chart_antenna.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        5.2,
+        5.0
+      ],
+      "created": "2026-09-02T16:05:42-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "smith_chart_labeled.pdf",
+      "script": "src/smith_chart_labeled.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.1,
+        5.3
+      ],
+      "created": "2026-09-02T16:05:30-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "step_first_order.pdf",
+      "script": "src/step_first_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        2.9
+      ],
+      "created": "2026-09-02T16:05:44-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    },
+    {
+      "figure": "step_second_order.pdf",
+      "script": "src/step_second_order.py",
+      "sources": [
+        "Analytical model encoded in the generating script"
+      ],
+      "size_inches": [
+        6.2,
+        3.2
+      ],
+      "created": "2026-09-02T16:06:06-05:00",
+      "python": "3.12.7",
+      "matplotlib": "3.9.2",
+      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "git_dirty": true
+    }
+  ]
+}

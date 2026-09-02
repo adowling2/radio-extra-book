@@ -1,0 +1,16 @@
+{
+  "figure": "feedback_margins.pdf",
+  "script": "src/feedback_margins.py",
+  "sources": [
+    "Analytical model encoded in the generating script"
+  ],
+  "size_inches": [
+    6.3,
+    4.5
+  ],
+  "created": "2026-09-02T16:04:41-05:00",
+  "python": "3.12.7",
+  "matplotlib": "3.9.2",
+  "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+  "git_dirty": true
+}
