@@ -49,9 +49,9 @@ a page of algebra.
 \section{Why Complex Numbers Appear: Phasors}
 Drive a linear system with a steady sinusoid and, once transients die out, every
 voltage, current, force, or flow in it is a sinusoid at the \emph{same}
-frequency---differing only in amplitude and phase. A \textbf{phasor} captures
-exactly those two numbers, amplitude and phase, as a single complex number, so
-that the shared \(\cos\omega t\) can be captured instead of written out everywhere.
+frequency; they differ only in amplitude and phase. A \textbf{phasor} captures
+those two numbers as a single complex number, so the shared \(\cos\omega t\) factor
+can be removed from the algebra.
 
 Concretely, a sinusoid is written as the real part of a rotating complex
 exponential:
@@ -61,9 +61,9 @@ x(t)=\sqrt{2}\,\Re\{X\,\ee^{\jj\omega t}\}.
 Here \(X\) is the \textbf{phasor}: a \emph{complex} constant whose magnitude is
 the signal's \textbf{root-mean-square (RMS)} amplitude and whose angle is its
 phase, \(X=|X|\angle\phi\). It does not depend on time; all the time dependence
-sits in the universal factor \(\ee^{\jj\omega t}\), which simply spins the constant
-\(X\) around the origin---and the sinusoid is that spinning point's shadow on the
-real axis (\cref{fig:phasor}). The \(\sqrt2\) is a deliberate choice of scale, and
+sits in the universal factor \(\ee^{\jj\omega t}\), which spins the constant
+\(X\) around the origin. The sinusoid is that spinning point's shadow on the real
+axis (\cref{fig:phasor}). The \(\sqrt2\) is a deliberate choice of scale, and
 the next section explains it.
 
 Two angle symbols are used consistently from here on, and both are listed in the
@@ -98,8 +98,8 @@ Hence
 \bar P=\frac{X_p^2}{2R}
 =\frac{\bigl(X_p/\sqrt2\bigr)^2}{R} .
 \]
-Read the right-hand form: the average power is what a \emph{constant} value
-\(X_p/\sqrt2\) would dissipate in the same resistor. That constant is the
+The right-hand form shows the physical meaning: a \emph{constant} value
+\(X_p/\sqrt2\) would dissipate the same average power in the resistor. That constant is the
 \textbf{root-mean-square} value---literally the square \emph{root} of the
 \emph{mean} of the \emph{square},
 \[
@@ -149,7 +149,7 @@ meters do not compute an RMS value at all. They rectify and average, measuring
 \frac{X_{\RMS}}{\overline{|x|}}
 =\frac{X_p/\sqrt2}{2X_p/\pi}=\frac{\pi}{2\sqrt2}\approx1.111 .
 \]
-Feed such a meter anything else and the error is computable rather than mysterious. A
+Feed such a meter anything else and the error is predictable. A
 square wave has \(X_{\RMS}=X_p\) and \(\overline{|x|}=X_p\), so its form factor is
 exactly \(1.000\)---and the meter, still multiplying by \(1.111\), reads
 \SI{11}{\percent} \emph{high}. That single number is the whole content of the usual
@@ -164,9 +164,8 @@ V_p=\sqrt2\,(120)\approx\SI{169.7}{\volt},
 \qquad
 V_{pp}=2V_p\approx\SI{339.4}{\volt} .
 \]
-Insulation has to withstand the peak; a heater dissipates according to the RMS
-value. Both numbers describe one waveform, and quoting the wrong one is off by
-\(41\%\) or \(183\%\).
+Insulation has to withstand the peak. Both numbers describe one waveform, and
+quoting the wrong one is off by \(41\%\) or \(183\%\).
 \end{workedbox}
 
 \begin{figure}[htbp]
@@ -212,7 +211,6 @@ multiplication by \(\jj\omega\),
 \frac{\dd}{\dd t}\bigl(X\ee^{\jj\omega t}\bigr)=\jj\omega X\ee^{\jj\omega t}.
 \]
 Every derivative in a linear differential equation turns into a factor of
-\(\jj\omega\), so the differential equations of a sinusoidally driven system
-collapse into ordinary algebra in the phasors. That is the whole reason phasors
-earn their keep, and it is the machinery \cref{ch:ac} uses to define impedance for
-real circuits.
+\(\jj\omega\), so a sinusoidally driven system's differential equations collapse
+into ordinary algebra in phasors. \Cref{ch:ac} uses that algebra to define
+impedance for real circuits.

@@ -9,6 +9,7 @@ apply_style()
 w0 = 1.0
 zetas = [0.0, 0.25, 0.5, 0.85]
 colors = [GUIDE_RED, GUIDE_BLUE, GUIDE_GREEN, GUIDE_AMBER]
+markers = ["o", "s", "D", "^"]
 
 fig, ax = plt.subplots(figsize=(4.8, 4.4))
 
@@ -16,10 +17,10 @@ fig, ax = plt.subplots(figsize=(4.8, 4.4))
 th = np.linspace(0, 2*np.pi, 400)
 ax.plot(w0*np.cos(th), w0*np.sin(th), color="0.65", ls="--", lw=0.9)
 
-for zeta, c in zip(zetas, colors):
+for zeta, c, marker in zip(zetas, colors, markers):
     sigma = -zeta*w0
     wd = w0*np.sqrt(max(0.0, 1-zeta**2))
-    ax.plot([sigma, sigma], [wd, -wd], "o", color=c, ms=6, zorder=5,
+    ax.plot([sigma, sigma], [wd, -wd], marker, color=c, ms=6, zorder=5,
             label=rf"$\zeta={zeta}$")
     if zeta == 0.5:
         # damping angle from negative real axis

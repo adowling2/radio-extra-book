@@ -1,13 +1,13 @@
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
 This book develops the circuit theory behind the Amateur Extra exam from a
-chemical engineer's controls perspective. I wrote it for myself. I am a chemical
+control-theory perspective. I wrote it for myself. I am a chemical
 engineering professor at the University of Notre Dame, with a research and
 teaching background in process systems engineering; I recently earned my
 General ham radio license and am studying for the Amateur Extra exam. Rather
 than memorize circuit questions, I wanted to \emph{understand} them: to write
 each circuit's differential equation, cast it in state-space form, locate its
-poles, and read its Bode and root-locus plots. The book therefore treats a
+poles, and interpret its Bode and root-locus plots. The book therefore treats a
 circuit as a physical object, a set of conservation laws, a differential
 equation, a state-space system, a phasor/frequency response, and an energy
 balance. Each view supplies different intuition about the same object.
@@ -17,14 +17,15 @@ equations, eigenvalues, and state-space systems; familiar with poles and zeros,
 Bode plots, and the root locus; and more interested in understanding an exam
 answer than memorizing it.
 
-In process-control courses, I emphasize differential-equation models and
-state-space analysis; frequency-domain analysis yields to nonlinear dynamics,
-optimization, and model predictive control. Radio provided a useful reason to
-return to those classical tools. A sinusoidal input can feel contrived in many
-chemical-engineering applications. In AC circuits, it is the natural view.
+In my process-control course, \href{https://ndcbe.github.io/controls}{CBE 30338},
+I emphasize differential-equation models and state-space analysis; frequency-domain
+analysis yields to nonlinear dynamics, optimization, and model predictive control.
+Radio provided a useful reason to return to those classical tools. A sinusoidal input
+can feel contrived in many chemical-engineering applications. In AC circuits, it is
+the natural view.
 
 I developed this book with substantial assistance from large language models.
-ChatGPT generated the initial outline; Claude Code helped refine, critique,
+ChatGPT generated the initial outline; Claude Code and Codex helped refine, critique,
 expand, and format the text. I marked up drafts on an iPad, then used Claude
 Code to turn the handwritten comments into revisions. The git history preserves
 those iterations.
@@ -43,9 +44,10 @@ question-pool items, and cross-chapter problems. Laplace transforms and
 state-space models are bridges to familiar engineering language, not
 calculations the Amateur Extra exam directly asks the reader to perform.
 
-This book is deliberately narrow. It develops the circuit theory the exam draws
-on and leaves the rest of the syllabus alone. The exam draws one question from
-each of fifty topic groups, and passing requires thirty-seven correct. It
+This book is deliberately narrow. It develops the circuit theory within the Extra
+exam syllabus and leaves the rest of that syllabus alone. The Extra question pool
+draws one question from each of the syllabus's fifty topic groups, and passing
+requires thirty-seven correct. It
 addresses the groups that turn on circuit behavior: resonance and \(Q\), time
 constants and phase, impedance and admittance, filters and matching networks,
 amplifiers and their efficiency, oscillators and phase-locked loops, op-amps,
@@ -66,7 +68,7 @@ Question identifiers and wording change each cycle, and questions are
 withdrawn mid-cycle, so final preparation should be checked against the
 official current pool and the current FCC rules.
 
-A word on sources. The question pools are the only ones that matter for
+The question pools are the only ones that matter for
 correctness, and they are public domain: every pool identifier and answer
 letter quoted in this book was checked against the NCVEC releases
 \cite{ncvec_extra_2024,ncvec_general_2023}. The machine-readable extracts used

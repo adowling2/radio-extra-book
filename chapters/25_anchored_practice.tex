@@ -36,15 +36,15 @@ circuit is high-\(Q\).
 \subsection*{E5A03 --- Impedance at series resonance (answer D)}
 \emph{What is the magnitude of the impedance of a series RLC circuit at
 resonance?} At \(f_0\) the reactances cancel in \(Z=R+\jj(\omega L-1/\omega C)\),
-leaving \(Z\approx R\)---approximately the circuit resistance. This is why series
+leaving \(Z\approx R\), the circuit resistance. This is why series
 resonance draws maximum current, and why the reactive voltages can exceed the
 source voltage by a factor of \(Q\) (see E5A01).
 
 \subsection*{E5A07 / E5A06 --- Parallel resonance currents (answers A, B)}
 At parallel resonance the branch admittances cancel, so the impedance is high and
 the current \emph{from the source} is at a minimum (E5A07~A). Yet the current
-\emph{circulating inside} the tank is at a maximum (E5A06~B)---energy sloshes
-between \(L\) and \(C\) while the source only makes up the losses. The dual of the
+\emph{circulating inside} the tank is at a maximum (E5A06~B). Energy moves between
+\(L\) and \(C\) while the source only makes up the losses. This is the dual of the
 series case.
 
 \subsection*{E5A11 --- Half-power bandwidth (answer C)}
@@ -58,7 +58,7 @@ half-power bandwidth equals twice the pole's distance from the \(\jj\omega\) axi
 high \(Q\) presses the poles against the axis and narrows the peak. If a question
 asks for the band edges rather than the width, remember they straddle \(f_0\)
 geometrically: here \SI{7.076}{\mega\hertz} and \SI{7.124}{\mega\hertz}, whose
-product---not whose average---returns \(f_0\).
+product, not their average, returns \(f_0\).
 
 \section{Time Constants and Phase (E5B)}
 \emph{Question by question.}
@@ -80,16 +80,16 @@ impedance, hence current ahead of voltage.
 Admittance is the inverse of impedance, \(Y=1/Z=G+\jj B\) (E5B12~A). Its imaginary
 part is susceptance, denoted \(B\) (E5B02~D). Converting a pure reactance to
 susceptance replaces it with its reciprocal (E5B05~D), since \(B=-1/X\) for a pure
-reactance---inverting a purely imaginary \(Z\) flips magnitude to its reciprocal
-and keeps it on the imaginary axis.
+reactance. Inverting a purely imaginary \(Z\) takes its reciprocal and keeps it on
+the imaginary axis.
 
 \section{Coordinate Systems and Phasors (E5C)}
 \emph{Question by question.}
 
 \subsection*{E5C01 --- Reactance in rectangular form (answer A)}
 Pure capacitive reactance of \(\SI{100}{\ohm}\) is \(0-\jj100\): zero resistance,
-negative (capacitive) reactance. The sign convention is the whole point---an
-inductor would be \(0+\jj100\).
+negative (capacitive) reactance. The sign convention distinguishes it from an
+inductor, which would be \(0+\jj100\).
 
 \subsection*{E5C09 --- Axes of the impedance plane (answer A)}
 On a rectangular impedance graph the horizontal axis is resistance and the
@@ -102,8 +102,8 @@ use in the s-plane, now applied to impedance instead of pole location.
 \[
 X_L=2\pi f L=2\pi(3.505\times10^6)(18\times10^{-6})\approx\SI{396}{\ohm},
 \]
-so \(Z\approx300+\jj396\,\si{\ohm}\)---first quadrant (resistance positive, reactance
-inductive/positive). The matching figure point is the one up and to the right.
+so \(Z\approx300+\jj396\,\si{\ohm}\), in the first quadrant: resistance and
+reactance are both positive. The matching figure point is up and to the right.
 
 \section{RF Effects in Components and Circuits (E5D)}
 \emph{Group synthesis.}
@@ -115,21 +115,21 @@ cycle, so a purely reactive load consumes no average power. Apparent power \(|S|
 volt-amperes exceeds \(P\) whenever there is reactance.
 
 \emph{Electrical length} is \cref{ch:lines}: what matters at RF is length measured in
-wavelengths, \(\lambda=VF\,c/f\), not in meters---so the same conductor is
+wavelengths, \(\lambda=VF\,c/f\), not in meters. The same conductor can be
 electrically short at HF and a significant fraction of a wavelength at VHF.
 
 \emph{Parasitics and skin effect} are where the lumped-element idealization breaks
-down, and both are derived in \cref{sec:selfresonance}: every real component has a
-self-resonant frequency, above which it behaves as its \emph{opposite} type, and skin
-effect drives its AC resistance up as \(\sqrt f\)---the latter from \(\delta=\sqrt{2/\omega\mu\sigma}\),
-so the exponent is derived and not quoted. For the exam the two consequences
-worth carrying are that a bypass capacitor or an RF choke simply stops working above
-its own \(f_{\mathrm{SRF}}\), and that a coil's \(Q\) peaks near
-\(0.45f_{\mathrm{SRF}}\) and falls above it. Be careful with the reason for that
-second one: skin effect alone would still let \(Q\propto\sqrt f\) keep \emph{rising},
-because \(\omega L\) grows faster than \(\sqrt f\) does. What pulls \(Q\) back down is
-the inter-turn capacitance, which drives \(Q_{\mathrm{eff}}\) to zero at
-\(f_{\mathrm{SRF}}\). \Cref{ch:measurement} runs the same
+down, and both are derived in \cref{sec:selfresonance}: real components have
+self-resonance and parasitics that eventually overturn their intended lumped behavior,
+while skin effect drives AC resistance up as \(\sqrt f\) in the stated model. The
+skin-depth relation \(\delta=\sqrt{2/\omega\mu\sigma}\) derives that exponent. For
+the exam, the useful consequences are simple: a bypass capacitor or RF choke has a
+finite useful range, and a coil's \(Q\) eventually falls as inter-turn
+capacitance matters. In the high-\(Q\) simplified model, its peak is near
+\(0.45f_{\mathrm{SRF}}\); real loss and additional parasitics shift that value. Skin
+effect alone would still let \(Q\propto\sqrt f\) keep \emph{rising}, because
+\(\omega L\) grows faster than \(\sqrt f\) does. The inter-turn capacitance pulls the
+model back down near self-resonance. \Cref{ch:measurement} runs the same
 effect in reverse when it computes a probe ground lead's resonance, and
 \cref{sec:lineloss} inherits the \(\sqrt f\) law as feed-line attenuation.
 
@@ -138,16 +138,16 @@ effect in reverse when it computes a probe ground lead's resonance, and
 A filter question is a pole/zero question: identify passband, stopband, cutoff,
 order (slope \(\approx-20n\,\si{\decibel}\) per decade), and family
 (Butterworth = flat, Chebyshev = sharp+ripple, elliptic = notch zeros). A
-matching question is a two-part question---cancel reactance, then transform
-resistance---solvable with the L-network \(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\)
-or a quarter-wave \(Z_t=\sqrt{Z_0Z_L}\) from \cref{ch:lines}.
+matching question has two parts: cancel reactance, then transform resistance. Use
+the L-network \(Q=\sqrt{R_{\text{hi}}/R_{\text{lo}}-1}\) or the quarter-wave
+\(Z_t=\sqrt{Z_0Z_L}\) from \cref{ch:lines}.
 
 \section{Op-Amps and Oscillators (E7G, E7H)}
 \emph{Group synthesis.}
 Op-amp gain questions reduce to ``loop gain is large,'' giving
 \(-R_f/R_{in}\) (inverting) or \(1+R_f/R_g\) (non-inverting). Oscillator questions
-reduce to the Barkhausen condition---unity loop gain magnitude and net zero
-phase, i.e.\ a pole pair placed on the \(\jj\omega\) axis
+reduce to the Barkhausen condition: unity loop-gain magnitude and net zero phase,
+or a pole pair placed on the \(\jj\omega\) axis
 (\cref{ch:splane}). Frequency-stability questions favor the highest-\(Q\)
 resonator (crystal), because \(Q\) is how tightly the pole is pinned to the axis.
 
@@ -168,8 +168,8 @@ fraction is \(|\Gamma|^2\approx11\%\). A quarter-wave section of
 
 \section{Final Study Pattern}
 Start every circuit problem with conservation. Ask what stores energy, what
-dissipates it, and which of the four views---physical network, differential
-equation, state-space, or frequency response---answers the question most directly. For anything
+dissipates it, and which of the four views (physical network, differential
+equation, state-space, or frequency response) answers the question most directly. For anything
 involving sharpness, stability, or selectivity, picture where the poles sit
 relative to the \(\jj\omega\) axis. That single habit turns memorization into
 understanding.

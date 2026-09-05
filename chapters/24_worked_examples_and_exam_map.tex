@@ -25,8 +25,8 @@ Active circuits & Separate gain, feedback, bandwidth, distortion, and stability.
 
 \section{One Circuit, Seven Questions}
 \label{sec:onecircuit}
-Isolated examples teach the arithmetic and hide the point. So take a single
-circuit---\cref{ch:rlc}'s running series RLC, with
+Isolated examples teach the arithmetic and hide the point. Consider the running
+series RLC circuit from \cref{ch:rlc}, with
 \[
 L=\SI{10}{\micro\henry},
 \qquad
@@ -51,15 +51,15 @@ f_0=\frac{1}{2\pi\sqrt{LC}}
 \qquad(\cref{ch:rlc}).
 \]
 \(R\) does not appear: any resistance in the question is a distractor for this part.
-At \(f_0\) both reactances are \SI{213}{\ohm} and cancel exactly---which is the check
-worth doing, since \(X_L=X_C\) \emph{is} the definition of resonance.
+At \(f_0\), both reactances are \SI{213}{\ohm} and cancel exactly. Checking that
+\(X_L=X_C\) confirms resonance.
 
 \paragraph{3. Quality factor.}
 \(Q_s=\omega_0L/R=213/5\approx42.6\) (\cref{ch:rlc}). Note it is
 \emph{this} topology's formula; \cref{ch:rlcpar} inverts it, and
 \cref{sec:seriesparallel} shows why the two are one quantity.
 
-\paragraph{4. Bandwidth---and the band edges.}
+\paragraph{4. Bandwidth and the band edges.}
 \(BW=f_0/Q=\SI{79.6}{\kilo\hertz}\), and \cref{sec:halfpower} showed this is an
 \emph{equality}, not an estimate. The same section locates the edges: they straddle
 \(f_0\) geometrically, at \SI{3.354}{\mega\hertz} and \SI{3.433}{\mega\hertz}, whose
@@ -69,16 +69,16 @@ testing that distinction.
 \paragraph{5. Voltage across a reactive element.}
 Driven with \SI{10}{\volt} RMS at resonance, \(Z=R\), so \(I=10/5=\SI{2}{\ampere}\)
 and
-\(V_L=I\,\omega_0L=\SI{426}{\volt}\)---exactly \(Q\) times the source
+\(V_L=I\,\omega_0L=\SI{426}{\volt}\), exactly \(Q\) times the source
 (\cref{ch:rlc}). This is why tuned-circuit capacitors need voltage ratings the
 transmitter's output would never suggest.
 
 \paragraph{6. Pole location, and ringing.}
 \(\alpha=R/2L=\SI{2.5e5}{\per\second}\) and \(\omega_d\approx\omega_0\), so the poles
 sit at \(-2.5\times10^5\pm\jj\,2.13\times10^7\) (\cref{ch:rlc}). The envelope decays
-with \(\tau=1/\alpha=\SI{4}{\micro\second}\)---and \cref{sec:ringdown}'s
-\(\tau=1/\pi BW\) gives \SI{4}{\micro\second} too, from the bandwidth alone. Two
-routes, one number.
+with \(\tau=1/\alpha=\SI{4}{\micro\second}\). The bandwidth relation
+\(\tau=1/\pi BW\) from \cref{sec:ringdown} gives the same value. The two routes
+agree because they describe the same pole pair.
 
 \paragraph{7. What changes if \(R\) doubles?}
 \(f_0\) does not move at all. \(Q\) halves, \(BW\) doubles, the poles move directly
@@ -111,8 +111,8 @@ and \cref{sec:sparams} adds a third name for it: \(|S_{11}|\).
 \paragraph{How much power comes back.}
 \(|\Gamma|^2=0.031\), so \SI{3.1}{\percent} is reflected and \SI{96.9}{\percent}
 delivered. Note what this is \emph{not}: it says nothing about how much is
-\emph{radiated}, which is \cref{sec:antennaeff}'s \(\eta\) and cannot be measured from
-the shack.
+\emph{radiated}, which is \cref{sec:antennaeff}'s \(\eta\) and cannot be inferred
+from shack-side SWR or reflection alone.
 
 \begin{exambox}
 Decibel questions are the other place a single conversion is tested repeatedly, and one

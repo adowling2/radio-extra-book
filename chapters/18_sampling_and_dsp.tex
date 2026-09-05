@@ -38,8 +38,8 @@ X_s(f)=\frac{1}{T_s}\sum_{n=-\infty}^{\infty}X(f-nf_s)\;}
 \]
 \emph{Sampling replicates the spectrum, once around each multiple of the sampling
 rate.} A mixer made two copies because it multiplied by one frequency; a sampler makes
-infinitely many because it multiplies by infinitely many. No new mathematics---just a
-different multiplier.
+infinitely many because it multiplies by infinitely many. No new mathematics is
+required; only the multiplier changes.
 
 \begin{controlsbox}
 \textbf{One phenomenon drives the chapter.} Sampling creates spectrum copies spaced
@@ -89,8 +89,8 @@ The anti-aliasing filter also explains why a converter's usable bandwidth is
 \emph{less} than \(f_s/2\). A real filter does not stop at its cutoff; it rolls off at
 \(-20n\,\si{\decibel}\) per decade (\cref{sec:cascadeadd}), so there must be a
 transition band between the highest wanted frequency and \(f_s/2\) in which the filter
-does its work. Higher filter order buys a narrower transition band and therefore more
-usable bandwidth---the same order-versus-sharpness trade as
+does its work. Higher filter order narrows the transition band and therefore increases
+usable bandwidth. This is the order-versus-sharpness trade of
 \cref{sec:filterspecs}, now paid for in sample rate.
 
 \begin{workedbox}[: where does a stray signal land?]
@@ -162,8 +162,8 @@ noise that falls in \(B\), so filtering (digitally, after conversion) recovers
 \text{processing gain}=10\log_{10}\frac{f_s/2}{B}\ \si{\decibel}.
 \]
 Sampling faster than strictly necessary therefore improves in-band dynamic range even
-though it does not add a single bit---which is why converters are run far above the
-Nyquist rate and why an SDR's in-band performance beats its raw converter
+though it does not add a single bit. This is why converters are run far above the
+Nyquist rate and why an SDR's in-band performance can exceed its raw converter
 specification. \textbf{Dither}, a small deliberate noise added before conversion, is the
 same idea used differently: it makes the quantization error behave more like true random
 noise rather than a signal-dependent pattern, so that averaging can act on it.
@@ -236,10 +236,10 @@ or Chebyshev response with far fewer arithmetic operations than the equivalent F
 
 \begin{controlsbox}
 \textbf{FIR versus IIR.} An FIR filter is a delay cascade with no loop. It cannot
-ring and can have exactly linear phase, but needs many taps for selectivity. An IIR
-filter is a feedback loop, so it gains efficiency and poles, along with instability
-when a coefficient places a pole outside the unit circle. This is the analog
-trade-off in arithmetic.
+sustain ringing, and with symmetric coefficients it can have exactly linear phase,
+but it may need many taps for selectivity. An IIR filter is a feedback loop, so it
+gains efficiency and poles, along with instability when a coefficient places a pole
+outside the unit circle. This is the analog trade-off in arithmetic.
 \end{controlsbox}
 
 \section{Getting Back Out: the Zero-Order Hold}

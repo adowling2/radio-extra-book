@@ -17,10 +17,10 @@ Formula & Use & Derived in \\
 \(v=L\,\dd i/\dd t\) & Inductor voltage-current law. & \cref{ch:foundations} \\
 \(E_C=\frac{1}{2}CV^2\) & Capacitor energy. & \cref{ch:foundations} \\
 \(E_L=\frac{1}{2}LI^2\) & Inductor energy. & \cref{ch:foundations} \\
-\(f_{\mathrm{SRF}}=1/(2\pi\sqrt{L_sC})\) & Self-resonance of a real part; above it the part inverts type. & \cref{sec:selfresonance} \\
+\(f_{\mathrm{SRF}}=1/(2\pi\sqrt{L_sC})\) & Lossless self-resonance estimate of a real part; parasitics can invert its apparent type nearby. & \cref{sec:selfresonance} \\
 \(\delta=\sqrt{2/(\omega\mu\sigma)}=1/\sqrt{\pi f\mu\sigma}\) & Skin depth, from the diffusion equation; \SI{66}{\micro\meter} in copper at \SI{1}{\mega\hertz}. & \cref{sec:selfresonance} \\
 \(R_{\mathrm{AC}}\propto1/\delta\propto\sqrt f\) & Skin effect raises AC resistance; \(R_{\mathrm{AC}}/R_{\mathrm{DC}}\approx a/2\delta\). & \cref{sec:selfresonance} \\
-\(f_{\text{peak}}=f_{\mathrm{SRF}}/\sqrt5\) & Where a coil's \(Q\) peaks: \(\sqrt f\) rise against the \(C_p\) fall. & \cref{sec:selfresonance} \\
+\(f_{\text{peak}}\approx f_{\mathrm{SRF}}/\sqrt5\) & High-\(Q\) estimate of a coil's \(Q\) peak: \(\sqrt f\) rise against the \(C_p\) fall. & \cref{sec:selfresonance} \\
 \(R_{\mathrm{eq}}=\sum R_k\), \(1/C_{\mathrm{eq}}=\sum 1/C_k\) & Series combining (parallel is the dual). & \cref{ch:resistive} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Decibels}}\\
@@ -38,7 +38,7 @@ Formula & Use & Derived in \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Signals and spectra}}\\
 \(x=\sum_n c_n\ee^{\jj n\omega_0t}\) & Fourier series of a periodic signal. & \cref{sec:fourier} \\
-\(y=\sum_n G(\jj n\omega_0)c_n\ee^{\jj n\omega_0 t}\) & \(G\) at the harmonics is the whole answer---the licence for analyzing one sinusoid at a time. & \cref{sec:fourier} \\
+\(y=\sum_n G(\jj n\omega_0)c_n\ee^{\jj n\omega_0 t}\) & \(G\) at each harmonic determines that harmonic's response, so one sinusoid can be analyzed at a time. & \cref{sec:fourier} \\
 \(x(t+T/2)=-x(t)\) & Half-wave symmetry forbids even harmonics (square wave). & \cref{sec:fourier} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Higher order: cascades, pole patterns, delay}}\\
@@ -81,7 +81,7 @@ Formula & Use & Derived in \\
 \(Z_{\max}=(1+Q^2)r\approx L/(Cr)\) & Real tank's peak impedance, from its coil loss \(r\). & \cref{sec:seriesparallel} \\
 \(BW=f_0/Q\) & Half-power bandwidth; exact, not an estimate. & \cref{sec:halfpower} \\
 \(\mathrm{IL}=-20\log_{10}(1-Q_L/Q_U)\) & Resonator insertion loss; why duplexers need cavities. & \cref{sec:qlqu} \\
-\(\tau=Q/(\pi f_0)=1/(\pi\,BW)\) & Ring-down time; depends on bandwidth alone. & \cref{sec:ringdown} \\
+\(\tau=Q/(\pi f_0)=1/(\pi\,BW)\) & \(1/\ee\) amplitude-decay time of one isolated resonant pole pair. & \cref{sec:ringdown} \\
 \(f_0=\sqrt{f_1f_2}\) & Half-power edges straddle resonance geometrically. & \cref{sec:halfpower} \\
 \(G=\omega_0^2/(s^2+\tfrac{\omega_0}{Q}s+\omega_0^2)\) & LC low-pass as a filter. & \cref{sec:lc-lowpass} \\
 \addlinespace
@@ -93,7 +93,7 @@ Formula & Use & Derived in \\
 \(\text{gain}\times\text{BW}=A_0\omega_a\) & Gain--bandwidth product (single-pole amp). & \cref{sec:gbw} \\
 \(\beta=R_g/(R_f+R_g)\) & Feedback fraction from the resistors. & \cref{sec:beta-resistors} \\
 \(-R_f/R_{in}\), \(1+R_f/R_g\) & Inverting and non-inverting gains. & \cref{ch:active} \\
-\(L=-1\): \(|L|=1,\ \angle L=-180^\circ\) & Barkhausen oscillation condition. & \cref{ch:feedback} \\
+\(L=-1\): \(|L|=1,\ \angle L=-180^\circ\) & Linearized Barkhausen marginal-stability condition. & \cref{ch:feedback} \\
 \(L_{\mathrm{th}}=(\partial I_C/\partial T)\theta_{JA}V_{CE}\ge1\) & Thermal runaway: positive feedback at DC. & \cref{sec:thermalrunaway} \\
 \(\Delta V=2\beta V_{\mathrm{sat}}\) & Comparator hysteresis width from positive feedback. & \cref{sec:hysteresis} \\
 \(Z=R\parallel sL\) & Parasitic suppressor: loss only above \(\omega=R/L\). & \cref{sec:neutralization} \\
@@ -179,10 +179,10 @@ Formula & Use & Derived in \\
 \(F=1+T_e/T_0\) & Noise figure and equivalent noise temperature. & \cref{sec:noisefigure} \\
 \(F=F_1+\frac{F_2-1}{G_1}+\cdots\) & Friis: the first stage dominates. & \cref{sec:friis} \\
 \(y=a_1x+a_2x^2+a_3x^3\) & Weak nonlinearity; slopes 2 and 3 dB/dB follow. & \cref{sec:powerseries} \\
-\(\mathrm{IIP3}\approx P_{\SI{1}{\decibel}}+\SI{9.6}{\decibel}\) & Cubic nonlinearity ties the two together. & \cref{sec:powerseries} \\
+\(\mathrm{IIP3}\approx P_{\SI{1}{\decibel}}+\SI{9.6}{\decibel}\) & Cubic relation using conventional single-tone \(P_{\SI{1}{\decibel}}\) and two-tone IIP3. & \cref{sec:powerseries} \\
 \(\mathrm{DR3}=\tfrac23(\mathrm{IIP3}-\mathrm{MDS})\) & IMD dynamic range; \(\tfrac{n-1}{n}\) for order \(n\). & \cref{sec:dynamicrange} \\
 \(\mathrm{BDR}=P_{\SI{1}{\decibel}}-\mathrm{MDS}\) & Blocking dynamic range (a plain difference). & \cref{sec:dynamicrange} \\
-\(\mathcal{L}\propto 1/(Q_L^2\Delta f^2)\) & Phase-noise skirt; doubling \(Q_L\) buys \SI{6}{\decibel}. & \cref{sec:phasenoise} \\
+\(\mathcal{L}\propto 1/(Q_L^2\Delta f^2)\) & Ideal resonator-filtered, far-from-flicker-corner phase-noise scaling; doubling \(Q_L\) buys \SI{6}{\decibel} within that model. & \cref{sec:phasenoise} \\
 \(B_n=\int|H|^2\dd f/|H|^2_{\max}\) & Noise bandwidth; \(1.57f_c\) for one pole. & \cref{sec:noisebw} \\
 \addlinespace
 \multicolumn{3}{@{}l}{\textbf{Measurement}}\\

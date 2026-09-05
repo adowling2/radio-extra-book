@@ -29,10 +29,13 @@ current vs.\ same voltage---is the whole idea.
 \section{Series and Parallel Capacitors}
 The same two laws fix how capacitors combine, but the result comes out
 \emph{backwards} from resistors---and it is worth seeing why rather than
-memorizing it.
+memorizing it. These rules assume ideal capacitors with negligible leakage and
+parasitic capacitance. A series connection has no other branch at an intermediate
+node, and a parallel connection puts each capacitor across the same two nodes.
 
-\textbf{Capacitors in series} carry the same current, so each accumulates the same
-charge \(q\). Since \(v=q/C\) for each one, KVL sums the voltages:
+\textbf{Capacitors in series} carry the same current. If the intermediate nodes
+are floating and initially neutral, each capacitor therefore accumulates the same
+magnitude of charge \(q\). Since \(v=q/C\) for each one, KVL sums the voltages:
 \[
 v=\frac{q}{C_1}+\frac{q}{C_2}+\cdots=q\sum_k\frac{1}{C_k}
 \quad\Longrightarrow\quad
@@ -40,7 +43,8 @@ v=\frac{q}{C_1}+\frac{q}{C_2}+\cdots=q\sum_k\frac{1}{C_k}
 \qquad
 C_{\mathrm{eq}}=\frac{C_1C_2}{C_1+C_2}\ \text{(two capacitors)}.
 \]
-\textbf{Capacitors in parallel} share the same voltage, so their stored charges add
+\textbf{Capacitors in parallel} share the same voltage because both terminals of
+each capacitor connect to the same two nodes. Their stored charges therefore add
 directly, \(q=C_1v+C_2v+\cdots\):
 \[
 C_{\mathrm{eq}}=\sum_k C_k .
@@ -104,24 +108,28 @@ series capacitors combine reciprocally.
 \end{exambox}
 
 \section{Voltage and Current Dividers}
-A voltage divider is just two series resistors read across one of them
-(\cref{fig:divider}). The same current \(I=V_i/(R_1+R_2)\) flows through both, so
-the output taken across \(R_2\) is
+A voltage divider takes the voltage at the node between two series resistors,
+measured relative to the lower reference node (\cref{fig:divider}). In the
+unloaded circuit, the same current \(I=V_i/(R_1+R_2)\) flows through both
+resistors, so the output node voltage is
 \[
 V_o=IR_2=V_i\frac{R_2}{R_1+R_2}.
 \]
+This formula assumes that nothing is connected to the output node. A load would
+add a third branch at \(V_o\), so \(R_1\) and \(R_2\) would no longer carry the
+same current; \cref{sec:thevenin-worked-example} handles that common case.
 
 \begin{figure}[htbp]
 \centering
 \begin{circuitikz}[scale=1]
-\draw (0,0) to[V,l=\(V_i\)] (0,3)
-      to[R,l=\(R_1\)] (2.5,3)
-      to[R,l=\(R_2\),v=\(V_o\)] (2.5,0) -- (0,0);
-\draw (2.5,3) to[short,-o] (3.5,3) node[right]{$+$};
-\draw (2.5,0) to[short,-o] (3.5,0) node[right]{$-$};
+\draw (0,0) node[ground]{} to[V,l=\(V_i\)] (0,3)
+      to[R,l=\(R_1\),i>^=\(I\)] (3,3) coordinate (output)
+      to[R,l=\(R_2\)] (3,0) -- (0,0);
+\fill (output) circle (1.3pt);
+\draw (output) to[short,-o] (4.3,3) node[right]{output node \(V_o\)};
 \end{circuitikz}
-\caption{Voltage divider: the output across \(R_2\) is
-\(V_o=V_i R_2/(R_1+R_2)\).}
+\caption{Unloaded voltage divider. The output is the divider node voltage
+relative to the grounded reference node: \(V_o=V_i R_2/(R_1+R_2)\).}
 \label{fig:divider}
 \end{figure}
 
@@ -182,6 +190,7 @@ every impedance is \(\SI{50}{\ohm}\).
 \end{exambox}
 
 \section{Worked Example}
+\label{sec:thevenin-worked-example}
 A \(\SI{12}{\volt}\) source feeds \(R_1=\SI{2.2}{\kilo\ohm}\) on top and
 \(R_2=\SI{1.0}{\kilo\ohm}\) to ground (the topology of \cref{fig:divider}). The
 unloaded output and the Thevenin resistance seen by a load are
@@ -191,6 +200,11 @@ V_o=12\frac{1.0}{2.2+1.0}=\SI{3.75}{\volt},
 R_{Th}=R_1\parallel R_2=\frac{(2.2)(1.0)}{2.2+1.0}\,\si{\kilo\ohm}
 \approx\SI{0.688}{\kilo\ohm}.
 \]
+The two calculations use different circuit views. With the source active,
+\(R_1\) and \(R_2\) are in series across \(\SI{12}{\volt}\), which gives the
+divider formula for \(V_o\). To find \(R_{Th}\), deactivate the independent ideal
+voltage source by replacing it with a short circuit. Both resistors then connect
+from the output node to ground, so they are in parallel.
 So to any load, this divider looks like a \(\SI{3.75}{\volt}\) source behind
 \(\SI{688}{\ohm}\)---and a load comparable to \(\SI{688}{\ohm}\) will noticeably
 pull the output down, which is why divider outputs are buffered before driving a

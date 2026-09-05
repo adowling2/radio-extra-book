@@ -22,14 +22,18 @@ fig, (axw, axe) = plt.subplots(1, 2, figsize=(6.6, 2.9),
 
 # ---------------- left: the current waveforms ----------------
 phi = np.linspace(-np.pi, np.pi, 3000)
-cases = [(360, "A", GUIDE_BLUE), (180, "B", GUIDE_GREEN), (120, "C", GUIDE_AMBER)]
+cases = [
+    (360, "A", GUIDE_BLUE, "-"),
+    (180, "B", GUIDE_GREEN, "--"),
+    (120, "C", GUIDE_AMBER, ":"),
+]
 
-for deg, cls, col in cases:
+for deg, cls, col, ls in cases:
     th = np.radians(deg/2)
     i = np.where(np.abs(phi) <= th,
                  (np.cos(phi) - np.cos(th))/(1 - np.cos(th)), 0.0)
     Idc, _ = coeffs(th)
-    axw.plot(np.degrees(phi), i, color=col, lw=1.5,
+    axw.plot(np.degrees(phi), i, color=col, ls=ls, lw=1.5,
              label=rf"Class {cls}, $2\theta={deg}^\circ$")
     axw.axhline(Idc, color=col, ls="--", lw=0.9, alpha=0.85)
 
@@ -41,10 +45,10 @@ axw.set_ylabel(r"device current  $i/I_{pk}$")
 axw.set_xlim(-180, 180)
 axw.set_ylim(-0.06, 1.14)
 axw.set_xticks([-180, -90, 0, 90, 180])
-for y, text, col in ((1.08, r"A: $360^\circ$", GUIDE_BLUE),
-                     (0.94, r"B: $180^\circ$", GUIDE_GREEN),
-                     (0.80, r"C: $120^\circ$", GUIDE_AMBER)):
-    axw.text(-171, y, text, color=col, fontsize=7.6, va="center")
+for y, text in ((1.08, r"A (solid): $360^\circ$"),
+                (0.94, r"B (dashed): $180^\circ$"),
+                (0.80, r"C (dotted): $120^\circ$")):
+    axw.text(-171, y, text, color="0.20", fontsize=7.1, va="center")
 axw.set_title("Narrow the conduction, cut the DC", fontsize=9)
 
 # ---------------- right: efficiency vs conduction angle ----------------

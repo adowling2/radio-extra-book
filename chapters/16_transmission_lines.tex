@@ -98,11 +98,10 @@ constant, independent of shape and of frequency:
 \frac{v}{i}=L'v_p=\frac{L'}{\sqrt{L'C'}}
 =\boxed{\;Z_0=\sqrt{\frac{L'}{C'}}\;}
 \]
-So \(Z_0\) and the velocity factor are not empirical constants---they fall out of
-the per-unit-length geometry of the line. Note also what \(Z_0\) is \emph{not}: it
-dissipates nothing. It is a ratio maintained by a wave in flight, which is why a
-resistor equal to \(Z_0\) can absorb a wave perfectly (it presents the same ratio
-the wave already has) while the lossless line itself consumes no power.
+The per-unit-length geometry of the line sets \(Z_0\) and the velocity factor. In
+particular, \(Z_0\) does not dissipate power: it is a ratio maintained by a wave in
+flight. A resistor equal to \(Z_0\) can absorb a wave perfectly because it presents
+the ratio the wave already has, while the lossless line itself consumes no power.
 
 \section{Wavelength and Velocity Factor}
 The \textbf{velocity factor} \(VF=v_p/c\) is the ratio of the wave's speed in the
@@ -111,28 +110,29 @@ the wavelength \emph{on the line} at frequency \(f\) is
 \[
 \lambda=\frac{v_p}{f}=\frac{VF\,c}{f}.
 \]
-Because \(v_p=1/\sqrt{L'C'}\) and a dielectric raises \(C'\), a line
-with dielectric has \(VF<1\); its physical length is shorter than the free-space
-electrical length. That can be closed into a formula rather than left as a tendency.
-A non-magnetic insulator leaves \(L'\) alone but multiplies \(C'\) by the relative
-permittivity \(\varepsilon_r\), so
+The preceding \(v_p=1/\sqrt{L'C'}\) relation applies to the lossless TEM line model
+used in this derivation. The familiar dielectric shortcut requires TEM propagation
+in a homogeneous, non-magnetic, nondispersive dielectric. Under those assumptions,
+the dielectric raises \(C'\), so \(VF<1\) and the line is physically shorter than the
+corresponding free-space electrical length. A non-magnetic dielectric leaves \(L'\)
+unchanged and multiplies \(C'\) by the relative permittivity \(\varepsilon_r\), so
 \[
 v_p=\frac{1}{\sqrt{L'\varepsilon_rC'_0}}=\frac{c}{\sqrt{\varepsilon_r}}
 \qquad\Longrightarrow\qquad
 \boxed{\;VF=\frac{1}{\sqrt{\varepsilon_r}}\;}
 \]
 where \(C'_0\) is the capacitance the same geometry would have in vacuum. This is the
-same \(v_p=1/\sqrt{L'C'}\) already derived, with the dielectric's effect named---and
-it predicts the table below rather than merely being consistent with it.
+same \(v_p=1/\sqrt{L'C'}\) already derived, with the dielectric's effect made
+explicit.
 Polyethylene has \(\varepsilon_r\approx2.25\), giving \(VF=1/1.5=0.667\); PTFE's
-\(2.1\) gives \(0.69\); a foam that is half air gives about \(0.82\). Compare those
-with the measured values quoted next. Typical values span the dielectric fill: solid-polyethylene
-coax (RG-8, RG-58) runs \(VF\approx0.66\); foam-dielectric coax
+\(2.1\) gives \(0.69\); a foam that is half air gives about \(0.82\). Typical
+illustrative values span the dielectric fill: solid-polyethylene coax (RG-8, RG-58)
+runs \(VF\approx0.66\); foam-dielectric coax
 \(VF\approx0.78\text{--}0.85\); PTFE coax \(VF\approx0.70\); flat twin-lead
 \(VF\approx0.82\); and mostly-air open-wire or ``ladder'' line
 \(VF\approx0.90\text{--}0.95\). Overhead power lines, essentially air-insulated,
-are near \(VF\approx0.95\text{--}0.98\). Always use the actual line's \(VF\) when
-cutting stubs or matching sections to length.
+are near \(VF\approx0.95\text{--}0.98\). Use the actual line's data-sheet \(VF\)
+when cutting stubs or matching sections to length.
 
 \section{Characteristic Impedance}
 \(Z_0=\sqrt{L'/C'}\) is the voltage-to-current ratio of a traveling wave. Common
@@ -451,8 +451,9 @@ receiver adds its full value to the system noise figure, so \SI{2}{\decibel} of 
 line is \SI{2}{\decibel} of sensitivity thrown away---which is the argument for
 mounting a preamplifier at the antenna rather than in the shack
 (\cref{sec:friis}).
-Representative figures for common cable, which vary between manufacturers and
-should be read off the actual data sheet:
+The following figures are illustrative estimates, not specifications. Matched loss
+varies with the manufacturer, cable construction, frequency, and installation; use a
+current data sheet for the specific cable before making a design decision:
 
 \begin{center}
 \begin{tabularx}{\textwidth}{@{}L{0.22\textwidth}Y Y Y@{}}
@@ -1200,12 +1201,13 @@ lands.
 
 \subsection{Ground Is an Image, and Three Antennas That Follow}
 \label{sec:groundimage}
-\Cref{sec:arrayfactor} was written for two real antennas, but it does not care whether
-the second one exists. A conducting ground plane forces the tangential electric field
-to zero at its surface, and that boundary condition is satisfied exactly by adding an
-\emph{image} antenna as far below the ground as the real one is above it. So an antenna
-at height \(h\) over ground \emph{is} a two-element array with spacing \(d=2h\), and
-the only question is the image's phase.
+For the far-field image model of a horizontal or vertical electric radiator above an
+infinite, perfectly conducting (PEC) ground plane, \cref{sec:arrayfactor}'s second
+element is the image current. The PEC boundary forces the tangential electric field
+to zero, and an image antenna as far below the plane as the real antenna is above it
+satisfies that boundary exactly. Thus the ideal model represents an antenna at height
+\(h\) as a two-element array with spacing \(d=2h\); the image phase depends on the
+antenna orientation.
 
 For a \textbf{horizontal} antenna the image is inverted, \(\phi=180^\circ\). Measuring
 elevation \(\psi\) up from the horizon, the vertical separation projects as
@@ -1214,22 +1216,21 @@ elevation \(\psi\) up from the horizon, the vertical separation projects as
 |F|=2\left|\cos\!\left(\frac{\pi+2\beta h\sin\psi}{2}\right)\right|
 =2\left|\sin\left(\beta h\sin\psi\right)\right| .
 \]
-Two facts drop out. At \(\psi=0\) the sine vanishes: \emph{a horizontal antenna over
-ground radiates nothing at the horizon}, at any height, because the image always
-cancels it there. And the first maximum sits where \(\beta h\sin\psi=\pi/2\), that is
+The ideal model gives two immediate results. At \(\psi=0\), the sine vanishes, so a
+horizontal radiator has a horizon null because the image cancels it there. The first
+maximum sits where \(\beta h\sin\psi=\pi/2\), that is
 \[
 \sin\psi=\frac{\lambda}{4h},
 \]
-so height alone sets the lobe: \(h=\lambda/4\) puts it straight up, \(h=\lambda/2\)
-at \(30^\circ\), \(h=\lambda\) at \(14.5^\circ\), and \(h=1.5\lambda\) at
-\(9.6^\circ\). Raising a horizontal antenna lowers its lobe---which is the whole
-reason height matters for DX, and it is arithmetic, not folklore. \Cref{fig:ground-image}
-plots both families.
+so height sets the lobe in this model: \(h=\lambda/4\) puts it straight up,
+\(h=\lambda/2\) at \(30^\circ\), \(h=\lambda\) at \(14.5^\circ\), and
+\(h=1.5\lambda\) at \(9.6^\circ\). Raising a horizontal antenna lowers its lobe
+in the ideal model. \Cref{fig:ground-image} plots both families.
 
-For a \textbf{vertical} antenna the image is \emph{not} inverted, \(\phi=0\), and the
-same formula returns a \emph{maximum} at the horizon instead. That single sign is why
-verticals are favored for low-angle work and why a horizontal antenna must be got up
-high to compete. It is also why \cref{sec:feedpoint}'s answer to ``what affects
+For a \textbf{vertical} antenna, the image is \emph{not} inverted, \(\phi=0\), and
+the same formula returns a \emph{maximum} at the horizon instead. This image-model
+result explains why verticals are favored for low-angle work and why a horizontal
+antenna must be higher to compete. It also explains why \cref{sec:feedpoint}'s answer to ``what affects
 feed-point impedance'' was \emph{antenna height}: the image is a second element
 coupled to the first, and moving it changes the impedance as surely as moving a real
 one would.
@@ -1237,19 +1238,22 @@ one would.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{ground_image_lobes}
-\caption{Ground as an image antenna, drawn with the array factor of
-\cref{sec:arrayfactor}. \emph{Left:} a horizontal antenna, whose image is inverted, so
-\(|F|=2|\sin(\beta h\sin\psi)|\). Every curve goes to zero at the horizon---the image
-cancels the antenna there at any height---and the first lobe descends as the antenna
-rises, from straight up at \(\lambda/4\) to \(30^\circ\) at \(\lambda/2\) and
-\(14^\circ\) at \(\lambda\), following \(\sin\psi=\lambda/4h\). At \(h=\lambda\) a
-second lobe has appeared. \emph{Right:} a vertical antenna, whose image is \emph{not}
-inverted, so the sine becomes a cosine and the maximum lands \emph{at} the horizon.
-That single sign is the whole reason verticals are chosen for low-angle work. Both
-panels plot elevation angle \(\psi\) upward from the horizon at the right-hand
-edge.}
+\caption{Infinite-PEC, far-field ground-image model drawn with the array factor of
+\cref{sec:arrayfactor}. \emph{Left:} a horizontal radiator, whose image is inverted,
+so \(|F|=2|\sin(\beta h\sin\psi)|\). In this ideal model, every curve goes to zero
+at the horizon and the first lobe descends as the antenna rises, from straight up at
+\(\lambda/4\) to \(30^\circ\) at \(\lambda/2\) and \(14^\circ\) at \(\lambda\),
+following \(\sin\psi=\lambda/4h\). At \(h=\lambda\) a second lobe has appeared.
+\emph{Right:} a vertical radiator, whose image is \emph{not} inverted, so the sine
+becomes a cosine and the maximum lands at the horizon. Both panels plot elevation
+angle \(\psi\) upward from the horizon at the right-hand edge.}
 \label{fig:ground-image}
 \end{figure}
+
+Real installations depart from this model: soil is lossy, ground planes and radial
+systems are finite, and terrain or nearby structures alter both the image and the
+pattern. The image model identifies the height-and-orientation trend; it does not
+replace a site-specific antenna model or measurement.
 
 \subsection{The Folded Dipole's Factor of Four}
 \label{sec:foldeddipole}

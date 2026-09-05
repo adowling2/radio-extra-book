@@ -26,10 +26,12 @@ I=\jj\omega C\,V .
 \]
 \emph{Inductor.} Likewise \(v=L\,\dd i/\dd t\) becomes \(V=\jj\omega L\,I\).
 
-In every case the phasor voltage is a \emph{complex multiple} of the phasor
-current---exactly the algebraic form of Ohm's law, with a complex proportionality
-constant. Solving each relation for the ratio \(V/I\) defines that constant. It is
-the \textbf{impedance}:
+Treat the element or network as a two-terminal one-port. Mark a positive voltage
+terminal and define \(I\) as the current entering that terminal (the passive sign
+convention). In every case the phasor voltage across those same terminals is a
+\emph{complex multiple} of that terminal current---exactly the algebraic form of
+Ohm's law, with a complex proportionality constant. Solving each relation for the
+ratio \(V/I\) defines that constant. It is the \textbf{impedance}:
 \[
 Z=\frac{V}{I}=R+\jj X,
 \]
@@ -82,9 +84,10 @@ consuming power.
 \end{physicalbox}
 
 \section{Series Impedance: Where the RLC Impedance Comes From}
-Impedances in series add, exactly like resistors, because the same current flows
-through each and the voltages sum (KVL). For \(R\), \(L\), \(C\) in series that
-gives the impedance directly:
+Impedances in series add, exactly like resistors, because the same defined
+through-current flows through each element and the element voltages add from one
+end of the string to the other (KVL). For \(R\), \(L\), \(C\) in series that gives
+the impedance directly:
 \[
 Z=Z_R+Z_L+Z_C=R+\jj\omega L+\frac{1}{\jj\omega C}
 =R+\jj\left(\omega L-\frac{1}{\omega C}\right).
@@ -111,10 +114,10 @@ circuit's dynamics in full.}
 \end{figure}
 
 \section{Parallel Impedance}
-The dual arrangement puts the three elements across one node pair
-(\cref{fig:rlc-parallel-z}), so they share a \emph{voltage} instead of a current.
-Impedances no longer add---but their reciprocals do, because KCL sums the branch
-currents:
+The dual arrangement puts the three elements across the same two nodes
+(\cref{fig:rlc-parallel-z}), so their branch voltages are the one phasor \(V\);
+only their currents differ. Impedances no longer add---but their reciprocals do,
+because KCL sums those branch currents into the port current:
 \[
 I=I_R+I_L+I_C
 =\frac{V}{R}+\frac{V}{\jj\omega L}+\jj\omega C\,V
@@ -158,9 +161,15 @@ For parallel networks it is easier to work with the reciprocal of impedance, the
 Y=\frac{1}{Z}=G+\jj B,
 \]
 whose real part \(G\) is conductance and imaginary part \(B\) is
-\textbf{susceptance}. Just as series impedances add, \emph{parallel admittances
-add}, because the same voltage appears across each branch and the currents sum
-(KCL):
+\textbf{susceptance}. The two one-port forms are the same statement written in
+opposite directions:
+\[
+V=ZI,\qquad I=YV.
+\]
+Use the first when the circuit geometry makes a common current visible (series);
+use the second when it makes a common voltage visible (parallel). Thus, just as
+series impedances add, \emph{parallel admittances add}, because the same voltage
+appears across each branch and the currents sum (KCL):
 \[
 Y_{\mathrm{eq}}=\sum_k Y_k.
 \]
@@ -262,16 +271,29 @@ voltage E leads current I; in a capacitor (C) current I leads voltage E.
 \end{exambox}
 
 \section{Complex Power}
-With RMS phasors and the passive sign convention, complex power uses the
-conjugate of the current:
+Complex power is a compact way to report the \emph{cycle-average} real power and its
+associated reactive-power convention for a sinusoidal steady state; it is not the
+instantaneous product \(p(t)\).
+Use RMS phasors and the same passive sign convention as above: \(V\) is measured
+from the marked \(+\) terminal to the \(-\) terminal, and \(I\) enters the \(+\)
+terminal. Then complex power uses the conjugate of the current:
 \[
 S=V I^{*}=P+\jj Q .
 \]
-The real part \(P\) is average power actually dissipated (watts); the imaginary
-part \(Q\) is reactive power (VAR, volt-amperes reactive), the energy sloshing
-back and forth between the source and the reactive elements each cycle. The
-conjugate is what makes \(P\) come out as the in-phase product, and the magnitude
-\(|S|\) is the apparent power, measured in volt-amperes (VA).
+For example, if voltage is the reference and current lags by \(\theta\), then
+\[
+V=V_{\RMS}\angle0^\circ,\qquad I=I_{\RMS}\angle{-\theta}
+\quad\Longrightarrow\quad
+VI^*=V_{\RMS}I_{\RMS}\angle\theta
+=V_{\RMS}I_{\RMS}(\cos\theta+\jj\sin\theta).
+\]
+The conjugate changes the current angle's sign, so the real part is the in-phase
+product. Thus \(P=V_{\RMS}I_{\RMS}\cos\theta\) is average power absorbed by the
+load (watts), and \(Q=V_{\RMS}I_{\RMS}\sin\theta\) is reactive power (VAR,
+volt-amperes reactive). With this convention \(Q>0\) for a lagging, inductive load
+and \(Q<0\) for a leading, capacitive load. Reversing the reference current reverses
+the sign of \(S\): a source delivering power therefore has negative absorbed power.
+The magnitude \(\lvert S\rvert\) is apparent power, measured in volt-amperes (VA).
 
 \subsection{Where ``Sloshing'' Comes From}
 \label{sec:instpower}
@@ -338,26 +360,31 @@ the load's reactance. A purely reactive load (\(\pm90^\circ\)) would show
 
 \section{Average Power and Peak Envelope Power}
 \label{sec:pep}
-Complex power settles how much power a load consumes at one instant in the steady
-state. Radio work needs two further readings of the same quantity, because a
-transmitter's output is not a steady sinusoid---its amplitude moves with the
-modulation.
+The previous section's \(P\) is an average over a cycle of a steady sinusoid. For
+modulated RF, distinguish three intervals: instantaneous power \(p(t)\), the
+average over one RF cycle at a particular envelope level, and the average over the
+whole transmission. PEP is the largest of those one-cycle averages; it is not the
+instantaneous crest of voltage or power.
 
-\emph{Average power in a resistance.} Because RMS was defined precisely to make
-this work (\cref{sec:rms})---and because \cref{sec:instpower} showed the average is
-the constant term of \(p(t)\)---the DC formulas carry over with no correction:
+\emph{Average power in a resistance.} For a sinusoidal RF cycle across a resistance,
+RMS was defined precisely to make the DC formulas carry over
+(\cref{sec:rms}), and \cref{sec:instpower} showed that the average is the constant
+term of \(p(t)\):
 \[
 P=V_{\RMS}I_{\RMS}=\frac{V_{\RMS}^2}{R}=I_{\RMS}^2R .
 \]
-If a voltage is quoted as a peak or peak-to-peak value---which is what an
-oscilloscope reads---convert first:
+For a modulated signal, this equation gives the average over whichever interval
+defines the RMS measurement; state that interval when average power could mean
+either one cycle or the whole transmission. If a voltage is quoted as a peak or
+peak-to-peak value for one sinusoidal RF cycle---which is what an oscilloscope
+display can provide---convert first:
 \[
 V_{\RMS}=\frac{V_p}{\sqrt2}=\frac{V_{pp}}{2\sqrt2},
 \qquad\text{so}\qquad
 P=\frac{V_{pp}^2}{8R} .
 \]
-That last form is worth keeping, because a scope across a known load is the usual
-way RF power is actually measured, and \(8R\) is easier to remember than the chain
+That last form is worth keeping for a resistive load, because a scope across a known
+load can determine the RF-cycle power and \(8R\) is easier to remember than the chain
 of conversions behind it.
 
 \emph{Peak envelope power.} Now let the amplitude vary. The \textbf{envelope} is
@@ -368,13 +395,12 @@ largest:
 \mathrm{PEP}=\frac{V_{pp,\max}^2}{8R} .
 \]
 The definition is a mouthful, but its structure is simple---it is still an
-\emph{average} over a cycle, just the worst cycle. Two limits make it concrete. For
-an unmodulated carrier the envelope is flat, so every cycle is the largest one and
-\(\mathrm{PEP}\) equals the average power exactly: the ratio is \(1.00\). For a
-modulated signal the envelope varies, so PEP exceeds the average power, and by how
-much depends entirely on the modulation---which is why transmitter limits are
-written in PEP. It is the one number that does not depend on what you are
-transmitting.
+\emph{average} over a cycle, just the largest one. For an unmodulated carrier the
+envelope is flat, so every cycle is the largest one and \(\mathrm{PEP}\) equals
+both the one-cycle and whole-transmission average power: the ratio is \(1.00\). For
+a modulated signal, PEP normally exceeds the whole-transmission average, and the
+ratio depends on the modulation and its duty factor. A PEP limit therefore constrains
+the maximum RF-cycle power without depending on the modulation's long-term average.
 
 \begin{workedbox}[: reading power off a scope]
 A transmitter drives a \SI{50}{\ohm} dummy load, and at the peak of a voice
@@ -387,8 +413,8 @@ Checking the long way round: \(V_{\RMS}=200/(2\sqrt2)=\SI{70.7}{\volt}\), and
 \(70.7^2/50=\SI{100}{\watt}\). Same answer, as it must be. Note that the
 \emph{average} power over the whole transmission is much lower---speech spends most
 of its time well below peak---which is why an amplifier can be rated for
-\SI{100}{\watt} PEP on single sideband while its heat sink never sees
-\SI{100}{\watt}.
+\SI{100}{\watt} PEP on single sideband while its heat sink need not dissipate
+\SI{100}{\watt} continuously.
 \end{workedbox}
 
 \begin{mistakebox}

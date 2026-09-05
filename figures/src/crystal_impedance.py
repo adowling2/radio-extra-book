@@ -37,8 +37,8 @@ axm.annotate(rf"$f_s={fs/1e6:.3f}$ MHz" "\n" rf"$|Z|\approx R={R:.0f}\ \Omega$",
              xy=(ks, R), xytext=(-5.4, 1.1e3), color=GUIDE_GREEN, fontsize=8,
              arrowprops=dict(arrowstyle="->", color=GUIDE_GREEN, lw=0.8))
 axm.annotate(rf"$f_p={fp/1e6:.6f}$ MHz" "\n" r"$|Z|$ in megohms",
-             xy=(kp, np.abs(Z).max()), xytext=(21.0, 3.0e6), color=GUIDE_RED,
-             fontsize=8, ha="center",
+             xy=(kp, np.abs(Z).max()), xytext=(25.5, 1.8e6), color="0.25",
+             fontsize=8, ha="right",
              arrowprops=dict(arrowstyle="->", color=GUIDE_RED, lw=0.8))
 axm.set_ylabel(r"$|Z|$  ($\Omega$)")
 axm.set_ylim(3, 3e7)
@@ -57,13 +57,13 @@ axx.set_yticks([-1e5, -1e2, 0, 1e2, 1e5])
 axx.set_yticklabels([r"$-10^5$", r"$-10^2$", "0", r"$10^2$", r"$10^5$"])
 axx.annotate("capacitive", xy=(-4.0, -3e3), color="0.35", fontsize=8)
 axx.annotate("capacitive", xy=(19.0, -3e3), color="0.35", fontsize=8)
-axx.annotate("INDUCTIVE\nhere only", xy=(ks + (kp - ks)/2, 6e3), color=GUIDE_AMBER,
+axx.annotate("INDUCTIVE\nhere only", xy=(ks + (kp - ks)/2, 6e3), color="0.25",
              fontsize=8, ha="center", fontweight="bold")
 
 # the window, bracketed, with what it is for
 axx.annotate("", xy=(ks, -1.3e5), xytext=(kp, -1.3e5),
              arrowprops=dict(arrowstyle="<->", color=GUIDE_AMBER, lw=1.1))
-axx.annotate("the entire working range", xy=(7.5, -4.5e5), color=GUIDE_AMBER,
+axx.annotate("the entire working range", xy=(7.5, -4.5e5), color="0.25",
              fontsize=7.8, ha="center", va="center")
 axx.set_xlim(khz[0], khz[-1])
 

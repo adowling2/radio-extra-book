@@ -1,13 +1,13 @@
 \chapter{One Circuit, Four Views}
 \label{ch:fourviews}
 Part~II introduced differential equations, state-space models, transfer functions,
-frequency responses, and feedback. The earlier Part~III chapters supplied circuit
-components, conservation laws, and phasor impedance. This chapter states the
-pattern that follows: every circuit is one of those systems, and each view exposes
-a different feature of the same object.
+frequency responses, and feedback. Chapters~7--9 supplied circuit components,
+conservation laws, and phasor impedance. This chapter is the bridge: it connects a
+physical circuit to the generic system model that describes its dynamics, so each
+later circuit chapter can use both languages without starting over.
 
 \section{The Four Views}
-A circuit can be read as:
+A circuit can be understood through:
 \begin{enumerate}
 \item a \textbf{physical network} governed by conservation laws (KCL, KVL) and
 element laws;
@@ -16,8 +16,8 @@ element laws;
 \item a \textbf{phasor / frequency-response model}, the transfer function on the
 \(\jj\omega\) axis.
 \end{enumerate}
-A fifth lens---\textbf{energy} storage and dissipation---runs alongside. The
-views are complementary: each makes a different feature of
+A fifth lens is \textbf{energy} storage and dissipation. The views are
+complementary: each makes a different feature of
 the circuit obvious, and together they describe one consistent object. When a
 quick cross-check between two of them disagrees, a sign convention, a reference
 direction, or an assumption needs attention.
@@ -28,17 +28,19 @@ The next chapters each apply the following recipe to specific circuits:
 \item draw the schematic and name the state variables (capacitor voltages,
 inductor currents);
 \item apply KVL/KCL and the element laws to get the differential equation;
-\item write the state-space model and read off the poles;
+\item write the state-space model and identify the poles;
 \item \textbf{match it to the generic first- or second-order system of
-\cref{ch:linsys}}---identify \(\tau\), or \(\omega_0\) and \(\zeta\)---so all of
+\cref{ch:linsys}}: identify \(\tau\), or \(\omega_0\) and \(\zeta\), so all of
 Part~II's results apply at once;
 \item interpret the frequency response (Bode) and the pole motion (root locus);
 \item close with the energy balance and a worked example.
 \end{enumerate}
 
 \section{The Map from Circuits to Systems}
-Four circuits carry most of the exam's analog content, and each is a generic
-system in disguise:
+Each independent capacitor voltage or inductor current contributes one state;
+resistors dissipate energy but do not raise the order. Thus a circuit with one
+independent energy store is first order, and one with two is second order. Four
+circuits carry most of the exam's analog content:
 
 \begin{center}
 \begin{tabularx}{\textwidth}{@{}L{0.15\textwidth}L{0.19\textwidth}L{0.24\textwidth}Y@{}}
@@ -53,10 +55,12 @@ Parallel RLC & second / \(v,i_L\) & same standard form & \(\omega_0=\tfrac{1}{\s
 \end{tabularx}
 \end{center}
 
-Once a circuit is matched to its row, everything from \cref{ch:linsys}---step
-response, time constant or damping ratio, pole geometry, resonant peak, root
-locus---transfers directly.
+Once a circuit is matched to its row, the results from \cref{ch:linsys} transfer
+directly: step response, time constant or damping ratio, pole geometry, resonant
+peak, and root locus. More independent energy stores give a higher-order
+lumped system; the state variables remain the corresponding capacitor voltages and
+inductor currents.
 
-What about a five-pole filter, three-stage amplifier, or feed line? The factoring
-theorem of \cref{ch:highorder} writes each as a \emph{cascade} of the rows above.
-Part~IV applies that result.
+For stable all-pole higher-order lumped circuits, the factorization in
+\cref{ch:highorder} organizes those states into first- and second-order sections.
+A transmission line is instead a distributed model, developed in \cref{ch:lines}.

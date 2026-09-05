@@ -208,18 +208,24 @@ created them.
 
 \subsection{Gain Compression}
 \label{sec:compression}
-The cubic term does something else too. Collecting the components at \(\omega_1\)
-itself---the cube of a sum contributes back to the fundamental---the effective gain
-becomes
+The cubic term does something else too. For the two equal tones used above,
+collecting the components at \(\omega_1\) itself---the cube of a sum contributes
+back to the fundamental---gives the effective gain
 \[
 a_1+\tfrac94a_3A^2
-\qquad\text{(two equal tones; }\tfrac34\text{ for a single tone).}
 \]
-In a real device \(a_3\) has the \emph{opposite} sign to \(a_1\), so the gain
-\emph{falls} as drive increases. That single term is gain compression, blocking, and
-desensitization---three names for one coefficient. The \textbf{\(\SI{1}{\decibel}\)
-compression point} is where the gain has dropped by \SI{1}{\decibel}, i.e.\ where the
-bracket equals \(10^{-1/20}a_1\approx0.891\,a_1\).
+For a single tone, the corresponding coefficient is
+\[
+a_1+\tfrac34a_3A^2.
+\]
+In the usual compressive region \(a_3\) has the \emph{opposite} sign to \(a_1\), so
+the gain falls as drive increases. That single term is gain compression, blocking, and
+desensitization---three names for one coefficient. The standard
+\textbf{\(\SI{1}{\decibel}\) compression point} is a \emph{single-tone}
+measurement: it is where
+\[
+a_1+\tfrac34a_3A^2=10^{-1/20}a_1\approx0.891\,a_1.
+\]
 
 \subsection{The Third-Order Intercept}
 Finally, compare the third-order product with the wanted output. The product grows three
@@ -231,15 +237,16 @@ A_{\mathrm{IIP3}}^2=\frac{4}{3}\left|\frac{a_1}{a_3}\right|,
 and the input power there is the \textbf{input third-order intercept} \(\mathrm{IIP3}\).
 Two things about it are worth saying plainly. First, it is a \emph{fiction}: the
 intercept is an extrapolation to a power level that would destroy the receiver long
-before reaching it, so IIP3 is best read as a linearity coefficient wearing the units of
-power. Second, since both \(P_{\SI{1}{\decibel}}\) and IIP3 are set by the same ratio
-\(|a_1/a_3|\), they are not independent---dividing the two expressions gives
+before reaching it, so IIP3 is best interpreted as a linearity coefficient wearing the units of
+power. Second, the standard single-tone \(P_{\SI{1}{\decibel}}\) and two-tone IIP3
+are both set by the same ratio \(|a_1/a_3|\), so they are not independent. Dividing
+the two expressions gives
 \[
 \mathrm{IIP3}\approx P_{\SI{1}{\decibel}}+\SI{9.6}{\decibel}
 \]
-for a purely cubic nonlinearity. A useful sanity check on a datasheet: if the two
-numbers differ by wildly more or less than \SI{10}{\decibel}, something beyond the
-cubic term is at work.
+for a purely cubic nonlinearity, with those stated measurement conventions. A useful
+sanity check on a datasheet: if the two numbers differ by wildly more or less than
+\SI{10}{\decibel}, something beyond the cubic term is at work.
 
 \section{Dynamic Range: Two Numbers, Two Different Failures}
 \label{sec:dynamicrange}
@@ -309,8 +316,9 @@ situation on the low HF bands, and precisely why the switch exists.
 
 \section{Phase Noise and Reciprocal Mixing}
 \label{sec:phasenoise}
-One more mechanism raises the noise floor, and it is the most on-thesis of all of them:
-it is purely a statement about where an oscillator's poles sit.
+Phase noise is another mechanism that raises the noise floor. The model below isolates
+the resonator-filtered part of an oscillator's spectrum; it does not describe every
+source of phase noise.
 
 \Cref{ch:active} noted qualitatively that a high-\(Q\) resonator pins an oscillator's
 pole pair tightly to the \(\jj\omega\) axis and gives a sharp spectral line. Make that
@@ -320,10 +328,10 @@ quantitative. Write the local oscillator with a small random phase disturbance
 \cos\bigl(\omega_{\mathrm{LO}}t+\phi(t)\bigr)
 \approx\cos\omega_{\mathrm{LO}}t-\phi(t)\sin\omega_{\mathrm{LO}}t .
 \]
-A pure carrier, \emph{plus} a term carrying the phase noise in quadrature with it. So a
-jittering oscillator is not a line: it is a line with \textbf{skirts}, whose density at
-an offset \(\Delta f\) from the carrier is quoted in dBc/Hz---decibels relative to the
-carrier, per hertz.
+The expansion separates a pure carrier from a term carrying phase noise in quadrature.
+A jittering oscillator therefore has a carrier with \textbf{skirts}. Their density at
+an offset \(\Delta f\) from the carrier is quoted in dBc/Hz, decibels relative to the
+carrier per hertz.
 
 Now put that oscillator in a mixer. The mixer multiplies, so a strong interfering signal
 at offset \(\Delta f\) from the tuned frequency beats against the skirt component at
@@ -339,27 +347,29 @@ mechanism, not a distortion mechanism---which is exactly why it is specified sep
 from \cref{sec:dynamicrange}'s dynamic ranges.
 
 \subsection{Where the Skirt's Shape Comes From}
-The final step connects it to a pole. An oscillator's tank filters the active device's
-own noise, and by \cref{ch:rlc} a resonator of loaded quality factor \(Q_L\) is a
-band-pass whose half-bandwidth is \(\omega_0/2Q_L\). Above that corner the filtering
-rolls off at \(-\SI{20}{\decibel}\) per decade, so
+An idealized, far-from-flicker-corner Leeson-type scaling connects one part of the
+skirt to a pole. Hold carrier power and the relevant noise sources fixed, and model the
+tank as filtering the active device's noise. By \cref{ch:rlc}, a resonator of loaded
+quality factor \(Q_L\) is a band-pass whose half-bandwidth is \(\omega_0/2Q_L\).
+Above that corner, this model rolls off at \(-\SI{20}{\decibel}\) per decade:
 \[
 \mathcal{L}(\Delta f)\ \propto\ \frac{1}{Q_L^2}\cdot\frac{1}{\Delta f^{2}} .
 \]
-Two readings, both practical. The \(-\SI{20}{\decibel}\)/decade slope is the
-single-pole roll-off of \cref{ch:splane}, appearing here as the shape of a noise skirt.
-And the \(1/Q_L^2\) means \textbf{doubling the loaded \(Q\) buys \SI{6}{\decibel} of
-phase noise}---which finally puts a number on the tank-loading trade-off of
-\cref{ch:crossproblems}: coupling the next stage loosely is not fussiness, it is
-\SI{6}{\decibel} per octave of \(Q\).
+Within this model, the \(-\SI{20}{\decibel}\)/decade slope is the single-pole
+roll-off of \cref{ch:splane}, appearing as the shape of a noise skirt. The
+\(1/Q_L^2\) factor means that doubling the loaded \(Q\) reduces the predicted
+phase-noise density by \SI{6}{\decibel}. This quantifies the tank-loading trade-off
+of \cref{ch:crossproblems}. Actual phase-noise spectra also depend on carrier power,
+active-device and resonator noise, flicker noise, and loop architecture; those
+dependencies can change both the level and the offset-frequency regions.
 
 \begin{controlsbox}
-\textbf{Everything about an oscillator's spectrum is its pole location.} A pole exactly
-on the \(\jj\omega\) axis is a perfect sinusoid---an infinitely thin spectral line. Real
-loss and noise let the pole wander slightly, and the width of that wander \emph{is} the
-skirt. High \(Q_L\) means a stiffly held pole, hence a narrow skirt, hence low phase
-noise, hence less reciprocal mixing. One geometric fact explains an oscillator
-specification, a receiver specification, and a design rule.
+\textbf{Tank poles shape the resonator-filtered part of the spectrum.} In the ideal
+linear model, a pole exactly on the \(\jj\omega\) axis gives an infinitely thin spectral
+line. Real loss and noise broaden that line into a skirt. Within the stated
+resonator-filtered model, high \(Q_L\) produces a narrower skirt and less reciprocal
+mixing. Carrier power, device and resonator noise, flicker noise, and loop architecture
+set the remaining phase-noise behavior.
 \end{controlsbox}
 
 \section{Noise Bandwidth Is Not the \texorpdfstring{\(-3\)}{-3} dB Bandwidth}

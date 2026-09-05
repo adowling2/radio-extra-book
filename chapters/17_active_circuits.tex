@@ -537,8 +537,8 @@ exactly zero, which is \(L=-1\).
 \item Beyond \(K=8\) the poles are in the right half-plane and the amplifier
 oscillates whether you wanted it to or not.
 \end{itemize}
-Margins and root locus are not two topics---they are two readings of this one
-parameter sweep, which is the claim \cref{ch:feedback} opened with.
+Margins and root locus are two readings of the same parameter sweep. This is the
+connection \cref{ch:feedback} introduced.
 \end{controlsbox}
 
 \begin{figure}[htbp]
@@ -620,9 +620,9 @@ loss, placed where the trouble is.
 \end{controlsbox}
 
 \section{Oscillators: Poles Placed on the Axis}
-An oscillator is a feedback loop designed to sit exactly on the stability
-boundary. The closed-loop poles are the roots of \(1+L(s)=0\), so they reach the
-\(\jj\omega\) axis when
+Linearized about zero amplitude, an oscillator is a feedback loop designed to sit at
+the stability boundary. The closed-loop poles are the roots of \(1+L(s)=0\), so they
+reach the \(\jj\omega\) axis when
 \[
 L(\jj\omega_{\text{osc}})=-1,
 \qquad\text{that is}\qquad
@@ -636,10 +636,12 @@ This is the \emph{Barkhausen criterion}. Its familiar
 \(T=-L\), which already includes the \(-1\) of the subtracting junction; setting
 \(T=1\) is the same statement as \(L=-1\). In s-plane language the closed-loop
 poles are placed on the \(\jj\omega\) axis at \(\pm\jj\omega_{\text{osc}}\)---the
-marginally stable case from the s-plane chapter. At start-up the design makes \(|L|>1\) so the pole pair sits slightly in
-the right half-plane and the amplitude grows; a nonlinearity (device saturation,
-a limiter, a lamp, or automatic gain control, AGC) then reduces the effective gain until \(|L|=1\) and the
-poles settle onto the axis at a stable amplitude.
+marginally stable case from the s-plane chapter. At start-up the design makes
+\(|L|>1\), so the linearized amplitude grows. A nonlinearity (device saturation, a
+limiter, a lamp, or automatic gain control, AGC) then reduces the effective gain until
+the average loop condition is met, establishing a finite-amplitude limit cycle. The
+axis picture is the linearized boundary, not a literal description of the nonlinear
+steady oscillation.
 
 \Cref{fig:oscillator-loopgain} shows the condition on a loop-gain Bode plot: the
 design places the frequency where the phase reaches \(-180^\circ\) exactly at the
@@ -679,10 +681,11 @@ pinned to the axis. A high-\(Q\) resonator holds the pole pair tightly at
 lets the poles wander, smearing the line. This is why crystal and high-\(Q\) LC
 oscillators are quieter.
 
-\Cref{sec:phasenoise} puts a number on it: the skirt inherits the tank's
-single-pole roll-off, so phase noise falls at \(-\SI{20}{\decibel}\) per decade of
-offset and scales as \(1/Q_L^2\)---\emph{doubling the loaded \(Q\) buys
-\SI{6}{\decibel}}. It also shows what that costs a receiver, since a noisy local
+\Cref{sec:phasenoise} gives a bounded version of this argument. In its
+resonator-filtered, far-from-flicker-corner model, phase-noise density falls at
+\(-\SI{20}{\decibel}\) per decade of offset and scales as \(1/Q_L^2\); doubling the
+loaded \(Q\) reduces the predicted density by \SI{6}{\decibel}. The same section
+names the other noise sources and loop effects omitted by that model. A noisy local
 oscillator raises the apparent noise floor near strong signals.
 \end{physicalbox}
 
@@ -797,8 +800,7 @@ matters is the \(C_0+C_L\) in the \(f_p\) formula.
 \label{sec:pll}
 An oscillator places its poles on the \(\jj\omega\) axis; the obvious next question is
 whether you can \emph{control} where on the axis they sit. A \textbf{phase-locked loop}
-(PLL) does exactly that, and it is the most literal control loop in radio---a servo
-whose controlled variable is phase.
+(PLL) does exactly that. It is a servo whose controlled variable is phase.
 
 Three blocks (\cref{fig:pll}). A \textbf{phase detector} compares the input phase with
 the oscillator's and outputs a voltage proportional to the difference, with gain
@@ -986,7 +988,7 @@ G(s)=\frac{\omega_0^2}{s^2+\dfrac{\omega_0}{Q}s+\omega_0^2},
 \qquad
 \omega_0=\frac{1}{\sqrt{R_1R_2C_1C_2}},
 \qquad
-\frac{1}{Q}=\sqrt{\frac{C_2}{C_1}}
+\frac{1}{Q}=\sqrt{\frac{C_1}{C_2}}
 \left(\sqrt{\frac{R_1}{R_2}}+\sqrt{\frac{R_2}{R_1}}\right).
 \]
 This is precisely the standard second-order form of \cref{ch:linsys}---the same one the

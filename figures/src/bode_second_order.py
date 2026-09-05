@@ -8,13 +8,18 @@ apply_style()
 
 w0 = 1.0
 w = np.logspace(-1, 1, 600)
-Qs = [(0.5, GUIDE_GREEN), (0.707, GUIDE_AMBER), (2.0, GUIDE_BLUE), (5.0, GUIDE_RED)]
+Qs = [
+    (0.5, GUIDE_GREEN, "-"),
+    (0.707, GUIDE_AMBER, "--"),
+    (2.0, GUIDE_BLUE, "-."),
+    (5.0, GUIDE_RED, ":"),
+]
 
 fig, ax = plt.subplots(figsize=(6.2, 3.0))
-for Q, c in Qs:
+for Q, c, ls in Qs:
     # H(jw) = w0^2 / (w0^2 - w^2 + j w w0 / Q)
     H = w0**2 / ((w0**2 - w**2) + 1j*w*w0/Q)
-    ax.semilogx(w, 20*np.log10(np.abs(H)), color=c,
+    ax.semilogx(w, 20*np.log10(np.abs(H)), color=c, ls=ls,
                 label=rf"$Q={Q:g}$ ($\zeta={1/(2*Q):.2f}$)")
 ax.axhline(0, color="0.6", ls=":", lw=0.9)
 ax.axvline(1, color="0.6", ls=":", lw=0.9)

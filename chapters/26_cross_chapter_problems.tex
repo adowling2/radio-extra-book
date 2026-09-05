@@ -21,8 +21,8 @@ C=\frac{1}{2\pi R f_c}=\frac{1}{2\pi(10^4)(100)}\approx\SI{159}{\nano\farad}.
 \qquad\Longrightarrow\qquad
 20\log_{10}(0.447)\approx-\SI{7.0}{\decibel}.
 \]
-One octave below the corner costs about \SI{7}{\decibel}---which is why a coupling
-corner is placed well below the lowest wanted frequency, not at it.
+One octave below the corner costs about \SI{7}{\decibel}. A coupling corner is
+therefore placed well below the lowest wanted frequency, not at it.
 
 \section{Designing a Trap to a Bandwidth Specification}
 \emph{Uses \cref{ch:rlc,ch:filters}.} A series-LC trap must notch
@@ -52,7 +52,8 @@ s\approx-1.57\times10^{5}\pm\jj\,4.46\times10^{7}\ \si{\radian\per\second}.
 \]
 Note what the specification really demanded: less than an ohm of total loss,
 \emph{including} the coil's own resistance. That is the practical reason narrow traps
-need high-\(Q\) components---the pole must sit that close to the \(\jj\omega\) axis.
+need high-\(Q\) components because the pole must sit that close to the
+\(\jj\omega\) axis.
 
 \section{Loading an Oscillator Tank}
 \emph{Uses \cref{ch:rlcpar,ch:active}.} The same \(L=\SI{2.2}{\micro\henry}\) and
@@ -68,8 +69,8 @@ it is the series-to-parallel transformation of \cref{sec:seriesparallel}:
 \[
 R_p=(1+Q^2)\,r\approx Q^2r=Q_p\,\omega_0L=(200)(98.1)\approx\SI{19.6}{\kilo\ohm},
 \]
-and that is the (purely resistive) impedance at resonance---a \emph{maximum}, the
-mirror of the series trap above. Note how large the leverage is: half an ohm of coil
+and that is the purely resistive impedance at resonance. It is a \emph{maximum}, the
+mirror of the series trap above. Note the leverage: half an ohm of coil
 loss becomes twenty kilohms of tank impedance, because the transformation multiplies
 by \(Q^2\). The \(\approx\) costs \SI{25}{ppm} at \(Q=200\); at low \(Q\) use
 \((1+Q^2)\).
@@ -83,8 +84,8 @@ Q_{\text{loaded}}=\frac{R_{\text{tot}}}{\omega_0L}=\frac{3980}{98.1}\approx41,
 so \(BW=f_0/Q\approx\SI{175}{\kilo\hertz}\). Loading cut \(Q\) by a factor of
 five. Since \(Q\) measures how tightly the pole pair is pinned to the \(\jj\omega\)
 axis (\cref{ch:active}), a heavily loaded tank lets the poles wander and the
-oscillator's spectrum smears---worse phase noise. The fix is to couple the next stage
-loosely, trading signal amplitude for spectral purity.
+oscillator's spectrum smears, producing worse phase noise. Couple the next stage
+loosely to trade signal amplitude for spectral purity.
 
 \section{An Antenna, a Line, and a Matching Section}
 \emph{Uses \cref{ch:rlc,ch:filters,ch:lines}.} An antenna measures
@@ -109,8 +110,8 @@ mismatch remains:
 \qquad
 \mathrm{SWR}=\frac{1.176}{0.824}\approx1.43 .
 \]
-Tuning out the reactance did most of the work---but not all, because
-\(\SI{35}{\ohm}\ne\SI{50}{\ohm}\). This is exactly the two-part job a matching network
+Tuning out the reactance did most of the work, but \(\SI{35}{\ohm}\ne\SI{50}{\ohm}\).
+This is the two-part job a matching network
 does (\cref{ch:filters}): cancel the reactance, then transform the resistance.
 
 (c) The quarter-wave section needs the geometric mean (\cref{ch:lines}):
@@ -133,7 +134,7 @@ ringing that the circuit should not produce. Where does it come from?
 \frac{V_{\text{meas}}}{V_{\text{true}}}=\frac{R_{\mathrm{in}}}{R_{\mathrm{in}}+R_{Th}}
 =\frac{10\times10^6}{10\times10^6+47\times10^3}=99.5\%,
 \]
-so the DC reading is only \(0.5\%\) low---acceptable.
+so the DC reading is only \(0.5\%\) low, which is acceptable here.
 
 (b) The ringing is the measurement setup, not the circuit. Three inches of ground lead
 is about \(L=\SI{60}{\nano\henry}\), which forms a series LC loop with the probe's
@@ -143,12 +144,12 @@ is about \(L=\SI{60}{\nano\henry}\), which forms a series LC loop with the probe
 f_0=\frac{1}{2\pi\sqrt{(60\times10^{-9})(12\times10^{-12})}}\approx\SI{188}{\mega\hertz},
 \]
 and the loop has almost no resistance, so its \(Q\) is high and any fast edge
-shock-excites it. Shorten the ground path---a one-inch spring tip moves the resonance
-above \SI{350}{\mega\hertz}, out of the way.
+shock-excites it. A one-inch spring tip shortens the ground path and moves the
+resonance above \SI{350}{\mega\hertz}.
 
 \section{How Many Poles Does the Filter Need?}
 \emph{Uses \cref{sec:decibels,ch:filters}.} A transmitter low-pass must attenuate the
-second harmonic---at twice the cutoff frequency---by at least \SI{40}{\decibel}. What
+second harmonic at twice the cutoff frequency by at least \SI{40}{\decibel}. What
 Butterworth order is required?
 
 \subsection*{Solution}
@@ -160,8 +161,8 @@ attenuation an octave past cutoff is about
 \]
 Setting \(6.02n\ge40\) gives \(n\ge6.6\), so \textbf{seven poles}. (The exact
 Butterworth expression \(|G|^2=1/[1+(f/f_c)^{2n}]\) gives \(n=6.64\), the same
-answer---the asymptotic estimate is reliable this far out.) Seven reactive elements is
-a lot, which is why real transmitter filters often add \emph{zeros} instead: an
+answer because the asymptotic estimate is reliable this far out.) Seven reactive
+elements is a lot, so real transmitter filters often add \emph{zeros}: an
 elliptic design places a transmission zero right at the harmonic and reaches
 \SI{40}{\decibel} with far fewer parts (\cref{ch:filters}).
 
@@ -180,9 +181,9 @@ X_{\text{series}}=Q\,R_{\text{lo}}=(5.4)(50)\approx\SI{269}{\ohm},
 \qquad
 X_{\text{shunt}}=\frac{R_{\text{hi}}}{Q}=\frac{1500}{5.4}\approx\SI{279}{\ohm}.
 \]
-The \(Q\) is not a free choice---the resistance ratio fixed it. And since a loaded
+The resistance ratio fixes \(Q\); it is not a free choice. A loaded
 \(Q\) of \(5.4\) means a fractional bandwidth of roughly \(1/Q\approx18\%\)
-(\cref{ch:rlc}), this match holds over a useful range but must be retuned across
+(\cref{ch:rlc}), so this match holds over a useful range but must be retuned across
 bands. A \(\pi\) or T network would let you choose \(Q\) independently of the
 resistance ratio, buying either wider bandwidth or sharper harmonic rejection as
 needed.

@@ -91,14 +91,14 @@ schematic seems to show.
 
 \section{Two Instrument Limits That Are Already Derived}
 \label{sec:instrumentlimits}
-Before the probe, two accuracy limits that need no new theory---one from
-\cref{ch:dsp}, one from arithmetic.
+Before the probe, consider two limits already derived: one from \cref{ch:dsp} and one
+from direct-count arithmetic.
 
 \subsection{Why a Digital Scope Lies About Fast Signals}
-A digital oscilloscope samples, so \cref{sec:samplingthm} governs it completely. Feed
-it a signal above half its sampling rate and the display does not break up or go
-blank---it shows a \emph{lower} frequency, at full amplitude, looking entirely
-respectable. The displayed frequency is the fold-back formula,
+In the direct-sampling model, a digital oscilloscope is governed by
+\cref{sec:samplingthm}. Feed it a signal above half its sampling rate and the display
+does not break up or go blank. It can show a \emph{lower} frequency that looks
+entirely respectable. The displayed frequency is the fold-back formula,
 \[
 f_{\text{displayed}}=\left|f-nf_s\right|,
 \]
@@ -110,36 +110,39 @@ with \(n\) the nearest integer multiple. On a scope sampling at
 \cref{sec:samplingthm} showed the two produce \emph{identical} sample sequences---so
 no amount of processing inside the instrument can tell you which you are looking at.
 
-That is why the highest frequency a digital scope can display accurately is set by its
-converter's sampling rate, and why the right response to a suspicious trace is to
-change the timebase: a real signal keeps its frequency, an alias moves.
+For this direct-sampling ambiguity, the converter's sampling rate sets the highest
+unambiguous frequency. A real scope's useful frequency range also depends on analog
+front-end bandwidth, sample-clock jitter, acquisition mode, and interpolation. Changing
+the timebase remains a useful alias check: a real signal keeps its frequency, while an
+alias moves.
 
 \subsection{Frequency Counter Accuracy: Two Terms}
-A counter gates its input for a known time and counts cycles, so exactly two things
-limit it. The count itself can be off by one, because the gate opens and closes at
-arbitrary points in the input cycle---an error of \(1/T_{\text{gate}}\) in hertz,
-\emph{independent of the frequency measured}. And the gate time comes from the
-instrument's own timebase oscillator, whose fractional error multiplies the reading:
+For an ordinary direct-count measurement, a counter gates its input for a known time
+and counts cycles. Two dominant terms are the count error and the reference-time error.
+The count itself can be off by one because the gate opens and closes at arbitrary
+points in the input cycle. That produces an error of \(1/T_{\text{gate}}\) in hertz,
+\emph{independent of the frequency measured}. The gate time comes from the instrument's
+own timebase oscillator, whose fractional error multiplies the reading:
 \[
 \Delta f\approx\underbrace{\frac{1}{T_{\text{gate}}}}_{\pm1\text{ count}}
 +\underbrace{f\times\frac{\text{ppm}}{10^6}}_{\text{timebase}} .
 \]
-Which dominates is not a close call at radio frequencies. With a \SI{1}{\second} gate
+Which dominates depends on the measurement. With a \SI{1}{\second} gate
 the \(\pm1\) count is \SI{1}{\hertz} whatever you measure, while a \SI{1}{ppm}
 timebase contributes \SI{146}{\hertz} at \SI{146}{\mega\hertz}---a factor of
-\(146\). \emph{The timebase is what limits a frequency counter}, which is why counters
-are specified by their reference oscillator and why a good one has an oven-stabilized
-or GPS-locked timebase. Lengthening the gate improves only the term that was already
-negligible.
+\(146\). Thus the timebase dominates this example, which is why counters are specified
+by their reference oscillator and why a good one has an oven-stabilized or GPS-locked
+timebase. Lengthening the gate improves only the count term. Trigger noise, input
+conditioning, reciprocal-counting architecture, and reference aging can matter in a
+real instrument; the formula is a two-dominant-term direct-count estimate.
 
 \begin{exambox}
-E4B asks which factor most affects a frequency counter's accuracy, and the answer is
-\emph{time base accuracy}---not the input attenuator, not the decade dividers, not the
-logic's temperature coefficient. The two-term formula above is why: every other error
-source either cancels or is swamped, and only the timebase error scales with the
-frequency being measured. E4A separately asks what limits the highest frequency a
-digital oscilloscope can display, and the answer is the \emph{sampling rate of its
-analog-to-digital converter}, for the fold-back reason above.
+Among E4B's listed choices, the factor that most affects a frequency counter's
+accuracy is \emph{time base accuracy}. In the direct-count model above, its error
+scales with the measured frequency. E4A separately asks what limits the highest
+frequency a digital oscilloscope can display; among its listed choices, the answer is
+the \emph{sampling rate of its analog-to-digital converter}, for the fold-back reason
+above.
 \end{exambox}
 
 \section{The Oscilloscope Probe: Pole-Zero Cancellation on the Bench}
@@ -190,7 +193,7 @@ H(s)=\frac{R_2(1+sR_1C_1)}{R_1(1+sR_2C_2)+R_2(1+sR_1C_1)}
 \qquad
 R_{\parallel}=\frac{R_1R_2}{R_1+R_2}.
 \]
-Read off the structure: a DC gain of \(R_2/(R_1+R_2)\), one \textbf{zero} at
+The structure is a DC gain of \(R_2/(R_1+R_2)\), one \textbf{zero} at
 \(s=-1/(R_1C_1)\), and one \textbf{pole} at \(s=-1/[R_{\parallel}(C_1+C_2)]\). A
 frequency-independent divider requires the zero and pole to \emph{cancel}, which
 happens when their time constants match:
@@ -354,19 +357,20 @@ at the antenna feed point when it matters.
 
 \subsection{The Vector Network Analyzer}
 \label{sec:vna}
-A vector network analyzer is the same idea with the phase kept and a second port
-added. It sends a known wave in, separates what returns from what continues, and
-reports the ratios---that is, it measures the \(S\)-parameters of
+A vector network analyzer preserves phase and uses one or more calibrated ports. It
+sends a known wave in, separates what returns from what continues, and reports the
+ratios; it measures the \(S\)-parameters of
 \cref{sec:sparams}. Two consequences are worth stating plainly, because between them
 they close the loop this book has been drawing.
 
-\emph{One port.} What the instrument reports is \(S_{11}\), and
-\cref{sec:sparams} showed that \(S_{11}=\Gamma\) identically. So a one-port sweep
-yields the reflection coefficient, and from it---by formulas already derived, not by
-separate instrument magic---the input impedance \(Z=Z_0(1+\Gamma)/(1-\Gamma)\), the
-return loss \(-20\log_{10}|\Gamma|\), and the SWR. That is why a VNA is correctly
-described as measuring input impedance \emph{and} output impedance \emph{and}
-reflection coefficient: they are one measured complex number, read three ways.
+\emph{One port.} At the calibrated port under test, the instrument reports
+\(S_{11}\), and \cref{sec:sparams} showed that \(S_{11}=\Gamma\) identically. A
+one-port sweep therefore yields that port's reflection coefficient and, by the
+formulas already derived, its impedance
+\(Z=Z_0(1+\Gamma)/(1-\Gamma)\), return loss \(-20\log_{10}|\Gamma|\), and SWR.
+These are one measured complex number read three ways. A single setup measures only
+the port connected to it. To characterize a device's input and output impedances,
+connect and calibrate at each respective port, then repeat the measurement.
 
 \emph{Two ports.} The instrument reports \(S_{21}\) as magnitude and phase against
 frequency. \Cref{sec:sparams} identified that as the transfer function of the network

@@ -1,9 +1,10 @@
 \chapter{Feedback: State-Space and Frequency-Domain Views}
 \label{ch:feedback}
-So far, \cref{ch:linsys,ch:splane} has treated systems \emph{open loop}: an input
-drives an output, but the output does not affect the input. Feedback measures the
-output, compares it with the reference, and uses the difference to drive the
-system. That operation moves poles rather than merely combining them.
+\Cref{ch:linsys,ch:splane} considers open-loop systems: an input drives an
+output, but the output does not affect the input. Feedback measures the output,
+compares it with the reference, and uses the difference to drive the system. That
+operation changes the closed-loop poles rather than merely combining transfer
+functions.
 
 Like the rest of Part~II, this chapter stays generic. In the time and state-space
 view, feedback changes differential-equation coefficients. In the frequency view,
@@ -11,8 +12,8 @@ it sets loop gain and stability margins. \Cref{ch:active} applies both views to
 op-amps, oscillators, and regulators.
 
 \section{Closing the Loop}
-Let the system we want to control have transfer function \(A(s)\)---in control
-language the \emph{plant}, in amplifier language the \emph{forward path} or
+Let the system we want to control have transfer function \(A(s)\): in control
+language, the \emph{plant}; in amplifier language, the \emph{forward path} or
 \emph{open-loop gain}. Measure the output \(y\), scale it by a constant \(\beta\),
 and subtract that from the reference input \(u\). The signal actually reaching the
 plant is the \textbf{error} \(e=u-\beta y\), so
@@ -29,17 +30,15 @@ A_{\mathrm{cl}}(s)=\frac{Y(s)}{U(s)}=\frac{A(s)}{1+A(s)\beta},
 L(s)=A(s)\,\beta .\;}
 \]
 \(A_{\mathrm{cl}}\) is the \textbf{closed-loop} transfer function and \(L\) is the
-\textbf{loop gain}---the gain accumulated once around the loop with it cut open.
+\textbf{loop gain}, the gain accumulated once around the loop with it cut open.
 This is the same result as the block-diagram rule \(G_{\mathrm{cl}}=G/(1+GH)\) in
 \cref{ch:linsys}, renamed for amplifier work: \(G\to A\) for the forward path and
 \(H\to\beta\) for the feedback path. The amplifier symbols are used from here on,
 because they are the ones the radio literature and \cref{ch:active} use.
 
-Because \(\beta\) here is a constant---the error is multiplied by a fixed number
-and nothing else---this is \textbf{proportional feedback}, the simplest and most
-common case. (Control engineers add integral and derivative terms to make a PID
-controller; everything in this chapter is the ``P'' alone.) Every result below is a
-statement about proportional feedback.
+Because \(\beta\) is a constant, this is \textbf{proportional feedback}: the
+feedback path scales the measured output without adding dynamics. Every result in
+this chapter concerns that P-only model.
 
 \begin{controlsbox}
 \textbf{Where the poles come from.} The closed-loop poles are the roots of
@@ -50,8 +49,8 @@ roots as \(\beta\) sweeps.
 \end{controlsbox}
 
 \section{The Large-Loop-Gain Limit}
-The first payoff needs no algebra beyond the boxed formula. When the loop gain is
-large, \(|L|=|A\beta|\gg1\), the \(1\) in the denominator is negligible:
+When the loop gain magnitude is large at the frequency of interest,
+\(|L|=|A\beta|\gg1\), the \(1\) in the denominator is negligible:
 \[
 A_{\mathrm{cl}}=\frac{A}{1+A\beta}\;\approx\;\frac{A}{A\beta}=\frac{1}{\beta}.
 \]
@@ -71,8 +70,9 @@ produces only
 so the loop divides the plant's imperfections by \(1+L\).
 
 \section{Proportional Feedback on a First-Order System}
-Take the first-order plant of \cref{ch:linsys}, written with DC gain \(A_0\) and
-open-loop pole at \(-\omega_a\):
+Take the first-order plant of \cref{ch:linsys}. Its \textbf{DC gain} is its
+zero-frequency gain, \(A(0)=A_0\), and its open-loop pole is at
+\(-\omega_a\):
 \[
 A(s)=\frac{A_0}{1+s/\omega_a} .
 \]
@@ -84,46 +84,48 @@ A_{\mathrm{cl}}(s)
 =\underbrace{\frac{A_0}{1+A_0\beta}}_{\text{DC gain}}\cdot
 \frac{1}{1+\dfrac{s}{\omega_a(1+A_0\beta)}} .
 \]
-Read off the two effects. The DC gain is \emph{divided} by \((1+A_0\beta)\), and
-the pole moves from \(-\omega_a\) to
+The formula shows two linked effects. First, the closed-loop DC gain is
+\(A_{\mathrm{cl}}(0)=A_0/(1+A_0\beta)\). Second, the pole moves from
+\(-\omega_a\) to
 \[
 s_{\mathrm{cl}}=-\omega_a\,(1+A_0\beta),
 \]
 i.e.\ \emph{further left}, by the same factor. Left means faster: the closed-loop
 time constant shrinks to \(\tau_{\mathrm{cl}}=\tau/(1+A_0\beta)\) and the bandwidth
-widens by \((1+A_0\beta)\). Gain traded for speed, in one clean exchange---the
-\emph{gain--bandwidth trade}, whose product
+widens by \((1+A_0\beta)\). Feedback trades gain for speed. The
+\emph{gain--bandwidth trade} has product
 \[
 \bigl(\text{DC gain}\bigr)\times\bigl(\text{bandwidth}\bigr)
 =\frac{A_0}{1+A_0\beta}\cdot\omega_a(1+A_0\beta)=A_0\,\omega_a
 \]
-is invariant. \Cref{fig:fb-first-order} shows the pole sliding left as \(\beta\)
-increases.
+is invariant. In \cref{fig:fb-first-order}, the left panel traces the pole moving
+left as \(\beta\) increases; the right panel shows the corresponding faster,
+lower-amplitude step responses.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.78\textwidth]{feedback_first_order}
-\caption{Proportional feedback on a first-order system. \emph{Left:} the single
+\caption{Proportional feedback on a first-order system with \(A_0=10\),
+\(\omega_a=1\), and \(\beta=0,0.1,0.3,0.9\). \emph{Left:} the single
 closed-loop pole \(-\omega_a(1+A_0\beta)\) slides left along the real axis as
 \(\beta\) grows---a one-branch root locus that can never leave the real axis.
-\emph{Right:} the step response gets faster and smaller, since gain is traded for
-bandwidth.}
+\emph{Right:} the step response gets faster and smaller because both its DC gain
+and time constant decrease by the factor \(1+A_0\beta\).}
 \label{fig:fb-first-order}
 \end{figure}
 
 \begin{physicalbox}
 \textbf{Does proportional feedback make a first-order system second order?}
 \emph{No.} The closed-loop denominator \(1+s/\omega_a+A_0\beta\) is still
-first-degree in \(s\), so there is still exactly one pole and one state. Feedback
-around a single pole can only \emph{slide} that pole along the real axis; it can
-never split it into a complex pair, never cause overshoot, and---no matter how
-large \(\beta\) becomes---never push it into the right half-plane. A first-order
-system under proportional feedback is unconditionally stable.
+first-degree in \(s\), so there is still exactly one pole and one state. For this
+ideal first-order plant with positive constant \(\beta\), feedback can only
+\emph{slide} that pole left along the real axis. It cannot split the pole into a
+complex pair or cause overshoot.
 
-Getting oscillation requires a second energy store somewhere in the loop: either a
-second-order plant (next section) or extra dynamics in the feedback path or in the
-measurement. This is why real amplifiers, which always have parasitic poles, can
-ring and oscillate while the ideal single-pole model cannot.
+A proportional--integral (PI) controller is different: its integral term adds a
+dynamic state to the feedback path. Oscillation can then arise from the added
+dynamics, a higher-order plant, a measurement path, or parasitic poles. Those
+effects lie outside the constant-\(\beta\), single-pole model used here.
 \end{physicalbox}
 
 \section{Proportional Feedback on a Second-Order System}
@@ -136,6 +138,13 @@ the closed-loop denominator \(1+A(s)\beta=0\) becomes
 \[
 s^2+2\zeta\omega_0 s+\omega_0^2\bigl(1+A_0\beta\bigr)=0 .
 \]
+The corresponding closed-loop transfer function is
+\[
+A_{\mathrm{cl}}(s)=
+\frac{A_0\omega_0^2}
+{s^2+2\zeta\omega_0s+\omega_0^2(1+A_0\beta)},
+\]
+so its DC gain is again \(A_{\mathrm{cl}}(0)=A_0/(1+A_0\beta)\).
 Compare this with the standard form \(s^2+2\zeta_{\mathrm{cl}}\omega_{\mathrm{cl}}s
 +\omega_{\mathrm{cl}}^2\) and the identifications fall out:
 \[
@@ -163,10 +172,11 @@ real part is pinned at \(-\zeta\omega_0\) while the imaginary part grows.
 \label{fig:fb-second-order}
 \end{figure}
 
-Notice that for this ideal two-pole plant the real part stays at
-\(-\zeta\omega_0\), so the poles approach the axis but never cross it: the response
-rings ever harder yet remains stable. Genuine instability needs \emph{three} or
-more poles (or a delay), which is where the frequency view earns its place.
+Notice that for this ideal, stable two-pole plant under ordinary negative feedback,
+the real part stays at \(-\zeta\omega_0\), so the poles approach the axis but never
+cross it: the response rings ever harder yet remains stable. Adding a third pole,
+feedback-path dynamics, or delay can change that conclusion, which is where the
+frequency view earns its place.
 \Cref{sec:threepoles} proves that counting claim once the next chapter has the
 tool for it---the proof is pure phase accounting, and it also produces the exact
 gain at which a three-pole loop breaks into oscillation.
@@ -195,42 +205,28 @@ Two numbers quantify the distance from that condition:
 It answers: how much more gain could I add before oscillating?
 \item[Phase margin] at the frequency where \(|L|=1\) (\(\SI{0}{\decibel}\), the
 \emph{gain crossover}), how far the phase is \emph{above} \(-180^\circ\). It
-answers: how much extra lag could the loop tolerate?
+answers: how much extra phase lag---an additional negative phase shift---could the
+loop tolerate?
 \end{description}
-Positive margins mean the closed-loop poles are in the left half-plane. Small
-margins mean poles near the \(\jj\omega\) axis: peaked frequency response,
+For the stable open-loop, negative-feedback setting modeled here, positive margins
+mean the closed-loop poles are in the left half-plane. Small margins mean poles near
+the \(\jj\omega\) axis: peaked frequency response,
 overshoot, long ringing. Zero margin puts poles on the axis---sustained
 oscillation. \Cref{fig:fb-margins} shows both margins on one loop-gain Bode plot.
 
 \subsection{One Point, One Plane: the Nyquist View}
 \label{sec:nyquist}
-Defining the two margins on two separate Bode axes slightly obscures what they
-are. Both measure a distance to the \emph{same} place---the point \(-1\)---so it
-is worth seeing them in the one plane where that point lives.
+The Bode plot separates the loop gain \(L(\jj\omega)\) into magnitude and phase.
+A \textbf{Nyquist plot} instead traces that same complex loop gain as frequency
+sweeps. In \cref{fig:nyquist}, the curve starts near \(L=K\) at low frequency and
+approaches the origin at high frequency. The critical point is \(-1\): reaching it
+means \(|L|=1\) and \(\angle L=-180^\circ\) at the same frequency.
 
-Plot \(L(\jj\omega)\) itself on the complex plane, sweeping \(\omega\) and marking
-where the curve goes. This is a \textbf{Nyquist plot}: the same complex numbers
-the Bode plot splits into magnitude and phase, kept together as points instead.
-The stability condition needs no translation, because it was always a statement
-about a point:
-\[
-L(\jj\omega)=-1
-\qquad\Longleftrightarrow\qquad
-\text{the curve passes through } -1 .
-\]
-Now read the margins off geometrically (\cref{fig:nyquist}). The unit circle is
-where \(|L|=1\), and the negative real axis is where \(\angle L=-180^\circ\):
-\begin{description}
-\item[Gain margin] where the curve crosses the negative real axis, how far short
-of \(-1\) it stops. If it crosses at \(-0.5\), the gain can double before
-reaching \(-1\)---a gain margin of \(2\), or \SI{6}{\decibel}.
-\item[Phase margin] where the curve crosses the unit circle, the angle still
-remaining to the negative real axis.
-\end{description}
-So the two margins are the radial and angular components of one clearance, and a
-loop is comfortable exactly when its curve gives \(-1\) a wide berth. That is
-also why neither margin alone is sufficient: a curve can pass close to \(-1\)
-diagonally while both margins, measured along their own axes, look acceptable.
+This one picture shows why gain and phase margins are complementary. The gain
+margin is the radial clearance to \(-1\) along the negative real axis; the phase
+margin is the remaining angle from the unit-circle crossing to that axis. The
+example uses the same three-pole loop as \cref{fig:fb-margins}, so it connects the
+two Bode margins to a single geometric clearance.
 
 \begin{figure}[htbp]
 \centering
@@ -247,12 +243,9 @@ through \(-1\) at \(K=8\).}
 \label{fig:nyquist}
 \end{figure}
 
-Nothing beyond this is needed here. (The full Nyquist \emph{criterion} counts how
-many times the curve encircles \(-1\) and relates that to right-half-plane poles,
-which matters for loops that are open-loop unstable---a case no circuit in this
-book presents.) Its value is that \(L=-1\) becomes a place rather than a
-coincidence of two numbers, and \(L=-1\) is the condition behind every stability
-result in \cref{ch:highorder,ch:active}.
+This chapter needs only that geometric interpretation. \Cref{ch:highorder}
+accounts for the phase that can bring a higher-order loop to the critical point,
+and \cref{ch:active} applies the same condition to active circuits.
 
 \begin{mistakebox}
 \textbf{Two unrelated things are named after Nyquist.} The plot above, and the
@@ -269,9 +262,10 @@ about feedback stability and has nothing to do with sampling rates.
 \centering
 \includegraphics[width=0.86\textwidth]{feedback_margins}
 \caption{Gain and phase margin on a loop-gain Bode plot for a three-pole loop.
-The gain crossover (\(|L|=\SI{0}{\decibel}\)) fixes the phase margin; the phase
-crossover (\(\angle L=-180^\circ\)) fixes the gain margin. Raising the loop gain
-slides the magnitude curve up, shrinking both margins toward zero---the onset of
+In the upper magnitude panel, the gain crossover (\(|L|=\SI{0}{\decibel}\)) fixes
+the phase margin. In the lower phase panel, the phase crossover
+(\(\angle L=-180^\circ\)) fixes the gain margin. Raising the loop gain slides the
+magnitude curve up and shrinks both margins toward zero---the onset of
 oscillation.}
 \label{fig:fb-margins}
 \end{figure}
@@ -286,8 +280,9 @@ A design usually uses both: the locus to place, the margins to verify.
 \end{controlsbox}
 
 \section{Why This Matters in Radio}
-Nothing in this chapter mentioned a circuit, and that is deliberate---the results
-hold for any linear system. But every one of them is about to be used:
+Nothing in this chapter required a particular circuit. The results apply to the
+linear time-invariant models considered here, with the stated feedback-path and
+stability assumptions. Part~III now uses them in circuits:
 \begin{itemize}
 \item The \textbf{large-loop-gain limit} \(A_{\mathrm{cl}}\to1/\beta\) is why an
 op-amp's gain is set by a pair of resistors instead of by the amplifier
@@ -300,8 +295,8 @@ condition is exactly \(L=-1\).
 \item \textbf{Small margins} explain why an active filter that behaves at audio
 frequencies misbehaves at RF, and why a voltage regulator can ring.
 \end{itemize}
-Feedback is the thread tying op-amps, active filters, oscillators, and regulators
-together, and \cref{ch:active} pulls it.
+\Cref{ch:active} uses these feedback ideas for op-amps, active filters,
+oscillators, and regulators.
 
 \begin{exambox}
 The exam does not ask you to compute a margin. It asks which oscillator is most

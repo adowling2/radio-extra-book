@@ -2,9 +2,9 @@
 \label{ch:rlcpar}
 The parallel RLC circuit is the \emph{dual} of the series circuit of
 \cref{ch:rlc}. It has the same two energy stores, second-order dynamics, and
-\(\omega_0\), but exchanges voltage for current and impedance for admittance.
-The important differences follow: it has high impedance at resonance, rather than
-low impedance, and its quality factor has a reciprocal form.
+\(\omega_0\), but exchanges voltage for current and impedance for admittance. At
+resonance it has high, rather than low, impedance, and its quality factor has a
+reciprocal form.
 
 In radio, the parallel form is the \textbf{tank circuit}: the resonator in an
 oscillator, the tuned load of a Class C amplifier, or a one-frequency trap. Use a
@@ -15,8 +15,8 @@ low impedance elsewhere.
 Drive \(R\), \(L\), and \(C\) in parallel from a current source
 (\cref{fig:rlcpar-schematic}). The dual of ``one loop, one current'' is ``one node,
 one voltage'': all three elements share the node voltage \(v\), which we take as the
-output, \(v_o=v\). The two states are still one per store---the capacitor voltage
-(here the same as \(v\)) and the inductor current \(i_L\).
+output, \(v_o=v\). The capacitor voltage (here the same as \(v\)) and the inductor
+current \(i_L\) are the two states.
 
 \begin{figure}[htbp]
 \centering
@@ -97,10 +97,10 @@ Work in admittances, which is what parallel networks add (\cref{ch:ac}):
 Y(\jj\omega)=\frac{1}{R}+\jj\omega C+\frac{1}{\jj\omega L}
 =\frac{1}{R}+\jj\left(\omega C-\frac{1}{\omega L}\right).
 \]
-At \(\omega=\omega_0=1/\sqrt{LC}\) the two susceptances cancel exactly---the
-capacitor's \(+\omega C\) against the inductor's \(-1/(\omega L)\)---leaving
-\(Y=1/R\), purely real and \emph{minimum}. Since \(Z=1/Y\), the impedance is
-therefore purely resistive and \emph{maximum}:
+At \(\omega=\omega_0=1/\sqrt{LC}\), the capacitor's \(+\omega C\) and the
+inductor's \(-1/(\omega L)\) susceptances cancel. The remaining \(Y=1/R\) is purely
+real and \emph{minimum}. Since \(Z=1/Y\), the impedance is purely resistive and
+\emph{maximum}:
 \[
 Z(\jj\omega_0)=R .
 \]
@@ -128,7 +128,7 @@ Quality factor & \(Q_s=\omega_0 L/R\) & \(Q_p=R/(\omega_0 L)\) \\
 \textbf{Why the circulating current is large.} At resonance the source only has to
 replace what \(R\) dissipates, so the current it supplies is small. But \(L\) and
 \(C\) are meanwhile trading a large current back and forth between themselves---
-\(Q\) times the source current---because each one's reactive current is cancelled by
+\(Q\) times the source current, because each one's reactive current is cancelled by
 the other's as far as the source can see. The series circuit does the dual thing
 with voltage: a modest source voltage while \(v_L\) and \(v_C\) individually swing
 \(Q\) times larger, equal and opposite.
@@ -146,12 +146,12 @@ current, so a \emph{larger} \(R\) dissipates more per cycle and lowers \(Q\). In
 the parallel circuit the loss resistance is a \emph{shunt across} the resonator, so
 a larger \(R\) bleeds off \emph{less} current and \emph{raises} \(Q\). A perfect
 series resonator wants \(R\to0\); a perfect parallel resonator wants
-\(R\to\infty\). Both statements say the same physical thing---minimize the energy
-lost per cycle---which is the definition \(Q\) actually encodes:
+\(R\to\infty\). Both statements express the same physical requirement: minimize the
+energy lost per cycle. That is the definition \(Q\) encodes:
 \[
 Q=2\pi\,\frac{\text{energy stored}}{\text{energy lost per cycle}} .
 \]
-Read that way there is only one \(Q\), and the two formulas are what it becomes in
+Interpreted that way, there is only one \(Q\), and the two formulas are what it becomes in
 two topologies. The next section makes that literal: there is a transformation
 carrying either picture into the other, and \(Q\) is exactly what it leaves alone.
 
@@ -188,21 +188,20 @@ The bandwidth statement, however, is topology independent:
 \[
 BW=\frac{f_0}{Q},
 \]
-because it is a statement about pole geometry---the distance from the
-\(\jj\omega\) axis---not about wiring (\cref{ch:splane}). Duality also carries over
+because it is a statement about pole geometry, specifically the distance from the
+\(\jj\omega\) axis, rather than wiring (\cref{ch:splane}). Duality also carries over
 the \emph{exactness} that \cref{sec:halfpower} established. Repeat that derivation on
 the admittance,
 \(Y=G\left[1+\jj Q_p(\omega/\omega_0-\omega_0/\omega)\right]\) with \(G=1/R\), and
 every step goes through with \(Y\) for \(Z\): a current source drives the tank, the
-voltage across it is the response, half power is \(|Y|^2=2G^2\), and the same two
-conclusions follow---the width is exactly \(\omega_0/Q_p\) and the band edges satisfy
-\(f_0=\sqrt{f_1f_2}\).
+voltage across it is the response, and half power is \(|Y|^2=2G^2\). Thus the width
+is exactly \(\omega_0/Q_p\), and the band edges satisfy \(f_0=\sqrt{f_1f_2}\).
 
 \section{Series and Parallel Are One Impedance}
 \label{sec:seriesparallel}
-Nothing forces a branch to be drawn one way. At any single frequency a series
-\(R_s+\jj X_s\) and a parallel \(R_p\parallel\jj X_p\) are the same two-terminal
-impedance provided their admittances agree, so just invert and match parts:
+At any single frequency, a series \(R_s+\jj X_s\) and a parallel
+\(R_p\parallel\jj X_p\) represent the same two-terminal impedance when their
+admittances agree. Invert and match parts:
 \[
 Y=\frac{1}{R_s+\jj X_s}=\frac{R_s-\jj X_s}{R_s^2+X_s^2}
 \;\equiv\;\frac{1}{R_p}-\frac{\jj}{X_p} .
@@ -320,8 +319,9 @@ Small series \(R\) and large parallel \(R\) both mean a good resonator.
 \cref{fig:rlc-phasor} and the duality becomes visual rather than verbal: the series
 circuit's \(|Z|\) \emph{dips} to \(R\) at \(f_0\) while this one \emph{peaks} at
 \(R\); the series impedance locus is a straight vertical line while this one is a
-circle through the origin. Both are the same second-order pole pair, read through
-reciprocal coordinates.
+circle through the origin. Both have the same undamped natural frequency and
+second-order form, but their different \(Q\) values give different damping and pole
+pairs.
 
 \begin{figure}[htbp]
 \centering

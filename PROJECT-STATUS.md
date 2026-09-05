@@ -1,7 +1,24 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-09-02 (Round 6, uncommitted).
+Last updated: 2026-09-05 (Round 7 finalized and compiled).
+
+## Round 7 (revision handoff)
+
+The annotated September 2026 PDF has been transcribed into
+`revision-notes-round7.md`, reconciled against the manuscript, and used to produce
+an editing-style record, author-style evidence/guide, figure audit, technical-claim
+audits, and chapter-range generalization logs in `notes/`. High-confidence markup
+changes are applied through the full book. The Preface scope choices and Chapter 6
+filter/delay split and Chapter 8 divider redesign are resolved. All material
+questions in `notes/round7-open-questions.md` are closed.
+
+The current built book is **229 pages, 26 chapters, 36 generated figures, 88 section
+labels, and 65 glossary entries**. `./scripts/check.sh` and `git diff --check` pass.
+Ten figure PDFs were regenerated with redundant line/marker encodings for readable
+greyscale reproduction. The remaining figure work is deliberately bounded to a
+future structural simplification of the labelled Smith chart and optional P3 polish;
+there are no release-blocking figure defects in the Round 7 audit.
 
 ## Round 6 (in progress)
 
@@ -65,7 +82,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **26 chapters + 3 appendices, five parts, 226 pages, 36 figures.**
+- **26 chapters + 3 appendices, five parts, 229 pages, 36 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 **Pool sources are now the official NCVEC releases** (`references/`), and the
@@ -73,10 +90,8 @@ HamExam-derived extracts were verified against them: 599 Extra and 423 General
 questions, **identical ID sets and zero answer-letter mismatches**. The NCVEC PDFs also
 carry the eight exam diagrams, which the extracts cannot reproduce.
 
-- **⚠️ Round 5 is committed but NOT pushed** — `main` is 22 commits ahead of
-  `origin/main` as of the end of the session. Everything is verified and the tree is
-  clean; it just needs `git push`. (Check this yourself rather than trusting the line:
-  `git status -sb`.)
+- Git synchronization is intentionally not recorded here because it changes outside
+  a revision session; use `git status -sb` to inspect it when preparing a commit.
 - Build with `make book`; regenerate figures with `make figures` (or run individual
   scripts in `figures/src/`); `make all` also builds the standalone study-guide card.
 
@@ -87,32 +102,20 @@ carry the eight exam diagrams, which the extracts cannot reproduce.
 | **I — Exam-Ready Reference** | 1 Study Guide |
 | **II — Mathematical and Control-Theory Foundations** | 2 Complex Numbers & Phasors · 3 Modeling LTI Systems · 4 Frequency Response, Bode, s-Plane · 5 Feedback · 6 Higher-Order Systems |
 | **III — Circuit Models** | 7 Circuit Modeling · 8 Series & Parallel Networks · 9 AC Steady State · 10 One Circuit, Four Views · 11 RC · 12 RL · 13 Series RLC · 14 Parallel RLC |
-| **IV — Applying the Circuit Models** | 15 Filters, Matching, Transformers · 16 Transmission Lines · 17 Active Circuits · 18 Sampling & DSP · 19 Noise, Sensitivity & Dynamic Range · 20 Measurement |
-| **V — Practice and Study** | 21 Worked Examples & Exam Map · 22 Anchored Practice · 23 Cross-Chapter Problems |
+| **IV — Applying the Circuit Models** | 15 Filters, Matching, Transformers · 16 Transmission Lines · 17 Active Circuits · 18 Sampling & DSP · 19 Noise, Sensitivity & Dynamic Range · 20 Measurement · 21 Antenna Patterns, Polarization, and Practical Design · 22 Signals, Modulation, and Receivers · 23 Devices, Bias, and Regulation |
+| **V — Practice and Study** | 24 Worked Examples & Exam Map · 25 Anchored Practice · 26 Cross-Chapter Problems |
 | **Appendices** | A Formula Index · B Units & Prefixes · C Glossary |
 
 Labels are stable across renumbering — **always `\cref`, never hard-code a number.**
 Chapter labels: `ch:studyguide` `ch:complex` `ch:linsys` `ch:splane` `ch:feedback`
 `ch:highorder` `ch:foundations` `ch:resistive` `ch:ac` `ch:fourviews` `ch:rc` `ch:rl`
-`ch:rlc` `ch:rlcpar` `ch:filters` `ch:lines` `ch:active` `ch:measurement`
-`ch:dsp` `ch:noise` `ch:exammap` `ch:practice` `ch:crossproblems` `app:formulas` `app:units`
-`app:glossary`. (The dead `ch:bode` alias was removed in Round 4.)
+`ch:rlc` `ch:rlcpar` `ch:filters` `ch:lines` `ch:active` `ch:dsp` `ch:noise`
+`ch:measurement` `ch:antennapatterns` `ch:signals` `ch:devices` `ch:exammap`
+`ch:practice` `ch:crossproblems` `app:formulas` `app:units` `app:glossary`.
+(The dead `ch:bode` alias was removed in Round 4.)
 
-Section labels, all 77 of them: `sec:complexrefresher` `sec:rms` `sec:secondorder`
-`sec:decibels` `sec:asymptotes` `sec:nyquist` `sec:factoring` `sec:cascadeadd`
-`sec:threepoles` `sec:puredelay` `sec:poleplacement` `sec:groupdelay`
-`sec:infinitepoles` `sec:selfresonance` `sec:rc-freq` `sec:pep` `sec:commonmode`
-`sec:lc-lowpass` `sec:filterspecs` `sec:lineloss` `sec:stubs` `sec:antennalength`
-`sec:classes` `sec:beta-resistors` `sec:gbw` `sec:neutralization` `sec:mixers`
-`sec:probe` `sec:groundloops` `sec:instpower` `sec:fourier` `sec:parseval`
-`sec:samplingismult` `sec:samplingthm` `sec:quantnoise` `sec:decimation` `sec:firiir`
-`sec:noisefloor` `sec:noisefigure` `sec:friis` `sec:powerseries` `sec:compression`
-`sec:dynamicrange` `sec:phasenoise` `sec:noisebw` `sec:sunits` `sec:pll`
-`sec:halfpower` `sec:polegeometry` `sec:seriesparallel` `sec:lnetwork` `sec:conductionangle` `sec:switching` `sec:pushpull` `sec:sparams` `sec:vna` `sec:feedbackz` `sec:antennaeff` `sec:feedpoint` `sec:quarterwave` `sec:arrayfactor` `sec:crystal` `sec:antennamatches` `sec:qlqu` `sec:ringdown` `sec:reflectionsection` `sec:groundimage`
-`sec:foldeddipole` `sec:travelingwave` `sec:wilkinson`
-`sec:thermalrunaway` `sec:hysteresis` `sec:rthc`
-`sec:instrumentlimits` `sec:diploading` `sec:onecircuit`
-`sec:oneantenna`.
+The current section-label count is 88; use the checker or `main.aux` for the live
+inventory rather than copying it into this status file.
 
 ### Conventions in force
 

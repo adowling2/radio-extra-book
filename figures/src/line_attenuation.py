@@ -56,13 +56,13 @@ ax.set_ylim(0.02, 200)
 ax.legend(loc="upper left", fontsize=7.5)
 
 # ---- right: two cables, with the book's table points marked ----
-for kc, kd, name, col in ((kc_58, kd_58, "RG-58", GUIDE_BLUE),
-                          (kc_213, kd_213, "RG-213", GUIDE_GREEN)):
-    ax2.loglog(f, kc * np.sqrt(f) + kd * f, color=col, lw=2.0, label=name)
+for kc, kd, name, col, ls, marker in ((kc_58, kd_58, "RG-58", GUIDE_BLUE, "-", "o"),
+                                      (kc_213, kd_213, "RG-213", GUIDE_GREEN, "--", "s")):
+    ax2.loglog(f, kc * np.sqrt(f) + kd * f, color=col, ls=ls, lw=2.0, label=name)
 
-for fx, ly, col in ((14, 1.5, GUIDE_BLUE), (144, 5.0, GUIDE_BLUE),
-                    (14, 0.6, GUIDE_GREEN), (144, 2.0, GUIDE_GREEN)):
-    ax2.plot(fx, ly, "o", color=col, ms=4.5, zorder=6)
+for fx, ly, col, marker in ((14, 1.5, GUIDE_BLUE, "o"), (144, 5.0, GUIDE_BLUE, "o"),
+                            (14, 0.6, GUIDE_GREEN, "s"), (144, 2.0, GUIDE_GREEN, "s")):
+    ax2.plot(fx, ly, marker, color=col, ms=4.5, zorder=6)
 
 # the sqrt(f) check the worked example makes
 ax2.plot([14, 144], [0.6, 0.6], color=GUIDE_LINE, lw=0.7, ls="-")

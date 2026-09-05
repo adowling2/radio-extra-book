@@ -12,7 +12,7 @@ mechanical suspension, chemical reactor, or electrical filter. Part~III applies
 it to radio circuits.
 
 \section{Four Equivalent Views of a Linear System}
-An LTI system can be written four equivalent ways, and moving
+An LTI system has four equivalent representations, and moving
 between them is the central skill of this book:
 \begin{enumerate}
 \item a \textbf{differential equation} relating output \(y(t)\) to input \(u(t)\);
@@ -22,16 +22,16 @@ between them is the central skill of this book:
 \item a \textbf{frequency response} \(G(\jj\omega)\), the transfer function on the
 imaginary axis.
 \end{enumerate}
-This chapter builds the first three and the time response; \cref{ch:splane} takes
-up the fourth.
+This chapter explains the first three views and their time response;
+\cref{ch:splane} considers the fourth.
 
 \begin{physicalbox}
-\textbf{Why four?} A model is a choice of coordinates, not a claim about reality.
-The differential equation is closest to the physics, the state-space model exposes
-the internal variables and generalizes to many inputs and outputs, the transfer
-function makes cascading and feedback into algebra, and the frequency response is
-what an instrument actually measures. Fluency is being able to start from whichever
-one you are handed.
+\textbf{Each view answers a different question.} A model is a choice of coordinates,
+not a claim about reality. The differential equation is closest to the physics. The
+state-space model exposes
+internal variables and generalizes to many inputs and outputs. The transfer
+function turns cascading and feedback into algebra. The frequency response is what
+an instrument actually measures.
 \end{physicalbox}
 
 \begin{controlsbox}
@@ -74,14 +74,13 @@ transients and stability, not just steady sinusoids.
 
 Applying the derivative rule to a linear ordinary differential equation (ODE)
 turns calculus into algebra: replace every \(\dd/\dd t\) by \(s\), then solve for
-\(Y/U\). The two sections that follow do exactly this, once for a first-order
-system and once for a second-order one. It is also the route the modeling chapters
-of Part~III use, once they have written a circuit's differential equation from the
-fundamentals of physics.
+\(Y/U\). We use that procedure for first- and second-order systems next. Part~III
+uses the same procedure after deriving a circuit's differential equation from its
+component laws and conservation equations.
 
-A transfer function is drawn as a block with an input and an output arrow, and
-larger systems are built by wiring blocks together. Three rules cover almost
-everything, and \cref{fig:blocks} shows all three:
+A transfer function is drawn as a block with an input and an output arrow. Larger
+systems are built by wiring those blocks together. The three rules in
+\cref{fig:blocks} describe the combinations used throughout the book:
 \begin{description}
 \item[(a) Cascade --- multiply] blocks in series multiply, \(G=G_1G_2\), because
 the first block's output is the second block's input.
@@ -166,10 +165,10 @@ frequency. So
 \[
 \boxed{\;y(t)=\sum_{n}G(\jj n\omega_0)\,c_n\,\ee^{\jj n\omega_0 t}\;}
 \]
-\emph{The transfer function sampled at the harmonics is the answer.} Knowing
-\(G(\jj\omega)\) at every frequency determines the response to any signal because
-the signal is a sum of frequencies and a linear system treats each independently.
-That is why a Bode plot matters.
+Thus, evaluate the transfer function at each harmonic, multiply that harmonic by
+the resulting complex gain, and add the outputs. Knowing \(G(\jj\omega)\) at every
+frequency determines the response because a linear system treats each frequency
+independently. That is why a Bode plot matters.
 
 \begin{physicalbox}
 \textbf{Why a square wave has only odd harmonics.} This is usually asserted; it
@@ -260,7 +259,7 @@ part, so it can never overshoot or oscillate---and therefore never \emph{rings},
 ringing being the decaying oscillation of an underdamped second-order system
 (\cref{sec:secondorder}). Its distance from the origin, \(1/\tau\), is the decay
 rate in time and (as \cref{ch:splane} shows) the corner frequency in the frequency
-domain---one number, two readings.
+domain.
 \end{physicalbox}
 
 \section{Worked Example: a First-Order System}
@@ -289,9 +288,8 @@ energy against energy lost per cycle,
 Q=2\pi\,\frac{\text{energy stored}}{\text{energy lost per cycle}},
 \]
 which is why a high-\(Q\) system rings for many cycles before its oscillation dies
-away. We will use \(\zeta\) when thinking
-about damping and \(Q\) when thinking about sharpness, but they carry identical
-content.
+away. We use \(\zeta\) when describing damping and \(Q\) when describing
+sharpness; for this standard second-order form, they represent the same behavior.
 
 Applying the Laplace transform as before, with \(\dd^2/\dd t^2\to s^2\),
 \[
@@ -318,7 +316,7 @@ s=-\zeta\omega_0\pm\jj\,\omega_0\sqrt{1-\zeta^2}
 \]
 where \(\omega_d=\omega_0\sqrt{1-\zeta^2}\) is the \textbf{damped natural
 frequency}. \Cref{ch:splane} plots where these poles sit and what that does to
-the frequency response; here we read them in the time domain.
+the frequency response; here we focus on their time-domain behavior.
 
 \begin{physicalbox}
 \textbf{Second-order systems are everywhere.} Two coupled energy stores that

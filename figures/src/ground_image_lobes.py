@@ -17,11 +17,11 @@ fig, (axh, axv) = plt.subplots(1, 2, figsize=(6.6, 2.95),
                                gridspec_kw={"width_ratios": [1.35, 1]})
 
 # ---------------- horizontal antenna: image inverted ----------------
-heights = [(0.25, GUIDE_RED), (0.5, GUIDE_AMBER), (1.0, GUIDE_BLUE)]
-for h, col in heights:
+heights = [(0.25, GUIDE_RED, "-"), (0.5, GUIDE_AMBER, "--"), (1.0, GUIDE_BLUE, ":")]
+for h, col, ls in heights:
     F = 2*np.abs(np.sin(2*np.pi*h*np.sin(psi)))
     lobe = np.degrees(np.arcsin(min(1.0, 1/(4*h))))
-    axh.plot(psi, F/2, color=col, lw=1.5,
+    axh.plot(psi, F/2, color=col, ls=ls, lw=1.5,
              label=rf"$h={h:g}\lambda$   lobe at ${lobe:.0f}^\circ$")
 axh.set_thetamin(0)
 axh.set_thetamax(90)
@@ -40,9 +40,9 @@ axh.set_title("Horizontal: image inverted\n" r"$|F|=2|\sin(\beta h\sin\psi)|$",
 # than annotated here, where any label would sit on top of the h = 1 lambda lobe.
 
 # ---------------- vertical antenna: image in phase ----------------
-for h, col in [(0.25, GUIDE_RED), (0.5, GUIDE_AMBER)]:
+for h, col, ls in [(0.25, GUIDE_RED, "-"), (0.5, GUIDE_AMBER, "--")]:
     F = 2*np.abs(np.cos(2*np.pi*h*np.sin(psi)))
-    axv.plot(psi, F/2, color=col, lw=1.5, label=rf"$h={h:g}\lambda$")
+    axv.plot(psi, F/2, color=col, ls=ls, lw=1.5, label=rf"$h={h:g}\lambda$")
 axv.set_thetamin(0)
 axv.set_thetamax(90)
 axv.set_theta_zero_location("E")

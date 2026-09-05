@@ -12,16 +12,16 @@ wc = 1.0        # normalized cutoff
 w = np.logspace(-1, 1, 1000)
 
 designs = [
-    ("Butterworth (maximally flat)", signal.butter(N, wc, analog=True), GUIDE_BLUE),
-    ("Chebyshev I (1 dB ripple)",    signal.cheby1(N, 1, wc, analog=True), GUIDE_AMBER),
-    ("Elliptic (1 dB / 40 dB)",      signal.ellip(N, 1, 40, wc, analog=True), GUIDE_RED),
-    ("Bessel (linear phase)",        signal.bessel(N, wc, analog=True, norm='mag'), GUIDE_GREEN),
+    ("Butterworth (maximally flat)", signal.butter(N, wc, analog=True), GUIDE_BLUE, "-"),
+    ("Chebyshev I (1 dB ripple)",    signal.cheby1(N, 1, wc, analog=True), GUIDE_AMBER, "--"),
+    ("Elliptic (1 dB / 40 dB)",      signal.ellip(N, 1, 40, wc, analog=True), GUIDE_RED, "-."),
+    ("Bessel (linear phase)",        signal.bessel(N, wc, analog=True, norm='mag'), GUIDE_GREEN, ":"),
 ]
 
 fig, ax = plt.subplots(figsize=(6.4, 3.4))
-for label, (b, a), color in designs:
+for label, (b, a), color, ls in designs:
     _, h = signal.freqs(b, a, worN=w)
-    ax.semilogx(w, 20*np.log10(np.abs(h)), color=color, label=label)
+    ax.semilogx(w, 20*np.log10(np.abs(h)), color=color, ls=ls, label=label)
 
 ax.axhline(-3.0103, color="0.6", ls=":", lw=0.9)
 ax.axvline(1.0, color="0.6", ls=":", lw=0.9)

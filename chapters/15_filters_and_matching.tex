@@ -1,7 +1,7 @@
 \chapter{Filters, Matching Networks, and Transformers}
 \label{ch:filters}
-This is the first of four chapters that \emph{apply} circuit models rather than
-build them. A filter is an RC or LC circuit with component values chosen for a
+The next four chapters \emph{apply} circuit models rather than build them. A filter
+is an RC or LC circuit with component values chosen for a
 required response; its design rules state where its poles and zeros must sit.
 Given the response, work backward to the components.
 
@@ -54,13 +54,15 @@ set by damping. \Cref{sec:filterspecs} translates those choices into data-sheet
 specifications.
 
 \section{Order, Energy Stores, and Roll-Off}
-The pattern generalizes. Each independent energy-storage element (an \(L\) or a
-\(C\)) contributes one pole, so an \(n\)th-order filter has \(n\) reactive
-elements and rolls off at about \(-20n\,\si{\decibel}\) per decade far above
-cutoff (each pole adding \(-\SI{20}{\decibel}\)/decade, each zero
-\(+\SI{20}{\decibel}\)/decade). Steeper skirts require more poles, hence more
-inductors and capacitors. The \emph{order} is thus both a circuit fact (how many
-reactive parts) and a response fact (how fast it rolls off).
+Filter order counts poles. In the lumped passive models used here, each independent
+energy-storage element (an \(L\) or a \(C\)) supplies one state. Thus the usual
+\(n\)-pole realization of an \(n\)th-order filter has \(n\) independent reactive
+stores. At frequencies beyond the transition region, each pole contributes
+\(-\SI{20}{\decibel}\) per decade and each zero contributes \(+\SI{20}{\decibel}\)
+per decade, so the net roll-off follows the excess pole count. Steeper skirts
+require more net poles and, in these passive realizations, usually more inductors and
+capacitors. Order is therefore a response fact first; component count is its common
+passive realization.
 
 That roll-off rule is not an approximation peculiar to filters:
 \cref{sec:cascadeadd} derives it from the fact that cascaded sections multiply,
@@ -89,8 +91,8 @@ There are three independent choices:
 \begin{description}
 \item[Cutoff frequency] scale all \(L\) and \(C\) together: \(\omega_0=1/\sqrt{LC}\)
 shifts the whole response along the frequency axis without changing its shape.
-\item[Order] the number of poles (reactive elements) sets skirt steepness,
-\(-20n\,\si{\decibel}\) per decade.
+\item[Order] the number of poles sets skirt steepness. In the usual passive
+realization, it also equals the number of independent reactive energy stores.
 \item[Shape (the ``family'')] for a given order, \emph{where} the poles sit trades
 passband flatness against transition sharpness against phase linearity.
 \end{description}
@@ -109,7 +111,7 @@ Family & Pole/zero placement and consequence \\
 Butterworth & Poles equally spaced on a semicircle of radius \(\omega_0\) in the left half-plane (derived in \cref{sec:poleplacement}, with the section-\(Q\) table). Maximally flat passband, no ripple, moderate transition. \\
 Chebyshev & Poles on an ellipse pushed closer to the \(\jj\omega\) axis, raising every section's \(Q\) (\cref{sec:poleplacement}). Sharper cutoff at the price of passband ripple and worse phase/transient behavior. \\
 Elliptic (Cauer; ``elliptical'' in the pool) & Chebyshev-like poles plus transmission \emph{zeros} on the \(\jj\omega\) axis in the stopband---depth bought at specific frequencies rather than slope everywhere. Sharpest transition; ripple in both bands. \\
-Bessel & Poles positioned for maximally flat \emph{group delay} \(\tau_g=-\dd\phi/\dd\omega\), i.e.\ linear phase (defined in \cref{sec:groupdelay}); gentle amplitude cutoff. Good for pulse fidelity. \\
+Bessel & Poles positioned for maximally flat \emph{group delay} \(\tau_g=-\dd\phi/\dd\omega\) near the passband origin, hence nearly linear phase through the intended passband (defined in \cref{sec:groupdelay}); gentle amplitude cutoff. Good for pulse fidelity. \\
 Crystal / cavity & Very high-\(Q\) resonators (poles hugging the axis) for narrow, highly selective band-pass shapes. \\
 DSP FIR & Digital (DSP, digital signal processing) filter with no feedback (FIR, finite impulse response): no poles away from the origin, so it can be exactly linear phase---proved in \cref{sec:firiir}. \\
 DSP IIR & Recursive digital filter (IIR, infinite impulse response): has poles, so it mimics analog families efficiently but with nonlinear phase (\cref{sec:firiir}). \\
@@ -176,6 +178,91 @@ these standard designs (via \texttt{scipy.signal}) rather than sketched, so the
 ripple depths and skirt slopes are quantitatively right.
 \end{advancedbox}
 
+\section{Pole Placement Creates the Filter Family}
+\label{sec:poleplacement}
+The generic factorization in \cref{sec:factoring} says that a high-order response is
+a product of first- and second-order sections. A filter family adds the missing design
+goal: it specifies where those poles belong to balance passband flatness, transition
+sharpness, ripple, and waveform fidelity. Butterworth is the cleanest derivation.
+
+The \textbf{Butterworth} family is defined by a magnitude specification---as flat as
+possible in the passband:
+\[
+|G(\jj\omega)|^2=\frac{1}{1+(\omega/\omega_c)^{2n}} .
+\]
+Setting the denominator to zero gives
+\((s/\jj\omega_c)^{2n}=-1\), whose \(2n\) roots are equally spaced around a circle of
+radius \(\omega_c\). Keeping the \(n\) in the left half-plane leaves \(n\) poles
+\emph{equally spaced on a semicircle of radius \(\omega_c\)}, separated by \(\pi/n\),
+as \cref{fig:butterworth-poles} shows.
+
+Factor that pattern into sections using \cref{sec:factoring}. A pole pair at angle
+\(\phi\) from the negative real axis has \(\cos\phi=\zeta\)
+(\cref{ch:splane}), hence \(Q=1/(2\cos\phi)\). The equally spaced Butterworth
+angles give the section values a designer must realize:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}L{0.10\textwidth}L{0.30\textwidth}Y@{}}
+\toprule
+Order & Sections & Section \(Q\) (all at \(\omega_0=\omega_c\)) \\
+\midrule
+2 & one quadratic & \(Q=0.707\) \\
+3 & one quadratic + one real pole & \(Q=1.000\); real pole at \(-\omega_c\) \\
+4 & two quadratics & \(Q=0.541\), \(Q=1.307\) \\
+5 & two quadratics + one real pole & \(Q=0.618\), \(Q=1.618\); real pole at \(-\omega_c\) \\
+6 & three quadratics & \(Q=0.518\), \(Q=0.707\), \(Q=1.932\) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The fifth-order values \(0.618\) and \(1.618\) are the golden ratio and its
+reciprocal, a useful check on the pentagonal spacing. Higher order also introduces
+at least one high-\(Q\) section: order 6 needs \(Q=1.93\), even though the assembled
+filter is maximally flat. This table links the desired response to the active stages
+of \cref{ch:active}: an order-5 Butterworth is two Sallen--Key stages with
+\(Q=0.618\) and \(Q=1.618\), plus one RC section.
+
+\textbf{Chebyshev} filters use the same pole-placement idea but place poles on an
+ellipse pushed closer to the \(\jj\omega\) axis, raising every section's \(Q\). The
+result is a sharper transition at the price of passband ripple and worse transient
+behavior, which is predictable because higher \(Q\) means more ringing
+(\cref{ch:linsys}).
+
+\section{Phase Delay, Group Delay, and Waveform Fidelity}
+\label{sec:groupdelay}
+Amplitude selectivity is not a filter's only goal. A filter can pass every frequency
+at the intended amplitude yet distort a waveform by delaying its components by
+different amounts.
+
+For a sinusoid at \(\omega\), a phase shift \(\phi(\omega)=\angle G(\jj\omega)\) is
+equivalent to a time shift of \(-\phi/\omega\). A real signal contains many
+frequencies, so the relevant quantity is how its \emph{envelope} moves: the
+\textbf{group delay},
+\[
+\boxed{\;\tau_g(\omega)=-\frac{\dd\phi}{\dd\omega}\;}.
+\]
+If \(\tau_g\) is constant and the magnitude response is flat across the signal's
+occupied band, every component is delayed equally, so the waveform arrives later but
+otherwise unchanged. Constant group delay means
+\(\phi=-\omega\tau_g\), i.e.\ phase falling linearly with frequency. A pure delay
+has exactly this property; \cref{sec:puredelay} supplies the generic dynamic-system
+model.
+
+Group delays add across a cascade because phases do. Bessel filters place poles to
+flatten \(\tau_g\) near the passband origin, accepting a gentle amplitude roll-off.
+Chebyshev filters sit at the opposite corner: their high-\(Q\) sections make
+\(\tau_g\) peak near cutoff, so a pulse rings and spreads.
+
+\begin{physicalbox}
+\textbf{Choose the filter for the signal.} For a narrow single-sideband (SSB) or
+continuous-wave Morse (CW) signal, amplitude selectivity is central and phase
+distortion is inaudible; Chebyshev or elliptic responses can be appropriate. When
+pulse shape carries information (digital modes, video, or a clean transmitted
+envelope), group-delay flatness matters. Bessel, or a finite-impulse-response (FIR)
+digital filter designed for exact linear phase, is often the better choice. This is
+the third axis of \cref{fig:filter-families}.
+\end{physicalbox}
+
 Finally, the same target poles can be \emph{realized} several ways: a passive LC
 ladder, an active Sallen--Key stage (\cref{ch:active}) that makes complex poles
 without inductors, a crystal or cavity when very high \(Q\) is needed, or a DSP
@@ -188,7 +275,7 @@ steepness), the family (the flatness/sharpness/phase trade), the cutoff (by
 scaling \(L\) and \(C\)), and the realization that suits the frequency range and
 available parts.
 
-\section{Reading a Filter's Specification}
+\section{Interpreting a Filter Specification}
 \label{sec:filterspecs}
 A data sheet does not describe a filter by its pole locations; it quotes a handful of
 numbers. Each one is a measurement of the response this chapter has been shaping, and
@@ -236,7 +323,7 @@ just the resistance fraction, \(Q_L/Q_U=r/(R_s+R_L+r)\), so
 \[
 \boxed{\;\mathrm{IL}=-20\log_{10}\left(1-\frac{Q_L}{Q_U}\right)\;}
 \]
-Read it as a warning about ratios, not about resistances. Loss is negligible while
+Interpret it as a warning about ratios, not about resistances. Loss is negligible while
 \(Q_L\ll Q_U\)---you are loading the resonator far more heavily than its own losses
 do---and it runs away as \(Q_L\) approaches \(Q_U\). A filter costs
 \SI{0.4}{\decibel} at \(Q_L/Q_U=1/20\) but \SI{3.5}{\decibel} at \(1/3\).
@@ -272,16 +359,19 @@ to \(\ee^{-\pi}\), or \SI{4.3}{\percent}. So ``\(Q\) cycles'' is the ring heard 
 to near-inaudibility and \(Q/\pi\) is the time constant that governs it. Use \(\tau\)
 for anything quantitative.
 
-Second, substitute \cref{sec:halfpower}'s exact \(BW=f_0/Q\):
+Second, for this isolated resonant pole pair, substitute
+\cref{sec:halfpower}'s exact \(BW=f_0/Q\):
 \[
 \boxed{\;\tau=\frac{1}{\pi\,BW}\;}
 \]
-\emph{The ring-down depends only on the bandwidth}---not on the center frequency, not
-on the order, not on how the filter is built. A \SI{500}{\hertz} CW filter rings for
-\SI{0.64}{\milli\second} whether it is at \SI{455}{\kilo\hertz} or
-\SI{7}{\mega\hertz}.
+\emph{This resonator's \(1/\ee\) amplitude-decay time depends only on its
+half-power bandwidth}, not on its center frequency. A single resonator with a
+\SI{500}{\hertz} bandwidth rings for \SI{0.64}{\milli\second} whether it is at
+\SI{455}{\kilo\hertz} or \SI{7}{\mega\hertz}. A higher-order filter can have several
+modes, so its quoted bandwidth alone does not determine its settling time.
 
-That sets a floor on useful narrowness. At \SI{20}{} words per minute a Morse dot is
+For a filter dominated by one such resonator, that sets a floor on useful narrowness.
+At \SI{20}{} words per minute a Morse dot is
 about \SI{60}{\milli\second}, so a \SI{500}{\hertz} filter (\SI{0.6}{\milli\second})
 is invisible, a \SI{100}{\hertz} filter (\SI{3.2}{\milli\second}) is starting to
 soften the edges, and a \SI{50}{\hertz} filter (\SI{6.4}{\milli\second}) audibly rings
@@ -401,7 +491,7 @@ which can be viewed as two L-networks back to back that meet at an internal
 \emph{virtual resistance} \(R_v\). The extra element is a genuine extra
 degree of freedom, which is why a \(\pi\)-network output stage has two adjustable
 capacitors and why they are operated one at a time---\cref{sec:diploading} is that
-procedure read as circuit theory.
+procedure interpreted as circuit theory.
 
 \begin{figure}[htbp]
 \centering

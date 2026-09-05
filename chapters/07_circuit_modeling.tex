@@ -5,13 +5,15 @@ This chapter defines the modeling paradigm, ideal components (\(R\), \(L\), \(C\
 and sources), conservation laws, energy-storage states, and unit bookkeeping.
 
 \section{The Lumped-Element Modeling Paradigm}
-A real circuit contains fields distributed through space. The \textbf{lumped-
+A real circuit contains electric and magnetic fields distributed through space. The \textbf{lumped-
 element idealization} concentrates that physics in discrete two-terminal
 components joined by perfect wires. Each component supplies one voltage--current
 relationship; the wires have no voltage drop or stored energy. The approximation
-holds when the circuit is small relative to the signal wavelength, so a change at
-one end reaches the other essentially instantly. Long feed lines and antennas at
-radio frequencies (RF) require the distributed model of \cref{ch:lines}.
+holds when the circuit is small relative to the signal wavelength, so its
+propagation delay is negligible on the signal's time scale. Then a change at one
+end reaches the other essentially instantly. When that delay is not negligible,
+long feed lines and antennas at radio frequencies (RF) require the distributed
+model of \cref{ch:lines}.
 
 \begin{controlsbox}
 Lumping is the electrical version of the modeling step every engineer makes:
@@ -162,9 +164,10 @@ so \SI{1}{\milli\meter}-diameter copper wire carries about \(3.8\times\) its DC
 resistance at \SI{1}{\mega\hertz} and \(45\times\) at \SI{144}{\mega\hertz}. This is
 the law used later for coil \(Q\), for capacitor loss at RF, and---twice---for
 feed-line attenuation (\cref{sec:lineloss}), and it is now earned rather than
-asserted. The practical corollaries follow immediately: RF conductors are stranded,
-tubular, or silver-plated, because only a few skin depths of surface do any work, and
-plating a \emph{worse} conductor with a better one is not a cheat.
+asserted. Depending on the geometry and frequency, RF conductors may use Litz wire
+(individually insulated, appropriately sized strands), tubular conductors, or
+silver plating, because only a few skin depths of surface do any work. Plating a
+\emph{worse} conductor with a better one is not a cheat.
 
 \subsubsection*{Why Coil \texorpdfstring{\(Q\)}{Q} Rises and Then Falls}
 The two parasitics of this section now work against each other, and together they
@@ -183,17 +186,18 @@ Q_{\mathrm{eff}}=\frac{\operatorname{Im}Z}{\operatorname{Re}Z}
 =Q_0\left[\left(1-\left(\frac{f}{f_{\mathrm{SRF}}}\right)^{2}\right)-\frac{R^2C_p}{L}\right]
 \approx Q_0\left(1-\left(\frac{f}{f_{\mathrm{SRF}}}\right)^{2}\right),
 \]
-the last step dropping a term that is negligible whenever \(Q\) is worth having. Note
-the check: \(Q_{\mathrm{eff}}\to0\) at \(f_{\mathrm{SRF}}\), as it must, because that
-is exactly where the coil is purely resistive. Now combine the two: with
+the last step dropping a term that is negligible whenever \(Q\) is worth having. In
+that high-\(Q\) approximation, \(Q_{\mathrm{eff}}\to0\) at the lossless
+\(f_{\mathrm{SRF}}\); retaining the loss term shifts the exact zero slightly. Now
+combine the two high-\(Q\), frequency-scaling approximations: with
 \(Q_0\propto\sqrt f\), maximizing \(\sqrt f\,(1-f^2/f_{\mathrm{SRF}}^2)\) gives
 \(1=5f^2/f_{\mathrm{SRF}}^2\), so
 \[
-f_{\text{peak}}=\frac{f_{\mathrm{SRF}}}{\sqrt5}\approx0.45\,f_{\mathrm{SRF}} .
+f_{\text{peak}}\approx\frac{f_{\mathrm{SRF}}}{\sqrt5}\approx0.45\,f_{\mathrm{SRF}} .
 \]
-A coil's \(Q\) peaks a little under halfway to its self-resonance, then collapses.
-Both parasitics of this subsection were needed to say that, and neither was
-adjustable.
+In this high-\(Q\) model, a coil's \(Q\) peaks a little under halfway to its
+self-resonance, then collapses. Both parasitics of this subsection were needed to
+say that, and neither was adjustable.
 
 \begin{exambox}
 On skin effect the pool (group E5D) wants the \emph{direction} and the \emph{cause},
@@ -222,19 +226,24 @@ whose \(f_{\mathrm{SRF}}\) is higher.
 \end{workedbox}
 
 \section{KCL as an Accumulation Balance}
-Kirchhoff's current law (KCL) is a charge balance. At a node,
+Kirchhoff's current law (KCL) is a charge balance. Imagine a small closed surface
+around a wire junction: charge inside it can change only when current crosses the
+surface. At that node,
 \[
 \text{accumulation}=\text{inflow}-\text{outflow}.
 \]
-For an ordinary wire node with negligible stored charge, accumulation is zero,
-so the algebraic sum of currents is zero:
+For an ordinary wire node with negligible stored charge, that accumulation is
+zero, so the algebraic sum of currents is zero:
 \[
 \sum_k i_k=0.
 \]
 
 \begin{controlsbox}
-This is the same structure as a material balance in process systems. Capacitors
-make the accumulation term visible because \(i_C=C\,\dd v_C/\dd t\).
+This is the same structure as a material balance in process systems. In a series
+RC branch, KCL at the junction gives \(i_R-i_C=0\); the capacitor relation
+\(i_C=C\,\dd v_C/\dd t\) then converts that current balance into a differential
+equation. The capacitor stores charge on its plates across the dielectric, not in
+the ordinary wire junction.
 \end{controlsbox}
 
 \section{KVL as Energy Consistency}
@@ -256,8 +265,10 @@ so they are what the system ``remembers''---the electrical instance of the state
 vector of \cref{ch:linsys}.
 
 \section{Electrical Units and Dimensional Checks}
-Units are not decoration; they are a fast way to catch a wrong formula. The base
-relationships all follow from the definitions above:
+Units are not decoration; they are a fast way to catch a wrong formula. Use
+\(q\) for charge in coulombs, \(i\) for current in amperes, \(v\) for voltage in
+volts, and \(p\) for power in watts. The base relationships all follow from the
+definitions above:
 \[
 \SI{1}{\coulomb}=\SI{1}{\ampere\second},
 \qquad

@@ -5,8 +5,8 @@ The book has five parts. Choose a path based on your goal:
 \item[Part I --- Exam-Ready Reference] a compact study guide
 (\cref{ch:studyguide}). If the exam is close and you only need to refresh the
 \emph{circuit-theory} formulas, this part (with the practice in Part~V) is the
-fastest route---but see the scope note in the preface: this book covers one portion
-of the exam, not all of it.
+fastest route. The scope note in the preface explains that this book covers one
+portion of the exam, not all of it.
 \item[Part II --- Mathematical and Control-Theory Foundations] the generic
 toolkit, with no circuits assumed: complex numbers and phasors; modeling first- and
 second-order linear systems (ODEs, state space, Laplace, block diagrams); frequency
@@ -14,8 +14,8 @@ response, Bode plots, poles, zeros, and the s-plane; feedback; and how all of it
 extends to higher order. Read this if you are rusty on control theory.
 \item[Part III --- Circuit Models] the simple circuits, built one at a time as
 instances of the Part~II toolkit: components and modeling, series and parallel
-networks, AC steady state, and then RC, RL, series RLC, and parallel RLC. This is
-where the dynamical systems understanding (hopefully) happens.
+networks, AC steady state, and then RC, RL, series RLC, and parallel RLC. Here the
+Part~II models become circuit behavior.
 \item[Part IV --- Applying the Circuit Models] what those simple circuits explain:
 filters and matching networks, transmission lines and antennas, active circuits and
 oscillators, sampling and digital signal processing, receiver noise and dynamic
@@ -39,7 +39,7 @@ follows the same recipe:
 \item draw the schematic, name the energy-storage state variables, and say what the
 output is;
 \item apply KCL/KVL and the element laws to get the differential equation;
-\item write the state-space model and read off the poles;
+\item write the state-space model and identify the poles;
 \item match it to the generic first- or second-order system of Part~II;
 \item interpret the frequency response (Bode) and pole motion (root locus);
 \item close with the energy balance and a worked example.
@@ -56,8 +56,8 @@ reference (\cref{app:units}), and a glossary (\cref{app:glossary}).
 
 \paragraph{About the figures.}
 \emph{Schematics} are drawn inline in the \LaTeX{} source; they are diagrams, not
-measurements. Every other figure---Bode plot, step response, root locus, pole
-diagram, Smith chart, and attenuation curve---is \emph{computed} by a same-named
+measurements. Every other figure, including a Bode plot, step response, root locus,
+pole diagram, Smith chart, or attenuation curve, is \emph{computed} by a same-named
 Python script in \texttt{figures/src/}. For example,
 \texttt{bode\_second\_order.py} generates \texttt{bode\_second\_order.pdf}.
 Nothing is traced, sketched from memory, or copied from another source. A reader can

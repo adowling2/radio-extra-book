@@ -6,20 +6,7 @@ system} of \cref{ch:linsys}: one energy store, one time constant, and one real p
 
 \section{The Circuit}
 Take a source \(u(t)\) driving a resistor \(R\) in series with a capacitor \(C\)
-(\cref{fig:rc-schematic}). The natural state variable is the capacitor voltage
-\(v_C\), because it holds the stored energy.
-
-We must also say what the \emph{output} is, since one circuit can deliver several.
-Write \(v_o\) for the output voltage---the quantity we measure and the one the
-transfer function refers to. Here we take it across the capacitor, so
-\[
-v_o(t)=v_C(t),
-\]
-which turns out to be the low-pass response. Taking \(v_o\) across the resistor
-instead, \(v_o=v_R=u-v_C\), gives the high-pass response from the very same
-circuit; \cref{sec:rc-freq} works out both. Whenever a circuit's behavior is
-described in this book, it is behavior \emph{from \(u\) to \(v_o\)}, and the choice
-of \(v_o\) is part of the model.
+(\cref{fig:rc-schematic}).
 
 \begin{figure}[htbp]
 \centering
@@ -37,9 +24,30 @@ filter. Taking \(v_o\) across the resistor instead gives a high-pass filter.}
 \label{fig:rc-schematic}
 \end{figure}
 
+The capacitor is the one independent energy store, so use its voltage as the state:
+\[
+x(t)=v_C(t).
+\]
+The schematic fixes the reference directions. Positive \(i(t)\) flows through
+\(R\) into the capacitor terminal marked \(+\), and \(v_C\) is measured from that
+terminal to the lower terminal. This passive sign convention makes
+\(i=C\,\dd v_C/\dd t\).
+
+We must also say what the \emph{output} is, since one circuit can deliver several.
+Write \(v_o\) for the output voltage---the quantity we measure and the one the
+transfer function refers to. Here we take it across the capacitor, so
+\[
+v_o(t)=v_C(t),
+\]
+which turns out to be the low-pass response. Taking \(v_o\) across the resistor
+instead, \(v_o=v_R=u-v_C\), gives the high-pass response from the very same
+circuit; \cref{sec:rc-freq} works out both. Whenever a circuit's behavior is
+described in this book, it is behavior \emph{from \(u\) to \(v_o\)}, and the choice
+of \(v_o\) is part of the model.
+
 \section{From Schematic to Differential Equation}
-KVL around the loop says the source equals the resistor drop plus the capacitor
-voltage, and the capacitor law relates its current to its rate of voltage change:
+Using those reference directions, KVL says the source equals the resistor drop plus
+the capacitor voltage. The passive capacitor law supplies the current:
 \[
 u(t)=R\,i(t)+v_C(t),
 \qquad
@@ -135,7 +143,8 @@ independent energy stores?'' is the first question to ask about any circuit
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{rc_transient}
-\caption{RC step response, both outputs. The capacitor voltage \(v_C\) rises
+\caption{RC step response, both outputs. The horizontal axis is time measured in
+time constants, \(t/\tau\), with \(\tau=RC\). The capacitor voltage \(v_C\) rises
 toward \(E\) while the resistor voltage \(v_R=E-v_C\) decays---mirror exponentials
 sharing the time constant \(\tau=RC\), one \(\tau\) covering \(63.2\%\) of the
 change. These are the time-domain faces of the low-pass and high-pass responses of
@@ -164,8 +173,9 @@ Transforming, \(Y=-X+U\) with \(X=G_C(s)\,U\) from before:
 \[
 G_R(s)=\frac{Y}{U}=1-G_C(s)=1-\frac{1}{1+RCs}=\frac{RCs}{1+RCs}.
 \]
-So the two responses are complements, \(G_C+G_R=1\)---at every frequency, whatever
-the capacitor does not pass, the resistor does. On the imaginary axis,
+So the two \emph{complex} responses are complements, \(G_C+G_R=1\), at every
+frequency. This is not an amplitude complement: \(|G_C|+|G_R|\) is not generally
+one. On the imaginary axis,
 \[
 G_C(\jj\omega)=\frac{1}{1+\jj\omega RC}\ \text{(low-pass)},
 \qquad
@@ -200,23 +210,25 @@ Both share the corner frequency \(\omega_c=1/(RC)\), where the gain is
 \includegraphics[width=0.82\textwidth]{bode_first_order_highpass}
 \caption{RC high-pass response (output across \(R\)): \(-\SI{20}{\decibel}\) per
 decade rise below the corner, flat above, phase from \(+90^\circ\) to
-\(0^\circ\).}
+\(0^\circ\). The plotted corner is \(\omega_c=1/\tau=1/(RC)\), or
+\(f_c=1/(2\pi\tau)\).}
 \label{fig:rc-highpass}
 \end{figure}
 
 \section{The Pole and the Root Locus}
-The single pole sits on the negative real axis at \(-1/(RC)\)
-(\cref{fig:rc-rootlocus}). Changing \(R\) or \(C\) slides it along that axis: a
-larger \(RC\) (slower circuit, lower cutoff) moves the pole toward the origin; a
-smaller \(RC\) moves it left toward faster response. Because the pole never leaves the real axis,
-an RC circuit cannot overshoot or ring---the first-order signature.
+The single pole sits on the negative real axis at \(-1/(RC)=-1/\tau\)
+(\cref{fig:rc-rootlocus}). The root-locus plot is simply this equation made
+geometric: as \(R\) or \(C\) changes, it traces the pole along that axis. A larger
+\(RC\) (slower circuit, lower cutoff) moves the pole toward the origin; a smaller
+\(RC\) moves it left toward faster response. Because the pole never leaves the real
+axis, an RC circuit cannot overshoot or ring---the first-order signature.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.78\textwidth]{rootlocus_first_order}
-\caption{Root locus of the RC pole. The single real pole \(-1/(RC)\) slides along
-the negative real axis as the time constant changes; it never becomes complex, so
-there is no ringing.}
+\caption{Root locus of the RC pole in the \(s\)-plane. The single real pole
+\(-1/(RC)=-1/\tau\) slides along the negative real axis as the time constant
+changes; it never becomes complex, so there is no ringing.}
 \label{fig:rc-rootlocus}
 \end{figure}
 
@@ -287,11 +299,11 @@ a step in roughly \(5\tau\approx\SI{2.4}{\milli\second}\).
 \includegraphics[width=\textwidth]{rc_worked}
 \caption{The worked example, \(R=\SI{4.7}{\kilo\ohm}\) and
 \(C=\SI{100}{\nano\farad}\). \emph{Left:} its Bode plot on a real frequency axis;
-the corner sits at \(f_c=\SI{339}{\hertz}\), where the gain is \(-\SI{3}{\decibel}\)
-and the phase \(-45^\circ\). \emph{Right:} the root locus as \(R\) is swept with
-\(C\) fixed. The pole \(s=-1/RC\) only slides along the real axis---toward the
-origin (slower, lower cutoff) as \(R\) grows---so no value of \(R\) can make this
-circuit ring.}
+the corner sits at \(f_c=1/(2\pi\tau)=\SI{339}{\hertz}\), where the gain is
+\(-\SI{3}{\decibel}\) and the phase \(-45^\circ\). \emph{Right:} the root locus as
+\(R\) is swept with \(C\) fixed. The pole \(s=-1/\tau=-1/(RC)\) only slides along
+the real axis---toward the origin (slower, lower cutoff) as \(R\) grows---so no
+value of \(R\) can make this circuit ring.}
 \label{fig:rc-worked}
 \end{figure}
 

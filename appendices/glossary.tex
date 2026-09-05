@@ -22,7 +22,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Friis's formula] Noise figure of a cascade, \(F=F_1+(F_2-1)/G_1+\cdots\); each stage is discounted by the gain ahead of it, so the first stage dominates.
 \item[Gain margin] How far below \(\SI{0}{\decibel}\) the loop gain sits where its phase reaches \(-180^\circ\).
 \item[Gain--bandwidth product] Constant product of closed-loop gain and bandwidth for a single-pole amplifier.
-\item[Group delay] \(\tau_g=-\dd\phi/\dd\omega\), the delay experienced by a signal's envelope; constant \(\tau_g\) is \emph{linear phase} and means undistorted waveforms.
+\item[Group delay] \(\tau_g=-\dd\phi/\dd\omega\), the delay experienced by a signal's envelope. Constant \(\tau_g\) is \emph{linear phase}; undistorted waveforms also require flat magnitude over the occupied band.
 \item[IIR] Infinite impulse response: a recursive digital filter. Having poles makes it efficient but not linear phase.
 \item[Image] The unwanted input frequency that mixes to the same intermediate frequency as the wanted one, lying \(2\times\) the IF away; rejectable only before the mixer.
 \item[Impedance] Complex ratio \(Z=V/I\) for sinusoidal steady state.
@@ -55,7 +55,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Roll-off] Rate at which a response falls past its passband, quoted in decibels per decade or octave.
 \item[Root locus] Path traced by the poles as a parameter (e.g.\ \(R\) or feedback) varies.
 \item[Sampling theorem] A signal must be sampled faster than twice its highest frequency, \(f_s>2f_{\max}\), or aliasing results.
-\item[Self-resonant frequency] Frequency at which a real component resonates with its own parasitic reactance; above it the part behaves as its opposite type.
+\item[Self-resonant frequency] Lossless-model frequency at which a real component resonates with its own parasitic reactance; losses shift the exact impedance and \(Q\) behavior. Above it the part often behaves as its opposite type.
 \item[Skin effect] Confinement of high-frequency current to a conductor's outer layer of thickness \(\delta=\sqrt{2/(\omega\mu\sigma)}\), raising AC resistance as \(\sqrt f\).
 \item[Smith chart] The M\"obius map \(\Gamma=(z-1)/(z+1)\) drawn as a chart, turning impedance grid lines into circles and line length into rotation.
 \item[State variable] Variable that captures stored energy needed to predict future behavior.

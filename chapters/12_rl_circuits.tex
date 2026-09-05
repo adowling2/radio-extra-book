@@ -24,8 +24,8 @@ efficiency and bandwidth (\cref{ch:lines}).
 winding resistance sits in series with its inductance; its self-capacitance only
 matters near self-resonance.
 \end{description}
-These cases justify their own chapter, and the RC/RL duality makes both circuits
-easier to remember.
+Together, these cases show why the RL model matters. Its duality with RC circuits
+also makes both models easier to remember.
 
 \section{The Circuit}
 A source \(u(t)\) drives a resistor \(R\) in series with an inductor \(L\)
@@ -144,16 +144,16 @@ at all.
 
 \begin{controlsbox}
 \textbf{Connection.} RC and RL are the two first-order lags of circuit theory.
-Same pole structure, same Bode shape, same step response---only the state
-variable (voltage vs current) and the direction of the \(R\)-dependence differ.
+They have the same pole structure, Bode shape, and step response. Their state
+variables and their dependence on \(R\) differ: RC stores voltage, whereas RL
+stores current.
 Learn one and you have both.
 \end{controlsbox}
 
 \section{Ferrites and Common-Mode Current}
 \label{sec:commonmode}
-The most common inductor in a real station is one nobody drew: a ferrite bead or
-toroid clamped over a cable. Understanding it needs one new idea---not about
-inductors, but about which current the inductor is in series with.
+A common inductor in a real station is a ferrite bead or toroid clamped over a cable.
+Its behavior depends on which current produces net flux in the core.
 
 \subsection{Two Currents on the Same Cable}
 Take any cable with two or more conductors. The currents in them can be decomposed
@@ -167,25 +167,29 @@ returning by some other path entirely---through the ground, the mains wiring, or
 operator. Its fields do \emph{not} cancel, so a common-mode current turns the cable
 into an antenna.
 \end{description}
-That is the whole diagnosis of a great deal of interference. A feed line radiating,
-a microphone lead picking up RF, a computer cable polluting the band: in each case
-the differential signal is fine and a common-mode current is doing the damage.
+This distinction explains much station interference. A radiating feed line, an RF-
+sensitive microphone lead, or a computer cable polluting the band can all carry the
+intended differential signal while common-mode current causes the problem.
 
 \subsection{Why a Ferrite Choke Is Selective}
 Now the circuit question: how do you add impedance to one mode and not the other?
 Thread the whole cable through a ferrite core. The core links whatever net flux the
 conductors produce, and that is precisely the distinction:
 \begin{itemize}
-\item For the \emph{differential} current the two conductors' fields cancel, so
-there is no net flux, so the core adds \emph{no} inductance. The wanted signal
-passes untouched.
+\item Ideally, for \emph{differential} current the two conductors' fields cancel,
+so there is no net flux and the core adds \emph{no} inductance. The wanted signal
+passes essentially untouched.
 \item For the \emph{common-mode} current all the conductors push flux the same way,
-so the core sees the full sum and presents a series impedance \(\jj\omega L\) to it.
+so, ideally, the core sees the full sum and presents a series impedance
+\(\jj\omega L\) to it.
 \end{itemize}
-So a ferrite choke is an inductance that exists only for the current you want to
-suppress---not a filter in frequency, but a filter in \emph{mode}. It is the RL
-circuit of this chapter with the common-mode path's resistance playing the role of
-\(R\), and \(\tau=L/R\) again setting where the suppression begins.
+In the ideal symmetric-winding model, a ferrite choke is an inductance that acts
+only on the current you want to suppress---not a filter in frequency, but a filter
+in \emph{mode}. It is the RL circuit of this chapter with the common-mode path's
+resistance playing the role of \(R\), and \(\tau=L/R\) again setting where the
+suppression begins.
+Real chokes also have leakage inductance and winding capacitance, so their
+selectivity is finite and frequency dependent.
 
 Two practical consequences follow from the formulas already in hand. More turns
 through the core raises \(L\) (roughly as the square of the turn count, since both

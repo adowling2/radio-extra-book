@@ -58,10 +58,10 @@
         6.2,
         3.0
       ],
-      "created": "2026-09-02T16:03:44-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:22:47-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -74,10 +74,10 @@
         6.6,
         2.9
       ],
-      "created": "2026-09-02T16:06:58-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:24:12-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -90,10 +90,10 @@
         6.3,
         4.0
       ],
-      "created": "2026-09-02T16:04:12-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:24:13-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -106,10 +106,10 @@
         6.6,
         2.9
       ],
-      "created": "2026-09-02T16:04:24-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:24:14-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -138,10 +138,10 @@
         6.6,
         3.0
       ],
-      "created": "2026-09-02T16:04:55-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:24:15-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -154,10 +154,10 @@
         6.4,
         3.4
       ],
-      "created": "2026-09-02T16:05:10-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:22:52-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -170,10 +170,10 @@
         6.6,
         2.95
       ],
-      "created": "2026-09-02T16:04:57-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:22:53-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -202,10 +202,10 @@
         6.4,
         3.0
       ],
-      "created": "2026-09-02T16:05:00-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:22:54-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -314,10 +314,10 @@
         4.8,
         4.4
       ],
-      "created": "2026-09-02T16:05:25-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:22:55-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     },
     {
@@ -570,10 +570,10 @@
         6.2,
         3.2
       ],
-      "created": "2026-09-02T16:06:06-05:00",
-      "python": "3.12.7",
-      "matplotlib": "3.9.2",
-      "git_commit": "f552f594d2e0167eb3990af74542144f0888e723",
+      "created": "2026-09-05T00:22:56-04:00",
+      "python": "3.12.2",
+      "matplotlib": "3.11.0",
+      "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
       "git_dirty": true
     }
   ]
