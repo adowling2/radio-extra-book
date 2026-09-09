@@ -1,7 +1,8 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-09-05 (Round 7 finalized and compiled).
+Last updated: 2026-09-09 (documentation refreshed for the literature-audit handoff;
+manuscript unchanged since Round 7).
 
 ## Round 7 (revision handoff)
 
@@ -20,7 +21,42 @@ greyscale reproduction. The remaining figure work is deliberately bounded to a
 future structural simplification of the labelled Smith chart and optional P3 polish;
 there are no release-blocking figure defects in the Round 7 audit.
 
-## Round 6 (in progress)
+## Handoff: literature audit (2026-09-09)
+
+Being handed to Codex to audit the book against the RF and control literature in
+`~/MyGoogleDrive/RadioLiterature` (16 texts: RF circuit design, microwave design, RF
+test and measurement, and a control-theory tour). That directory is outside this repo
+and is not tracked.
+
+What an auditor should know before starting:
+
+- **The bibliography is thin and has two unresolved entries**, both marked `FIXME` in
+  `references.bib`. `extra_pool_2020` has no author and a title ambiguous between a
+  study guide and the pool itself; `romanchik_extra_2016`'s key says 2016 while its
+  printed year says 2013. Both are attribution questions for Alex, not guesses to make.
+- **Sources currently cited** are the two NCVEC pools (authoritative), the HamExam
+  reprints they were verified against, the ARRL Extra Class License Manual (12th ed.,
+  one pool cycle behind), three study guides, and Alex's own first draft. No RF or
+  control textbook is cited anywhere in the book.
+- **The Preface's "A word on sources" paragraph** is the only prose about sources, and
+  it says the non-pool references were used for topic-coverage and terminology checks
+  only, with no prose, questions, answers, or figures copied. Any new citation must
+  keep that claim true.
+- **Every derivation in the book is meant to stand on its own**, per the
+  derive-don't-assert convention. Literature should be cited to locate a result in the
+  wider field, not to license one the book has not derived.
+- **`references/` holds only the pools.** The ARRL manual and study guides are
+  gitignored and absent from a fresh clone, so claims about them cannot be re-checked
+  here.
+
+Known documentation drift to be aware of while reading:
+
+- The Preface's *parts* paragraph lists Chs 21--23, but its *"what this book covers"*
+  list does not mention modulation, receiver architecture, or devices and bias. The two
+  lists disagree; the parts paragraph is the accurate one.
+- The exam-coverage numbers in §3 and README are historical. See §4D.
+
+## Round 6 (completed)
 
 The book now has three new applied chapters: Ch 21 derives pattern metrics,
 polarization, aperture scaling, and practical antenna models; Ch 22 derives AM and
@@ -241,6 +277,9 @@ were added or changed, so no figure regeneration was needed.
 
 ## 3. Exam coverage
 
+> ⚠️ **Historical.** The counts in this section predate Rounds 5--7 and understate
+> current coverage. Do not quote them; see §4D.
+
 ### Extra (Element 4) — the book's actual target
 
 Against the 2024–2028 pool, Round 4 moved the needle materially. Previously **8
@@ -365,22 +404,18 @@ exam-relevance claim sourced from the manual as suspect.
 
 ### D. Still awaiting Alex's judgment
 
-Two of these are new in Round 5 and were created by work I did, so they need a ruling
-before the next round builds on them:
-
-- **Did Round 5 cross a scope line?** `ARRL-GAP-PROPOSAL.md`'s *What I rejected*
-  explicitly excluded radiation-pattern geometry, naming beamwidth and front-to-back.
-  `fig:array-patterns` now annotates both, on a pattern the book computes from its own
-  array factor. Defensible — the objection was to memorized geometry, not to a plotted
-  consequence of a derivation we own — but it is a change to a recorded decision.
-  Endorse it or cut the two annotations; the figure stands without them.
-- **The exam-coverage figure needs re-measuring.** README and §3 still say "roughly 12
-  of 50 groups well, 13 partially." That predates Round 5, which added S-parameters
-  (E4B), the crystal (E6D), switching amplifiers (E7B), arrays (E9C), the named matches
-  (E9E), antenna efficiency and feed-point (E9A) and more. The real figure is now
-  higher, but I did not guess at it: a defensible number needs a group-by-group audit
-  against `references/`, which is a piece of work in itself. **Do not quote 12 as
-  current.**
+- ✅ **Closed 2026-09-09 — "did Round 5 cross a scope line?"** Round 5 annotated
+  beamwidth and front-to-back on a computed pattern, which contradicted
+  `ARRL-GAP-PROPOSAL.md`'s *What I rejected*. Round 6 settled it decisively in the
+  other direction by adding Ch 21 on patterns, polarization, and practical design. The
+  rejection list is now historical on this point; the Preface's scope statement is the
+  current authority.
+- ⚠️ **The exam-coverage figure still needs re-measuring, and is now further out of
+  date.** The old "roughly 12 of 50 groups well, 13 partially" predates Round 5 *and*
+  the three chapters Round 6 added (21 patterns, 22 modulation and receivers, 23
+  devices and bias). The true figure is materially higher. **Do not quote 12.** A
+  defensible number needs a group-by-group audit against the extracts in
+  `references/`; it is a piece of work in itself and nobody has done it.
 
 Carried from earlier rounds:
 
