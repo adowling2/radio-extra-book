@@ -1,8 +1,29 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-09-09 (documentation refreshed for the literature-audit handoff;
-manuscript unchanged since Round 7).
+Last updated: 2026-09-09 (literature audit completed and manuscript reconciled).
+
+## Literature audit (completed 2026-09-09)
+
+The full manuscript, appendices, equations, and all 36 generated figures were audited
+against a separate corpus of 16 RF, microwave, measurement, receiver, and control-
+theory books. The reconciled book is 234 pages and contains 175 page-specific
+technical citation commands. Sixteen corpus books were added to `references.bib`.
+
+The audit corrected or qualified claims whose truth depended on unstated assumptions,
+including realization minimality, resonant bandwidth, feedback pole motion, mixer and
+op-amp idealizations, ADC dynamic range, the 290 K thermal-noise convention, protective
+earth, VNA reference conditions, and fixed-aperture antenna scaling. Four figure
+generators were corrected and regenerated. The repository health check passes with 26
+chapters, 36 figures, 88 section labels, and 65 glossary entries.
+
+Only ordinary bibliographic metadata, pinpoint locators, and independently worded
+corrections entered the repository. Copyrighted PDFs, extracts, and source-derived
+working ledgers remained outside it. See
+`notes/literature-audit-2026-09-09.md` for the reproducible method, review boundary,
+known source gaps, and validation record. Run `make audit-diff` to rebuild the
+highlighted PDF comparing pre-audit commit `4f4100a` with audited manuscript commit
+`1aad059`.
 
 ## Round 7 (revision handoff)
 
@@ -21,9 +42,10 @@ greyscale reproduction. The remaining figure work is deliberately bounded to a
 future structural simplification of the labelled Smith chart and optional P3 polish;
 there are no release-blocking figure defects in the Round 7 audit.
 
-## Handoff: literature audit (2026-09-09)
+## Archived handoff: literature audit (2026-09-09)
 
-Being handed to Codex to audit the book against the RF and control literature in
+This section records the inputs as they stood before the completed audit. The book was
+audited against the RF and control literature in
 `~/MyGoogleDrive/RadioLiterature` (16 texts: RF circuit design, microwave design, RF
 test and measurement, and a control-theory tour). That directory is outside this repo
 and is not tracked.

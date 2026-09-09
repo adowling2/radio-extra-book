@@ -1,4 +1,4 @@
-.PHONY: book cheat-sheet all figures clean
+.PHONY: book cheat-sheet all figures audit-diff clean
 
 LATEXMK=latexmk
 LATEXFLAGS=-pdf -interaction=nonstopmode -halt-on-error
@@ -20,6 +20,12 @@ cheat-sheet:
 	cp cheat_sheet.pdf output/Circuit_Theory_Cheat_Sheet.pdf
 
 all: book cheat-sheet
+
+# Rebuild the review copy for the 2026 literature audit.  The two immutable
+# revisions keep later documentation edits out of the manuscript diff.
+audit-diff:
+	./scripts/build_latexdiff.sh 4f4100a 1aad059 \
+		output/pdf/literature-audit-latexdiff.pdf
 
 clean:
 	$(LATEXMK) -C main.tex cheat_sheet.tex

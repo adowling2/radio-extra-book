@@ -37,6 +37,7 @@ cheat_sheet.pdf
 
 # Output PDFs and rendered visual-QA images are useful locally but heavy for git.
 output/*.pdf
+output/pdf/
 figures/audit/
 output/rendered/
 output/final_rendered/

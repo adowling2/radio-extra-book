@@ -49,6 +49,7 @@ make book          # the textbook
 make figures       # regenerate the Python figures
 make cheat-sheet   # standalone printable formula card
 make all
+make audit-diff    # highlighted review PDF for the 2026 literature audit
 make clean
 ```
 
@@ -76,7 +77,8 @@ means the toolchain is wrong, not the book.
 - `cheat_sheet.tex` — standalone two-column card
 - `scripts/check.sh` — the whole verification suite in one command
 - `notes/` — working notes: Round 4 concept inventories, and the Round 7 style guides,
-  figure audit, technical-claim audits, and generalization logs
+  figure audit, technical-claim audits, generalization logs, and the public
+  methodology summary for the 2026 literature audit
 - `references/` — the two question pools and their markdown extracts (tracked); the
   commercial manuals are gitignored. See [`references/README.md`](references/README.md)
 - `scripts/build_pool_md.sh` — regenerates the pool extracts from the PDFs
@@ -92,7 +94,8 @@ means the toolchain is wrong, not the book.
   one is a numbered section that closes the chapter.
 - **Every schematic labels its input and output.** Every figure has a `\label`.
 - **Derive, don't assert** — and where an earlier chapter already established a result,
-  cite it instead of re-deriving it.
+  cite it instead of re-deriving it. External literature citations use printed page
+  numbers and favor the strongest directly supporting source.
 - Data plots are Python/matplotlib (the central style, layout checks, provenance, and
   greyscale audit live in `figures/`); schematics are inline circuitikz. Run
   `make -C figures audit` after changing a figure and inspect its greyscale previews
@@ -128,6 +131,8 @@ current pool and FCC rules.
 This is an independent educational study guide, not affiliated with the ARRL, NCVEC,
 or the FCC. It began as the author's own Word draft (prepared with the aid of ChatGPT)
 and was developed, corrected, and typeset iteratively with Claude Code, with the
-author steering the pedagogy and critiquing the text. The reference texts in
-`references/` were used only for topic-coverage and terminology checks; their prose,
-questions, answer choices, and figures were not copied.
+author steering the pedagogy and critiquing the text. In September 2026 the technical
+claims and generated figures were audited against a separate 16-book RF, microwave,
+measurement, receiver, and control-theory corpus. The method and privacy boundary are
+documented in [`notes/literature-audit-2026-09-09.md`](notes/literature-audit-2026-09-09.md).
+Source prose, figures, and working extracts were not copied into this repository.
