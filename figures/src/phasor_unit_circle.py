@@ -71,8 +71,8 @@ axB.annotate(r"$\times\,e^{\mathrm{j}\omega t}$ rotates at $\omega$: one turn pe
 axB.set_xlim(0, 2*2*np.pi)
 axB.set_ylim(-2.15, 2.15)
 axB.set_xticks([0, 2*np.pi, 4*np.pi])
-axB.set_xticklabels(["0", r"$T$", r"$2T$"])
-axB.set_xlabel(r"time $t$")
+axB.set_xticklabels(["0", r"$2\pi$", r"$4\pi$"])
+axB.set_xlabel(r"normalized time $\omega t$")
 axB.set_ylabel(r"$x(t)=\sqrt{2}\,\Re\{X e^{\mathrm{j}\omega t}\}$", fontsize=9)
 
 save(fig, "phasor_unit_circle")

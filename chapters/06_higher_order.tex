@@ -12,16 +12,17 @@ and shows how pure delay and infinitely many modes extend the finite-order pictu
 
 \section{Order Is the Number of Independent Energy Stores}
 The counting rule is the same one \cref{ch:linsys} used, just not stopped at two. A
-system with \(n\) independent energy stores has \(n\) state variables, so its state
-matrix \(A\) is \(n\times n\), its characteristic polynomial
-\(\det(sI-A)\) has degree \(n\), and it therefore has exactly \(n\) poles:
+model with \(n\) independent states has an \(n\times n\) state matrix, and its
+characteristic polynomial \(\det(sI-A)\) has degree \(n\):
 \[
 \dot{\state}=A\state+Bu,
 \qquad
-\state\in\mathbb{R}^n
-\qquad\Longrightarrow\qquad
-n \text{ poles} .
+\state\in\mathbb{R}^n .
 \]
+Thus \(A\) has \(n\) eigenvalues counting algebraic multiplicity. A selected
+input--output transfer function displays all \(n\) as poles only when the
+realization is minimal; uncontrollable or unobservable modes can be hidden
+\cite[pp.~199--203, 264--266]{leigh2012control}.
 Nothing about \(n=5\) is harder than \(n=2\) in principle. Factoring a fifth-degree
 polynomial by hand is unpleasant, which is why the next section matters.
 
@@ -49,7 +50,8 @@ G(s)=K\prod_k\underbrace{\frac{1}{1+\tau_ks}}_{\text{first order}}
 \]
 An even-order system is \(n/2\) quadratic sections; an odd-order system is
 \((n-1)/2\) quadratics plus one real pole. Numerator factors add zeros; their
-filter-design role is introduced in \cref{ch:filters}.
+filter-design role is introduced in \cref{ch:filters}
+\cite[pp.~32--35, 42--44]{leigh2012control}.
 
 \begin{controlsbox}
 \textbf{Factorization makes the order readable.} A fifth-order all-pole response is
@@ -75,6 +77,7 @@ that is what logarithms do:
 \qquad
 \angle G=\angle G_1+\angle G_2 \;}
 \]
+\cite[pp.~48--61]{leigh2012control}
 \textbf{This is the reason Bode plots use decibels.} On a dB scale, cascading is
 addition. A high-order Bode plot is the sum of its sections' plots, and the sketching
 rules of \cref{ch:splane} (each pole bends the slope down by
@@ -145,6 +148,8 @@ At that frequency each stage has magnitude
 \boxed{\;K=8\quad\text{puts the poles exactly on the }\jj\omega\text{ axis at }
 \omega=\sqrt3\,\omega_0 . \;}
 \]
+This result is exact for the three identical, stable first-order lags and ordinary
+negative-feedback convention stated above.
 Below \(K=8\) the loop is stable with positive margins; above it, the pole pair is in
 the right half-plane. This single system is the one plotted three ways in
 \cref{fig:fb-margins} (\(K=3\), healthy margins),
@@ -163,10 +168,12 @@ G(s)=\ee^{-sT},
 \qquad
 \angle G(\jj\omega)=-\omega T .
 \]
+\cite[pp.~139--140]{leigh2012control}
 Interpret those two facts together: the magnitude is \emph{never} attenuated, while the
 phase lag grows \emph{without bound} and linearly in \(\omega\). So a delay crosses
 \(-180^\circ\), then \(-540^\circ\), then \(-900^\circ\), forever, always at full
-amplitude. A real delay therefore supplies whatever additional phase a loop needs;
+amplitude. A real delay can therefore supply enough additional phase for a loop to
+reach a phase crossover;
 the loop oscillates only if its remaining gain can also satisfy \(|L|=1\) at one of
 those phase crossings. This is why transport lag is the classic difficulty in process
 control. A matched transmission line (\cref{ch:lines}) supplies propagation delay;
@@ -174,15 +181,15 @@ reflections at its boundaries create the standing-wave resonances.
 
 \section{The Limit of Infinitely Many Poles}
 \label{sec:infinitepoles}
-Push the order up without bound and something qualitatively new appears. A cascade of
-\(n\) identical lags, each of time constant \(T/n\), tends to a pure delay of \(T\) as
-\(n\to\infty\)---infinitely many poles conspiring to produce exactly the
-\(\ee^{-sT}\) of the delay section. That is not an idle limit: it is what a
-transmission line \emph{is}. \Cref{ch:lines} models a line as an infinite ladder of
-infinitesimal \(L\) and \(C\) sections, finds a wave equation rather than an ODE, and
-sees the infinite family of resonances directly in the periodic poles of
-\(\tan\beta\ell\). The lumped machinery of Part~II reaches its edge there, and the
-transition is continuous.
+Push the order up without bound and something qualitatively new appears. A cascade
+of \(n\) identical lags, each with time constant \(T/n\), tends to a pure delay:
+\[
+\lim_{n\to\infty}\left(1+\frac{sT}{n}\right)^{-n}=\ee^{-sT}.
+\]
+This is a useful bridge to a \emph{matched, one-way} propagation path, but not a
+complete transmission-line model. A physical line is distributed; characteristic
+impedance, loss, dispersion, termination, and reflections determine its full
+response and any standing-wave resonances.
 
 \begin{exambox}
 The exam does not ask for fifth-order pole coordinates. It asks for the roll-off of an

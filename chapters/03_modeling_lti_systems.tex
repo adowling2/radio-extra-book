@@ -23,15 +23,19 @@ between them is the central skill of this book:
 imaginary axis.
 \end{enumerate}
 This chapter explains the first three views and their time response;
-\cref{ch:splane} considers the fourth.
+\cref{ch:splane} considers the fourth. These representations describe the same
+selected input--output behavior, but a state-space realization is not unique, and
+a frequency response presumes the stated steady-state and initial-condition
+conventions \cite[pp.~199--203, 249--266]{leigh2012control}.
 
 \begin{physicalbox}
-\textbf{Each view answers a different question.} A model is a choice of coordinates,
-not a claim about reality. The differential equation is closest to the physics. The
-state-space model exposes
-internal variables and generalizes to many inputs and outputs. The transfer
-function turns cascading and feedback into algebra. The frequency response is what
-an instrument actually measures.
+\textbf{Each view answers a different question.} A model is a choice of variables
+and coordinates, not a claim that every internal physical mode is visible at a
+selected input and output. The differential equation is closest to the chosen
+physics. State space exposes selected internal variables and generalizes to many
+inputs and outputs. A transfer function turns cascade and feedback into algebra. A
+frequency response is the steady-state sinusoidal input--output behavior estimated
+by a frequency-response measurement.
 \end{physicalbox}
 
 \begin{controlsbox}
@@ -40,11 +44,13 @@ the state-space model (zero initial conditions) and eliminating \(\state\) gives
 \[
 G(s)=C\,(sI-A)^{-1}B+D .
 \]
-The \emph{poles} of \(G\) are the eigenvalues of \(A\); they are the system's
-natural modes. Setting \(s=\jj\omega\) samples the response to a steady sinusoid
-of frequency \(\omega\). So the eigenvalues you compute for stability, the poles
-you read on an s-plane, and the peaks you see on a Bode plot are all the same
-numbers viewed differently.
+For a \emph{minimal} realization, the poles of the reduced transfer function are
+the eigenvalues of \(A\); uncontrollable or unobservable modes can otherwise be
+absent from \(G(s)\) \cite[pp.~264--266]{leigh2012control}. Setting
+\(s=\jj\omega\) gives the steady-state sinusoidal response. Pole locations set
+decay rates and characteristic frequency scales, while damping and zeros determine
+whether the Bode magnitude has a corner, a resonant peak, or a null
+\cite[pp.~42--44, 55--58]{leigh2012control}.
 \end{controlsbox}
 
 \section{Laplace Transforms and Block Diagrams}
@@ -63,6 +69,7 @@ becomes division:
 \mathcal{L}\{\ddot f\}=s^2F(s),\qquad
 \mathcal{L}\Bigl\{\textstyle\int_0^t f\,\dd t'\Bigr\}=\frac{F(s)}{s}.
 \]
+\cite[pp.~29--35]{leigh2012control}
 
 \begin{controlsbox}
 \textbf{Refresher: Laplace generalizes phasors.} The phasor substitution
@@ -92,6 +99,7 @@ path \(H\) collapses to
 G_{\mathrm{cl}}=\frac{G}{1+GH}.
 \]
 \end{description}
+\cite[pp.~32--35, 45]{leigh2012control}
 \Cref{ch:feedback} takes the third rule apart in detail; it is the one that
 changes a system's poles rather than just combining them.
 
@@ -168,7 +176,8 @@ frequency. So
 Thus, evaluate the transfer function at each harmonic, multiply that harmonic by
 the resulting complex gain, and add the outputs. Knowing \(G(\jj\omega)\) at every
 frequency determines the response because a linear system treats each frequency
-independently. That is why a Bode plot matters.
+independently. That is why a Bode plot matters
+\cite[pp.~47--48, 54--56]{leigh2012control}.
 
 \begin{physicalbox}
 \textbf{Why a square wave has only odd harmonics.} This is usually asserted; it
@@ -186,7 +195,7 @@ x(t)=\frac{4}{\pi}\left(\sin\omega_0t+\frac{\sin3\omega_0t}{3}
 +\frac{\sin5\omega_0t}{5}+\cdots\right),
 \]
 so the amplitudes fall as \(1/n\). A sawtooth has no such symmetry, and indeed it
-contains \emph{all} harmonics.
+contains \emph{all} harmonics \cite[pp.~9--12]{carr2002components}.
 
 One more reading: an envelope falling as \(1/n\) is \(-\SI{20}{\decibel}\) per
 decade---the same slope as a single pole (\cref{ch:splane}), and for a related
@@ -218,6 +227,7 @@ negative,
 \[
 s_{\text{pole}}=-\frac{1}{\tau}.
 \]
+\cite[pp.~32--37]{leigh2012control}
 
 \begin{physicalbox}
 \textbf{First-order systems are everywhere.} Anything with a single dominant
@@ -241,15 +251,15 @@ For a unit step input the output rises exponentially to its final value,
 y(t)=K\bigl(1-\ee^{-t/\tau}\bigr).
 \]
 The time constant \(\tau\) is the natural clock of the system:
-after one \(\tau\) the response has covered \(1-\ee^{-1}\approx 63.2\%\) of the
-way, and after about \(5\tau\) it is settled for practical purposes
-(\cref{fig:step1}).
+after one \(\tau\) the response has covered \(1-\ee^{-1}\approx63.2\%\) of the
+way, and after \(5\tau\) it has covered \(1-\ee^{-5}\approx99.3\%\)
+\cite[pp.~32--37]{leigh2012control} (\cref{fig:step1}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.82\textwidth]{step_first_order}
 \caption{First-order step response. One time constant reaches \(63.2\%\); five
-time constants are effectively settled.}
+time constants reach \(99.3\%\), leaving a \(0.67\%\) residual.}
 \label{fig:step1}
 \end{figure}
 
@@ -282,13 +292,14 @@ same information as the \textbf{quality factor}
 Q=\frac{1}{2\zeta},
 \]
 so a lightly damped, high-\(Q\) resonator and an underdamped control system are
-the same object described in two vocabularies. Physically, \(Q\) counts stored
-energy against energy lost per cycle,
+the same object described in two vocabularies. For a lightly damped resonator,
+\(Q\) also has the approximate energy interpretation
 \[
-Q=2\pi\,\frac{\text{energy stored}}{\text{energy lost per cycle}},
+Q\approx2\pi\,\frac{\text{energy stored}}{\text{energy lost per cycle}},
 \]
-which is why a high-\(Q\) system rings for many cycles before its oscillation dies
-away. We use \(\zeta\) when describing damping and \(Q\) when describing
+with the stored-energy convention stated for the resonator. This high-\(Q\)
+interpretation explains why a low-loss resonator rings for many cycles. We use
+\(\zeta\) when describing damping and \(Q\) when describing
 sharpness; for this standard second-order form, they represent the same behavior.
 
 Applying the Laplace transform as before, with \(\dd^2/\dd t^2\to s^2\),
@@ -316,7 +327,8 @@ s=-\zeta\omega_0\pm\jj\,\omega_0\sqrt{1-\zeta^2}
 \]
 where \(\omega_d=\omega_0\sqrt{1-\zeta^2}\) is the \textbf{damped natural
 frequency}. \Cref{ch:splane} plots where these poles sit and what that does to
-the frequency response; here we focus on their time-domain behavior.
+the frequency response; here we focus on their time-domain behavior
+\cite[pp.~42--44, 57--58]{leigh2012control}.
 
 \begin{physicalbox}
 \textbf{Second-order systems are everywhere.} Two coupled energy stores that
@@ -341,9 +353,13 @@ oscillation, sluggish approach.
 \item[\(\zeta=1\) critically damped] the two poles coincide at \(-\omega_0\):
 the fastest approach without overshoot.
 \item[\(\zeta<1\) underdamped] the poles are a complex pair: overshoot and
-ringing, for roughly \(Q\) cycles---made precise in \cref{sec:ringdown}, where the
-time constant turns out to be \(Q/\pi\) cycles and \(Q\) cycles is the ring carried to
-\SI{4.3}{\percent}.
+ringing. The amplitude-envelope time constant, expressed in damped cycles, is
+\[
+N_\tau=\frac{\sqrt{1-\zeta^2}}{2\pi\zeta}
+=\frac{Q}{\pi}\sqrt{1-\frac{1}{4Q^2}},
+\]
+which approaches \(Q/\pi\) cycles at high \(Q\). After \(Q\) cycles the high-\(Q\)
+envelope is approximately \(\ee^{-\pi}=4.3\%\) of its initial value.
 \end{description}
 
 \subsection{Damping You Can See}
@@ -354,6 +370,7 @@ overshoot of an underdamped step is
 \[
 M_p=\exp\!\left(\frac{-\pi\zeta}{\sqrt{1-\zeta^2}}\right).
 \]
+\cite[pp.~42--44, 57--58]{leigh2012control}
 
 \begin{figure}[htbp]
 \centering

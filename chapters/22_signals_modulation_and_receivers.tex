@@ -33,6 +33,9 @@ power is \(P_c\); each sideband has power \(m^2P_c/4\), so
 At \(m=1\), the sidebands together carry one third of the transmitted power.
 Overmodulation, \(m>1\), makes the envelope cross zero and an envelope detector
 can no longer recover the original message without distortion.
+The carrier/sideband expansion, twice-audio occupied bandwidth, and one-third total
+sideband power at 100 percent sinusoidal modulation are treated in
+\cite[pp.~185--192]{carr2002components}.
 
 \section{SSB, Frequency Modulation, and Phase Modulation}
 \label{sec:anglemod}
@@ -41,6 +44,8 @@ the message bandwidth rather than twice the message bandwidth, and it does not
 spend transmitter power on an uninformative carrier.  A receiver restores a
 local carrier with a product detector; the mixer sum and difference terms of
 \cref{sec:mixers} bring the selected sideband back to audio.
+Suppressing the carrier and one sideband produces the corresponding bandwidth and
+power economy \cite[pp.~191--192]{carr2002components}.
 
 Frequency and phase modulation keep the carrier amplitude nearly constant and
 put information into its angle.  A single-tone FM signal is
@@ -88,6 +93,9 @@ f_{\rm LO}=f_{\rm RF}+f_{\rm IF},\qquad
 An RF preselector must reject that image before the mixer, because after mixing
 the wanted signal and image occupy the same IF and no later filter can tell them
 apart.
+The fixed-IF superheterodyne arrangement and the need to reject image responses before
+they reach the IF chain are discussed in
+\cite[pp.~123--125]{logvinov2022receivers}.
 
 The resulting signal path is a sequence of models already developed in this book:
 \[
@@ -98,9 +106,12 @@ The resulting signal path is a sequence of models already developed in this book
 The preselector trades bandwidth against image rejection and strong-signal
 protection.  The first low-noise stage matters because of Friis's formula
 (\cref{sec:friis}); the IF filter sets both adjacent-signal rejection and much of
-the noise bandwidth (\cref{sec:noisebw}).  A direct-conversion or software-defined
-receiver simply moves the translation and filtering into quadrature baseband and
-digital processing; sampling still replicates spectra exactly as in \cref{ch:dsp}.
+the noise bandwidth (\cref{sec:noisebw}). Direct-conversion receivers translate RF
+into analog in-phase and quadrature baseband; software-defined architectures digitize
+at different points and perform some or most subsequent filtering numerically. The
+precise boundary is architecture-dependent, while every sampling stage still obeys
+the aliasing constraints of \cref{ch:dsp}
+\cite[pp.~23--26]{giannini2008baseband}.
 
 \begin{workedbox}[: one AM signal through a receiver]
 An AM station at \SI{14.200}{\mega\hertz} carries a \SI{1}{\kilo\hertz} tone.

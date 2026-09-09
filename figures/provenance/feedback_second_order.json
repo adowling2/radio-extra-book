@@ -8,9 +8,9 @@
     6.6,
     3.0
   ],
-  "created": "2026-09-05T00:24:15-04:00",
-  "python": "3.12.2",
-  "matplotlib": "3.11.0",
-  "git_commit": "ab83e373814d1c19c3ba0d2e9375858f08ed87de",
+  "created": "2026-09-09T00:59:12-04:00",
+  "python": "3.9.12",
+  "matplotlib": "3.5.1",
+  "git_commit": "4f4100a00e1200ce2300581f247b59fe5ad40a26",
   "git_dirty": true
 }

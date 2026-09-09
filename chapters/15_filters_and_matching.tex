@@ -52,6 +52,8 @@ Together they provide a \emph{corner frequency} set by reactance, a
 \emph{roll-off rate} set by pole count, and, above first order, \emph{peaking}
 set by damping. \Cref{sec:filterspecs} translates those choices into data-sheet
 specifications.
+The standard response types and their resonant-circuit origins are summarized in
+\cite[pp.~37--45]{bowick2008rfcircuit}.
 
 \section{Order, Energy Stores, and Roll-Off}
 Filter order counts poles. In the lumped passive models used here, each independent
@@ -81,7 +83,8 @@ circuit at resonance, again blocking one frequency. Wherever the exam describes 
 trap, a wave trap, or a notch rejecting a specific frequency, a zero has been
 parked at that frequency (\cref{fig:pz-notch} in \cref{ch:splane} shows the
 pole--zero picture). The elliptic family below uses exactly this---stopband
-\(\jj\omega\)-axis zeros---to sharpen its skirts.
+\(\jj\omega\)-axis zeros---to sharpen its skirts
+\cite[pp.~209--220]{free2022rfmicrowave}.
 
 \section{Designing and Tuning a Filter}
 Turn the derivation around and you have the design procedure. A filter is
@@ -226,7 +229,7 @@ of \cref{ch:active}: an order-5 Butterworth is two Sallen--Key stages with
 ellipse pushed closer to the \(\jj\omega\) axis, raising every section's \(Q\). The
 result is a sharper transition at the price of passband ripple and worse transient
 behavior, which is predictable because higher \(Q\) means more ringing
-(\cref{ch:linsys}).
+(\cref{ch:linsys}) \cite[pp.~209--220]{free2022rfmicrowave}.
 
 \section{Phase Delay, Group Delay, and Waveform Fidelity}
 \label{sec:groupdelay}
@@ -251,7 +254,8 @@ model.
 Group delays add across a cascade because phases do. Bessel filters place poles to
 flatten \(\tau_g\) near the passband origin, accepting a gentle amplitude roll-off.
 Chebyshev filters sit at the opposite corner: their high-\(Q\) sections make
-\(\tau_g\) peak near cutoff, so a pulse rings and spreads.
+\(\tau_g\) peak near cutoff, so a pulse rings and spreads
+\cite[pp.~6, 209--211]{free2022rfmicrowave}.
 
 \begin{physicalbox}
 \textbf{Choose the filter for the signal.} For a narrow single-sideband (SSB) or
@@ -289,8 +293,8 @@ Specification & What it measures on \(|G(\jj\omega)|\) \\
 Cutoff frequency & The \(-\SI{3}{\decibel}\) (half-power) edge of the passband. For a band-pass, there are two, and their separation is the bandwidth. \\
 Insertion loss & Attenuation \emph{inside} the passband---what the filter costs you on the signal you wanted. Ideally \SI{0}{\decibel}; real components make it a fraction of a decibel to a few decibels. Measured as \(-20\log_{10}|S_{21}|\) (\cref{sec:sparams}), which is what a network analyzer plots (\cref{sec:vna}). \\
 Ripple & Peak-to-peak variation within the passband: zero for Butterworth, a design choice for Chebyshev and elliptic. \\
-Ultimate rejection & The attenuation floor far into the stopband. Poles give slope forever in theory, but stray coupling around the filter sets a real-world limit---often \SI{60}{\decibel} to \SI{100}{\decibel}. \\
-Noise bandwidth & The width of the ideal rectangular filter passing the same noise, \(B_n=\int|H|^2\dd f/|H|^2_{\max}\). Always \emph{wider} than the \(-\SI{3}{\decibel}\) figure---by \SI{1.96}{\decibel} for one pole---because the skirts admit noise the nameplate ignores (\cref{sec:noisebw}). \\
+Ultimate rejection & The attenuation floor far into the stopband. Ideal poles give continuing asymptotic slope, while stray coupling around a physical filter eventually sets a construction-dependent floor. \\
+Noise bandwidth & The width of the ideal rectangular filter passing the same noise, \(B_n=\int|H|^2\dd f/|H|^2_{\max}\). For the standard monotone all-pole low-pass families used here it exceeds the \(-\SI{3}{\decibel}\) bandwidth; for one pole the ratio is \(\pi/2\), or \SI{1.96}{\decibel}. This is not a universal ordering for arbitrary transfer functions (\cref{sec:noisebw}). \\
 Shape factor & The ratio of the stopband width to the passband width, conventionally \(\SI{-60}{\decibel}\) bandwidth divided by \(\SI{-6}{\decibel}\) bandwidth. It is one number for skirt steepness: \(1.0\) would be a brick wall, and smaller is sharper. \\
 \bottomrule
 \end{tabularx}
@@ -326,7 +330,8 @@ just the resistance fraction, \(Q_L/Q_U=r/(R_s+R_L+r)\), so
 Interpret it as a warning about ratios, not about resistances. Loss is negligible while
 \(Q_L\ll Q_U\)---you are loading the resonator far more heavily than its own losses
 do---and it runs away as \(Q_L\) approaches \(Q_U\). A filter costs
-\SI{0.4}{\decibel} at \(Q_L/Q_U=1/20\) but \SI{3.5}{\decibel} at \(1/3\).
+\SI{0.4}{\decibel} at \(Q_L/Q_U=1/20\) but \SI{3.5}{\decibel} at \(1/3\)
+\cite[pp.~27--30]{bowick2008rfcircuit}.
 
 \begin{physicalbox}
 \textbf{Why a duplexer needs cavities.} A repeater duplexer must pass one frequency
@@ -335,9 +340,11 @@ through the pass path. Narrow rejection demands a high \emph{loaded} \(Q\). But 
 formula says the insertion loss depends on \(Q_L/Q_U\), so a high \(Q_L\) is only
 affordable if \(Q_U\) is enormously higher still---and a wound coil's \(Q\) of a few
 hundred cannot supply that. A quarter-wave cavity resonator reaches \(Q_U\) in the
-thousands, which is the only way to buy the selectivity at a fraction of a decibel.
-The cavities are not there for power handling; they are there because \(Q_U\) is the
-denominator.
+thousands, making narrow selectivity affordable at low insertion loss. High \(Q_U\)
+is the principal point of the cavity in this argument; its physical construction may
+also provide useful voltage, current, and thermal margins. The insertion-loss
+conclusion follows from the \(Q_L/Q_U\) ratio, not from a claim that power handling is
+irrelevant \cite[pp.~187--220]{weber2001microwave}.
 \end{physicalbox}
 
 \subsection{How Narrow Is Too Narrow: Ring-Down}
@@ -364,6 +371,8 @@ Second, for this isolated resonant pole pair, substitute
 \[
 \boxed{\;\tau=\frac{1}{\pi\,BW}\;}
 \]
+This result is the time-domain form of the resonator quality factor
+\cite[pp.~187--191]{weber2001microwave}.
 \emph{This resonator's \(1/\ee\) amplitude-decay time depends only on its
 half-power bandwidth}, not on its center frequency. A single resonator with a
 \SI{500}{\hertz} bandwidth rings for \SI{0.64}{\milli\second} whether it is at
@@ -450,7 +459,7 @@ fixed once the resistances are chosen, a restatement of
 This \(Q\) is the branch \(Q\) of the network's own series arm, the same
 \(X/R\) ratio as everywhere else in the book; what makes it a \emph{network} \(Q\)
 rather than a resonator's is that the \(R\) is a termination you chose, not a loss you
-are stuck with.
+are stuck with \cite[pp.~63--68]{bowick2008rfcircuit}.
 \Cref{sec:antennamatches} shows that the matching schemes antenna work calls by
 name---hairpin, gamma, delta, stub---are all this one network with its two reactances
 built out of antenna hardware.
@@ -538,7 +547,7 @@ statement about how far the poles sit from the \(\jj\omega\) axis and not about
 wiring. This is why transmitter output and antenna-tuner networks are
 usually \(\pi\) or T: they match \emph{and} set selectivity. Higher loaded \(Q\)
 narrows bandwidth and improves harmonic suppression at the cost of higher
-circulating currents and losses.
+circulating currents and losses \cite[pp.~46--49]{davis2011rfcircuit}.
 
 \begin{mistakebox}
 Matching is not the same thing as filtering. A network can do both, but the
@@ -556,6 +565,8 @@ For an ideal transformer (\cref{fig:transformer}),
 \qquad
 Z_p=\left(\frac{N_p}{N_s}\right)^2 Z_s.
 \]
+These ideal relations and their RF implementation are reviewed in
+\cite[pp.~131--143]{davis2011rfcircuit}.
 
 \begin{figure}[htbp]
 \centering
@@ -622,6 +633,9 @@ X_{\text{series}}=1.73\times50\approx\SI{87}{\ohm},
 \qquad
 X_{\text{shunt}}=\frac{200}{1.73}\approx\SI{116}{\ohm}.
 \]
-Both realize the match; the quarter-wave version needs a line one quarter
-wavelength long at the design frequency, while the L-network is lumped and
-narrower band.
+Both realize the match. The quarter-wave version needs a line one quarter wavelength
+long at the design frequency, whereas the L-network is lumped and can be made from
+discrete reactances. Neither topology is universally narrower-band: a bandwidth
+comparison requires a specified return-loss criterion, impedance ratio, component
+losses, and implementation \cite[pp.~63--68]{bowick2008rfcircuit}
+\cite[pp.~63--64]{free2022rfmicrowave}.

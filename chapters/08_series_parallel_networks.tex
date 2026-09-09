@@ -88,6 +88,8 @@ Capacitors \(C\) & \(1/C_{\mathrm{eq}}=\sum_k 1/C_k\) & \(C_{\mathrm{eq}}=\sum_k
 \bottomrule
 \end{tabularx}
 \end{center}
+The same rules follow in sinusoidal steady state by adding series impedances or
+parallel admittances \cite[pp.~28--32]{white2004highfrequency}.
 
 \begin{workedbox}[: combining reactive parts]
 Two \(\SI{220}{\pico\farad}\) capacitors in series give
@@ -160,33 +162,30 @@ different load or stage is connected without re-analyzing the whole circuit.
       to[short,-o] (4,2);
 \draw (0,0) -- (3,0) to[short,-o] (4,0);
 \node at (4.8,1) {\(\Longleftrightarrow\)};
-\draw (6,0) -- (6,2);
-\draw (6,0) to[I,l_=\(I_N\)] (6,2);
-\draw (6,2) to[R,l=\(R_N\)] (9,2) -- (9,0) -- (6,0);
-\draw (9,2) to[short,-o] (10,2);
-\draw (9,0) to[short,-o] (10,0);
+\draw (6,0) to[I,l_=\(I_N\)] (6,2) -- (9,2) to[short,-o] (10,2);
+\draw (6,0) -- (9,0) to[short,-o] (10,0);
+\draw (8,2) to[R,l=\(R_N\)] (8,0);
 \end{circuitikz}
 \caption{Equivalent Thevenin and Norton one-port descriptions.}
 \label{fig:thevenin}
 \end{figure}
 
 \section{Power Transfer and Matching}
-For a purely resistive Thevenin source, maximum power reaches the load when
+For a purely resistive Thevenin source, maximum load power occurs when
 \[
 R_L=R_{Th},
 \]
-and for complex impedances (developed in \cref{ch:ac}) the maximum-real-power
-condition is the conjugate match \(Z_L=Z_S^{*}\). This is why RF systems are built
-around a common reference
-impedance: matching the source, line, load, and instruments to (typically)
-\(\SI{50}{\ohm}\) delivers the most power to the antenna and, as \cref{ch:lines}
-shows, minimizes reflections on the feed line.
+For complex impedances, the maximum-real-power condition is
+\(Z_L=Z_S^{*}\) \cite[pp.~39--40]{white2004highfrequency}. A separate
+transmission-line condition minimizes reflection: the load equals the line's
+characteristic impedance. In a conventional resistive \(\SI{50}{\ohm}\) system
+these conditions are coordinated, but source conjugate matching and line/load
+matching remain distinct concepts.
 
 \begin{exambox}
-\(\SI{50}{\ohm}\) is a design convention, not a law of nature. Matching means the
-system has been arranged so sources, lines, loads, and measuring instruments
-interact predictably---maximum power transfer and minimum reflection---not that
-every impedance is \(\SI{50}{\ohm}\).
+\(\SI{50}{\ohm}\) is a design convention. Maximum available-power transfer
+concerns conjugate source/load impedances; minimum line reflection concerns
+equality between load and characteristic impedance.
 \end{exambox}
 
 \section{Worked Example}

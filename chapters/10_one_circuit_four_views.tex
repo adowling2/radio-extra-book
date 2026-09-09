@@ -12,10 +12,12 @@ A circuit can be understood through:
 \item a \textbf{physical network} governed by conservation laws (KCL, KVL) and
 element laws;
 \item a \textbf{differential equation} in the natural energy-storage variables;
-\item a \textbf{state-space model} whose eigenvalues are the circuit's poles;
+\item a \textbf{state-space model}, whose eigenvalues equal the transfer-function
+poles when the selected realization is minimal;
 \item a \textbf{phasor / frequency-response model}, the transfer function on the
 \(\jj\omega\) axis.
 \end{enumerate}
+\cite[pp.~199--203, 249--266]{leigh2012control}
 A fifth lens is \textbf{energy} storage and dissipation. The views are
 complementary: each makes a different feature of
 the circuit obvious, and together they describe one consistent object. When a
@@ -28,10 +30,11 @@ The next chapters each apply the following recipe to specific circuits:
 \item draw the schematic and name the state variables (capacitor voltages,
 inductor currents);
 \item apply KVL/KCL and the element laws to get the differential equation;
-\item write the state-space model and identify the poles;
-\item \textbf{match it to the generic first- or second-order system of
-\cref{ch:linsys}}: identify \(\tau\), or \(\omega_0\) and \(\zeta\), so all of
-Part~II's results apply at once;
+\item write the state-space model, distinguish its eigenvalues from poles visible
+at the selected input/output, and identify when the realization is minimal;
+\item match the characteristic denominator to the generic first- or second-order
+system of \cref{ch:linsys}, identifying \(\tau\), or \(\omega_0\) and \(\zeta\);
+then derive the numerator for the chosen source and output;
 \item interpret the frequency response (Bode) and the pole motion (root locus);
 \item close with the energy balance and a worked example.
 \end{enumerate}
@@ -42,25 +45,31 @@ resistors dissipate energy but do not raise the order. Thus a circuit with one
 independent energy store is first order, and one with two is second order. Four
 circuits carry most of the exam's analog content:
 
+The table maps each circuit's \emph{characteristic dynamics}. A complete transfer
+function also requires a specified source and output; those choices set the
+numerator and forcing term.
+
 \begin{center}
 \begin{tabularx}{\textwidth}{@{}L{0.15\textwidth}L{0.19\textwidth}L{0.24\textwidth}Y@{}}
 \toprule
 Circuit & Order / state(s) & Generic system & Key parameters \\
 \midrule
-Series RC & first / \(v_C\) & \(\tau\dot y+y=Ku\) & \(\tau=RC\), pole \(-1/RC\) \\
-Series RL & first / \(i_L\) & \(\tau\dot y+y=Ku\) & \(\tau=L/R\), pole \(-R/L\) \\
-Series RLC & second / \(v_C,i_L\) & \(\ddot y+2\zeta\omega_0\dot y+\omega_0^2 y=\omega_0^2u\) & \(\omega_0=\tfrac{1}{\sqrt{LC}}\), \(\zeta=\tfrac{R}{2}\sqrt{C/L}\) \\
-Parallel RLC & second / \(v,i_L\) & same standard form & \(\omega_0=\tfrac{1}{\sqrt{LC}}\), \(\zeta=\tfrac{1}{2R}\sqrt{L/C}\) \\
+Series RC & first / \(v_C\) & first-order characteristic denominator & \(\tau=RC\), pole \(-1/RC\) \\
+Series RL & first / \(i_L\) & first-order characteristic denominator & \(\tau=L/R\), pole \(-R/L\) \\
+Series RLC & second / \(v_C,i_L\) & second-order characteristic denominator & \(\omega_0=\tfrac{1}{\sqrt{LC}}\), \(\zeta=\tfrac{R}{2}\sqrt{C/L}\) \\
+Parallel RLC & second / \(v,i_L\) & second-order characteristic denominator & \(\omega_0=\tfrac{1}{\sqrt{LC}}\), \(\zeta=\tfrac{1}{2R}\sqrt{L/C}\) \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-Once a circuit is matched to its row, the results from \cref{ch:linsys} transfer
-directly: step response, time constant or damping ratio, pole geometry, resonant
-peak, and root locus. More independent energy stores give a higher-order
-lumped system; the state variables remain the corresponding capacitor voltages and
-inductor currents.
+Once a circuit is matched to its characteristic row, the Part~II time,
+pole-geometry, and frequency results can be specialized to the selected input and
+output. After topology and algebraic constraints are accounted for, additional
+independent capacitor voltages and inductor currents increase physical state order.
+A particular transfer function can expose fewer poles if modes are uncontrollable
+or unobservable at that port
+\cite[pp.~199--203, 264--266]{leigh2012control}.
 
-For stable all-pole higher-order lumped circuits, the factorization in
+For stable, minimal, all-pole higher-order lumped circuits, the factorization in
 \cref{ch:highorder} organizes those states into first- and second-order sections.
 A transmission line is instead a distributed model, developed in \cref{ch:lines}.

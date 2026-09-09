@@ -128,7 +128,8 @@ Z=R+\jj\left(\omega L-\frac{1}{\omega C}\right).
 \]
 At \(\omega=\omega_0\) the reactances cancel, \(Z=R\) is purely resistive, and the
 current is maximum for a fixed applied voltage. The reactive voltages across \(L\)
-and \(C\) individually can then exceed the source voltage by a factor of \(Q\).
+and \(C\) individually can then exceed the source voltage by a factor of \(Q\)
+\cite[pp.~59--63]{white2004highfrequency}.
 
 \section{Q and Bandwidth}
 \label{sec:halfpower}
@@ -185,7 +186,8 @@ BW=\frac{f_0}{Q}
 \]
 with no approximation anywhere in the argument. Solving the same quadratic gives the
 edges themselves,
-\(r=\tfrac{1}{2Q}+\sqrt{1+1/4Q^2}\).
+\(r=\tfrac{1}{2Q}+\sqrt{1+1/4Q^2}\)
+\cite[pp.~23--29]{bowick2008rfcircuit}.
 
 The two results also say how wrong it is to center a band arithmetically. Since
 \(r+1/r=\sqrt{(r-1/r)^2+4}\),
@@ -240,7 +242,8 @@ sloppiness---it is about which variable you called the output.
 Do not carry one topology's \(Q\) into another, and keep the three straight:
 \emph{loaded} \(Q\) includes source and load coupling; \emph{unloaded} \(Q\)
 describes the resonator's own internal losses; \emph{component} \(Q\) describes the
-loss of one inductor or capacitor. They answer different questions.
+loss of one inductor or capacitor. They answer different questions
+\cite[pp.~27--30]{bowick2008rfcircuit}.
 \end{mistakebox}
 
 \begin{workedbox}[: the voltage magnification is real]
@@ -346,7 +349,7 @@ The inductor and capacitor trade energy back and forth at \(\omega_0\); the resi
 is the only drain. High \(Q\) means little is lost per cycle, so the exchange rings
 for many cycles. This time-domain behavior is why
 \(Q=2\pi\times\)(stored)/(lost per cycle) remains the useful definition across
-topologies (\cref{ch:rlcpar}).
+topologies (\cref{ch:rlcpar}) \cite[pp.~187--191]{weber2001microwave}.
 \end{energybox}
 
 \begin{controlsbox}

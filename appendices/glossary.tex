@@ -1,13 +1,14 @@
 \chapter{Glossary}
 \label{app:glossary}
 One-line definitions for quick lookup. Each term is developed properly in the chapter
-that introduces it; the formula index (\cref{app:formulas}) says where.
+that introduces it; the formula index (\cref{app:formulas}) says where. Pinpoint
+literature citations appear in those derivation sections.
 
 \begin{description}
 \item[Admittance] Reciprocal impedance, \(Y=1/Z\), measured in siemens.
 \item[Aliasing] Folding of frequencies above half the sampling rate down onto lower ones; prevented by an anti-aliasing low-pass filter ahead of the converter.
 \item[Bandwidth] Frequency span over which a circuit meets a stated response criterion.
-\item[Barkhausen criterion] Oscillation condition \(L=-1\): \(|L|=1\) with \(\angle L=-180^\circ\).
+\item[Barkhausen criterion] Linear marginal/startup condition \(L=-1\) in the feedback convention used here: \(|L|=1\) with \(\angle L=-180^\circ\). A physical oscillator's steady amplitude requires nonlinear limiting.
 \item[Bode plot] Magnitude and phase of a frequency response versus logarithmic frequency.
 \item[Butterworth] Filter family whose poles sit equally spaced on a semicircle, giving a maximally flat passband.
 \item[Characteristic impedance] Traveling-wave voltage/current ratio on a transmission line, \(Z_0=\sqrt{L'/C'}\) when lossless.
@@ -18,13 +19,13 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Decimation] Reducing the sample rate by keeping every \(M\)th sample; requires an anti-aliasing filter \emph{first}, because it lowers the Nyquist frequency.
 \item[Dither] Small deliberate noise added before quantization so the error behaves as random noise rather than a signal-dependent pattern, allowing averaging to recover resolution.
 \item[Dynamic range] Span between the weakest usable signal and the strongest tolerable one. \emph{Blocking} dynamic range uses the \SI{1}{\decibel} compression point; \emph{intermodulation} dynamic range (DR3) uses the third-order products and carries a factor \(\tfrac23\).
-\item[FIR] Finite impulse response: a digital filter with no feedback. Symmetric coefficients give exactly constant group delay, hence exactly linear phase.
+\item[FIR] Finite impulse response: a digital filter with no feedback. Symmetric coefficients give generalized linear phase and constant group delay on intervals where the response is nonzero.
 \item[Friis's formula] Noise figure of a cascade, \(F=F_1+(F_2-1)/G_1+\cdots\); each stage is discounted by the gain ahead of it, so the first stage dominates.
 \item[Gain margin] How far below \(\SI{0}{\decibel}\) the loop gain sits where its phase reaches \(-180^\circ\).
 \item[Gain--bandwidth product] Constant product of closed-loop gain and bandwidth for a single-pole amplifier.
 \item[Group delay] \(\tau_g=-\dd\phi/\dd\omega\), the delay experienced by a signal's envelope. Constant \(\tau_g\) is \emph{linear phase}; undistorted waveforms also require flat magnitude over the occupied band.
-\item[IIR] Infinite impulse response: a recursive digital filter. Having poles makes it efficient but not linear phase.
-\item[Image] The unwanted input frequency that mixes to the same intermediate frequency as the wanted one, lying \(2\times\) the IF away; rejectable only before the mixer.
+\item[IIR] Infinite impulse response: a recursive digital filter whose response to a finite input can decay indefinitely. Poles provide efficient realizations for many conventional specifications but do not by themselves determine every phase trade-off.
+\item[Image] An unwanted input frequency that mixes to the same intermediate frequency as the wanted one. In an ordinary single-conversion high- or low-side arrangement it lies \(2\times\) the IF away and must be rejected before the mixer.
 \item[Impedance] Complex ratio \(Z=V/I\) for sinusoidal steady state.
 \item[Insertion loss] Attenuation a filter imposes inside its own passband.
 \item[Intercept point] Extrapolated level at which a distortion product would equal the wanted signal. A linearity coefficient expressed as a power, not an achievable operating point.
@@ -32,14 +33,14 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Loaded Q] Quality factor including external loading or coupling.
 \item[Lock range] How far a phase-locked loop can hold lock once acquired, set by the phase detector's usable span and the DC loop gain. Wider than the \emph{capture} range, which additionally requires the beat note to fall inside the loop filter's passband.
 \item[Loop gain] Gain around an opened feedback loop, \(L=A\beta\); sets stability and how insensitive the closed loop is to changes in the forward path. (Not to be confused with receiver \emph{desensitization}, an unrelated exam term meaning loss of sensitivity caused by a strong nearby signal.)
-\item[MDS] Minimum discernible signal: the input level arriving at the same strength as the noise, i.e.\ \(\mathrm{SNR}=\SI{0}{\decibel}\).
+\item[MDS] Minimum discernible signal: under this book's convention, the input level equal to the integrated receiver noise, i.e.\ \(\mathrm{SNR}=\SI{0}{\decibel}\). Other sensitivity specifications use different detectors and required signal-to-noise ratios.
 \item[Neutralization] Deliberate cancellation of an amplifier's internal feedback path (usually a device capacitance) to stop self-oscillation.
-\item[Noise bandwidth] Width of the ideal rectangular filter passing the same noise as the real one; always wider than the \(-\SI{3}{\decibel}\) bandwidth.
+\item[Noise bandwidth] Width of the ideal rectangular filter passing the same noise as the real one. It exceeds the \(-\SI{3}{\decibel}\) bandwidth for the standard monotone all-pole low-pass families used here, but not for every possible response.
 \item[Noise figure] Factor by which a stage degrades the signal-to-noise ratio, \(F=1+T_e/T_0\). Added in decibels to the thermal floor.
 \item[Nyquist frequency] Half the sampling rate, \(f_s/2\); the frequency about which aliased components fold.
 \item[Nyquist plot] Loop gain \(L(\jj\omega)\) drawn in the complex plane, on which both stability margins are clearances from the point \(-1\). Unrelated to the Nyquist \emph{sampling} theorem.
 \item[Phase margin] Amount by which loop phase exceeds \(-180^\circ\) at unity loop gain.
-\item[Phase noise] Random phase disturbance of an oscillator, appearing as skirts beside the carrier and quoted in dBc/Hz. Scales as \(1/Q_L^2\).
+\item[Phase noise] Random phase disturbance of an oscillator, appearing as skirts beside the carrier and quoted in dBc/Hz. Its resonator-filtered Leeson region scales as \(1/Q_L^2\); other offset regions have other limits.
 \item[Phase-locked loop] Servo loop of phase detector, loop filter and voltage-controlled oscillator. The VCO integrates frequency into phase, so the loop always contains a free \(1/s\).
 \item[Phasor] Complex representation of sinusoidal magnitude and phase.
 \item[Pole] Root of a transfer-function denominator; equivalently an eigenvalue and a natural mode.
@@ -54,7 +55,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[RMS] Root mean square: the constant value that would dissipate the same average power in a resistor. For a sinusoid, \(V_{\RMS}=V_p/\sqrt2\).
 \item[Roll-off] Rate at which a response falls past its passband, quoted in decibels per decade or octave.
 \item[Root locus] Path traced by the poles as a parameter (e.g.\ \(R\) or feedback) varies.
-\item[Sampling theorem] A signal must be sampled faster than twice its highest frequency, \(f_s>2f_{\max}\), or aliasing results.
+\item[Sampling theorem] A strictly band-limited signal must be sampled faster than twice its highest frequency, \(f_s>2f_{\max}\), to avoid overlap; practical anti-alias filters require transition margin.
 \item[Self-resonant frequency] Lossless-model frequency at which a real component resonates with its own parasitic reactance; losses shift the exact impedance and \(Q\) behavior. Above it the part often behaves as its opposite type.
 \item[Skin effect] Confinement of high-frequency current to a conductor's outer layer of thickness \(\delta=\sqrt{2/(\omega\mu\sigma)}\), raising AC resistance as \(\sqrt f\).
 \item[Smith chart] The M\"obius map \(\Gamma=(z-1)/(z+1)\) drawn as a chart, turning impedance grid lines into circles and line length into rotation.
@@ -62,7 +63,7 @@ that introduces it; the formula index (\cref{app:formulas}) says where.
 \item[Stub] Short length of deliberately unterminated line used as a reactance or resonator.
 \item[Susceptance] Imaginary part of admittance, \(B\); for a pure reactance \(B=-1/X\).
 \item[SWR] Standing-wave ratio, \((1+|\Gamma|)/(1-|\Gamma|)\); 1 means a perfect match.
-\item[Thermal noise] Noise from thermal motion of charge carriers; available power \(kTB\), i.e.\ \SI{-174}{dBm} per hertz at room temperature.
+\item[Thermal noise] Noise from thermal motion of charge carriers; available power \(kTB\), i.e.\ approximately \SI{-174}{dBm} per hertz for a matched source at \SI{290}{\kelvin}.
 \item[Ultimate rejection] The stopband attenuation floor a filter reaches far from its passband.
 \item[Unloaded Q] Quality factor due to internal resonator loss alone.
 \item[VCO] Voltage-controlled oscillator: frequency proportional to control voltage, hence an integrator in phase.

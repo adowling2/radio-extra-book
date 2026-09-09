@@ -24,9 +24,10 @@ delivers:
 =\frac{R_{\mathrm{in}}}{R_{\mathrm{in}}+R_{Th}} .
 \]
 Nothing about this is specific to meters---it is \cref{ch:resistive}'s voltage
-divider with the instrument playing the role of the lower resistor. The reading is
-always \emph{low}, and the error is negligible only when
-\(R_{\mathrm{in}}\gg R_{Th}\).
+divider with the instrument playing the role of the lower resistor. For this passive
+resistive Th\'evenin model, the meter makes the reading low, and the error is negligible
+only when \(R_{\mathrm{in}}\gg R_{Th}\). Reactive or active nodes require the
+corresponding impedance model and need not obey that simple one-direction error statement.
 
 \begin{workedbox}[: how much does the meter disturb?]
 Take the divider of \cref{ch:resistive}, whose Th\'evenin resistance was
@@ -53,14 +54,14 @@ digital meter is \emph{also} wrong by \SI{9}{\percent}---enough to condemn a wor
 circuit.
 \end{workedbox}
 
-An ammeter is the exact dual. It goes \emph{in series}, so its shunt resistance
-\(R_{\text{shunt}}\) adds to the loop and reduces the very current it reports:
+An ammeter goes \emph{in series}. Its internal or burden resistance
+\(R_{\mathrm{A}}\) adds to the loop and reduces the current it reports:
 \[
 \frac{I_{\text{meas}}}{I_{\text{true}}}
-=\frac{R_{\text{loop}}}{R_{\text{loop}}+R_{\text{shunt}}} ,
+=\frac{R_{\text{loop}}}{R_{\text{loop}}+R_{\mathrm{A}}} ,
 \]
-which again reads low, and is negligible only when
-\(R_{\text{shunt}}\ll R_{\text{loop}}\). A \SI{5}{\ohm} shunt inserted into a
+which again reads low in this passive resistive model, and loading is negligible only
+when \(R_{\mathrm{A}}\ll R_{\text{loop}}\). A \SI{5}{\ohm} resistance inserted into a
 \SI{50}{\ohm} loop costs \SI{9}{\percent} of the current.
 
 \begin{mistakebox}
@@ -124,10 +125,16 @@ points in the input cycle. That produces an error of \(1/T_{\text{gate}}\) in he
 \emph{independent of the frequency measured}. The gate time comes from the instrument's
 own timebase oscillator, whose fractional error multiplies the reading:
 \[
-\Delta f\approx\underbrace{\frac{1}{T_{\text{gate}}}}_{\pm1\text{ count}}
-+\underbrace{f\times\frac{\text{ppm}}{10^6}}_{\text{timebase}} .
+\Delta f_{\mathrm{count}}=\pm\frac{1}{T_{\text{gate}}},
+\qquad
+\frac{\Delta f_{\mathrm{timebase}}}{f}\approx
+\frac{\Delta t_{\mathrm{ref}}}{t_{\mathrm{ref}}}.
 \]
-Which dominates depends on the measurement. With a \SI{1}{\second} gate
+For a conservative bound, the magnitudes may be added; an uncertainty budget may
+instead combine independent terms statistically. Direct counting, gate-time
+resolution, and timebase limitations are described in
+\cite[pp.~158--165]{carr2002measurement}. Which term dominates depends on the
+measurement. With a \SI{1}{\second} gate
 the \(\pm1\) count is \SI{1}{\hertz} whatever you measure, while a \SI{1}{ppm}
 timebase contributes \SI{146}{\hertz} at \SI{146}{\mega\hertz}---a factor of
 \(146\). Thus the timebase dominates this example, which is why counters are specified
@@ -239,7 +246,8 @@ cancel the pole's lag.
 \emph{Right:} the same three cases as pole-zero plots (the three rows are offset
 vertically for clarity; all the poles and zeros are real and lie on the \(\sigma\)
 axis). Compensation is achieved when the zero lands exactly on the pole, which is the
-condition \(R_1C_1=R_2C_2\).}
+condition \(R_1C_1=R_2C_2\). The curves are computed from the transfer function
+above, not fitted to measured data.}
 \label{fig:probe-comp}
 \end{figure}
 
@@ -255,12 +263,11 @@ is what \cref{ch:filters} calls placing a notch.
 \end{exambox}
 
 \section{Ground-Lead Inductance: an Accidental Resonator}
-The other half of probe technique is the ground lead, and it is a pure application of
-\cref{ch:rlc}. A wire has roughly \SI{20}{\nano\henry} per inch of inductance. Clip a
-six-inch ground lead onto a circuit and you have added \(L\approx\SI{120}{\nano\henry}\)
-in series with the probe's own tip capacitance, \(C\approx\SI{10}{\pico\farad}\)---a
-series LC loop with almost no resistance to damp it. Its resonance is
-\cref{ch:rlc}'s formula, unchanged:
+The other half of probe technique is the ground lead. Lead inductance depends on
+geometry; using \SI{20}{\nano\henry} per inch as a rough estimate, a six-inch lead
+contributes about \SI{120}{\nano\henry}. Together with an illustrative
+\SI{10}{\pico\farad} probe capacitance it forms a lumped series-LC model. This model
+neglects distributed behavior and loss, but its undamped resonance estimate is
 \[
 f_0=\frac{1}{2\pi\sqrt{LC}}
 =\frac{1}{2\pi\sqrt{(120\times10^{-9})(10\times10^{-12})}}
@@ -268,14 +275,12 @@ f_0=\frac{1}{2\pi\sqrt{LC}}
 \]
 
 \begin{physicalbox}
-\textbf{The overshoot is yours, not the circuit's.} Because that loop has very little
-resistance, its \(Q\) is high---the pole pair sits close to the \(\jj\omega\) axis---so
-any fast edge shock-excites it and it \emph{rings} at about \SI{145}{\mega\hertz}. A
-scope shows overshoot and ringing on a signal that may have had none. The cure follows
-straight from \(f_0=1/(2\pi\sqrt{LC})\): shorten the ground path. A one-inch spring
-tip cuts \(L\) to \SI{20}{\nano\henry} and pushes the resonance to about
-\SI{356}{\mega\hertz}, out of the band of interest. You are not damping the resonance,
-you are moving its poles up in frequency until they no longer matter.
+\textbf{The overshoot may be yours, not the circuit's.} If loop loss is small enough,
+a fast edge can excite ringing near the calculated resonance. Shortening the ground
+path reduces inductance: under the same illustrative rule, a one-inch spring tip gives
+about \SI{20}{\nano\henry} and moves the undamped LC estimate to roughly
+\SI{356}{\mega\hertz}. Actual ringing frequency and \(Q\) depend on probe, layout,
+source impedance, and loss.
 \end{physicalbox}
 
 \section{Ground Loops: KVL Around the Return Path}
@@ -299,9 +304,10 @@ The cure follows from the loop equation rather than from folklore. Since the pro
 is a circulating current in a closed path, either break the path or shrink its
 impedance:
 \begin{description}
-\item[Single-point (star) grounding] bond every chassis to \emph{one} common point
-with its own short conductor, so no two ground paths form a loop at all. This is the
-structural fix.
+\item[Single-point (star) grounding] use short, deliberate bonds to reduce shared
+return impedance and unintended circulating paths. A star arrangement can reduce
+loops but does not guarantee that no loop exists through shields, building wiring,
+or other equipment.
 \item[Bonding] where a loop is unavoidable, make its enclosed impedance as low as
 possible with short, wide straps---a strap has less inductance than a round wire of
 the same length, which matters because it is \(\omega L\) and not \(R\) that
@@ -310,6 +316,13 @@ dominates at RF.
 with a ferrite over the cable (\cref{sec:commonmode}). This attacks the current
 rather than the path.
 \end{description}
+
+\begin{mistakebox}
+\textbf{Never defeat protective earth to cure hum or RF feedback.} Protective-earth
+conductors exist for shock and fault-current safety. Correct signal-path loops with
+appropriate bonding, isolation designed and rated for the application, balanced
+interfaces, or common-mode suppression while preserving required safety grounding.
+\end{mistakebox}
 
 \begin{physicalbox}
 \textbf{Why long ground leads fail twice.} A ground conductor a significant
@@ -325,15 +338,13 @@ digging a deeper rod. It is the same tangent that made a stub a resonator in
 \section{SWR Bridge and Antenna Analyzer}
 An SWR bridge separates the forward and reflected waves of \cref{ch:lines} and reports
 their ratio as SWR. An antenna analyzer goes further and sweeps frequency, reporting
-impedance and SWR across a band---which means its display \emph{is} the Smith locus of
-\cref{fig:smith-antenna}. Everything the analyzer tells you was derived in
-\cref{ch:lines,ch:rlc}: the frequency where the trace crosses the real axis is
-\(\omega_0=1/\sqrt{LC}\) for the antenna's series-RLC model, the distance from center
-is \(|\Gamma|\), and the width of the low-SWR region is \(BW\approx f_0/Q\). The
-\(\approx\) is real here, and it is not the one \cref{sec:halfpower} removed: that
-equality is for the \emph{half-power} edges, while an analyzer's usable band is
-whatever SWR limit you chose---commonly \(2{:}1\)---so the two widths agree only in
-order of magnitude.
+impedance and SWR across a band. The display can be interpreted with the Smith-chart
+and reflection-coefficient tools of \cref{ch:lines}
+\cite[pp.~155--157]{free2022rfmicrowave}. Near one isolated resonance, a series-RLC
+model may approximate the feed-point locus, but real antennas can have multiple modes,
+frequency-dependent loss, and feed-line effects. Likewise, \(f_0/Q\) is the exact
+half-power bandwidth of the simple resonator, not a universal identity for an antenna's
+chosen SWR bandwidth.
 
 \begin{mistakebox}
 \textbf{SWR measured at the shack is not SWR at the antenna.} A \emph{lossless} line
@@ -357,36 +368,35 @@ at the antenna feed point when it matters.
 
 \subsection{The Vector Network Analyzer}
 \label{sec:vna}
-A vector network analyzer preserves phase and uses one or more calibrated ports. It
-sends a known wave in, separates what returns from what continues, and reports the
-ratios; it measures the \(S\)-parameters of
-\cref{sec:sparams}. Two consequences are worth stating plainly, because between them
-they close the loop this book has been drawing.
+A vector network analyzer preserves magnitude and phase, launches a known incident
+wave, separates reflected and transmitted waves, and reports their complex ratios
+\cite[pp.~196--205]{free2022rfmicrowave}. It measures the \(S\)-parameters defined in
+\cref{sec:sparams}.
 
-\emph{One port.} At the calibrated port under test, the instrument reports
-\(S_{11}\), and \cref{sec:sparams} showed that \(S_{11}=\Gamma\) identically. A
-one-port sweep therefore yields that port's reflection coefficient and, by the
-formulas already derived, its impedance
-\(Z=Z_0(1+\Gamma)/(1-\Gamma)\), return loss \(-20\log_{10}|\Gamma|\), and SWR.
-These are one measured complex number read three ways. A single setup measures only
-the port connected to it. To characterize a device's input and output impedances,
-connect and calibrate at each respective port, then repeat the measurement.
+\emph{One-port measurement.} At a calibrated reference plane with reference impedance
+\(Z_0\), \(S_{11}=\Gamma\). The same measured complex number yields impedance,
+return loss, and SWR through the formulas already derived. A one-port analyzer or
+one-port calibration measures only the connected reflection coefficient.
 
-\emph{Two ports.} The instrument reports \(S_{21}\) as magnitude and phase against
-frequency. \Cref{sec:sparams} identified that as the transfer function of the network
-in its \(Z_0\) environment---so the screen is showing \(G(\jj\omega)\), and the trace
-\emph{is} a Bode plot of the thing on the bench. \Cref{fig:s21-bode} is that screen,
-with every feature on it labeled by the section that derived it.
+\emph{Two-port measurement.} A conventional two-port VNA can measure all four
+two-port parameters, including forward transmission \(S_{21}\), reverse transmission
+\(S_{12}\), and both reflections \cite[pp.~196--197]{free2022rfmicrowave}. When source
+and load use the stated \(Z_0\) wave references, an \(S_{21}\) sweep provides a
+magnitude-and-phase frequency response. It is analogous to a Bode plot under those
+port conditions, but it is fundamentally a traveling-wave ratio rather than a
+load-independent voltage transfer function \cite[pp.~155--157]{free2022rfmicrowave}.
+\Cref{fig:s21-bode} illustrates that distinction for a specified two-port network.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{s21_is_bode}
-\caption{A vector network analyzer's two traces for a band-pass filter, which are a
-Bode plot of \(G(\jj\omega)\) and nothing else. Everything labeled was derived before
+\caption{Magnitude and phase of \(S_{21}\) for a specified band-pass network between
+equal \SI{50}{\ohm} reference impedances. Under these port conditions the traces
+can be read as a Bode-style frequency response. Everything labeled was derived before
 any instrument was mentioned: the in-band level is \cref{sec:filterspecs}'s insertion
 loss, \(-20\log_{10}|S_{21}|\); the \(-\SI{3}{\decibel}\) width is
 \cref{sec:halfpower}'s exact \(f_0/Q_L\); the skirts fall at
-\(\pm\SI{20}{\decibel}\) per decade because there is one pole on each side
+\(\pm\SI{20}{\decibel}\) per decade with the first-order asymptotic slope on each side
 (\cref{sec:cascadeadd}); the phase crosses zero at \(f_0\), where the reactances
 cancel; and the slope of that phase is \cref{sec:groupdelay}'s group delay. The inset
 is the pole pair that produced all of it. Computed for a series \(L\)--\(C\)--\(r\)
@@ -396,16 +406,13 @@ resonator (\SI{10}{\micro\henry}, \SI{20}{\pico\farad}, \SI{6}{\ohm}) between
 \end{figure}
 
 \begin{controlsbox}
-\textbf{A VNA measures the model.} Part II built \(G(\jj\omega)\) as a ratio of
-polynomials in \(s\), read on log axes, with poles setting corners and slopes in
-decibels per decade. Part IV built filters, matching networks, and lines as circuits.
-A VNA measures that transfer function. Sweep a band-pass filter and the
-\(|S_{21}|\) trace shows the passband, the \(-\SI{3}{\decibel}\) edges whose
-separation is \(f_0/Q\) exactly (\cref{sec:halfpower}), the insertion loss of
-\cref{sec:filterspecs}, and skirts falling at \(-20n\,\si{\decibel}\) per decade from
-which reveal the order \(n\) (\cref{sec:cascadeadd}). The screen verifies
-\cref{ch:filters}'s design equations. Its phase slope is the group delay of
-\cref{sec:groupdelay}, so a filter's delay is measurable, and \(S_{21}\) of an
+\textbf{A VNA tests the network model.} Part II built frequency responses from poles
+and zeros; Part IV built filters, matching networks, and lines as circuits. With
+reference impedances and calibration plane stated, a VNA measures the corresponding
+incident, reflected, and transmitted wave ratios. For the example network,
+\(|S_{21}|\) shows insertion loss, passband, and half-power edges, while its phase
+slope gives the group delay defined in \cref{sec:groupdelay}. Thus a filter's delay
+is measurable, and \(S_{21}\) of an
 amplifier plus \(S_{12}\) of its unintended
 reverse path is the loop whose stability \cref{ch:feedback} governs---which is why
 \cref{sec:neutralization} matters at all.
@@ -413,13 +420,16 @@ reverse path is the loop whose stability \cref{ch:feedback} governs---which is w
 
 \begin{exambox}
 Group E4B expects four things about \(S\)-parameters and analyzers, and each is a line
-from \cref{sec:sparams}. The subscripts name \emph{the ports at which measurements are
-made}---out, then in. \(S_{11}\) is input return loss or reflection coefficient, and
-it is equivalent to SWR because SWR is a function of \(|\Gamma|\) alone. \(S_{21}\) is
-forward gain, being what leaves port 2 per unit sent into port 1. A two-port VNA
+from \cref{sec:sparams}. The first subscript names the response port and the second
+the incident-wave port. \(S_{11}\) is the input reflection coefficient, from which
+return loss and SWR follow. \(S_{21}\) is forward transmission, being what leaves
+port 2 per unit sent into port 1. A two-port VNA
 measures a \emph{filter's frequency response}, which is the \(|S_{21}|\) sweep above.
-And the three calibration loads are a \textbf{short, an open, and \SI{50}{\ohm}}---the
-\(\Gamma=-1,+1,0\) standards, three because the error model has three unknowns.
+For a one-port calibration, the familiar \textbf{short, open, and matched load}
+provide the \(\Gamma=-1,+1,0\) standards for a three-term reflection-error model. A
+full two-port calibration also characterizes transmission paths and commonly adds a
+\textbf{thru} connection (SOLT); other calibration methods use different standards
+\cite[pp.~198--205]{free2022rfmicrowave}.
 \end{exambox}
 
 \section{Decibels in Measurement}
@@ -467,16 +477,14 @@ comparable, and trading a better cable against a better antenna is a matter of
 counting decibels.
 \end{workedbox}
 
-Receiver reports use their own referenced scale. One \textbf{S unit} is defined as
-\SI{6}{\decibel}, which is a factor of four in power (\(10^{6/10}\approx3.98\)). So a
-signal reported one S unit stronger needs four times the transmitter power, all else
-equal, and ``\SI{20}{\decibel} over S9'' means a hundred times the power of an S9
-signal. The awkwardness of the scale is exactly that it is logarithmic while the
-power behind it is not: going from S8 to S9 is the same \SI{6}{\decibel}---the same
-\(4\times\)---as going from S3 to S4.
+The nominal amateur-radio S-meter convention assigns \SI{6}{\decibel} per S unit,
+a factor of approximately four in power. Thus one nominal S unit requires four
+times the received power, all else equal, and \SI{20}{\decibel} over S9 denotes one
+hundred times the S9-reference power. Actual receiver S meters may depart
+substantially from this calibration, so an S report is not a precision measurement.
 
 \begin{mistakebox}
-Do not read S units as a linear signal-strength scale. Each unit is
+Do not read S units as a linear signal-strength scale. On the nominal scale, each unit is
 \SI{6}{\decibel}, so two S units is \SI{12}{\decibel} (\(16\times\) the power), not
 twice one unit's worth. And above S9 the scale is abandoned entirely in favor of
 ``\(n\) dB over S9,'' precisely because the S numbers would otherwise run out.
@@ -500,9 +508,10 @@ reactances have cancelled. Nothing about the load has been set yet; the dip only
 the tank is resonant.
 
 \emph{Then load.} Adjusting \textsc{load} changes the transformation ratio, presenting
-a different resistance to the device---which is what actually sets output power, since
-\cref{ch:resistive}'s maximum-power-transfer condition depends on that resistance and
-nothing else. But changing the loading also perturbs the tuning, because the two
+a different effective resistance to the device, which sets the load line and output
+power once residual reactance has been canceled. The correct setting and safe current,
+voltage, and drive limits remain transmitter-specific. Changing the loading also
+perturbs the tuning, because the two
 controls are not perfectly orthogonal, so the dip must be re-found. Hence the
 alternation: dip, load, re-dip, until both are right.
 

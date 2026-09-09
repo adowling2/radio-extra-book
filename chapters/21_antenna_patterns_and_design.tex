@@ -32,6 +32,8 @@ as much power as the main direction.  It does \emph{not} state the gain: a patte
 can have a sharp main lobe and substantial loss, or modest directivity and high
 efficiency.  Gain combines directivity with the radiation efficiency from
 \cref{sec:antennaeff}.
+These pattern, beamwidth, directivity, gain, and efficiency distinctions are summarized
+in \cite[pp.~359--363]{free2022rfmicrowave}.
 
 \begin{exambox}
 Beamwidth, gain, and front-to-back ratio are power statements.  Field amplitude
@@ -65,21 +67,24 @@ Crossing vertical and horizontal Yagis therefore permits either linear
 polarization; driving equal currents in quadrature makes circular polarization.
 The calculation also explains why a perfect cross-polarized linear antenna has
 an ideal null.  Real antennas, reflections, and imperfect alignment fill it in.
+Orthogonal components and quadrature excitation are also used to generate circular
+polarization in practical antenna structures
+\cite[pp.~397--398]{free2022rfmicrowave}.
 
 \section{Why Apertures Gain \SI{6}{\decibel} When Frequency Doubles}
 \label{sec:aperturegain}
-A reflector or dish collects a portion of a passing wave over its physical
-aperture \(A\).  Its directivity must compare that area with the wavelength-sized
-area occupied by one spatial mode, so
+A reflector or dish has effective aperture \(A_{\rm eff}=\eta_{\rm ap}A\), so its gain is
 \[
-\boxed{\quad G\approx\eta_{\rm ap}\frac{4\pi A}{\lambda^2},\qquad
-0<\eta_{\rm ap}<1.\quad}
+\boxed{\quad G=\frac{4\pi A_{\rm eff}}{\lambda^2}
+=\eta_{\rm ap}\frac{4\pi A}{\lambda^2}.\quad}
 \]
-Here \(\eta_{\rm ap}\) is aperture efficiency: illumination taper, blockage,
-surface error, and spillover prevent a real dish from using every square meter.
-For a fixed dish, \(G\propto1/\lambda^2\propto f^2\).  Doubling frequency
-quadruples gain, which is \(10\log_{10}4=\SI{6.02}{\decibel}\).  Conversely,
-keeping gain while doubling wavelength requires four times the aperture area.
+Aperture efficiency accounts for illumination taper, blockage, surface error, and
+spillover \cite[pp.~407--409]{free2022rfmicrowave}. For fixed physical area
+\emph{and unchanged aperture efficiency}, \(G\propto f^2\); doubling frequency then
+adds \SI{6.02}{\decibel}. In a real system, feed pattern, conductor loss, surface
+accuracy, and blockage can change with frequency, so the \SI{6}{\decibel} result is
+conditional. Conversely, keeping gain while doubling wavelength requires four times
+the aperture area if aperture efficiency is unchanged.
 
 This is a spatial version of the scaling already familiar from transmission
 lines: wavelength determines how large an object looks electrically.  A dish
@@ -120,6 +125,8 @@ re-radiate with different phases.  Spacing and detuning choose those phasors so 
 add forward and partly cancel behind. This is the interference calculation of
 \cref{sec:arrayfactor}, now with currents set by coupling rather than prescribed by
 two feed lines.
+This coupled parasitic-element description agrees with the Yagi--Uda treatment in
+\cite[pp.~378--385]{free2022rfmicrowave}.
 \end{description}
 
 \begin{workedbox}[: a crossed Yagi and a fixed dish]
@@ -129,10 +136,12 @@ Insert a \(90^\circ\) phasing line and the components become
 \(E_0\cos\omega t\) and \(E_0\cos(\omega t+90^\circ)\): equal components in
 quadrature, hence circular polarization.
 
-Now keep a dish and its feed unchanged but move from \SI{1.2}{\giga\hertz} to
-\SI{2.4}{\giga\hertz}.  The wavelength halves, so the aperture formula predicts
-\(G_2/G_1=(2.4/1.2)^2=4\), or \SI{6}{\decibel} more gain.  That result is about
-the electrically larger aperture, not extra transmitter power.
+Now keep a dish's physical aperture fixed and move from
+\SI{1.2}{\giga\hertz} to \SI{2.4}{\giga\hertz}. If aperture efficiency remains
+unchanged and the feed and reflector remain usable, the wavelength halves and the
+formula predicts \(G_2/G_1=4\), or \SI{6}{\decibel} more gain
+\cite[pp.~407--409]{free2022rfmicrowave}. The gain change comes from the aperture
+becoming electrically larger, not from extra transmitter power.
 \end{workedbox}
 
 \begin{mistakebox}
@@ -140,4 +149,6 @@ the electrically larger aperture, not extra transmitter power.
 loading network can make the feed point look like \SI{50}{\ohm}; it cannot turn
 ground loss into radiation.  Check reactance, mismatch, and radiation efficiency
 separately before declaring an antenna improved.
+Gain and efficiency are separate from pattern normalization and impedance match
+\cite[pp.~359--363]{free2022rfmicrowave}.
 \end{mistakebox}

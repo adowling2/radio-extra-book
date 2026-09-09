@@ -62,7 +62,7 @@ Resonant frequency & \(\omega_0,\ f_0\) & \si{\radian\per\second},\ \si{\hertz} 
 Damped frequency & \(\omega_d\) & \si{\radian\per\second} & The actual ringing frequency once losses are present. \\
 Decay rate & \(\alpha\) & \si{\per\second} & How fast a ringing oscillation's amplitude dies away. \\
 Damping ratio & \(\zeta\) & --- & How heavily damped a second-order system is (ringing versus sluggish). \\
-Quality factor & \(Q\) & --- & Sharpness of a resonance; how many cycles it rings. \\
+Quality factor & \(Q\) & --- & Sharpness of a resonance; in a lightly damped resonator it also sets the ring-down scale. \\
 Bandwidth & \(BW\) & \si{\hertz} & Width of the passband between the half-power edges. \\
 Complex frequency & \(s\) & \si{\per\second} & The Laplace variable; captures growth or decay together with oscillation. \\
 Forward gain & \(A\) & --- & How much the amplifier multiplies its input before feedback. \\
@@ -79,6 +79,9 @@ Turns ratio & \(N_p/N_s\) & --- & Ratio of primary to secondary winding turns in
 Stored energy & \(\mathcal{H}\) & \si{\joule} & Total energy held in the circuit's inductors and capacitors. \\
 \bottomrule
 \end{longtable}
+
+The ideal elements and sinusoidal network quantities used in these tables receive a
+standard RF treatment in \cite[pp.~16--32]{white2004highfrequency}.
 
 \section{Core Circuit Formulas}
 \begin{longtable}{@{}L{0.25\textwidth}L{0.32\textwidth}L{0.34\textwidth}@{}}
@@ -124,6 +127,8 @@ Use a quadrant-aware angle calculation:
 \[
 \theta=\operatorname{atan2}(X,R).
 \]
+For the same RMS-phasor and impedance conventions in an RF setting, see
+\cite[pp.~22--29]{white2004highfrequency}.
 
 \begin{mistakebox}
 Do not mix reactance magnitude with signed impedance. For a capacitor,
@@ -162,7 +167,10 @@ with no external loading. Both are exact for the resonant response of a series o
 parallel RLC, not narrowband estimates (\cref{sec:halfpower}); the second says the
 band edges \(f_1,f_2\) straddle resonance \emph{geometrically}, so \(f_0\) is not
 quite the midpoint between them. What is topology-dependent is the formula for \(Q\)
-itself, so do not carry one topology's \(Q\) into another.
+itself, so do not carry one topology's \(Q\) into another. Series and parallel
+resonators, their quality factors, and their bandwidths receive fuller treatments in
+\cite[pp.~59--67]{white2004highfrequency} and
+\cite[pp.~23--35]{bowick2008rfcircuit}.
 
 \section{Bode, Decibels, and Power}
 \[
@@ -178,6 +186,8 @@ One first-order pole contributes about \(-20~\dB/\mathrm{decade}\); one
 first-order zero contributes about \(+20~\dB/\mathrm{decade}\).
 \(\SI{20}{\decibel/decade}\) is about \(\SI{6}{\decibel/octave}\) (a decade is a
 \(\times10\) frequency ratio; an octave a \(\times2\) ratio).
+For frequency-response asymptotes and their pole/zero interpretation, see
+\cite[pp.~47--61]{leigh2012control}.
 
 \begin{mistakebox}
 \(-\SI{3}{\decibel}\) is half power and about \(0.707\) amplitude. It is not
@@ -206,10 +216,13 @@ A_{\mathrm{cl}}=\frac{A}{1+A\beta},
 \qquad
 L=A\beta,
 \qquad
-\text{gain}\times\text{BW}=\text{const},
+\text{gain}\times\text{BW}=\text{const}
+\quad\text{(single-dominant-pole amplifier)},
 \]
-and oscillation is \(L=-1\), i.e.\ \(|L|=1\), \(\angle L=-180^\circ\) (poles on the
-\(\jj\omega\) axis).
+and \(L=-1\), i.e.\ \(|L|=1\), \(\angle L=-180^\circ\), is the linear
+marginal/startup condition in the negative-feedback convention used here. A physical
+oscillator's steady amplitude is set by nonlinear limiting
+\cite[pp.~301--305]{free2022rfmicrowave}.
 
 \section{Filters, Matching, and Transformers}
 \[
@@ -235,7 +248,9 @@ Z_p=\left(\frac{N_p}{N_s}\right)^2 Z_s.
 \]
 Matching networks cancel reactive impedance and transform the remaining
 resistive part to the desired value. They can also restrict bandwidth, especially
-when \(Q\) is high.
+when \(Q\) is high. Lumped RF filter and matching realizations are developed in
+\cite[pp.~37--79]{bowick2008rfcircuit}; ideal and practical transformer behavior is
+discussed in \cite[pp.~131--143]{davis2011rfcircuit}.
 
 \section{Transmission Lines}
 \[
@@ -260,7 +275,10 @@ at a half wave. Hence
 Z_t=\sqrt{Z_0Z_L}
 \]
 for a lossless quarter-wave transformer matching a real load \(Z_L\) to a line
-with characteristic impedance \(Z_0\).
+with characteristic impedance \(Z_0\). These equivalent mismatch descriptions,
+Smith-chart coordinates, and quarter-wave matching are treated further in
+\cite[pp.~78--152]{white2004highfrequency} and
+\cite[pp.~1--25, 63--64]{free2022rfmicrowave}.
 
 \section{Sampling, Noise, and Dynamic Range}
 For a sampled system, with \(f_s\) the sampling rate and \(N\) the converter's bit
@@ -270,10 +288,18 @@ f_s>2f_{\max},
 \qquad
 f_{\text{alias}}=|f-nf_s|,
 \qquad
-\mathrm{SNR}_{\dB}=6.02N+1.76 .
+\mathrm{SNR}_{\dB}=6.02N+1.76
+\quad\text{(ideal full-scale-sine quantization SNR)}.
 \]
 Anti-aliasing filtering must happen \emph{before} the converter, and before any
-decimation. For receiver performance, with \(B\) the noise bandwidth in hertz,
+decimation. These converter relations assume an ideal quantizer and approximately
+white, uncorrelated quantization error
+\cite[p.~188]{vankka2005synthesizers}; practical sampling and anti-alias constraints
+are discussed in \cite[pp.~23--25, 39--40]{giannini2008baseband}.
+
+For receiver performance, with \(B\) the noise bandwidth in hertz, a matched source
+at approximately \(\SI{290}{\kelvin}\), and an MDS convention of
+\(\SI{0}{\decibel}\) input SNR,
 \[
 \text{noise floor}=\mathrm{MDS}=-174+10\log_{10}B+\mathrm{NF}_{\dB}\quad[\mathrm{dBm}],
 \]
@@ -286,11 +312,16 @@ F=F_1+\frac{F_2-1}{G_1}+\cdots,
 \]
 Second-order products rise \SI{2}{\decibel} per \si{\decibel} of drive and
 third-order \SI{3}{\decibel} per \si{\decibel}; an input attenuator of \(L\) decibels
-therefore improves the intermodulation ratio by \(2L\).
+therefore improves the ratio by \(2L\) for intermodulation generated in stages after
+the attenuator. Thermal floor, cascade noise, and intercept-point geometry are treated
+in \cite[pp.~48--49, 89--103, 137--139]{egan2003practical},
+\cite[pp.~257--263]{weber2001microwave}, and
+\cite[pp.~435--438]{white2004highfrequency}.
 
 \begin{mistakebox}
-\SI{-174}{dBm} is a density---power \emph{per hertz}. It is only a noise floor once
-\(10\log_{10}B\) has been added for the actual bandwidth.
+\SI{-174}{dBm} is the available density per hertz of a matched source near
+\SI{290}{\kelvin}. It is only a noise floor once \(10\log_{10}B\) has been added
+for the actual bandwidth.
 \end{mistakebox}
 
 \section{What to Memorize and What to Derive}

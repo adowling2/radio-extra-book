@@ -2,7 +2,8 @@
 Closed-loop denominator: s^2 + 2*zeta*w0*s + w0^2*(1+A0*beta), so
   w_cl = w0*sqrt(1+A0*beta),  zeta_cl = zeta/sqrt(1+A0*beta).
 Left: the pole pair rises vertically -- real part pinned at -zeta*w0 while the
-      imaginary part grows, so it approaches (but never crosses) the jw axis.
+      imaginary part grows, so its direction from the origin approaches the jw
+      axis while its perpendicular distance remains fixed.
 Right: the step response develops overshoot and ringing as zeta_cl falls.
 """
 import numpy as np

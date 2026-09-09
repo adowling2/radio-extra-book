@@ -20,7 +20,7 @@ ax.annotate(r"$t=\tau$: $63.2\%$",
 ax.axvline(1, color=GUIDE_AMBER, ls="--", lw=0.9)
 # 5 tau settling
 ax.axvline(5, color="0.55", ls="--", lw=0.9)
-ax.annotate(r"$5\tau$: settled", xy=(5, 0.2), xytext=(4.0, 0.12))
+ax.annotate(r"$5\tau$: $99.3\%$", xy=(5, 0.2), xytext=(4.0, 0.12))
 ax.set_xlabel(r"Time $t/\tau$")
 ax.set_ylabel(r"$y(t)/y(\infty)$")
 ax.set_ylim(0, 1.08)

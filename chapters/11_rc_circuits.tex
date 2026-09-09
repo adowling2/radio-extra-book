@@ -47,7 +47,8 @@ of \(v_o\) is part of the model.
 
 \section{From Schematic to Differential Equation}
 Using those reference directions, KVL says the source equals the resistor drop plus
-the capacitor voltage. The passive capacitor law supplies the current:
+the capacitor voltage. The passive capacitor law supplies the current
+\cite[pp.~20--22]{white2004highfrequency}:
 \[
 u(t)=R\,i(t)+v_C(t),
 \qquad
@@ -95,7 +96,8 @@ K=1,
 s_{\text{pole}}=-\frac{1}{\tau}=-\frac{1}{RC}.
 \]
 Every first-order result from \cref{ch:linsys} now applies with no extra work:
-the step response, the \(63.2\%\) rule, the corner frequency, and the Bode shape.
+the step response, the \(63.2\%\) rule, the corner frequency, and the Bode shape
+\cite[pp.~20--22]{white2004highfrequency}.
 
 \section{Transient Response}
 For a DC step of height \(E\) applied at \(t=0\) with the capacitor initially
@@ -109,8 +111,9 @@ and a capacitor discharging from an initial voltage \(V_0\) with the source remo
 follows \(v_C(t)=V_0\,\ee^{-t/RC}\). These are the first-order responses of
 \cref{ch:linsys} read as circuit voltages (\cref{fig:rc-transient}): after one time
 constant \(\tau=RC\) the capacitor has charged to \(63.2\%\) of \(E\) while the
-resistor voltage has fallen to \(36.8\%\), and after about \(5\tau\) the circuit is
-settled.
+resistor voltage has fallen to \(36.8\%\). After \(5\tau\), only
+\(\ee^{-5}\approx0.67\%\) of the initial error remains, which is the engineering
+meaning of ``settled'' used here \cite[pp.~20--22]{white2004highfrequency}.
 
 \subsection{Which \texorpdfstring{\(R\)}{R}, When There Is More Than One?}
 \label{sec:rthc}
@@ -203,7 +206,8 @@ same instant: the only thing that changed is which element you measured across.
 
 Both share the corner frequency \(\omega_c=1/(RC)\), where the gain is
 \(-\SI{3}{\decibel}\). The low-pass passes slow signals and rolls off high ones
-(\cref{fig:bode1}); the high-pass does the reverse (\cref{fig:rc-highpass}).
+(\cref{fig:bode1}); the high-pass does the reverse
+\cite[pp.~20--30]{white2004highfrequency} (\cref{fig:rc-highpass}).
 
 \begin{figure}[htbp]
 \centering
@@ -241,7 +245,8 @@ bookkeeping as adding first-order lags in a control loop.
 \end{controlsbox}
 
 \section{Energy Interpretation}
-The capacitor stores \(E_C=\tfrac12 Cv_C^2\). During charging, source energy
+The capacitor stores \(E_C=\tfrac12 Cv_C^2\) \cite[pp.~20--21]{white2004highfrequency}.
+During charging, source energy
 splits between the electric field and resistive heat; during discharge, the
 stored field energy is dissipated in \(R\).
 
@@ -268,7 +273,8 @@ AC, its current \(i=C\,\dd v_C/\dd t\) is generally nonzero.
 \begin{exambox}
 Three numbers answer almost every RC question, and all three are the single pole
 \(-1/RC\) wearing different clothes: the time constant \(\tau=RC\) (one \(\tau\)
-covers \SI{63.2}{\percent} of a step, five \(\tau\) settles it), the corner
+covers \SI{63.2}{\percent} of a step, and five \(\tau\) leaves less than
+\SI{0.7}{\percent} of the initial error), the corner
 frequency \(f_c=1/(2\pi RC)\), and the \(-\SI{20}{\decibel}\)/decade roll-off. Note
 the \(2\pi\): questions give frequency in hertz and time constants in seconds, and
 mixing \(f\) with \(\omega\) is the most common way to be wrong by a factor of

@@ -14,6 +14,7 @@ propagation delay is negligible on the signal's time scale. Then a change at one
 end reaches the other essentially instantly. When that delay is not negligible,
 long feed lines and antennas at radio frequencies (RF) require the distributed
 model of \cref{ch:lines}.
+\cite[pp.~22--23, 79--80]{white2004highfrequency}
 
 \begin{controlsbox}
 Lumping is the electrical version of the modeling step every engineer makes:
@@ -44,12 +45,14 @@ stored energies are
 E_C=\tfrac{1}{2}Cv_C^2,\qquad
 E_L=\tfrac{1}{2}Li_L^2.
 \]
+\cite[pp.~16--22]{white2004highfrequency}
 
 \begin{physicalbox}
 An ideal component is a modeling fiction: a real resistor has a little
 inductance, a real capacitor a little leakage. The idealization keeps the model
 tractable, and the corrections are added back only when they matter (for example,
 a capacitor's series inductance at very high frequencies, VHF).
+\cite[pp.~44--45]{white2004highfrequency}
 \end{physicalbox}
 
 \subsection{Self-Resonance: When a Part Becomes Its Opposite}
@@ -79,8 +82,10 @@ stops bypassing;
 \item an inductor above its \(f_{\mathrm{SRF}}\) is a \emph{capacitor}---its
 impedance falls with frequency, which is why an RF choke stops choking.
 \end{itemize}
-A capacitor is a series resonator, so it is a near-short at \(f_{\mathrm{SRF}}\); an
-inductor is a parallel resonator, so it is a near-open there. Those are exactly the
+\cite[pp.~5--9]{bowick2008rfcircuit}
+In the simple equivalent circuits used here, the capacitor reaches a minimum
+impedance near its series self-resonance, while the inductor reaches a maximum
+impedance near its parallel self-resonance. Loss keeps both extrema finite. Those are exactly the
 two behaviors of \cref{ch:rlc,ch:rlcpar}, which is why this subsection needs no new
 theory---only the observation that the resonator was there all along.
 
@@ -106,7 +111,9 @@ eliminating the magnetic field between them leaves one equation for the current 
 \]
 taking the conductor to fill \(x\ge0\) with current flowing along its surface. That
 is a \textbf{diffusion} equation---the same form as heat spreading through a wall.
-Fields do not propagate into a conductor, they soak in.
+In the good-conductor approximation the field obeys a diffusion equation rather
+than a low-loss wave equation; its amplitude decays rapidly while its phase still
+progresses with depth.
 
 For one frequency, write \(J=\hat J(x)\,\ee^{\jj\omega t}\), so
 \(\partial/\partial t\to\jj\omega\) (\cref{ch:ac}). The partial differential
@@ -123,6 +130,7 @@ k=\frac{1+\jj}{\delta},
 \qquad
 \boxed{\;\delta=\sqrt{\frac{2}{\omega\mu\sigma}}=\frac{1}{\sqrt{\pi f\mu\sigma}}\;}
 \]
+\cite[pp.~51--52]{white2004highfrequency}
 and keeping the root that decays into the metal,
 \[
 J(x,t)=J_0\,\ee^{-x/\delta}\,\ee^{\jj(\omega t-x/\delta)} .
@@ -150,8 +158,9 @@ Frequency & \SI{1}{\kilo\hertz} & \SI{1}{\mega\hertz} & \SI{7.1}{\mega\hertz} & 
 At \SI{144}{\mega\hertz} the current rides in a layer thinner than a sheet of paper.
 
 \subsubsection*{Hence the \texorpdfstring{\(\sqrt f\)}{sqrt f} Law}
-Take a round wire of radius \(a\gg\delta\). The current is confined to an annulus of
-thickness about \(\delta\), whose area is \(2\pi a\delta\), so
+For an isolated round good conductor of radius \(a\gg\delta\), neglecting
+proximity effect and surface roughness, the current-carrying area is approximately
+an annulus of area \(2\pi a\delta\), so
 \[
 R_{\mathrm{AC}}=\frac{\ell}{\sigma\,2\pi a\delta}\propto\frac{1}{\delta}\propto\sqrt f ,
 \]
@@ -161,8 +170,10 @@ whole area \(\pi a^2\),
 \frac{R_{\mathrm{AC}}}{R_{\mathrm{DC}}}\approx\frac{a}{2\delta} ,
 \]
 so \SI{1}{\milli\meter}-diameter copper wire carries about \(3.8\times\) its DC
-resistance at \SI{1}{\mega\hertz} and \(45\times\) at \SI{144}{\mega\hertz}. This is
-the law used later for coil \(Q\), for capacitor loss at RF, and---twice---for
+resistance at \SI{1}{\mega\hertz} and \(45\times\) at \SI{144}{\mega\hertz}. This
+is an isolated-wire baseline; real coils and closely spaced conductors can have
+additional proximity-effect loss \cite[pp.~1--2]{bowick2008rfcircuit}. This is the
+law used later for coil \(Q\), for capacitor loss at RF, and---twice---for
 feed-line attenuation (\cref{sec:lineloss}), and it is now earned rather than
 asserted. Depending on the geometry and frequency, RF conductors may use Litz wire
 (individually insulated, appropriately sized strands), tubular conductors, or
@@ -197,7 +208,7 @@ f_{\text{peak}}\approx\frac{f_{\mathrm{SRF}}}{\sqrt5}\approx0.45\,f_{\mathrm{SRF
 \]
 In this high-\(Q\) model, a coil's \(Q\) peaks a little under halfway to its
 self-resonance, then collapses. Both parasitics of this subsection were needed to
-say that, and neither was adjustable.
+say that, and neither was adjustable \cite[pp.~7--9]{bowick2008rfcircuit}.
 
 \begin{exambox}
 On skin effect the pool (group E5D) wants the \emph{direction} and the \emph{cause},
@@ -216,13 +227,15 @@ and plate length carries roughly \(L_s\approx\SI{10}{\nano\henry}\)
 f_{\mathrm{SRF}}=\frac{1}{2\pi\sqrt{(10\times10^{-9})(10\times10^{-9})}}
 =\frac{1}{2\pi(10^{-8})}\approx\SI{15.9}{\mega\hertz}.
 \]
-So this part is a good bypass through the high-frequency (HF) bands and useless at
-VHF---at
-\SI{144}{\mega\hertz} its \SI{10}{\nano\henry} presents \(\omega L_s\approx\SI{9}{\ohm}\)
-of \emph{inductive} reactance while the capacitance it was bought for would have
-offered only \(\SI{0.11}{\ohm}\). The standard fix follows from the formula:
-shorten the leads (lower \(L_s\)), or parallel a large capacitor with a small one
-whose \(f_{\mathrm{SRF}}\) is higher.
+Thus the simple model predicts minimum impedance near
+\SI{15.9}{\mega\hertz}; above that frequency the part becomes increasingly
+inductive. At \SI{144}{\mega\hertz}, its parasitic inductance presents about
+\SI{9}{\ohm}, whereas an ideal \SI{10}{\nano\farad} capacitor alone would present
+about \SI{0.11}{\ohm}. Whether \SI{9}{\ohm} is acceptable depends on the circuit.
+Shorter connections and a component with higher specified self-resonance can help.
+Paralleled capacitor values must be checked as a network because their parasitics
+can introduce an anti-resonant impedance peak
+\cite[pp.~5--9]{bowick2008rfcircuit}.
 \end{workedbox}
 
 \section{KCL as an Accumulation Balance}
@@ -237,6 +250,7 @@ zero, so the algebraic sum of currents is zero:
 \[
 \sum_k i_k=0.
 \]
+\cite[pp.~27--32]{white2004highfrequency}
 
 \begin{controlsbox}
 This is the same structure as a material balance in process systems. In a series
@@ -247,20 +261,20 @@ the ordinary wire junction.
 \end{controlsbox}
 
 \section{KVL as Energy Consistency}
-Kirchhoff's voltage law (KVL) says that the signed voltage rises and drops around a
-closed loop sum to zero:
+In the lumped circuit model, Kirchhoff's voltage law (KVL) says that signed voltage
+rises and drops around a closed loop sum to zero:
 \[
 \sum_k v_k=0.
 \]
-Voltage is energy per unit charge. KVL is therefore an energy-consistency rule:
-after a charge goes around a closed loop and returns to the same point, its net
-change in potential energy is zero.
+Voltage is energy per unit charge, so this is an energy-consistency rule for the
+modeled loop. If time-varying external magnetic flux links the physical loop, its
+induced emf must be included as an element or source.
 
 \section{State Variables}
 The natural state variables are the quantities attached to stored energy:
-capacitor voltages and inductor currents. A circuit with one independent energy
-storage element is usually first order. A circuit with two independent storage
-elements is usually second order. These are exactly the variables that cannot jump,
+capacitor voltages and inductor currents. After topology and algebraic constraints
+are accounted for, one independent storage variable usually gives a first-order
+model and two give a second-order model. These are exactly the variables that cannot jump,
 so they are what the system ``remembers''---the electrical instance of the state
 vector of \cref{ch:linsys}.
 
@@ -363,8 +377,9 @@ lead inductance and eventually resonates. An ideal inductor passes DC and blocks
 RF; a real one has winding capacitance and does the same. When a question describes
 a part behaving as its \emph{opposite} type, it is telling you the frequency is
 above that part's self-resonance (\cref{sec:selfresonance}). When it describes a
-wire or a ground lead mattering, the lumped assumption has failed and
-\cref{ch:lines} applies.
+wire or a ground lead mattering, first include its relevant lumped parasitic
+impedance; when propagation delay and spatial variation are no longer negligible,
+use the distributed model of \cref{ch:lines}.
 \end{exambox}
 
 \section{Summary: Key Equations and Definitions}

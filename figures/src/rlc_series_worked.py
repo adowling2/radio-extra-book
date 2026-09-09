@@ -33,7 +33,7 @@ axm.semilogx(f/1e6, 20*np.log10(np.abs(G)), color=GUIDE_BLUE, lw=1.8)
 axm.axvline(f0/1e6, color=GUIDE_AMBER, ls=":", lw=1.1)
 peak = 20*np.log10(Q0)
 axm.plot(f0/1e6, peak, "o", color=GUIDE_RED, ms=5, zorder=6)
-axm.annotate(rf"peak $\approx Q={Q0:.0f}$" "\n" rf"(${peak:.0f}$ dB) at $f_0$",
+axm.annotate(rf"$|G(f_0)|=Q={Q0:.0f}$" "\n" rf"(${peak:.0f}$ dB)",
              xy=(f0/1e6, peak), xytext=(0.16, 22), color=GUIDE_RED, fontsize=7.5,
              arrowprops=dict(arrowstyle="->", color=GUIDE_RED, lw=0.8))
 axm.annotate(r"$-40$ dB/decade", xy=(14, -13), color="0.35", fontsize=7.5,

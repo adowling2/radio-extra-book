@@ -8,8 +8,7 @@ These are the two classical design tools.
 \section{Decibels: Power, Amplitude, and Roll-Off}
 \label{sec:decibels}
 Before any plot, we need its vertical axis. A \textbf{decibel} is a logarithmic
-measure of a \emph{ratio}, never of an absolute quantity. It is defined on
-\emph{power}:
+measure of a ratio to a stated or implied reference. For a power ratio,
 \[
 \text{ratio in dB}=10\log_{10}\frac{P_2}{P_1}.
 \]
@@ -21,10 +20,10 @@ amplitude ratio picks up a factor of two from the logarithm of a square:
 =10\log_{10}\left(\frac{V_2}{V_1}\right)^{\!2}
 =20\log_{10}\frac{V_2}{V_1}.
 \]
-Thus \(10\log\) for power and \(20\log\) for voltage or current are one convention
-applied to quantities that differ by a square. The \(20\log\) form is
-valid only when the two amplitudes are measured across the \emph{same} impedance;
-otherwise return to power.
+Thus \(10\log\) applies to power ratios and \(20\log\) to voltage or current
+ratios. The two expressions describe the same power ratio only when the compared
+amplitudes refer to the same impedance
+\cite[pp.~33--37]{white2004highfrequency}.
 
 \begin{workedbox}[: the \(-3\,\mathrm{dB}\) point]
 The single most-quoted number in filtering is the \emph{half-power} point. Setting
@@ -40,7 +39,8 @@ terms half power means \(V_2/V_1=1/\sqrt2\approx0.707\), and indeed
 Both expressions give the same value. This is why the \(-\SI{3}{\decibel}\)
 frequency, the half-power frequency, and the \(0.707\)-amplitude frequency are
 three names for one point, and why \(-\SI{3}{\decibel}\) is emphatically \emph{not}
-half amplitude (half amplitude is \(-\SI{6}{\decibel}\)).
+half amplitude (half amplitude is \(-\SI{6}{\decibel}\))
+\cite[pp.~33--37]{white2004highfrequency}.
 \end{workedbox}
 
 Two frequency-ratio words complete the vocabulary. A \textbf{decade} is a
@@ -69,6 +69,7 @@ Frequency is logarithmic, so equal ratios take equal space, using the decade and
 octave of \cref{sec:decibels}. The frequency response is the transfer function of
 \cref{ch:linsys} evaluated on the imaginary axis, \(s=\jj\omega\)---that is, the
 system's steady response to a \emph{sinusoidal input} at frequency \(\omega\).
+\cite[pp.~47--56]{leigh2012control}
 
 \section{First-Order Response}
 The first-order transfer function from \cref{ch:linsys} is
@@ -83,6 +84,7 @@ The magnitude is flat until the \emph{corner frequency} \(\omega_c=1/\tau\), the
 rolls off at \(-\SI{20}{\decibel}\) per decade; the phase slides from \(0^\circ\)
 to \(-90^\circ\), passing \(-45^\circ\) at the corner (\cref{fig:bode1}). The
 corner is the same \(1/\tau\) that set the time constant in \cref{ch:linsys}.
+\cite[pp.~54--58]{leigh2012control}
 
 \subsection{Deriving the Asymptotes}
 \label{sec:asymptotes}
@@ -133,7 +135,8 @@ where the gain is \(-\SI{3}{\decibel}\) and the phase is \(-45^\circ\).}
 \end{figure}
 
 \section{Building the Sketch from Poles and Zeros}
-A Bode magnitude plot can be sketched by hand from the pole and zero locations.
+A Bode magnitude and phase plot can be sketched by hand from stable,
+minimum-phase pole and zero factors \cite[pp.~58--61]{leigh2012control}.
 For the first-order denominator factor \(1+s/\omega_c\), the limits just derived
 give \(\SI{0}{\decibel}\) below \(\omega_c\) and
 \(-\SI{20}{\decibel}\) per decade above it. A zero is a numerator factor, so it
@@ -141,10 +144,13 @@ contributes the same change with the opposite sign. Each factor adds one
 straight-line asymptote:
 \begin{itemize}
 \item Start at the low-frequency gain (the DC value \(|G(0)|\)).
-\item At each \textbf{pole} corner, bend the slope \emph{down} by
-\(\SI{20}{\decibel}\) per decade and subtract up to \(90^\circ\) of phase.
-\item At each \textbf{zero} corner, bend the slope \emph{up} by
-\(\SI{20}{\decibel}\) per decade and add up to \(90^\circ\) of phase.
+\item At each left-half-plane real \textbf{pole} corner, bend the magnitude slope
+\emph{down} by \(\SI{20}{\decibel}\) per decade and accumulate as much as
+\(90^\circ\) of phase lag.
+\item At each left-half-plane real \textbf{zero} corner, bend the magnitude slope
+\emph{up} by \(\SI{20}{\decibel}\) per decade and accumulate as much as
+\(90^\circ\) of phase lead. A right-half-plane zero has the same magnitude
+asymptote but contributes phase lag.
 \item A corner sits at the frequency equal to that pole's or zero's distance from
 the origin; an \(n\)-pole low-pass therefore rolls off at about
 \(-20n\,\si{\decibel}\) per decade far above cutoff
@@ -177,6 +183,7 @@ the Butterworth value, the response instead falls monotonically from its dc gain
 Geometrically, sampling \(G(\jj\omega)\) near \(\omega_0\) brings the evaluation
 point close to the pole pair, so increasing \(Q\) produces a taller, sharper peak
 (\cref{fig:bode2}) as the poles approach the \(\jj\omega\) axis.
+\cite[pp.~57--58]{leigh2012control}
 
 \begin{figure}[htbp]
 \centering
@@ -191,16 +198,18 @@ axis.}
 Given a measured or computed Bode plot, four features tell you what a
 second-order LTI system (for example, a circuit) does:
 \begin{description}
-\item[Passband and cutoff] the flat region is the passband; the
-\(-\SI{3}{\decibel}\) frequency (magnitude \(1/\sqrt2\)) is the cutoff or corner.
-\item[Roll-off slope] the far-out slope gives the order: \(-20n\,\si{\decibel}\)
-per decade means \(n\) poles. Steeper skirts reject out-of-band signals harder.
-\item[Resonant peak] a bump near \(\omega_0\) signals a high-\(Q\) pole pair; its
-height grows with \(Q\) and its \(-\SI{3}{\decibel}\) width is the bandwidth
-\(BW=f_0/Q\) (\cref{sec:halfpower}).
-\item[Phase] the phase slope near a corner flags how much lead or lag the stage
-adds---the quantity that governs stability once the stage sits inside a feedback
-loop (\cref{ch:feedback}).
+\item[Passband and cutoff] the relatively flat region is the passband. A cutoff
+convention must state its reference; for a monotone unity-gain low-pass it is
+commonly where magnitude is \(1/\sqrt2\), or \(-\SI{3.01}{\decibel}\), relative
+to dc.
+\item[Roll-off slope] for an all-pole low-pass, the far-out slope
+\(-20n\,\si{\decibel}\) per decade reveals denominator order \(n\).
+\item[Resonant peak] a bump signals a lightly damped pole pair. Its height and
+location depend on \(Q\). The exact relation \(BW=f_0/Q\) derived in
+\cref{sec:halfpower} belongs to the series-RLC current, or band-pass, response;
+it is not a universal low-pass bandwidth identity.
+\item[Phase] phase near a corner reports lead or lag subject to the left- versus
+right-half-plane distinction above.
 \end{description}
 
 \section{The s-Plane: Poles, Zeros, and Stability}
@@ -210,14 +219,15 @@ sinusoidal inputs. The s-plane shows the whole picture: where \(G\) blows up
 \(s=\sigma+\jj\omega\), growth and decay (\(\sigma\)) included.
 
 \begin{controlsbox}
-\textbf{Refresher: poles and zeros.} Write \(G(s)=N(s)/D(s)\). The \emph{poles}
-are the roots of \(D\) (the natural modes, equal to the eigenvalues of \(A\)); the
-\emph{zeros} are the roots of \(N\) (frequencies transmitted as zero). An unforced
-mode evolves as \(\ee^{s_i t}\) with \(s_i=\sigma_i+\jj\omega_i\), so the sign of
-the real part is the entire stability story: left half-plane (\(\sigma_i<0\))
-decays and is stable; the \(\jj\omega\) axis sustains a pure oscillation (the
-knife-edge an oscillator sits on); the right half-plane grows and is unstable.
-Zeros do not affect stability, but they shape how the stable modes appear.
+\textbf{Refresher: poles and zeros.} Reduce \(G(s)=N(s)/D(s)\) after common-factor
+cancellations. Its poles are roots of \(D\), and its zeros are roots of \(N\). A
+zero on the imaginary axis at \(s=\jj\omega_z\) forces a sinusoidal steady-state
+null at \(\omega_z\); a general zero is a complex-frequency property rather than
+an ordinary rejected frequency. A simple mode \(\ee^{s_i t}\) decays, sustains
+constant amplitude, or grows according as \(\Re(s_i)\) is negative, zero, or
+positive. Repeated imaginary-axis poles require separate treatment. For a minimal
+realization, transfer-function poles equal eigenvalues of \(A\); otherwise hidden
+modes may remain \cite[pp.~32--35, 264--266]{leigh2012control}.
 \end{controlsbox}
 
 \subsection{Reading the Pole Geometry}
@@ -231,17 +241,14 @@ the angle \(\theta\) from the negative real axis toward the upper pole. It
 satisfies \(\cos\theta=\zeta\), so increasing damping moves the pole toward the
 negative real axis and decreases \(\theta\). In the limiting case
 \(\zeta=1\), \(\theta=0\) and the conjugate poles meet at \(-\omega_0\): critical
-damping. The real part \(\alpha=\zeta\omega_0\) is the
-envelope decay rate \emph{and} half the half-power bandwidth: the full bandwidth is
+damping. The real part \(\alpha=\zeta\omega_0\) is the envelope decay rate. For
+the series-RLC current, or band-pass, response derived in \cref{sec:halfpower}, it
+is also half the exact half-power bandwidth:
 \[
 BW=2\alpha=\frac{\omega_0}{Q}\quad[\si{\radian\per\second}].
 \]
-\emph{Distance from the imaginary axis is half the bandwidth.} \Cref{sec:halfpower}
-earns the equals sign, by solving the half-power condition exactly for a series RLC;
-it also locates the two band edges, which turn out to straddle \(\omega_0\)
-geometrically rather than arithmetically. A pole hugging the
-axis rings for a long time and shows a narrow, tall peak; a pole far from the axis
-settles quickly and shows a broad, low peak.
+That identity belongs to the named band-pass response; a low-pass response requires
+its own reference-level definition.
 
 \begin{figure}[htbp]
 \centering
@@ -259,6 +266,7 @@ A pole-zero plot marks poles with \(\times\) and zeros with \(\circ\)
 (\cref{fig:pz-notch}). Poles set the resonance and damping; a zero on or near the
 \(\jj\omega\) axis pulls the magnitude \emph{down} toward a null at that
 frequency---the mechanism of a notch, trap, or band-stop.
+\cite[pp.~58--61]{leigh2012control}
 
 \begin{figure}[htbp]
 \centering
@@ -271,8 +279,8 @@ rejection frequency \(\omega_0\).}
 \end{figure}
 
 \section{Root Locus}
-When a parameter varies---a resistance, a gain, a feedback fraction---the poles
-move, tracing a \emph{root locus}. For the canonical second-order system
+When a parameter varies, the characteristic roots trace a parameter locus; when
+the varied parameter is loop gain this is the classical \emph{root locus}. For the canonical second-order system
 \(s^2+2\zeta\omega_0 s+\omega_0^2\), sweeping the damping \(\zeta\) from zero
 upward traces the path in \cref{fig:rootlocus2}: the poles begin on the
 \(\jj\omega\) axis at \(\pm\jj\omega_0\) (undamped), arc along the circle of

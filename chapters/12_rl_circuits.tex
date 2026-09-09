@@ -15,8 +15,10 @@ feeds, and \(\tau=L/R\) sets how well it isolates.
 \item[Relay and solenoid coils] a coil switched by a transistor is an inductance in
 series with its own winding resistance, nothing more. Its \(L/R\) governs how fast
 it pulls in---and its stored energy is why the switch needs a flyback diode.
-\item[Transformer and motor windings] modeled as leakage inductance in series with
-winding resistance, which is what limits how fast the current can change.
+\item[Transformer and motor windings] often include leakage inductance and winding
+resistance in their practical models. Those two quantities limit some current
+transients, but magnetizing inductance, reflected load, back EMF, and mechanical
+dynamics may also matter; the simple RL model isolates only one part of the behavior.
 \item[Loading coils and conductor loss] the coil in a shortened antenna is an
 inductance whose unavoidable series resistance sets its \(Q\), directly limiting
 efficiency and bandwidth (\cref{ch:lines}).
@@ -93,7 +95,7 @@ s_{\text{pole}}=-\frac{R}{L}=-\frac{1}{\tau}.
 It is the same first-order system as the RC circuit, with the time constant
 \(L/R\) in place of \(RC\). Note the duality: RC stores energy in a voltage and
 its time constant grows with \(R\); RL stores energy in a current and its time
-constant \emph{shrinks} with \(R\).
+constant \emph{shrinks} with \(R\) \cite[pp.~19--30]{white2004highfrequency}.
 
 \section{Transient Response}
 For a DC step of height \(E\), and for decay from an initial current \(I_0\),
@@ -105,7 +107,8 @@ i(t)=I_0\,\ee^{-Rt/L}.
 This is again the first-order response of \cref{ch:linsys}, read as an inductor
 current (\cref{fig:rl-transient}): after one time constant \(\tau=L/R\) the
 current has reached \(63.2\%\) of its final value. Inductor current cannot jump
-under finite voltage---the dual of the capacitor's continuous voltage.
+under finite voltage---the dual of the capacitor's continuous voltage
+\cite[p.~19]{white2004highfrequency}.
 
 \begin{figure}[htbp]
 \centering
@@ -183,17 +186,19 @@ passes essentially untouched.
 so, ideally, the core sees the full sum and presents a series impedance
 \(\jj\omega L\) to it.
 \end{itemize}
-In the ideal symmetric-winding model, a ferrite choke is an inductance that acts
-only on the current you want to suppress---not a filter in frequency, but a filter
-in \emph{mode}. It is the RL circuit of this chapter with the common-mode path's
-resistance playing the role of \(R\), and \(\tau=L/R\) again setting where the
-suppression begins.
-Real chokes also have leakage inductance and winding capacitance, so their
-selectivity is finite and frequency dependent.
+In the ideal symmetric-winding model, a common-mode choke discriminates between
+current modes: the core couples strongly to common-mode flux and weakly to the
+cancelling differential-mode flux. A constant-\(L\) RL model gives useful intuition,
+but it does not define a universal corner frequency for a real ferrite choke.
+Ferrite permeability and loss are complex and frequency dependent, and the achieved
+suppression depends on the choke impedance together with the common-mode source and
+load impedances. Leakage inductance, winding resistance, and winding capacitance also
+limit differential-mode transparency and the useful frequency range
+\cite[pp.~132--143]{davis2011rfcircuit}.
 
 Two practical consequences follow from the formulas already in hand. More turns
-through the core raises \(L\) (roughly as the square of the turn count, since both
-the flux and the linking scale), which lowers the frequency at which the choke
+through the core raises \(L\) approximately as the square of turn count while the
+core remains in its linear magnetic regime, which lowers the frequency at which the choke
 starts working. And a ferrite's \textbf{mix}---its material composition---determines
 the frequency range over which it is lossy rather than merely reactive; a lossy mix
 is preferable here, because dissipating the common-mode energy is better than
@@ -205,13 +210,14 @@ magnetic circuit, so almost all of it links the winding: that gives a large
 inductance per turn and, just as usefully, little external field to couple into
 neighboring circuits. An open rod leaks flux through the air, so it needs far more
 turns for the same inductance and it broadcasts to its surroundings. The same
-containment argument is why toroidal cores dominate in RF work generally---the
-inductance is high, the coupling to everything else is low, and the mix can be
-chosen per band.
+containment argument makes toroids attractive for many RF chokes and transformers.
+Rods, binocular cores, and other geometries remain useful when their coupling,
+saturation, bandwidth, or winding constraints are preferable.
 \end{physicalbox}
 
 \section{Energy Interpretation}
-The inductor stores \(E_L=\tfrac12 Li^2\) in its magnetic field. When current is
+The inductor stores \(E_L=\tfrac12 Li^2\) in its magnetic field
+\cite[p.~19]{white2004highfrequency}. When current is
 interrupted, that energy must go somewhere.
 
 \begin{energybox}

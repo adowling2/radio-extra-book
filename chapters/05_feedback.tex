@@ -35,6 +35,7 @@ This is the same result as the block-diagram rule \(G_{\mathrm{cl}}=G/(1+GH)\) i
 \cref{ch:linsys}, renamed for amplifier work: \(G\to A\) for the forward path and
 \(H\to\beta\) for the feedback path. The amplifier symbols are used from here on,
 because they are the ones the radio literature and \cref{ch:active} use.
+\cite[pp.~19--28, 45]{leigh2012control}
 
 Because \(\beta\) is a constant, this is \textbf{proportional feedback}: the
 feedback path scales the measured output without adding dynamics. Every result in
@@ -54,11 +55,10 @@ When the loop gain magnitude is large at the frequency of interest,
 \[
 A_{\mathrm{cl}}=\frac{A}{1+A\beta}\;\approx\;\frac{A}{A\beta}=\frac{1}{\beta}.
 \]
-The closed-loop behavior is then set by the feedback path \(\beta\) \emph{alone},
-almost independently of \(A\). This is why feedback is the foundation of precision
-engineering: \(A\) may be large, poorly known, temperature dependent, and
-nonlinear, while \(\beta\) can be a precise, stable ratio. You spend surplus gain
-to buy accuracy.
+The closed-loop behavior is then set mainly by \(\beta\), with reduced sensitivity
+to uncertainty in the linearized forward-path gain. Surplus loop gain can be
+exchanged for reduced small-signal gain sensitivity. Nonlinear distortion,
+saturation, noise, and bandwidth limits require their own models.
 
 Quantitatively, differentiating \(A_{\mathrm{cl}}\) with respect to \(A\) gives the
 \emph{sensitivity} result: a fractional change \(\dd A/A\) in the forward path
@@ -100,7 +100,8 @@ widens by \((1+A_0\beta)\). Feedback trades gain for speed. The
 \]
 is invariant. In \cref{fig:fb-first-order}, the left panel traces the pole moving
 left as \(\beta\) increases; the right panel shows the corresponding faster,
-lower-amplitude step responses.
+lower-amplitude step responses. This invariant is exact for the assumed
+single-pole, constant-\(\beta\) model \cite[pp.~45, 49--51]{leigh2012control}.
 
 \begin{figure}[htbp]
 \centering
@@ -154,6 +155,8 @@ Compare this with the standard form \(s^2+2\zeta_{\mathrm{cl}}\omega_{\mathrm{cl
 \qquad
 Q_{\mathrm{cl}}=Q\sqrt{1+A_0\beta}.
 \]
+These relations apply to the zero-free second-order plant and constant
+proportional feedback defined above.
 This is a qualitatively different story from the first-order case. Feedback pushes
 the natural frequency \emph{up} but the damping ratio \emph{down}: the system gets
 faster and less damped at the same time. Raise \(\beta\) far enough and an initially
@@ -172,9 +175,12 @@ real part is pinned at \(-\zeta\omega_0\) while the imaginary part grows.
 \label{fig:fb-second-order}
 \end{figure}
 
-Notice that for this ideal, stable two-pole plant under ordinary negative feedback,
-the real part stays at \(-\zeta\omega_0\), so the poles approach the axis but never
-cross it: the response rings ever harder yet remains stable. Adding a third pole,
+For this ideal, stable two-pole plant under ordinary negative feedback, the real
+part remains \(-\zeta\omega_0\), so the poles move vertically at a fixed
+perpendicular distance from the imaginary axis. Their damping ratio decreases and
+their direction from the origin approaches the axis, but their decay envelope
+retains rate \(\zeta\omega_0\); oscillation becomes faster and more pronounced
+while the linear model remains stable. Adding a third pole,
 feedback-path dynamics, or delay can change that conclusion, which is where the
 frequency view earns its place.
 \Cref{sec:threepoles} proves that counting claim once the next chapter has the
@@ -208,11 +214,14 @@ It answers: how much more gain could I add before oscillating?
 answers: how much extra phase lag---an additional negative phase shift---could the
 loop tolerate?
 \end{description}
-For the stable open-loop, negative-feedback setting modeled here, positive margins
-mean the closed-loop poles are in the left half-plane. Small margins mean poles near
-the \(\jj\omega\) axis: peaked frequency response,
-overshoot, long ringing. Zero margin puts poles on the axis---sustained
-oscillation. \Cref{fig:fb-margins} shows both margins on one loop-gain Bode plot.
+For the open-loop-stable, single-crossover negative-feedback examples developed
+here, positive margins correspond to left-half-plane closed-loop poles. General
+loops can have multiple crossovers or open-loop right-half-plane poles, so scalar
+margins alone are not a complete proof; the full Nyquist criterion also accounts
+for open-loop pole count \cite[pp.~49--50, 130--133]{leigh2012control}. Within
+these examples, small margins accompany peaking and ringing, while zero margin
+places a simple pole pair on the imaginary axis. \Cref{fig:fb-margins} shows both
+margins on one loop-gain Bode plot.
 
 \subsection{One Point, One Plane: the Nyquist View}
 \label{sec:nyquist}
@@ -226,7 +235,8 @@ This one picture shows why gain and phase margins are complementary. The gain
 margin is the radial clearance to \(-1\) along the negative real axis; the phase
 margin is the remaining angle from the unit-circle crossing to that axis. The
 example uses the same three-pole loop as \cref{fig:fb-margins}, so it connects the
-two Bode margins to a single geometric clearance.
+two Bode margins to a single geometric clearance
+\cite[pp.~59--61, 130--133]{leigh2012control}.
 
 \begin{figure}[htbp]
 \centering
@@ -289,9 +299,11 @@ op-amp's gain is set by a pair of resistors instead of by the amplifier
 (\cref{ch:active}). An ideal op-amp is just a forward path with \(A\to\infty\).
 \item The \textbf{gain--bandwidth trade} is the op-amp gain--bandwidth product: the
 same invariant \(A_0\omega_a\), renamed.
-\item \textbf{Zero margin}---poles parked on the \(\jj\omega\) axis---is not a
-failure but a design goal when you want an \emph{oscillator}. The Barkhausen
-condition is exactly \(L=-1\).
+\item \textbf{Zero margin} places the linearized loop at marginal stability. In
+this book's negative-feedback sign convention the boundary condition is \(L=-1\).
+A practical oscillator needs slightly more startup loop gain and a nonlinear
+amplitude-limiting mechanism that returns the settled oscillation to the marginal
+condition.
 \item \textbf{Small margins} explain why an active filter that behaves at audio
 frequencies misbehaves at RF, and why a voltage regulator can ring.
 \end{itemize}
@@ -303,6 +315,6 @@ The exam does not ask you to compute a margin. It asks which oscillator is most
 stable, why an amplifier breaks into oscillation, what negative feedback does to
 gain and bandwidth, and what sets an op-amp's gain. All four are the results
 above: feedback trades gain for bandwidth, large loop gain makes the closed-loop
-behavior depend only on the feedback network, and oscillation is loop gain of
-\(-1\).
+behavior depend mainly on the feedback network, and \(L=-1\) is the linear
+marginal condition in the sign convention used here.
 \end{exambox}

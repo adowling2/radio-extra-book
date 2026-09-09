@@ -98,6 +98,7 @@ constant, independent of shape and of frequency:
 \frac{v}{i}=L'v_p=\frac{L'}{\sqrt{L'C'}}
 =\boxed{\;Z_0=\sqrt{\frac{L'}{C'}}\;}
 \]
+This is the lossless TEM result \cite[pp.~67--72]{davis2011rfcircuit}.
 The per-unit-length geometry of the line sets \(Z_0\) and the velocity factor. In
 particular, \(Z_0\) does not dissipate power: it is a ratio maintained by a wave in
 flight. A resistor equal to \(Z_0\) can absorb a wave perfectly because it presents
@@ -121,6 +122,8 @@ v_p=\frac{1}{\sqrt{L'\varepsilon_rC'_0}}=\frac{c}{\sqrt{\varepsilon_r}}
 \qquad\Longrightarrow\qquad
 \boxed{\;VF=\frac{1}{\sqrt{\varepsilon_r}}\;}
 \]
+This dielectric shortcut and its propagation assumptions are treated in
+\cite[pp.~1--8]{free2022rfmicrowave}.
 where \(C'_0\) is the capacitance the same geometry would have in vacuum. This is the
 same \(v_p=1/\sqrt{L'C'}\) already derived, with the dielectric's effect made
 explicit.
@@ -271,7 +274,8 @@ and the two agree exactly when \(S_{11}=0\). For a filter doing its job in a
 \SI{50}{\ohm} system that is the passband condition, which is why the identification
 of \(S_{21}\) with the voltage transfer function is safe where you care and wrong at
 the band edges. What never needs the caveat is power: \(|S_{21}|^2\) is the
-transmitted power fraction whatever the match.
+transmitted power fraction whatever the match
+\cite[pp.~91--100]{davis2011rfcircuit}.
 \end{mistakebox}
 
 \begin{advancedbox}
@@ -290,7 +294,8 @@ are the ones the previous section already evaluated: a short (\(\Gamma=-1\)), a
 matched load (\(\Gamma=0\)) and an open (\(\Gamma=+1\)). Measure those, solve the
 three equations once, and every later measurement can be corrected back to the
 reference plane. Calibration is not a tuning ritual; it is solving a \(3\times3\)
-system whose right-hand side you obtained by measuring things you already knew.
+system whose right-hand side you obtained by measuring things you already knew
+\cite[pp.~196--205]{free2022rfmicrowave}.
 \end{advancedbox}
 
 \section{Standing Waves, SWR, and Return Loss}
@@ -323,7 +328,7 @@ expresses the same mismatch in the decibels of \cref{sec:decibels},
 \]
 with higher return loss meaning a \emph{smaller} reflection. Because \(\Gamma\) is
 an amplitude ratio it takes the \(20\log\) form; the reflected \emph{power}
-fraction is \(|\Gamma|^2\).
+fraction is \(|\Gamma|^2\) \cite[pp.~8--14]{free2022rfmicrowave}.
 
 \begin{mistakebox}
 The symbol \(\mathrm{RL}\) for return loss has nothing to do with the RL circuits of
@@ -427,12 +432,13 @@ of thickness \(\delta\) has \(R\propto1/\delta\propto\sqrt f\). Dielectric loss 
 insulation's leakage tracks the displacement current through it, making \(G'\)
 roughly proportional to \(f\).
 
-Hence coax attenuation goes as \(\sqrt f\) where conductor loss dominates---the
-entire HF and VHF range for ordinary cable---and crosses over to a steeper,
-proportional-to-\(f\) behavior at microwave frequencies, where the dielectric term
-takes over. That is the whole explanation of the shape of a manufacturer's
-attenuation-versus-frequency curve, and \cref{fig:line-attenuation} separates the
-two contributions.
+Hence coax attenuation approaches a \(\sqrt f\) trend where conductor loss dominates
+and a steeper, approximately proportional-to-\(f\) trend where dielectric loss
+dominates. The crossover is not fixed at a universal band edge: cable dimensions,
+conductor finish, dielectric material, temperature, and construction determine it.
+Across much of HF and VHF, many common coaxial cables are conductor-loss dominated,
+but a cable-specific data sheet is the authority for an actual design
+\cite[pp.~51--53, 78--96]{white2004highfrequency}.
 \end{physicalbox}
 
 \subsection{Attenuation in Decibels}
@@ -466,6 +472,10 @@ Open-wire / ladder & \(\approx\SI{0.1}{\decibel}\) & \(\approx\SI{0.4}{\decibel}
 \bottomrule
 \end{tabularx}
 \end{center}
+
+Because the plotted coefficients are fitted to these illustrative points, the plot
+explains the two-term model but is not independent validation of the numerical cable
+losses; \cref{fig:line-attenuation} shows the resulting trends.
 
 \begin{figure}[htbp]
 \centering
@@ -649,6 +659,8 @@ line's, which is the whole point) and require \(Z_{\mathrm{in}}=Z_0\):
 \qquad\Longrightarrow\qquad
 \boxed{\;Z_t=\sqrt{Z_0Z_L}\;}
 \]
+The same quarter-wave impedance inversion is derived in
+\cite[pp.~63--64]{free2022rfmicrowave}.
 so the matching section's impedance is the \emph{geometric mean} of the two
 resistances it joins. A half-wave section, by contrast, repeats the load
 (\(\tan=0\)) and transforms nothing---useful for relocating a load electrically
@@ -747,6 +759,9 @@ the question pool adopted in its 2024 errata.}
 \label{fig:smith-labeled}
 \end{figure}
 
+The chart geometry, normalization, and direction of travel are developed in
+\cite[pp.~119--152]{white2004highfrequency}.
+
 
 \section{An Idealized Antenna on the Smith Chart}
 The most useful way to connect the chart to the math is to put a real device on
@@ -793,10 +808,10 @@ in---feet and megahertz---and using
 \qquad\text{so}\qquad
 \frac{\lambda}{2}\approx\frac{492}{f} .
 \]
-A real dipole is slightly \emph{shorter} than that. The wire has thickness and its
-ends have capacitance to their surroundings---the \textbf{end effect}---which adds a
-little capacitive loading, so resonance arrives at a physical length about
-\SI{5}{\percent} short of the free-space half wavelength. Applying that factor:
+A practical wire dipole is often somewhat shorter than the free-space half wavelength
+because conductor diameter, insulation, end geometry, height, and nearby material
+change its electrical length. A common starting estimate applies a \(0.95\) shortening
+factor:
 \[
 \boxed{\;
 \ell_{\lambda/2}\,[\mathrm{ft}]\approx\frac{0.95\times492}{f}
@@ -804,9 +819,10 @@ little capacitive loading, so resonance arrives at a physical length about
 \qquad
 \ell_{\lambda/4}\,[\mathrm{ft}]\approx\frac{234}{f\,[\mathrm{MHz}]} \;}
 \]
-the second being a quarter-wave monopole, half the dipole. So the \(468\) is not a
-mysterious constant: it is \(984/2\) reduced by the end effect, and the \(234\) is
-just half of it.
+the second being a quarter-wave monopole, half the dipole. Thus \(468\) is a convenient
+initial-cut constant, not a universal resonance law; final length is installation
+dependent and is normally trimmed while measuring the feed impedance
+\cite[pp.~367--372]{free2022rfmicrowave}.
 
 \begin{workedbox}[: cutting a dipole for 20 meters]
 For \(f=\SI{14.1}{\mega\hertz}\), the antenna modeled above,
@@ -1030,7 +1046,7 @@ bandwidth improves too, and exactly: \(Q=\omega_0L/R\) falls as \(R\) rises, and
 direct proportion to the loss added. A dummy load is the limiting case---a flawless
 \(1{:}1\) across every band, radiating nothing. \emph{An SWR meter measures how
 comfortable the transmitter is, not how much signal leaves.} Therefore \(\eta\) is a
-separate quantity and cannot be measured from the shack.
+separate quantity and cannot be inferred from shack-side SWR or reflection alone.
 \Cref{sec:travelingwave} is the case where that trade is made on purpose.
 \end{mistakebox}
 
@@ -1049,7 +1065,7 @@ So far the antenna has been fed at its center. Move the feed and the resistance
 changes---predictably, and by an argument that needs no electromagnetics beyond what
 \cref{sec:stubs} already set up.
 
-A half-wave dipole is an open-ended structure, so the same boundary condition that put
+A thin, isolated half-wave dipole is approximately an open-ended structure, so the same boundary condition that put
 a current \emph{node} at the end of an open stub puts one at each tip of the dipole.
 The current is therefore a standing wave, largest at the center and vanishing at the
 ends:
@@ -1069,7 +1085,10 @@ attach the coax. But at the feed point the transmitter sees
 \]
 Feed where the current is small and the same power demands a larger resistance. This
 assumes moving the feed does not reshape the current distribution, which is the
-standard approximation and a good one away from the extreme ends.
+standard sinusoidal-current approximation and a useful one away from the extreme ends.
+The expression becomes singular at an ideal current node, whereas conductor geometry,
+end effects, coupling, and the feed structure keep a physical impedance finite
+\cite[pp.~367--376]{free2022rfmicrowave}.
 
 That one formula generates the whole subject:
 
@@ -1253,14 +1272,17 @@ angle \(\psi\) upward from the horizon at the right-hand edge.}
 Real installations depart from this model: soil is lossy, ground planes and radial
 systems are finite, and terrain or nearby structures alter both the image and the
 pattern. The image model identifies the height-and-orientation trend; it does not
-replace a site-specific antenna model or measurement.
+replace a site-specific antenna model or measurement
+\cite[pp.~359--386]{free2022rfmicrowave}.
 
 \subsection{The Folded Dipole's Factor of Four}
 \label{sec:foldeddipole}
 A folded dipole is a half-wave dipole whose ends are bent back and joined, making a
-narrow loop fed at the middle of one side. Its feed impedance is famously about four
-times a plain dipole's, and the reason is \cref{sec:feedpoint}'s power argument plus
-\cref{sec:stubs}'s stub.
+narrow loop fed at the middle of one side. For the canonical folded dipole made from
+two closely spaced conductors of equal diameter, its feed impedance is approximately
+four times a plain dipole's. The current argument below explains that ideal ratio;
+unequal conductor diameters, spacing, bends, and nearby structures change the
+transformation \cite[pp.~367--376]{free2022rfmicrowave}.
 
 Decompose the excitation into two modes. In the \emph{transmission-line} mode the two
 conductors are driven in opposition, which makes each half a two-wire line a quarter
@@ -1297,11 +1319,11 @@ inherits it.
 where the reflected wave returns in phase---so an antenna with no reflection has no
 resonance to be narrow about. Its behavior changes only as slowly as \(\Gamma_L=0\)
 degrades.
-\item The efficiency is \textbf{poor}. The power that would have been reflected is
-instead dissipated in the terminator, and by \cref{sec:antennaeff} that resistor is
-pure \(R_{\text{loss}}\). Half the input power is a typical figure. \emph{You are
-buying pattern and bandwidth with efficiency}, which is the same currency
-\cref{sec:antennaeff} was spending.
+\item The efficiency is \textbf{lower than for an otherwise comparable unterminated
+radiator}, because some accepted power is dissipated in the termination. The fraction
+is set by antenna geometry, traveling-wave current distribution, ground loss, and
+resistor value; no universal one-half figure follows from \(\Gamma_L=0\) alone.
+\emph{Pattern and bandwidth are purchased with dissipative loss.}
 \end{itemize}
 
 
@@ -1317,7 +1339,11 @@ gamma, delta, and stub---and they look like four separate tricks. They are not. 
 one is an L-network from \cref{sec:lnetwork} whose elements are built from things this
 chapter has already derived: stub reactances (\cref{sec:stubs}) and the feed-point
 tap of \cref{sec:feedpoint}. No new mathematics is needed, and one of them turns a
-memorized exam fact into a consequence.
+memorized exam fact into a consequence. The reductions below explain the dominant
+matching action. Exact gamma, delta, and hairpin designs remain distributed
+electromagnetic structures whose dimensions are affected by mutual coupling, conductor
+geometry, boom mounting, and the driven element's actual impedance; the lumped and tap
+formulas are starting models rather than dimensional design rules.
 
 \textbf{The hairpin, and why the element must be short.} A Yagi's driven element,
 pulled down by the parasitic elements coupled to it, presents a resistance well
@@ -1436,7 +1462,8 @@ which point it absorbs the difference and tells you so by getting hot.
 E9E asks what a Wilkinson divider is for, and the answer is the three requirements
 above stated together: \emph{to divide power equally between two \SI{50}{\ohm} loads
 while maintaining \SI{50}{\ohm} input impedance}. The isolation is the part the answer
-does not mention and the part the resistor is actually there for.
+does not mention and the part the resistor is actually there for
+\cite[pp.~142--147]{davis2011rfcircuit}.
 \end{exambox}
 
 

@@ -12,14 +12,13 @@ A diode's current rises approximately exponentially with voltage,
 I_D=I_S\left(\ee^{V_D/(nV_T)}-1\right),
 \]
 where \(V_T\) is the thermal voltage (about \SI{26}{\milli\volt} near room
-temperature) and \(n\) accounts for device physics.  The exponential is not a
-linear resistor.  But at a selected bias current \(I_D\), a small voltage change
-has incremental slope \(\dd I_D/\dd V_D\), giving the small-signal resistance
+temperature) and \(n\) is an ideality factor. At a forward-bias point for which the
+minus-one term is negligible, differentiating gives the small-signal resistance
 \[
 \boxed{\quad r_d\approx\frac{nV_T}{I_D}.\quad}
 \]
-The word ``small'' matters: this model describes perturbations around the chosen
-DC point, not a large rectified waveform crossing from cutoff to conduction.
+This is a local incremental model. Large excursions, series resistance, junction
+capacitance, temperature, and reverse behavior require a fuller device model.
 
 A bipolar junction transistor (BJT) uses a forward-biased base--emitter junction
 to control collector current.  Near its operating point,
@@ -28,14 +27,15 @@ I_C\approx I_S\ee^{V_{BE}/V_T},\qquad
 \boxed{\quad g_m=\frac{\partial I_C}{\partial V_{BE}}
 \approx\frac{I_C}{V_T}.\quad}
 \]
-Thus a small \(v_{be}\) produces collector current \(i_c=g_mv_{be}\); a collector
-resistor converts that controlled current back into voltage.  The base also draws
-current, approximately \(I_B=I_C/\beta\).  A field-effect transistor instead uses
-an electric field at an insulated or reverse-biased gate to control drain current.
-Its gate current is usually much smaller, and its local small-signal description
-has the same useful form: \(i_d=g_mv_{gs}\).  A vacuum tube is another controlled
-current source: grid voltage controls plate current.  The technologies differ; the
-load-line and feedback reasoning is the same.
+Thus, near the chosen bias point, a small \(v_{be}\) produces
+\(i_c=g_mv_{be}\), and a collector load converts current to voltage. The base
+current is approximately \(I_C/\beta\) in this local model. A field-effect
+transistor similarly has \(i_d=g_mv_{gs}\) at its bias point. Its conductive gate
+current is commonly much smaller than BJT base current, although leakage, protection
+structures, and RF capacitive current still matter
+\cite[pp.~123--130]{bowick2008rfcircuit}. Vacuum tubes can also be modeled as
+voltage-controlled current sources, but the technologies differ in their detailed
+device models.
 
 \section{Load Lines and Emitter or Source Degeneration}
 \label{sec:loadlines}
@@ -44,29 +44,33 @@ Consider a common-emitter BJT stage with collector resistor \(R_C\) and supply
 \[
 V_{CE}=V_{CC}-I_CR_C.
 \]
-This straight \textbf{load line} intersects the transistor's nonlinear current--
-voltage curves at the quiescent, or \(Q\), point.  Bias near the middle of the
-available voltage swing permits a sinusoid to move both upward and downward before
-cutoff or saturation clips it.  Moving the point toward cutoff is how Class B or C
-operation trades linearity for efficiency (\cref{sec:conductionangle}).
+This straight \textbf{DC load line} intersects the transistor's nonlinear static
+curves at the quiescent point. For the simplified resistively loaded Class-A stage,
+bias near the middle of the available voltage swing permits approximately symmetric
+excursion before cutoff or saturation. At RF, reactive matching and dynamic device
+behavior make the static load-line picture mainly qualitative
+\cite[pp.~458--460]{nguyen2015rfic}. Moving the bias toward cutoff underlies the
+linearity/efficiency trade of Class B or C operation (\cref{sec:conductionangle}).
 
-An emitter resistor \(R_E\) adds local negative feedback.  If collector current
-rises, emitter voltage rises, reducing \(V_{BE}\) and opposing the rise.  In the
-small-signal model the emitter's intrinsic resistance is
-\(r_e\approx1/g_m=V_T/I_C\), and the approximate voltage gain becomes
+An emitter resistor \(R_E\) adds local negative feedback. If collector current rises,
+emitter voltage rises, reducing \(V_{BE}\) and opposing the change. With large
+\(\beta\), negligible transistor output resistance, an unloaded collector resistance,
+and approximately equal emitter and collector incremental currents, the local model gives
 \[
+ r_e\approx\frac{1}{g_m}=\frac{V_T}{I_C},
+ \qquad
 \boxed{\quad A_v\approx-\frac{R_C}{r_e+R_E}.\quad}
 \]
-The minus sign is the common-emitter inversion.  The resistor lowers gain but makes
-that gain, the input resistance, and the DC current less dependent on the poorly
-controlled transistor parameters.  This is the same gain-versus-robustness bargain
-as \(A/(1+A\beta)\), executed with one resistor rather than a separate feedback
-network.  A source resistor performs the corresponding job in a FET stage.
+The minus sign is the common-emitter inversion. The resistor lowers gain but reduces
+sensitivity to device parameters and raises input resistance; source degeneration gives
+the analogous FET behavior \cite[pp.~665--667]{nguyen2015rfic}. Loading and finite
+output resistance require the corresponding effective collector load in place of
+\(R_C\).
 
 \begin{workedbox}[: how a resistor stabilizes a BJT]
 At \(I_C=\SI{1}{\milli\ampere}\), \(r_e\approx
 \SI{26}{\milli\volt}/\SI{1}{\milli\ampere}=\SI{26}{\ohm}\).  With
-\(R_C=\SI{4.7}{\kilo\ohm}\) and no unbypassed emitter resistor, the ideal local
+\(R_C=\SI{4.7}{\kilo\ohm}\) and no unbypassed emitter resistor, the ideal unloaded local
 gain is about \(-4700/26=-181\).  Adding \(R_E=\SI{470}{\ohm}\) changes it to
 about \(-4700/(26+470)=-9.5\).  The stage gives up gain, but a modest change in
 transconductance no longer makes its behavior unpredictable.  A bypass capacitor
@@ -76,25 +80,26 @@ can restore AC gain over a chosen band while retaining DC bias stabilization.
 \section{Rectification and Regulation Are Feedback Problems}
 \label{sec:regulation}
 A diode rectifier is deliberately used far outside its small-signal region: it
-passes one polarity of an AC waveform to charge a reservoir capacitor.  A full-wave
-bridge replenishes that capacitor twice per line cycle, so its ripple frequency is
-\(2f_{\rm line}\) (\cref{ch:active}).  Between recharge peaks the capacitor supplies
-the load, and charge balance gives the useful estimate
+passes one polarity of an AC waveform to charge a reservoir capacitor. A full-wave
+bridge replenishes the capacitor twice per line cycle, so
+\(f_{\rm ripple}=2f_{\rm line}\) (\cref{ch:active}). If ripple is small, load current
+is approximately constant between short recharge intervals, and transformer/source
+impedance is neglected, charge balance gives
 \[
 \boxed{\quad\Delta V\approx\frac{I_{\rm load}}{f_{\rm ripple}C}.\quad}
 \]
-It makes the design trade visible: more capacitance, less load current, or more
-frequent charging reduces ripple.  A bridge also has two forward-biased diodes in
-the conducting path, so its available peak output is lower than the transformer
-secondary peak by roughly two diode drops.
+More capacitance, less load current, or more frequent charging reduces this approximate
+ripple. A bridge has two forward-biased diodes in the conducting path, but their
+forward drops depend on current and temperature rather than being fixed constants.
 
-A voltage regulator senses output voltage, compares it with a reference, and
-adjusts a pass element to reduce the error.  That is a feedback loop.  At low
-frequency, large loop gain makes output changes due to load or input variation
-smaller by roughly \(1+L\), exactly as in \cref{ch:feedback}.  Compensation is
-needed because the pass device, output capacitor, and load add poles; an
-overconfident regulator can oscillate for the same phase-margin reason as an
-op-amp circuit (\cref{sec:gbw}).
+A voltage regulator senses output voltage, compares it with a reference, and adjusts
+a pass element to reduce error. At frequencies where loop gain is large, feedback
+reduces line- and load-induced output variation by approximately \(1+L\), as in
+\cref{ch:feedback}. Stability depends on regulator topology and on poles and zeros
+introduced by the pass device, output network, load, and compensation. Some regulators
+are internally compensated; others require specified output capacitance, ESR, or load.
+In every case the applicable data-sheet stability conditions take precedence over the
+generic model.
 
 \begin{exambox}
 Bias, clipping, rectification, and regulation should not be collapsed into one

@@ -56,6 +56,7 @@ contributes negative reactance, of magnitude \(X_C=1/(\omega C)\), so that
 \(Z_C=-\jj X_C\). At low frequency a capacitor's impedance is large
 (it blocks DC) and an inductor's is small (it passes DC); at high frequency the
 roles reverse.
+\cite[pp.~22--29]{white2004highfrequency}
 
 \begin{physicalbox}
 \textbf{A chemical-engineering analogy.} Circuits obey the same
@@ -92,6 +93,7 @@ the impedance directly:
 Z=Z_R+Z_L+Z_C=R+\jj\omega L+\frac{1}{\jj\omega C}
 =R+\jj\left(\omega L-\frac{1}{\omega C}\right).
 \]
+\cite[pp.~28--29]{white2004highfrequency}
 The reactance is the \emph{difference} \(\omega L-1/(\omega C)\); it vanishes at
 resonance, a fact \cref{ch:rlc} builds on. \Cref{fig:series-z} is the arrangement:
 one loop, one current, three impedances in a row.
@@ -153,6 +155,7 @@ branch currents add (KCL) and it is the \emph{reciprocals} of the impedances tha
 sum: \(I/V=1/R+\jj(\omega C-1/\omega L)\).}
 \label{fig:rlc-parallel-z}
 \end{figure}
+\cite[pp.~29--32]{white2004highfrequency}
 
 \section{Admittance and Susceptance}
 For parallel networks it is easier to work with the reciprocal of impedance, the
@@ -163,6 +166,7 @@ Y=\frac{1}{Z}=G+\jj B,
 whose real part \(G\) is conductance and imaginary part \(B\) is
 \textbf{susceptance}. The two one-port forms are the same statement written in
 opposite directions:
+\cite[pp.~30--32]{white2004highfrequency}
 \[
 V=ZI,\qquad I=YV.
 \]
@@ -235,6 +239,7 @@ An inductor is the dual. With \(i(t)=I_p\cos\omega t\),
 \textbf{voltage leads current by \(90^\circ\)}. In both cases the derivative in the
 element law is the phase shift, and \(\jj\omega\) is that derivative wearing a
 phasor's clothing.
+\cite[pp.~18--22, 28--29]{white2004highfrequency}
 
 Consequently a positive impedance angle means net inductive behavior and a negative
 angle means net capacitive behavior---the angle simply reports which store wins.
@@ -294,6 +299,7 @@ volt-amperes reactive). With this convention \(Q>0\) for a lagging, inductive lo
 and \(Q<0\) for a leading, capacitive load. Reversing the reference current reverses
 the sign of \(S\): a source delivering power therefore has negative absorbed power.
 The magnitude \(\lvert S\rvert\) is apparent power, measured in volt-amperes (VA).
+\cite[pp.~38--39]{white2004highfrequency}
 
 \subsection{Where ``Sloshing'' Comes From}
 \label{sec:instpower}
@@ -337,6 +343,7 @@ P=|S|\cos\theta=I_{\RMS}^2|Z|\cdot\frac{R}{|Z|}=I_{\RMS}^2R,
 \]
 so the two power formulas are one formula: \emph{only the resistance consumes},
 whatever the reactance does.
+\cite[pp.~38--39]{white2004highfrequency}
 
 \begin{mistakebox}
 The power factor \(\cos\theta\) cannot tell you whether a load is inductive or
@@ -394,6 +401,7 @@ largest:
 \[
 \mathrm{PEP}=\frac{V_{pp,\max}^2}{8R} .
 \]
+\cite[p.~222]{carr2002measurement}
 The definition is a mouthful, but its structure is simple---it is still an
 \emph{average} over a cycle, just the largest one. For an unmodulated carrier the
 envelope is flat, so every cycle is the largest one and \(\mathrm{PEP}\) equals
@@ -411,10 +419,10 @@ syllable the scope shows \SI{200}{\volt} peak-to-peak. Then
 \]
 Checking the long way round: \(V_{\RMS}=200/(2\sqrt2)=\SI{70.7}{\volt}\), and
 \(70.7^2/50=\SI{100}{\watt}\). Same answer, as it must be. Note that the
-\emph{average} power over the whole transmission is much lower---speech spends most
-of its time well below peak---which is why an amplifier can be rated for
-\SI{100}{\watt} PEP on single sideband while its heat sink need not dissipate
-\SI{100}{\watt} continuously.
+The average RF output over a voice transmission is typically lower than PEP, but
+heat-sink requirements also depend on amplifier efficiency, operating class, duty
+cycle, waveform statistics, and thermal time constants. PEP alone does not
+determine continuous device dissipation.
 \end{workedbox}
 
 \begin{mistakebox}
@@ -456,3 +464,4 @@ Thus \(Z=50+\jj446\ \si{\ohm}\), and in polar form
 The angle is close to \(+90^\circ\): the coil's reactance dwarfs its resistance, so
 at this frequency the part behaves almost like a pure inductor, and the current will
 lag the voltage by nearly a quarter cycle.
+\cite[pp.~28--29]{white2004highfrequency}
