@@ -116,7 +116,7 @@ make audit-diff
 ```
 
 This compares immutable pre-audit commit `4f4100a` with audited manuscript commit
-`1aad059` and writes `output/pdf/literature-audit-latexdiff.pdf`. Later documentation
+`660dda4` and writes `output/pdf/literature-audit-latexdiff.pdf`. Later documentation
 changes are intentionally excluded from that comparison. Circuitikz environments are
 treated as atomic pictures so markup cannot split a drawing command; inspect the new
 Norton schematic directly where that correction is discussed. The review copy labels

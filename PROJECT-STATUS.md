@@ -23,7 +23,7 @@ working ledgers remained outside it. See
 `notes/literature-audit-2026-09-09.md` for the reproducible method, review boundary,
 known source gaps, and validation record. Run `make audit-diff` to rebuild the
 highlighted PDF comparing pre-audit commit `4f4100a` with audited manuscript commit
-`1aad059`.
+`660dda4`.
 
 ## Round 7 (revision handoff)
 
