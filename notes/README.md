@@ -2,20 +2,38 @@
 
 These are the **full-reasoning working notes** behind the two summary documents in the
 repository root. They were produced in a session scratchpad, which does not survive, so
-they are preserved here — `PROJECT-STATUS.md` and `ARRL-GAP-PROPOSAL.md` both cite
+they are preserved here — `PROJECT-STATUS.md` and `audit-arrl-proposal.md` both cite
 them.
+
+### Audits
 
 | File | What it is |
 |---|---|
-| `audit-general-pool.md` | Complete concept inventory of the **General (Element 3)** pool: 423 questions, 35 groups, the 236 that are circuit/electronics questions, distilled to a 157-concept checklist with question IDs. This is what the book was checked against. |
+| `audit-arrl-proposal.md` | The **LEDGER** — every audit suggestion reconciled against the book as built, ranked in four tiers. Start here. |
+| `audit-general-pool.md` | Concept inventory of the **General (Element 3)** pool: 423 questions, the 236 that are circuit/electronics, distilled to a 157-concept checklist |
 | `audit-arrl-ch4.md` | ARRL Extra manual Ch 4 (radio mathematics, principles of circuits) — 9 proposals |
 | `audit-arrl-ch6.md` | ARRL Ch 6 (amplifiers, signal processing, DSP, filters, power supplies) — 12 proposals |
 | `audit-arrl-ch7.md` | ARRL Ch 7 (test equipment, receiver performance, interference) — 12 proposals |
 | `audit-arrl-ch9.md` | ARRL Ch 9 (antennas, transmission lines) — 12 proposals |
-| `proofread-2026-09-22.md` | Full-manuscript proofread: spelling, American English, float placement. Carries **OQ-5**, the one open question, and the reusable prose-stripper for future spelling passes. |
-| `literature-audit-2026-09-09.md` | Method, privacy boundary, reconciliation, source gaps, and validation record for the 16-book literature audit |
+| `literature-audit-2026-09-09.md` | Method and privacy boundary for the 16-book RF/control literature audit |
+| `proofread-2026-09-22.md` | Full-manuscript proofread: spelling, American English, float placement. Carries **OQ-5**, the one open question, and a reusable prose-stripper for future spelling passes. |
 
-**Start from the LEDGER at the end of `ARRL-GAP-PROPOSAL.md`, not from these files.**
+### Per-round revision records
+
+| File | What it is |
+|---|---|
+| `revision-notes-round1.md` | Round 1 markup notes (was `revision-notes.md` in the repository root) |
+| `revision-notes-round2.md` | Round 2 markup notes |
+| `revision-notes-round3.md` | Round 3 — parsed markup, 11 decisions, execution plan |
+| `revision-plan-round7.md` | Round 7 plan and phase protocol |
+| `revision-notes-round7.md` | Round 7 — page-keyed transcription of every readable annotation |
+| `round7-open-questions.md` | Questions that changed scope or meaning, with resolutions |
+| `round7-author-style-guide.md`, `round7-author-style-evidence.md`, `round7-editing-style.md` | Style analysis and the resulting editing rules |
+| `round7-figure-audit.md` | Figure-by-figure review |
+| `round7-technical-claim-audit-part1.md`, `-part2.md` | Claim-by-claim technical verification |
+| `round7-generalization-*.md` | Per-chapter generalization logs |
+
+**Start from the LEDGER at the end of `audit-arrl-proposal.md`, not from these files.**
 The ledger reconciles every proposal against the book as built and ranks what is left;
 these notes are the detail you drop into once you have picked an item.
 

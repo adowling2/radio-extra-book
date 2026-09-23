@@ -2,7 +2,7 @@
 
 ## Scope and method
 
-This read-only audit covers Chapters 1–14, the front matter, and the appendices that restate their technical formulas or claims. It follows the Phase 6 protocol in [revision-plan-round7.md](../revision-plan-round7.md): re-derive algebraic and numerical claims where feasible; inspect units, signs, assumptions, and limiting cases; check examination-pool statements against the tracked pool extracts; and distinguish a factual error from a deliberately simplified teaching model.
+This read-only audit covers Chapters 1–14, the front matter, and the appendices that restate their technical formulas or claims. It follows the Phase 6 protocol in [revision-plan-round7.md](revision-plan-round7.md): re-derive algebraic and numerical claims where feasible; inspect units, signs, assumptions, and limiting cases; check examination-pool statements against the tracked pool extracts; and distinguish a factual error from a deliberately simplified teaching model.
 
 The audit was originally read-only; its status column now records the scoped Round 7 resolutions. “Correct” below means correct within the stated or recommended scope, not a claim of exhaustive external verification. The current repository contains derived exam-pool extracts, but not the official NCVEC/FCC source documents needed to independently confirm release status or regulatory assertions.
 

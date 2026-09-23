@@ -3,6 +3,30 @@
 **Running status file — update this at the end of each working session.**
 Last updated: 2026-09-22 (proofreading pass: spelling, American English, float placement).
 
+## Cutting a release
+
+The book PDF is **not committed** — at 2.2 MB per build that would add to history on
+every edit. Instead `.github/workflows/release.yml` builds it in CI and attaches it to
+a GitHub Release, where assets live outside the git object database.
+
+```bash
+git tag -a v1.0 -m "First public release"
+git push origin v1.0
+```
+
+That builds the book and cheat sheet in a full TeX Live container, fails the release
+if the LaTeX log is not clean (undefined references, overfull boxes > 20 pt, or
+multiply-defined labels), names the assets after the tag, and publishes them with
+auto-generated release notes. The workflow also accepts a manual `workflow_dispatch`
+run, which builds and uploads artifacts **without** creating a release — use that to
+test a change to the workflow itself.
+
+Note the CI build needs no Python: the figure PDFs are committed, so `make all` is
+LaTeX only. The full `scripts/check.sh` suite still needs Python and Poppler and is
+meant to be run locally before tagging.
+
+---
+
 ## Proofreading pass (completed 2026-09-22)
 
 Full-manuscript proofread for spelling, American English, and page/figure
@@ -58,7 +82,7 @@ highlighted PDF comparing pre-audit commit `4f4100a` with audited manuscript com
 ## Round 7 (revision handoff)
 
 The annotated September 2026 PDF has been transcribed into
-`revision-notes-round7.md`, reconciled against the manuscript, and used to produce
+`notes/revision-notes-round7.md`, reconciled against the manuscript, and used to produce
 an editing-style record, author-style evidence/guide, figure audit, technical-claim
 audits, and chapter-range generalization logs in `notes/`. High-confidence markup
 changes are applied through the full book. The Preface scope choices and Chapter 6
@@ -144,11 +168,11 @@ reason for coil `Q` falling, and A5 found the same mistold for push-pull and IMD
 **Tier B1 (S-parameters) is also done** — `sec:sparams` in Ch 16 and `sec:vna` in
 Ch 20, the latter carrying the `controlsbox` where Part II's `G(jω)` and Part IV's
 circuits finally meet on an instrument screen. **All four tiers are complete.** The ledger stands at 58 done, 0 open.
-See §6 for the plan, and the LEDGER in `ARRL-GAP-PROPOSAL.md` for the running score.
+See §6 for the plan, and the LEDGER in `notes/audit-arrl-proposal.md` for the running score.
 
 Per-round markup plans live alongside this file and are the archive, not the status:
-`revision-notes.md` (Round 1), `revision-notes-round2.md` (Round 2),
-`revision-notes-round3.md` (Round 3 — includes the parsed markup, 11 decisions, and
+`notes/revision-notes-round1.md` (Round 1), `notes/revision-notes-round2.md` (Round 2),
+`notes/revision-notes-round3.md` (Round 3 — includes the parsed markup, 11 decisions, and
 the execution plan). Round 4 had no markup file: it was driven by a front-to-back
 read-through plus a coverage check against the General (Element 3) question pool,
 and its findings are recorded in §2 below.
@@ -370,7 +394,7 @@ Round 4 hand-filtered.
 
 ### A. Decide on the ARRL audit findings
 
-**See [`ARRL-GAP-PROPOSAL.md`](ARRL-GAP-PROPOSAL.md), and in particular the LEDGER at
+**See [`notes/audit-arrl-proposal.md`](notes/audit-arrl-proposal.md), and in particular the LEDGER at
 the end of it.** That ledger reconciles *all three* Round 4 audits — the read-through,
 the General-pool check, and the four ARRL chapter audits — against the book as built,
 so nothing can be silently dropped. Current score: **58 done, 0 open** — the ledger is complete, with the open
@@ -458,7 +482,7 @@ exam-relevance claim sourced from the manual as suspect.
 
 - ✅ **Closed 2026-09-09 — "did Round 5 cross a scope line?"** Round 5 annotated
   beamwidth and front-to-back on a computed pattern, which contradicted
-  `ARRL-GAP-PROPOSAL.md`'s *What I rejected*. Round 6 settled it decisively in the
+  `notes/audit-arrl-proposal.md`'s *What I rejected*. Round 6 settled it decisively in the
   other direction by adding Ch 21 on patterns, polarization, and practical design. The
   rejection list is now historical on this point; the Preface's scope statement is the
   current authority.
@@ -478,7 +502,7 @@ Carried from earlier rounds:
   notation left as-is.
 - **Whether to get the 13th-edition ARRL manual.** The copy in `references/` is keyed
   to the 2020–2024 pool, which already produced one wrong finding in the audit
-  (see `ARRL-GAP-PROPOSAL.md`).
+  (see `notes/audit-arrl-proposal.md`).
 
 ---
 
@@ -586,7 +610,7 @@ pdftoppm -r 130 -png figures/<name>.pdf /tmp/chk && open /tmp/chk-1.png
 ### 5e. Where to start reading
 
 1. This file, §1 (structure and conventions) and §4 (what to do next).
-2. The **LEDGER** at the end of `ARRL-GAP-PROPOSAL.md` — the reconciled list of every
+2. The **LEDGER** at the end of `notes/audit-arrl-proposal.md` — the reconciled list of every
    outstanding suggestion, ranked. Alex has approved all four tiers.
 3. `notes/README.md` if you need the full reasoning behind a specific item.
 4. §6 below for the agreed order of work.
@@ -666,6 +690,6 @@ restates Ch 7.
 - Cite, don't re-derive. If an earlier chapter has the result, `\cref` it.
 - New section ⇒ give it a `\label` **and reference it from somewhere**, or the orphan
   check will catch you. Ch 6 spent a whole round as an orphan.
-- Update the ledger in `ARRL-GAP-PROPOSAL.md` as items land.
+- Update the ledger in `notes/audit-arrl-proposal.md` as items land.
 
 ---
