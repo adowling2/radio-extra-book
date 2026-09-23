@@ -12,6 +12,7 @@ them.
 | `audit-arrl-ch6.md` | ARRL Ch 6 (amplifiers, signal processing, DSP, filters, power supplies) — 12 proposals |
 | `audit-arrl-ch7.md` | ARRL Ch 7 (test equipment, receiver performance, interference) — 12 proposals |
 | `audit-arrl-ch9.md` | ARRL Ch 9 (antennas, transmission lines) — 12 proposals |
+| `proofread-2026-09-22.md` | Full-manuscript proofread: spelling, American English, float placement. Carries **OQ-5**, the one open question, and the reusable prose-stripper for future spelling passes. |
 | `literature-audit-2026-09-09.md` | Method, privacy boundary, reconciliation, source gaps, and validation record for the 16-book literature audit |
 
 **Start from the LEDGER at the end of `ARRL-GAP-PROPOSAL.md`, not from these files.**

@@ -1,10 +1,15 @@
 # Round 7 open questions
 
 This record preserves decisions that materially changed scope, meaning, or
-organization. All four material questions are now resolved. Routine unreadable
+organization. All four Round 7 questions are resolved. Routine unreadable
 words, local wording, and figure-layout details remain marked `[?]` in
 `revision-notes-round7.md`; they do not need a decision before a conservative
 editing pass.
+
+> **One later question is still open.** The 2026-09-22 proofreading pass raised
+> **OQ-5 — five end-of-chapter figure pages**, recorded in
+> [`proofread-2026-09-22.md`](proofread-2026-09-22.md). It is low priority and
+> nothing depends on it; the recommendation is to accept the current state.
 
 ## Resolved OQ-1 — Preface: process-control framing
 

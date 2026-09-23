@@ -1,7 +1,37 @@
 # Project Status and Next Steps
 
 **Running status file — update this at the end of each working session.**
-Last updated: 2026-09-09 (literature audit completed and manuscript reconciled).
+Last updated: 2026-09-22 (proofreading pass: spelling, American English, float placement).
+
+## Proofreading pass (completed 2026-09-22)
+
+Full-manuscript proofread for spelling, American English, and page/figure
+formatting. Detail and method in
+[`notes/proofread-2026-09-22.md`](notes/proofread-2026-09-22.md).
+
+- **No misspelled words were found.** aspell over a LaTeX-stripped rendering of the
+  prose reduced 434 raw flags to jargon and proper nouns only; duplicated-word and
+  real-word-confusion scans were also clean.
+- **28 American-English replacements** in 11 files (analogue, manoeuvre, grey,
+  backwards, afterwards, cancelled/cancelling, …). A `-ise`/`-yse` pattern scan was
+  clean. `cancellation` is correct American and was left alone.
+- **One truncated sentence** in Ch 9's PEP worked example ("…Note that the" followed
+  by a new sentence) — an editing casualty from an earlier revision. No others of its
+  class exist.
+- **One undisclosed symbol collision**: Ch 1 listed two meanings for β; Ch 22 added a
+  third (FM modulation index). Now disclosed.
+- **One hyphenation inconsistency**: `bandpass` → `band-pass` in Ch 13.
+- **Float placement tuned.** The book had *no* float parameters, so LaTeX's
+  text-document defaults were stranding single figures on otherwise blank pages
+  (printed pp. 28–29 were each one figure and nothing else). After tuning:
+  **234 → 231 pages**, float-dominated pages 8 → 7, and 55 of 58 figures now sit
+  within one page of the prose that discusses them.
+- **Open: OQ-5** — five end-of-chapter worked-example figures still take pages of
+  their own. Two fixes were tested; one has no effect (floats only move forward) and
+  one costs a content-ordering defect. Recommendation is to accept. Nothing depends
+  on it.
+
+---
 
 ## Literature audit (completed 2026-09-09)
 
@@ -140,7 +170,7 @@ circuits, Part IV is what they explain.
 
 ## 1. Where things stand
 
-- **26 chapters + 3 appendices, five parts, 229 pages, 36 figures.**
+- **26 chapters + 3 appendices, five parts, 231 pages, 36 figures.**
 - **Build is clean:** 0 undefined references, 0 overfull boxes > 20 pt, 0 orphan
   labels, 0 dangling references, 0 hard-coded cross-references.
 **Pool sources are now the official NCVEC releases** (`references/`), and the
