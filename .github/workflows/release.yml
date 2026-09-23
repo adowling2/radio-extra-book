@@ -1,0 +1,92 @@
+# Build the book on a version tag and publish the PDFs as GitHub Release assets.
+#
+# Release assets are stored outside the git object database, so tagging and
+# publishing a 231-page PDF does NOT add to repository history or clone size.
+# Committing the PDF instead would add a few megabytes per edit, forever.
+#
+# Trigger:
+#   git tag -a v1.0 -m "First public release" && git push origin v1.0
+# or run manually from the Actions tab (workflow_dispatch) to test without tagging.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:        # manual run, for testing the workflow itself
+
+permissions:
+  contents: write           # required to create a release and upload assets
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Full TeX Live: the book needs circuitikz, pgfplots, tcolorbox, siunitx and
+    # cleveref, which the smaller scheme images do not all carry.
+    container: texlive/texlive:latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Show toolchain versions
+        run: |
+          pdflatex --version | head -1
+          latexmk --version | head -1
+
+      - name: Build the book and the cheat sheet
+        run: make all
+
+      # The figure PDFs are committed, so no Python is needed to build. These
+      # checks are the LaTeX-level subset of scripts/check.sh that runs without
+      # Python or Poppler.
+      - name: Verify the build is clean
+        run: |
+          set -e
+          undef=$(grep -ci 'undefined' main.log || true)
+          over=$(grep -cE 'Overfull \\hbox \(([2-9][0-9]|[0-9]{3,})\.' main.log || true)
+          multi=$(grep -ci 'multiply defined' main.log || true)
+          echo "undefined references : $undef"
+          echo "overfull boxes > 20pt: $over"
+          echo "multiply-defined     : $multi"
+          if [ "$undef" -ne 0 ] || [ "$over" -ne 0 ] || [ "$multi" -ne 0 ]; then
+            echo "::error::LaTeX build is not clean; refusing to publish a release."
+            exit 1
+          fi
+
+      - name: Name the assets after the tag
+        id: naming
+        run: |
+          VERSION="${GITHUB_REF_NAME:-manual-$(date +%Y%m%d)}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          mkdir -p dist
+          cp output/Circuit_Theory_for_the_Amateur_Extra_Exam.pdf \
+             "dist/Circuit-Theory-for-the-Amateur-Extra-Exam-${VERSION}.pdf"
+          cp output/Circuit_Theory_Cheat_Sheet.pdf \
+             "dist/Circuit-Theory-Cheat-Sheet-${VERSION}.pdf"
+          ls -lh dist
+
+      # Always keep the build products, even for a manual run that makes no release.
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdfs-${{ steps.naming.outputs.version }}
+          path: dist/*.pdf
+          retention-days: 30
+
+      - name: Publish the release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.pdf
+          generate_release_notes: true
+          body: |
+            **Circuit Theory for the Amateur Extra Exam** — ${{ steps.naming.outputs.version }}
+
+            Built from source by GitHub Actions. Download the PDF below.
+
+            This book covers the circuit-theory portion of the US Amateur Extra
+            syllabus only; it is not a complete exam-prep course, and it is not
+            affiliated with the ARRL, NCVEC, or the FCC. Verify against the current
+            official question pool and FCC rules before your exam.
