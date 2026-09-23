@@ -26,6 +26,21 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise,noabbrev]{cleveref}
 
+% --- Float placement -------------------------------------------------------
+% LaTeX's defaults are tuned for text-heavy documents and push figures onto
+% pages of their own: a float page need only be half full, and a page carrying
+% a float must still be 20 % text. In a figure-dense book that strands plots
+% two pages from the prose that discusses them. These values let a figure share
+% a page with text, and require a float page to be nearly full before LaTeX is
+% allowed to make one.
+\renewcommand{\topfraction}{0.85}        % was 0.7
+\renewcommand{\bottomfraction}{0.60}     % was 0.3
+\renewcommand{\textfraction}{0.10}       % was 0.2
+\renewcommand{\floatpagefraction}{0.80}  % was 0.5
+\setcounter{topnumber}{3}                % was 2
+\setcounter{bottomnumber}{2}             % was 1
+\setcounter{totalnumber}{4}              % was 3
+
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta,calc,positioning}
 \graphicspath{{figures/}}
@@ -77,8 +92,8 @@
   breakable
 }
 
-% Callout boxes are colour-coded by type: each has its own accent frame and a
-% faint matching tint, with a coloured title bar for quick visual scanning.
+% Callout boxes are color-coded by type: each has its own accent frame and a
+% faint matching tint, with a colored title bar for quick visual scanning.
 \newtcolorbox{controlsbox}{title=\textbf{Controls Connection},
   colframe=GuideBlue,   colback=GuideBlue!5,   coltitle=white, colbacktitle=GuideBlue}
 \newtcolorbox{physicalbox}{title=\textbf{Physical Insight},

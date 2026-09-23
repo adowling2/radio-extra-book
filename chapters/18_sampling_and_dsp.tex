@@ -85,7 +85,7 @@ the sampling operation rather than from the equipment. Two different input
 frequencies---one below \(f_s/2\), one folded down onto it---produce \emph{identical
 sample sequences}. Not similar: identical. Once the numbers exist there is no
 information left that distinguishes the two, so no filter, algorithm, or amount of
-processing applied afterwards can separate them. The only cure is to prevent the
+processing applied afterward can separate them. The only cure is to prevent the
 offending component from reaching the converter, which is what an
 \textbf{anti-aliasing} low-pass filter is for
 \cite[pp.~23--25]{giannini2008baseband}.
@@ -206,7 +206,7 @@ that is about to shrink.
 
 Interpolation moves the Nyquist frequency the other way, so nothing that was already
 legal can become illegal, and no filter is needed \emph{beforehand}. (One is generally
-used afterwards, to remove the images the inserted samples create.)
+used afterward, to remove the images the inserted samples create.)
 
 These anti-aliasing and anti-imaging requirements follow directly from the spectral
 replicas created by sampling and rate conversion
@@ -277,7 +277,7 @@ into baseband; the output reconstruction filter removes spectral images created 
 conversion.
 
 \section{Direct Digital Synthesis}
-The same ideas run backwards make an oscillator. A \textbf{direct digital synthesizer}
+The same ideas run backward make an oscillator. A \textbf{direct digital synthesizer}
 adds a constant \(M\) to an \(N\)-bit accumulator on every clock edge; the accumulator
 overflows periodically, and that periodicity is the output frequency:
 \[

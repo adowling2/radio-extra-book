@@ -194,7 +194,7 @@ dynamic range. It is a filter you get for free in \emph{order}, not in \emph{lev
 
 \begin{controlsbox}
 \textbf{Symmetry, not cancellation of quantities.} It is tempting to describe this as
-two distortions cancelling because they are equal and opposite, but the derivation
+two distortions canceling because they are equal and opposite, but the derivation
 says something stronger and cheaper: the antiphase-and-subtract operation extracts the
 \emph{odd part} of \(f\), and the even part is discarded before it can appear.
 Decomposing a response into even and odd parts is the same style of move as splitting
@@ -276,7 +276,7 @@ v_-=V_o\,\frac{R_g}{R_f+R_g}
 \boxed{\;\beta=\frac{R_g}{R_f+R_g}\;}
 \]
 So \(\beta\) is nothing more exotic than \cref{ch:resistive}'s voltage divider,
-running backwards from output to input. The large-loop-gain limit
+running backward from output to input. The large-loop-gain limit
 \(A_{\mathrm{cl}}\to1/\beta\) of \cref{ch:feedback} then reads
 \[
 \frac{1}{\beta}=\frac{R_f+R_g}{R_g}=1+\frac{R_f}{R_g},
@@ -573,7 +573,7 @@ compensated op-amp) restores phase margin by making the loop gain fall through
 \SI{0}{\decibel} before the second pole adds its lag. It buys stability with
 bandwidth---the same trade, again.
 
-\subsection{Neutralization: Cancelling a Loop You Did Not Ask For}
+\subsection{Neutralization: Canceling a Loop You Did Not Ask For}
 \label{sec:neutralization}
 Compensation assumes you know where the loop is. RF amplifiers have a harder
 problem: a feedback path exists whether or not the designer put one there.
@@ -588,7 +588,7 @@ feedback arrives through a \emph{capacitor}, which contributes its own
 device's own strays and the stage oscillates at a frequency nobody designed.
 
 \textbf{Neutralization} is the cure, and it is the only place in this book where
-feedback is deliberately cancelled rather than shaped. A second path is added from
+feedback is deliberately canceled rather than shaped. A second path is added from
 output to input, matched in magnitude to the stray but opposite in phase---typically
 by taking the feedback from the other end of a center-tapped tank, which supplies a
 signal \(180^\circ\) out of phase, through an adjustable capacitor set to match the
@@ -1148,7 +1148,7 @@ the whole carrier included---is absent rather than trimmed away. Filter off one 
 two sidebands and the result is single sideband; this is how an SSB transmitter
 generates its signal.
 \item[Product detector] IF in, reinserted carrier in, keep the difference: the
-audio. It is the balanced modulator run backwards, which is why an SSB receiver and
+audio. It is the balanced modulator run backward, which is why an SSB receiver and
 an SSB transmitter contain the same part twice.
 \item[Frequency multiplier] one input, driven hard into nonlinearity, and keep a
 \emph{harmonic} rather than a mixing product---the \(m f_1\) terms with a tuned
@@ -1199,7 +1199,7 @@ therefore uninformative about the in-band products that actually matter.
 \textbf{The same nonlinearity, wanted and unwanted.} Class C amplification
 (\cref{sec:classes}) and frequency multiplication rely on exactly the mechanism that
 makes intermodulation a problem: a nonlinear device generating harmonics and mixing
-products. The difference is only whether a tuned circuit afterwards keeps the product
+products. The difference is only whether a tuned circuit afterward keeps the product
 you wanted. A high-\(Q\) tank (\cref{ch:rlcpar}) keeps one and discards the rest,
 which is why Class C works at all---the nonlinearity makes a mess, and a parallel
 resonator cleans it up.
